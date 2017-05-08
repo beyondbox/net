@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4285F5</color>
+    <color name="theme_color">#4285F5</color>
+    <color name="colorAccent">#4285F5</color>
+
+    <color name="theme_pressed_color">#0090FF</color>
+    <color name="while_color">#FFFFFF</color>
+    <color name="light_blue_color">#E8F8FF</color>
+    <color name="dark_blue_color">#005AA8</color>
+    <color name="green_color">#6AC20B</color>
+    <color name="orange_color">#FF6000</color>
+    <color name="red_color">#FF3B30</color>
+    <color name="black_color">#373636</color>
+    <color name="gray_color">#666666</color>
+    <color name="light_gray_color">#A6A9AD</color>
+    <color name="view_background_gray_color">#F7F7F9</color>
+    <color name="text_gray_color">#6E6E6E</color>
+    <color name="text_dark_gray_color">#999999</color>
+
+
+    <color name="green">#72bb38</color>
+    <color name="border_gray_light">#D4D4D4</color>
+    <color name="text_black_color">#4c4c4c</color>
+    <color name="text_black_dark_color">#1a1a1a</color>
+    <color name="text_gray_light_color">#858585</color>
+    
+    <color name="home_section_color">#329ea8</color>
+
+
+    <color name="home_bottom_color">#D0D0D0</color>
+    <color name="transparent_color">#00000000</color>
+
+    <drawable name="white_drawable">#FFF</drawable>
+    <drawable name="white_press_drawable">#F2F2F2</drawable>
+</resources>

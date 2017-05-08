@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/select_white_background"
+    android:padding="12dp">
+
+    <com.appjumper.silkscreen.view.BorderCircleImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:border_width="1dp"
+        app:border_color="#D3D3D3"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/iocn_home_tender_bg" />
+
+    <TextView
+        android:id="@+id/tv_create_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="11.01 19:02"
+        android:textColor="@color/text_gray_light_color"
+        android:textSize="11sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/tv_nickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_logo"
+        android:layout_toLeftOf="@id/tv_create_time"
+        android:layout_marginLeft="10dp"
+        android:text="汪洋"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/text_black_color"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/imgViInvalid"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@mipmap/invalid"
+        android:layout_below="@id/tv_create_time"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_company_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_below="@id/tv_nickname"
+        android:layout_toLeftOf="@id/imgViInvalid"
+        android:layout_alignLeft="@id/tv_nickname"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="安平县冠航丝网机械有限公司"
+        android:textColor="@color/text_gray_color"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tv_service"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_company_name"
+        android:layout_toLeftOf="@id/imgViInvalid"
+        android:layout_alignLeft="@id/tv_nickname"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:text="咨询电镀丝网现货报价"
+        android:textColor="@color/text_black_color"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_handle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/tv_service"
+        android:layout_alignLeft="@id/tv_nickname"
+        android:textColor="@color/red_color"
+        android:text="未报价"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tv_handle"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/red_color"
+        android:text="已报价"
+        android:textSize="13sp" />
+
+
+</RelativeLayout>

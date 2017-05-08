@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_white_background"
+    android:paddingLeft="11dp"
+    android:paddingRight="11dp"
+    android:paddingTop="15dp">
+
+    <ImageView
+        android:id="@+id/imgViCom"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@mipmap/icon_home_banner_bg"
+        android:scaleType="centerCrop"/>
+
+    <TextView
+        android:id="@+id/txtCancelAttent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgViCom"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/selector_cancel_attent"
+        android:layout_alignLeft="@id/imgViCom"
+        android:layout_alignRight="@id/imgViCom"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:gravity="center"
+        android:text="取消关注"
+        android:textSize="11sp"
+        android:textColor="@color/white"/>
+
+
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgViCom"
+        android:layout_marginLeft="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:maxWidth="200dp"
+        android:text="安平县优加网络科技有限公司"
+        android:textColor="@color/black_color"
+        android:textSize="15sp"/>
+
+    <LinearLayout
+        android:id="@+id/lLaytCerti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/txtTitle">
+
+
+        <ImageView
+            android:id="@+id/imgViCertiBlue"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@mipmap/icon_certification"
+            android:layout_marginLeft="3dp"/>
+
+        <ImageView
+            android:id="@+id/imgViCertiYellow"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@mipmap/icon_certification_yellow"
+            android:layout_marginLeft="3dp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtSubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtTitle"
+        android:layout_alignLeft="@id/txtTitle"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="2dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:text="石笼网加工、石笼网订做、金刚网现货、浸塑加工"
+        android:textSize="13sp"
+        android:textColor="#4c4c4c"/>
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txtCancelAttent"
+        android:layout_alignLeft="@id/txtTitle"
+        android:text="入驻时间：2016-9-25"
+        android:textSize="11sp"
+        android:textColor="#858585"/>
+
+    <TextView
+        android:id="@+id/txtDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/txtCancelAttent"
+        android:textSize="12sp"
+        android:textColor="#858585"
+        android:text="55KM"/>
+
+    <View
+        style="@style/LineStyle"
+        android:layout_below="@id/txtCancelAttent"
+        android:layout_marginTop="15dp"/>
+
+</RelativeLayout>

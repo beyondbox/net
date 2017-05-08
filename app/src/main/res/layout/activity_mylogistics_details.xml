@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_color"
+    android:orientation="vertical">
+    <!-- title -->
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view"
+            style="@style/transparent"
+            android:layout_height="25dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:src="@mipmap/icon_return" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="物流详情"
+                android:textColor="@color/while_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/btn_report"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                android:textColor="@color/while_color"
+                android:textSize="15sp"
+                android:text="编辑"
+                 />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/pull_refresh_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_layout"
+        ptr:ptrAnimationStyle="flip"
+        ptr:ptrMode="pullFromStart">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/while_color"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="36dp"
+                android:paddingRight="36dp"
+                android:paddingTop="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp">
+
+                    <TextView
+                        android:id="@+id/tv_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="12dp"
+                        android:drawableTop="@mipmap/icon_depart"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="深圳 宝安"
+                        android:textColor="@color/black_color"
+                        android:textSize="18sp" />
+
+                    <ImageView
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/icon_cut" />
+
+                    <TextView
+                        android:id="@+id/tv_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="12dp"
+                        android:drawableTop="@mipmap/icon_arrive"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="广州 天河"
+                        android:textColor="@color/black_color"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="途经："
+                        android:textColor="@color/black_color"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_passby"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="惠州、河源、东莞"
+                        android:textColor="@color/black_color"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="18dp"
+                android:paddingLeft="12dp"
+                android:gravity="center_horizontal"
+                android:paddingRight="12dp"
+                android:paddingTop="18dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="24dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="车宽"
+                            android:textColor="@color/light_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_car_width"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="36米"
+                            android:textColor="@color/black_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="载重"
+                            android:textColor="@color/light_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_car_load"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="55吨"
+                            android:textColor="@color/black_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="车长"
+                            android:textColor="@color/light_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_car_length"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="22米"
+                            android:textColor="@color/black_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="车高"
+                            android:textColor="@color/light_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_car_height"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text="500米"
+                            android:textColor="@color/black_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/theme_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:text="备注"
+                    android:textColor="@color/black_color"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp" />
+
+            <TextView
+                android:id="@+id/tv_remark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:layout_marginLeft="12dp"
+                android:lineSpacingExtra="3dp"
+                android:lineSpacingMultiplier="1.1"
+                android:text="50吨起批。5555吨以上包送货上门，质量杠杠的啊，50吨起 批。5555吨以上包送货上门，质量杠杠的啊，50吨起批。55 55吨以上包送货上门，质量杠杠的啊。"
+                android:textColor="@color/light_gray_color"
+                android:textSize="13sp" />
+
+            <View style="@style/LineStyle" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/view_background_gray_color" />
+        </LinearLayout>
+    </com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_contact"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/select_white_background"
+        android:gravity="center"
+        android:text="删除"
+        android:textColor="@color/red_color"
+        android:textSize="16sp" />
+</RelativeLayout>

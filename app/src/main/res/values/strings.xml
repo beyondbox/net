@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">丝网+</string>
+    <string name="app_name2">丝网测试</string>
+
+    <string name="pull_to_load_pull_label">向上滑动加载更多…</string>
+    <string name="pull_to_load_release_label">加载更多…</string>
+    <string name="pull_to_load_tap_label">点击刷新…</string>
+    <string name="pull_to_load_loading_label">载入中…</string>
+    <string name="pull_to_refresh_pull_label">下拉刷新…</string>
+    <string name="pull_to_refresh_release_label">松手刷新…</string>
+    <string name="pull_to_refresh_tap_label">点击刷新…</string>
+    <string name="pull_to_refresh_refreshing_label">载入中…</string>
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+    <string name="ellipsis">\u2026</string>
+
+    <string name="order_introduce">由生产厂家发布的接受丝网订做的信息，护栏网、石笼网、钢板网等</string>
+    <string name="stock_introduce">大量现货库存供应，可直接向厂家咨询现货产品，荷兰网、金刚网、刺绳等</string>
+    <string name="process_introduce">由加工户发布的接受产品代加工的信息，有加工需求的可以联系相关厂家</string>
+
+    <string name="requst_fail">网络超时，请稍候</string>
+
+</resources>

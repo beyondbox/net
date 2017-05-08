@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/l_choice"
+    android:layout_width="match_parent"
+    android:gravity="center"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/tv_choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="产品一"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:textColor="@color/black_color"
+        android:textSize="12sp" />
+    <View
+        style="@style/LineStyle"
+        />
+</LinearLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/home_supply_process"/>
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageView"
+        android:layout_marginLeft="10dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="安平县优加网络科技有限公司"
+        android:textSize="14sp"
+        android:textColor="@color/black_color"/>
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtName"
+        android:layout_alignLeft="@id/txtName"
+        android:layout_marginTop="5dp"
+        android:text="入驻时间: 2016-03-18"
+        android:textSize="12sp"
+        android:textColor="@color/gray_color"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imageView"
+        android:layout_alignBottom="@id/imageView"
+        android:layout_alignLeft="@id/txtName">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="5dp"
+            android:src="@mipmap/icon_certification"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/icon_certification_yellow"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/imageView"
+        android:text="55km"
+        android:textColor="@color/gray_color"
+        android:textSize="13sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_below="@id/imageView"
+        android:layout_marginTop="10dp"
+        android:text="石笼网加工、石笼网订做、金刚网现货、浸塑加工"
+        android:textColor="@color/gray_color"
+        android:textSize="13sp"/>
+
+
+
+</RelativeLayout>

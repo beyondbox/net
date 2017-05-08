@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text" />
+
+    <com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/pull_refresh_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        ptr:ptrAnimationStyle="flip"
+        ptr:ptrMode="pullFromStart">
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/while_color"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/cb_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_checkbox_company"
+                    android:drawablePadding="12dp"
+                    android:padding="12dp"
+                    android:text="认证公司（15）"
+                    android:textColor="@color/black_color"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/iv_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:src="@mipmap/icon_arrows_down_01" />
+            </RelativeLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_marginLeft="12dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.appjumper.silkscreen.view.MyListView
+                    android:id="@+id/list_view_one"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null">
+
+                </com.appjumper.silkscreen.view.MyListView>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:background="@color/view_background_gray_color" />
+
+                <View style="@style/LineStyle" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/cb_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_checkbox_company"
+                    android:drawablePadding="12dp"
+                    android:padding="12dp"
+                    android:text="未认证公司（15）"
+                    android:textColor="@color/black_color"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/iv_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:src="@mipmap/icon_arrows_down_01" />
+            </RelativeLayout>
+
+            <View
+                style="@style/LineStyle"
+                android:layout_marginLeft="12dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.appjumper.silkscreen.view.MyListView
+                    android:id="@+id/list_view_two"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null">
+
+                </com.appjumper.silkscreen.view.MyListView>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:background="@color/view_background_gray_color" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView>
+</LinearLayout>

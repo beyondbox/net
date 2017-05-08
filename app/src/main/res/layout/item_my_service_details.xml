@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_white_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_gg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:orientation="horizontal"
+        android:paddingBottom="12dp"
+        android:paddingTop="12dp">
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/theme_color" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="9dp"
+            android:text="规格"
+            android:textColor="@color/black_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_ggval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="22dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        >
+        <TextView
+            android:id="@+id/tv_gg"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="规格"
+            android:textColor="@color/black_color"
+            android:textSize="13sp" />
+        <TextView
+            android:id="@+id/tv_vul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="规格"
+            android:textColor="@color/theme_color"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+
+
+
+    <View
+        style="@style/LineStyle"
+        android:layout_marginLeft="22dp" />
+</LinearLayout>

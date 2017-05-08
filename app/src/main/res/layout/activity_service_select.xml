@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/while_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+
+    <TextView
+        android:id="@+id/txtOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/select_white_background"
+        android:drawableLeft="@mipmap/service_order"
+        android:drawablePadding="10dp"
+        android:drawableRight="@mipmap/arrow_right"
+        android:gravity="center_vertical"
+        android:padding="15dp"
+        android:text="丝网订做"
+        android:textColor="@color/text_black_color"
+        android:textSize="16sp" />
+
+    <View
+        style="@style/LineStyle"
+        android:layout_marginLeft="15dp"/>
+
+
+    <TextView
+        android:id="@+id/txtProcess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/select_white_background"
+        android:drawableLeft="@mipmap/service_process"
+        android:drawablePadding="10dp"
+        android:drawableRight="@mipmap/arrow_right"
+        android:gravity="center_vertical"
+        android:padding="15dp"
+        android:text="丝网加工"
+        android:textColor="@color/text_black_color"
+        android:textSize="16sp" />
+
+    <View
+        style="@style/LineStyle"
+        android:layout_marginLeft="15dp"/>
+
+    <TextView
+        android:id="@+id/txtStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/select_white_background"
+        android:drawableLeft="@mipmap/service_stock"
+        android:drawablePadding="10dp"
+        android:drawableRight="@mipmap/arrow_right"
+        android:gravity="center_vertical"
+        android:padding="15dp"
+        android:text="丝网现货"
+        android:textColor="@color/text_black_color"
+        android:textSize="16sp" />
+
+    <View
+        style="@style/LineStyle"
+        android:layout_marginLeft="15dp"/>
+
+
+</LinearLayout>

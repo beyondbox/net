@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/view_background_gray_color"
+    android:layout_height="match_parent">
+    <!-- title -->
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color"
+        android:orientation="vertical">
+        <View
+            android:id="@+id/view"
+            style="@style/transparent"
+            android:layout_height="25dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:src="@mipmap/icon_return" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="创建企业"
+                android:textColor="@color/while_color"
+                android:textSize="18sp" />
+        </RelativeLayout>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <View
+                style="@style/LineStyle"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:background="@color/while_color"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="1.基本信息"
+                    android:textColor="@color/text_gray_color"
+                    android:textSize="13sp"
+                    android:layout_margin="12dp"
+                    android:padding="6dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/icon_arrows_right61"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="2.简要介绍"
+                    android:textColor="@color/theme_color"
+                    android:textSize="13sp"
+                    android:layout_margin="12dp"
+                    android:padding="6dp"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/icon_arrows_right61"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="3.联系方式"
+                    android:textColor="@color/text_gray_color"
+                    android:textSize="13sp"
+                    android:layout_margin="12dp"
+                    android:padding="6dp"
+                    />
+
+            </LinearLayout>
+            <View
+                style="@style/LineStyle"
+                />
+
+            <View
+                style="@style/LineStyle"
+                android:layout_marginTop="12dp"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/while_color"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black_color"
+                    android:textSize="15sp"
+                    android:text="企业简介"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="12dp"
+                    />
+                <EditText
+                    android:id="@+id/editSms"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="您可以写写企业的优势，例如产品质量、服务等......"
+                    android:inputType="textMultiLine"
+                    android:layout_margin="12dp"
+                    android:padding="12dp"
+                    android:background="@color/view_background_gray_color"
+                    android:textColor="@color/black_color"
+                    android:textSize="13sp"
+                    android:gravity="left|top"
+                    android:minLines="6" />
+                <com.appjumper.silkscreen.view.MyGridView
+                    android:id="@+id/gridview"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="12dp"
+                    style="@style/GridViewStyle"
+                    android:layout_height="wrap_content"></com.appjumper.silkscreen.view.MyGridView>
+            </LinearLayout>
+            <View
+                style="@style/LineStyle"
+                />
+            <Button
+                android:id="@+id/next_btn"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@drawable/selector_login_btn"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="下一步"
+                android:textSize="15sp"
+                android:textColor="@color/while_color"
+                />
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

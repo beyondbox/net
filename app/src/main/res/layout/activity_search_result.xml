@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/view_background_gray_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- title -->
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view"
+            style="@style/transparent"
+            android:layout_height="25dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_search"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginLeft="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/icon_search_box05"
+                android:drawableLeft="@mipmap/icon_search_icon04"
+                android:drawablePadding="6dp"
+                android:hint="请输入产品名称"
+                android:imeOptions="actionSearch"
+                android:paddingLeft="18dp"
+                android:singleLine="true"
+                android:textColorHint="@color/light_gray_color"
+                android:textSize="14sp" />
+
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="取消"
+                android:textColor="@color/while_color"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <com.yyydjk.library.DropDownMenu
+        android:id="@+id/dropDownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:ddmenuTextSize="13sp"
+        app:ddtextUnselectedColor="@color/black_color"
+        app:ddtextSelectedColor="@color/theme_color"
+        app:dddividerColor="@color/view_background_gray_color"
+        app:ddunderlineColor="@color/view_background_gray_color"
+        app:ddmenuSelectedIcon="@mipmap/icon_arrows_up"
+        app:ddmenuUnselectedIcon="@mipmap/icon_arrows_down"
+        app:ddmaskColor="#20000000"
+        app:ddmenuBackgroundColor="@color/while_color"
+        />
+
+
+</LinearLayout>

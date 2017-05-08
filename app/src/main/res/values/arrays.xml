@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="service_titles">
+        <item>加工</item>
+        <item>订做</item>
+        <item>现货</item>
+        <item>物流</item>
+    </string-array>
+    <string-array name="dynamic_titles">
+        <item>盘条</item>
+        <item>退火丝</item>
+        <item>电镀锌管</item>
+        <item>铁管</item>
+        <item>彩钢板</item>
+    </string-array>
+
+</resources>

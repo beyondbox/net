@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/while_color"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/view_background_gray_color"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="物流地点:"
+                    android:textSize="15sp"
+                    android:textColor="#1a1a1a"/>
+
+                <TextView
+                    android:id="@+id/txtLogisticsManage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:text="管理"
+                    android:textSize="15sp"
+                    android:textColor="#72bb38"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerLogistics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtLogisticsManage"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="3dp"
+                    android:layout_marginTop="15dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/view_background_gray_color"
+                android:layout_marginTop="8dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="在找车的货物:"
+                    android:textSize="15sp"
+                    android:textColor="#1a1a1a"/>
+
+                <TextView
+                    android:id="@+id/txtProductManage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:text="管理"
+                    android:textSize="15sp"
+                    android:textColor="#72bb38"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtProductManage"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="3dp"
+                    android:layout_marginTop="15dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+
+            </RelativeLayout>
+
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/view_background_gray_color"
+                android:layout_marginTop="8dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="出售的设备:"
+                    android:textSize="15sp"
+                    android:textColor="#1a1a1a"/>
+
+                <TextView
+                    android:id="@+id/txtDeviceManage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:text="管理"
+                    android:textSize="15sp"
+                    android:textColor="#72bb38"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerDevice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtDeviceManage"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="3dp"
+                    android:layout_marginTop="15dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </RelativeLayout>
+
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/view_background_gray_color"
+                android:layout_marginTop="8dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="出租厂房的地点:"
+                    android:textSize="15sp"
+                    android:textColor="#1a1a1a"/>
+
+                <TextView
+                    android:id="@+id/txtPlantManage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:text="管理"
+                    android:textSize="15sp"
+                    android:textColor="#72bb38"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerPlant"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtPlantManage"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="3dp"
+                    android:layout_marginTop="15dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </RelativeLayout>
+
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/view_background_gray_color"
+                android:layout_marginTop="8dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="招聘职位:"
+                    android:textSize="15sp"
+                    android:textColor="#1a1a1a"/>
+
+                <TextView
+                    android:id="@+id/txtPostManage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:text="管理"
+                    android:textSize="15sp"
+                    android:textColor="#72bb38"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtPostManage"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="3dp"
+                    android:layout_marginTop="15dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

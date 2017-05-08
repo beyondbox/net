@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <!-- title -->
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/theme_color"
+        >
+        <!--<View
+            android:id="@+id/view"
+            style="@style/transparent"
+            android:layout_height="25dp"
+            />-->
+        <RadioGroup
+            android:id="@+id/rg_tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="4"
+            android:padding="5dp"
+            android:background="@color/theme_color"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.6"/>
+            <RadioButton
+                android:id="@+id/rd0"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:background="@drawable/selector_money_radiobutton"
+                android:button="@null"
+                android:gravity="center"
+                android:checked="true"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="我的报价"
+                android:textColor="@color/while_color"
+                android:textSize="16dp"/>
+            <RadioButton
+                android:id="@+id/rd1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:background="@drawable/selector_money_radiobutton"
+                android:button="@null"
+                android:gravity="center"
+                android:text="我的询价"
+                android:textColor="@color/while_color"
+                android:textSize="16dp"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.6"/>
+        </RadioGroup>
+    </LinearLayout>
+
+
+    <com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView
+        android:id="@+id/listview"
+        android:dividerHeight="0dp"
+        android:layout_marginBottom="-50dp"
+        style="@style/ListViewDividerStyle" >
+    </com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView>
+
+</LinearLayout>

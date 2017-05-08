@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pop_layout_specifications"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/while_color"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_photo"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_margin="12dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/iv_photo"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="石笼网"
+                android:textColor="@color/black_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:singleLine="true"
+                android:text="请选择规格和服务"
+                android:textColor="@color/theme_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_dismiss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="12dp"
+            android:src="@mipmap/icon_close" />
+    </RelativeLayout>
+
+    <View
+        style="@style/LineStyle"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp" />
+
+    <ListView
+        android:id="@+id/lv_property"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:divider="@color/while_color"
+        android:dividerHeight="0dp" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@drawable/selector_confirm_btn"
+        android:text="确定"
+        android:textColor="@color/while_color"
+        android:textSize="16sp" />
+</LinearLayout>

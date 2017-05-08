@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_color"
+    android:orientation="vertical">
+    <!-- title -->
+    <LinearLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view"
+            style="@style/transparent"
+            android:layout_height="25dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                android:src="@mipmap/icon_return" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="企业列表"
+                android:textColor="@color/while_color"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+        <com.yyydjk.library.DropDownMenu
+            android:id="@+id/dropDownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_title"
+            app:dddividerColor="@color/view_background_gray_color"
+            app:ddmaskColor="#20000000"
+            app:ddmenuBackgroundColor="@color/while_color"
+            app:ddmenuSelectedIcon="@mipmap/icon_arrows_up"
+            app:ddmenuTextSize="13sp"
+            app:ddmenuUnselectedIcon="@mipmap/icon_arrows_down"
+            app:ddtextSelectedColor="@color/theme_color"
+            app:ddtextUnselectedColor="@color/black_color"
+            app:ddunderlineColor="@color/view_background_gray_color" />
+
+
+</RelativeLayout>

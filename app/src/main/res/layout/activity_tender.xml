@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_color"
+    android:orientation="vertical">
+    <!-- title -->
+    <LinearLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view"
+            style="@style/transparent"
+            android:layout_height="25dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                android:src="@mipmap/icon_return" />
+
+            <RadioGroup
+                android:id="@+id/rg"
+                android:layout_width="150dip"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="12dip"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <RadioButton
+                    android:id="@+id/rb0"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rb_bg_01"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="招标"
+                    android:textColor="@color/title_text_sel"
+                    android:textSize="14sp" />
+
+
+                <RadioButton
+                    android:id="@+id/rb2"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rb_bg_02"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="6dp"
+                    android:text="中标"
+                    android:textColor="@color/title_text_sel"
+                    android:textSize="14sp" />
+            </RadioGroup>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView
+        android:id="@+id/listview"
+        style="@style/ListViewDividerStyle"
+        android:layout_marginTop="0.5dp"
+        android:dividerHeight="0dp">
+
+    </com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView>
+
+
+</LinearLayout>

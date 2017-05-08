@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/while_color"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rl_order"
+            android:background="@drawable/select_white_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="接受产品订做"
+                android:textColor="@color/black_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_arrows_right_01" />
+        </RelativeLayout>
+
+        <View
+            style="@style/LineStyle"
+            android:layout_marginLeft="12dp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_processing"
+            android:background="@drawable/select_white_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="提供丝网代加工"
+                android:textColor="@color/black_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_arrows_right_01" />
+        </RelativeLayout>
+
+
+        <View
+            style="@style/LineStyle"
+            android:layout_marginLeft="12dp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_logistics"
+            android:background="@drawable/select_white_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="拥有物流线路"
+                android:textColor="@color/black_color"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_arrows_right_01" />
+        </RelativeLayout>
+
+        <View
+            style="@style/LineStyle"
+            android:layout_marginLeft="12dp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_spot"
+            android:background="@drawable/select_white_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="丝网现货库存供应"
+                    android:textColor="@color/black_color"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="(需要进行个人实名认证和公司执照认证)"
+                    android:textColor="@color/orange_color"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/icon_arrows_right_01" />
+        </RelativeLayout>
+
+        <View
+            style="@style/LineStyle"
+            android:layout_marginLeft="12dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

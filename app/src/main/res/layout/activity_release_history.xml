@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@color/while_color"
+    android:layout_height="match_parent">
+    <!-- title -->
+    <LinearLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme_color"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view"
+            style="@style/transparent"
+            android:layout_height="25dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:padding="12dp"
+                android:src="@mipmap/icon_return" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/while_color"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+    <com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView
+        android:id="@+id/listview"
+        style="@style/ListViewDividerStyle"
+        android:layout_marginBottom="-45dp"
+        android:dividerHeight="0dp"></com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView>
+</LinearLayout>

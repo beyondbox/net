@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.appjumper.silkscreen">
+
+    <application
+        android:name=".base.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar">
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="30cab7aa898e7eb3be742307a19a534d" />
+        <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
+        <service android:name="com.amap.api.location.APSService"></service>
+
+        <activity
+            android:name=".ui.WelcomeActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden|stateUnchanged|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.MainActivity" />
+        <activity android:name=".ui.my.LoginActivity" />
+        <activity android:name=".ui.my.RegistereActivity" />
+        <activity android:name=".ui.home.process.ProcessingActivity" />
+        <activity android:name=".ui.home.logistics.LogisticsActivity" />
+        <!--搜索 -->
+        <activity android:name=".ui.home.search.SearchingActivity" />
+        <!--搜索结果 -->
+        <activity android:name=".ui.home.search.SearchResultActivity" />
+        <!--加工详情 -->
+        <activity android:name=".ui.home.process.ProcessingDetailsActivity" />
+        <!--公司详情 -->
+        <activity android:name=".ui.home.CompanyDetailsActivity" />
+        <!--加载网页 -->
+        <activity android:name=".ui.common.WebViewActivity" />
+        <!--订做 -->
+        <activity android:name=".ui.home.order.OrderActivity" />
+        <!--现货 -->
+        <activity android:name=".ui.home.stock.StockActivity" />
+        <!--地址选择 -->
+        <activity
+            android:name=".ui.common.AddressSelectActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged|adjustPan" />
+        <!--地址选择（村） -->
+        <activity
+            android:name=".ui.common.AddressSelectVillageActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged|adjustPan" />
+        <!--地址选择（市区） -->
+        <activity
+            android:name=".ui.common.AddressSelectCityActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged|adjustPan" />
+        <!--物流详情 -->
+        <activity android:name=".ui.home.logistics.LogisticsDetailsActivity" />
+        <!--找车详情 -->
+        <activity android:name=".ui.home.logistics.TruckDetailsActivity" />
+        <!--系统设置 -->
+        <activity android:name=".ui.my.SystemSettingActivity" />
+        <!-- 验证手机号 -->
+        <activity android:name=".ui.my.ValidationMobileActivity" />
+        <!-- 重置密码 -->
+        <activity android:name=".ui.my.RepasswordActivity" />
+        <!--关于我们 -->
+        <activity android:name=".ui.my.AboutUsActivity" />
+        <!--意见反馈 -->
+        <activity android:name=".ui.my.FeedbackActivity" />
+        <!--创建企业（基础信息） -->
+        <activity
+            android:name=".ui.my.enterprise.EnterpriseCreateActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged|adjustPan"/>
+        <!--创建企业（简要介绍） -->
+        <activity
+            android:name=".ui.my.enterprise.EnterpriseIntroduceActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged|adjustPan" />
+        <!--创建企业（联系方式） -->
+        <activity
+            android:name=".ui.my.enterprise.EnterpriseContactActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged|adjustPan" />
+        <!--发布找车详情 -->
+        <activity android:name=".ui.home.logistics.TruckReleaseActivity" />
+        <!--发布个人详情 -->
+        <activity android:name=".ui.home.logistics.PersonalReleaseActivity" />
+        <!--设备出售-->
+        <activity android:name=".ui.home.equipment.EquipmentActivity" />
+        <!--发布设备出售-->
+        <activity android:name=".ui.home.equipment.EquipmentReleaseActivity" />
+        <!--设备详情-->
+        <activity android:name=".ui.home.equipment.EquipmentDetailsActivity" />
+        <!--厂房出租-->
+        <activity android:name=".ui.home.workshop.WorkshopActivity" />
+        <!--厂房出租详情-->
+        <activity android:name=".ui.home.workshop.WorkshopDetailsActivity" />
+        <!--厂房出租发布-->
+        <activity android:name=".ui.home.workshop.WorkshopReleaseActivity" />
+        <!--招聘-->
+        <activity android:name=".ui.home.recruit.RecruitActivity" />
+        <!--招聘详情-->
+        <activity android:name=".ui.home.recruit.RecruitDetailsActivity" />
+        <!--发布招聘-->
+        <activity android:name=".ui.home.recruit.RecruitReleaseActivity" />
+        <!--招标中标-->
+        <activity android:name=".ui.home.tender.TenderActivity" />
+        <!--招标详情-->
+        <activity android:name=".ui.home.tender.TenderDetailsActivity" />
+        <!--中标详情-->
+        <activity android:name=".ui.home.tender.GidDetailsActivity" />
+        <!--展会信息-->
+        <activity android:name=".ui.home.exhibition.ExhibitionActivity" />
+        <!--行业新闻-->
+        <activity android:name=".ui.home.news.NewsActivity" />
+        <!--企业列表-->
+        <activity android:name=".ui.home.EnterpriseListActivity" />
+        <!--报价详情-->
+        <activity android:name=".ui.money.OfferDetailsActivity" />
+        <!--询价详情未报价-->
+        <activity android:name=".ui.money.InquiryDetailsNoneActivity" />
+        <!--询价详情已报价-->
+        <activity android:name=".ui.money.InquiryDetailsAlreadyActivity" />
+        <!--企业认证-->
+        <activity android:name=".ui.my.enterprise.EnterpriseAuthenticationActivity" />
+        <!--认证管理-->
+        <activity android:name=".ui.my.enterprise.AuthenticationAdministrationActivity" />
+        <!--服务管理-->
+        <activity android:name=".ui.my.enterprise.ServiceAdministrationActivity" />
+        <!--添加服务-->
+        <activity android:name=".ui.my.enterprise.AddServiceActivity" />
+        <!--选择分类-->
+        <activity android:name=".ui.my.enterprise.ChoiceActivity" />
+        <!--编辑规格-->
+        <activity android:name=".ui.my.enterprise.SpecificationActivity" />
+        <!--多选规格-->
+        <activity android:name=".ui.my.enterprise.MultipleChoiceActivity" />
+        <!--查看订做-->
+        <activity android:name=".ui.my.enterprise.ViewOrderActivity" />
+        <!--所有固定信息选择-->
+        <activity android:name=".ui.common.InformationSelectActivity" />
+        <!--个人资料-->
+        <activity android:name=".ui.my.PersonalActivity" />
+        <!--个人资料修改-->
+        <activity android:name=".ui.my.UserEditActivity" />
+        <!--图片多选 -->
+        <activity android:name=".view.phonegridview.SelectPictureActivity" />
+        <!--图片查看 -->
+        <activity android:name=".view.phonegridview.GalleryActivity" />
+        <!--我的积分-->
+        <activity android:name=".ui.my.MyPointActivity" />
+        <!--其他信息-->
+        <activity android:name=".ui.inquiry.OtherInfoActivity" />
+        <!--询价编辑规格-->
+        <activity android:name=".ui.inquiry.InquirySpecificationActivity" />
+        <!--询价编辑规格-->
+        <activity android:name=".ui.inquiry.SelectCompanyActivity" />
+        <!--企业收藏-->
+        <activity android:name=".ui.my.EnterpriseCollectionActivity" />
+        <!--设备名称-->
+        <activity android:name=".ui.home.equipment.SelectActivity" />
+        <!--企业路线发布-->
+        <activity android:name=".ui.my.enterprise.EnterpriseReleaseActivity" />
+        <!--我的物流线路详情-->
+        <activity android:name=".ui.my.enterprise.MyLogisticsDetailsActivity" />
+        <!--生产力认证-->
+        <activity android:name=".ui.my.enterprise.ProductivityAuthenticationActivity" />
+        <!--发布历史-->
+        <activity android:name=".ui.home.ReleaseHistoryActivity" />
+        <!--个人认证-->
+        <activity android:name=".ui.my.PersonalAuthenticationActivity" />
+        <!--单选-->
+        <activity android:name=".ui.inquiry.SingleChoiceActivity" />
+        <!--动态更多-->
+        <activity android:name=".ui.trend.TrendMoreActivity" />
+        <!--询价更多-->
+        <activity android:name=".ui.money.OfferMoreActivity" />
+        <!--高德地图-->
+        <activity android:name=".ui.common.MapviewActivity" />
+        <!--帮助-->
+        <activity android:name=".ui.my.HelpWebViewActivity" />
+
+
+        <!--产品选择列表-->
+        <activity android:name=".ui.common.ProductSelectActivity" />
+        <!--消息-->
+        <activity android:name=".ui.money.MessageActivity" />
+        <!--选择产品服务-->
+        <activity android:name=".ui.common.ServiceSelectActivity" />
+        <!--搜索结果-->
+        <activity android:name=".ui.home.search.SearchResultsActivity" />
+        <!--"+"界面-->
+        <activity android:name=".ui.PlusActivity" />
+        <!--询价完成-->
+        <activity android:name=".ui.inquiry.InquiryCompleteActivity" />
+        <!--现货产品详情-->
+        <activity android:name=".ui.home.stock.StockDetailActivity" />
+        <!--现货产品详情-->
+        <activity android:name=".ui.my.enterprise.SpecificationStockActivity" />
+        <!--添加服务成功-->
+        <activity android:name=".ui.my.enterprise.AddServiceCompleteActivity" />
+        <!--原材料关注管理-->
+        <activity android:name=".ui.trend.AttentionManageActivity" />
+
+
+        <!--动态管理-->
+        <activity android:name=".ui.dynamic.DynamicManageActivity" />
+
+
+        <!-- 【必须】 信鸽receiver广播接收 -->
+        <receiver
+            android:name="com.tencent.android.tpush.XGPushReceiver"
+            android:process=":xg_service_v2">
+            <intent-filter android:priority="0x7fffffff">
+
+                <!-- 【必须】 信鸽SDK的内部广播 -->
+                <action android:name="com.tencent.android.tpush.action.SDK" />
+                <action android:name="com.tencent.android.tpush.action.INTERNAL_PUSH_MESSAGE" />
+                <!-- 【必须】 系统广播：开屏和网络切换 -->
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
+                <!-- 【可选】 一些常用的系统广播，增强信鸽service的复活机会，请根据需要选择。当然，你也可以添加APP自定义的一些广播让启动service -->
+                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 【必须】 (2.30及以上版新增)展示通知的activity -->
+        <!-- 【注意】 如果被打开的activity是启动模式为SingleTop，SingleTask或SingleInstance，请根据通知的异常自查列表第8点处理 -->
+        <activity
+            android:name="com.tencent.android.tpush.XGPushActivity"
+            android:exported="false">
+            <intent-filter>
+
+                <!-- 若使用AndroidStudio，请设置android:name="android.intent.action" -->
+                <action android:name="android.intent.action" />
+            </intent-filter>
+        </activity>
+
+        <!-- 【必须】 信鸽service -->
+        <service
+            android:name="com.tencent.android.tpush.service.XGPushService"
+            android:exported="true"
+            android:persistent="true"
+            android:process=":xg_service_v2" />
+
+        <!-- 【必须】 通知service，此选项有助于提高抵达率 -->
+        <service
+            android:name="com.tencent.android.tpush.rpc.XGRemoteService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.appjumper.silkscreen.PUSH_ACTION" />
+            </intent-filter>
+        </service>
+        <receiver
+            android:name=".ui.MessageService"
+            android:exported="false">
+            <intent-filter>
+                <!-- 接收消息透传 -->
+                <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />
+                <!-- 监听注册、反注册、设置/删除标签、通知被点击等处理结果 -->
+                <action android:name="com.tencent.android.tpush.action.FEEDBACK" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 【必须】 请将YOUR_ACCESS_ID修改为APP的AccessId，“21”开头的10位数字，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_ID"
+            android:value="2100241501" />
+        <!-- 【必须】 请将YOUR_ACCESS_KEY修改为APP的AccessKey，“A”开头的12位字符串，中间没空格 -->
+        <meta-data
+            android:name="XG_V2_ACCESS_KEY"
+            android:value="A7ZM4SU334UY" />
+
+
+        <!--友盟-->
+        <!-- 微信分享回调 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name="com.umeng.qq.tencent.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1105733775" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.umeng.qq.tencent.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- 友盟 Umeng Analytics start. -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="58214928ae1bf812e7002bdb"></meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}"></meta-data>
+        <meta-data android:value="39f9e7c23b788001c55cad56d8862e29" android:name="BUG_HD_SDK_GENERAL_KEY" />
+    </application>
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+
+    <!-- 【必须】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 【可选】 信鸽SDK所需权限 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BATTERY_STATS" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WIRTE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+</manifest>
