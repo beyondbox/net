@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -72,6 +73,15 @@ public class SearchProcessFragment extends BaseFragment {
     private int totalSize;
     private SearchResultsActivity activity;
 
+    private LocalBroadcastManager broadcastManager;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerBroadcastReceiver();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,7 +93,6 @@ public class SearchProcessFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        registerBroadcastReceiver();
         activity = (SearchResultsActivity) getActivity();
         initDropDownMenu();
         initRecyclerView();
@@ -247,7 +256,8 @@ public class SearchProcessFragment extends BaseFragment {
     private void registerBroadcastReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Const.ACTION_SEARCHING_REFRESH);
-        context.registerReceiver(myReceiver, filter);
+        broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        broadcastManager.registerReceiver(myReceiver, filter);
     }
 
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
@@ -268,6 +278,11 @@ public class SearchProcessFragment extends BaseFragment {
     };
 
 
+    @Override
+    public void onDestroy() {
+        broadcastManager.unregisterReceiver(myReceiver);
+        super.onDestroy();
+    }
 
 
 

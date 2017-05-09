@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.LineDetails;
@@ -217,6 +218,9 @@ public class TruckDetailsActivity extends BaseActivity {
                     if (baseResponse.isSuccess()) {
                         LineDetails data = baseResponse.getData();
                         initView(data);
+
+                        if (!getUserID().equals(data.getUser_id()))
+                            CommonApi.addLiveness(data.getUser_id(), 20);
                     } else {
                         showErrorToast(baseResponse.getError_desc());
                     }

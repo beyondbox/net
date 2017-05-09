@@ -8,13 +8,13 @@ import android.os.Message;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.CommonApi;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Tender;
 import com.appjumper.silkscreen.bean.TenderDetailsResponse;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.scrollView.PullToRefreshBase;
 import com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView;
@@ -55,6 +55,8 @@ public class GidDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         mPullRefreshScrollView.scrollTo(0, 0);
         refresh();
+
+        CommonApi.addLiveness(getUserID(), 7);
     }
     private void initView(Tender data){
         tv_tender_title.setText(data.getTitle());
@@ -123,7 +125,6 @@ public class GidDetailsActivity extends BaseActivity {
                     TenderDetailsResponse response = (TenderDetailsResponse) msg.obj;
                     if (response.isSuccess()) {
                         initView(response.getData());
-                        CommonApi.addLiveness(getUserID(), 7);
                     } else {
                         activity.showErrorToast(response.getError_desc());
                     }

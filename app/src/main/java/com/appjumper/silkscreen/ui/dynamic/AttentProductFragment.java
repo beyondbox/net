@@ -13,6 +13,7 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.bean.AttentProduct;
 import com.appjumper.silkscreen.bean.ServiceProduct;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
@@ -160,6 +161,9 @@ public class AttentProductFragment extends BaseFragment {
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         getMyAttention();
                         activity.getAttentNum();
+
+                        if (list.size() > 0)
+                            CommonApi.addLiveness(getUserID(), 22);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

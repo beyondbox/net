@@ -9,8 +9,8 @@ public class Url {
 
 
     //服务器地址
-    public static final String IP = "http://115.28.148.207";  //正式
-    //public static final String IP = "http://192.168.1.114"; //测试
+    //public static final String IP = "http://115.28.148.207";  //正式
+    public static final String IP = "http://192.168.1.114"; //测试
     public static final String HTTP_URL = IP + "/api/";
 
     public static final String HOST = IP + "/index.php";
@@ -77,9 +77,9 @@ public class Url {
     public static final String EQUIPMENT_DETAILS = HTTP_URL + "equipment/details";
     //厂房列表接口
     public static final String WORKSHOP_LIST = HTTP_URL + "workshop/workshop_list";
-    //厂房发布接口
-    public static final String WORKSHOP_DETAILS = HTTP_URL + "workshop/details";
     //厂房详情
+    public static final String WORKSHOP_DETAILS = HTTP_URL + "workshop/details";
+    //厂房发布接口
     public static final String WORKSHOP_RELEASE = HTTP_URL + "workshop/add";
     //招聘列表
     public static final String RECRUIT_LIST= HTTP_URL + "recruit/recruit_list";

@@ -15,17 +15,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.LineDetails;
 import com.appjumper.silkscreen.bean.LineDetailsResponse;
 import com.appjumper.silkscreen.bean.User;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.LogisticsStandingListviewAdapter;
 import com.appjumper.silkscreen.util.CircleTransform;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
@@ -263,6 +264,9 @@ public class LogisticsDetailsActivity extends BaseActivity {
                         layout.setVisibility(View.VISIBLE);
                         LineDetails data = baseResponse.getData();
                         initView(data);
+
+                        if (!getUserID().equals(data.getUser_id()))
+                            CommonApi.addLiveness(data.getUser_id(), 20);
                     } else {
                         showErrorToast(baseResponse.getError_desc());
                     }

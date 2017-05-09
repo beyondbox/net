@@ -26,12 +26,12 @@ import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.bean.Spec;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.util.manager.ActivityTaskManager;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -384,8 +384,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                     if(listResponse.isSuccess()){
                         //showErrorToast("添加服务成功");
                         start_Activity(context, AddServiceCompleteActivity.class, new BasicNameValuePair(Const.KEY_SERVICE_TYPE, type));
-                        ActivityTaskManager.getInstance().removeActivity(AddServiceActivity.class);
-                        ActivityTaskManager.getInstance().removeActivity(ChoiceActivity.class);
+                        CommonApi.addLiveness(getUserID(), 19);
                         finish();
                     }else{
                         showErrorToast(listResponse.getError_desc());

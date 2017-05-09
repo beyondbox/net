@@ -16,6 +16,7 @@ import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
@@ -58,6 +59,8 @@ public class MainActivity extends FragmentActivity {
     public ViewPager idViewPager;
 
     private MoreWindow mMoreWindow;
+
+    private long lastClickTime = 0;
 
 
     @Override
@@ -345,5 +348,18 @@ public class MainActivity extends FragmentActivity {
             return mTab.size();
         }
     }
+
+
+    @Override
+    public void onBackPressed() {
+        long currTime = System.currentTimeMillis();
+        if ((currTime - lastClickTime) > 2000) {
+            Toast.makeText(this, "再按一次退出应用", Toast.LENGTH_SHORT).show();
+            lastClickTime = currTime;
+        } else {
+            finish();
+        }
+    }
+
 }
 

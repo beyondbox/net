@@ -77,6 +77,12 @@ public class SearchOrderFragment extends BaseFragment {
 
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerBroadcastReceiver();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_order, container, false);
         ButterKnife.bind(this, view);
@@ -86,7 +92,6 @@ public class SearchOrderFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        registerBroadcastReceiver();
         activity = (SearchResultsActivity) getActivity();
         initDropDownMenu();
         initRecyclerView();
@@ -250,7 +255,7 @@ public class SearchOrderFragment extends BaseFragment {
     private void registerBroadcastReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Const.ACTION_SEARCHING_REFRESH);
-        broadcastManager = LocalBroadcastManager.getInstance(context);
+        broadcastManager = LocalBroadcastManager.getInstance(getActivity());
         broadcastManager.registerReceiver(myReceiver, filter);
     }
 

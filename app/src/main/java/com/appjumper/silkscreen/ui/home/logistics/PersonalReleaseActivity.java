@@ -20,14 +20,15 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.bean.BaseResponse;
-import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
-import com.appjumper.silkscreen.ui.home.adapter.PassbyAdapter;
+import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
+import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
+import com.appjumper.silkscreen.ui.home.adapter.PassbyAdapter;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -220,6 +221,7 @@ public class PersonalReleaseActivity extends BaseActivity {
                     BaseResponse baseResponse = (BaseResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
                         showErrorToast("发布成功");
+                        CommonApi.addLiveness(getUserID(), 19);
                         finish();
                     } else {
                         showErrorToast(baseResponse.getError_desc());

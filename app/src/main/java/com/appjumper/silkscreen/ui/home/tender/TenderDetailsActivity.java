@@ -62,6 +62,8 @@ public class TenderDetailsActivity extends BaseActivity {
         ButterKnife.bind(this);
         mPullRefreshScrollView.scrollTo(0, 0);
         refresh();
+
+        CommonApi.addLiveness(getUserID(), 7);
     }
 
     private void initView(Tender data){
@@ -132,7 +134,6 @@ public class TenderDetailsActivity extends BaseActivity {
                     TenderDetailsResponse response = (TenderDetailsResponse) msg.obj;
                     if (response.isSuccess()) {
                         initView(response.getData());
-                        CommonApi.addLiveness(getUserID(), 7);
                     } else {
                         activity.showErrorToast(response.getError_desc());
                     }

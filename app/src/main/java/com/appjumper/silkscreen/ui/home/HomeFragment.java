@@ -144,56 +144,6 @@ public class HomeFragment extends BaseFragment {
     private ViewPagerFragAdapter recommendAdapter;
 
 
-    private void initView(HomeData data) {
-        setTrendChartData();
-
-        final List<Notice> notice = data.getNotice();
-        ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < notice.size(); i++) {
-            list.add(notice.get(i).getTitle());
-        }
-        verticalSwitchTextView1.setTextContent(list);
-        verticalSwitchTextView1.setCbInterface(new VerticalSwitchTextView.VerticalSwitchTextViewCbInterface() {
-            @Override
-            public void showNext(int index) {
-
-            }
-
-            @Override
-            public void onItemClick(int index) {
-                start_Activity(HomeFragment.this.getActivity(), WebViewActivity.class,new BasicNameValuePair("url",notice.get(index).getArticle_url()),new BasicNameValuePair("title","公告详情"));
-            }
-        });
-
-        if (data.getCheckin().equals("1")) {
-            l_integral.setVisibility(View.VISIBLE);
-            imageView3.setVisibility(View.GONE);
-            tv_integral.setText(data.getScore());
-        } else {
-            l_integral.setVisibility(View.GONE);
-            imageView3.setVisibility(View.VISIBLE);
-        }
-
-
-        final List<Enterprise> recommend = data.getRecommend();
-        final List<NewPublic> newPublic = data.getNewpublic();
-        if (recommend != null && recommend.size() > 0) {
-            llEnterpriseList.setVisibility(View.VISIBLE);
-            listview1.setAdapter(new HomeListview1Adapter(getActivity(), recommend));
-        }else {
-            llEnterpriseList.setVisibility(View.GONE);
-        }
-
-
-        listview1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                start_Activity(getActivity(), CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", recommend.get(i).getEnterprise_id()));
-            }
-        });
-
-        l_homeview.setVisibility(View.VISIBLE);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -232,8 +182,6 @@ public class HomeFragment extends BaseFragment {
             }
         });
     }
-
-
 
 
     /**
@@ -279,6 +227,61 @@ public class HomeFragment extends BaseFragment {
         pagerRecommend.setAdapter(recommendAdapter);
         tabLaytRecommend.setupWithViewPager(pagerRecommend);
     }
+
+
+
+    private void initView(HomeData data) {
+        setTrendChartData();
+
+        final List<Notice> notice = data.getNotice();
+        ArrayList<String> list = new ArrayList<String>();
+        for (int i = 0; i < notice.size(); i++) {
+            list.add(notice.get(i).getTitle());
+        }
+        verticalSwitchTextView1.setTextContent(list);
+        verticalSwitchTextView1.setCbInterface(new VerticalSwitchTextView.VerticalSwitchTextViewCbInterface() {
+            @Override
+            public void showNext(int index) {
+
+            }
+
+            @Override
+            public void onItemClick(int index) {
+                start_Activity(HomeFragment.this.getActivity(), WebViewActivity.class,new BasicNameValuePair("url",notice.get(index).getArticle_url()),new BasicNameValuePair("title","公告详情"));
+                CommonApi.addLiveness(getUserID(), 6);
+            }
+        });
+
+        if (data.getCheckin().equals("1")) {
+            l_integral.setVisibility(View.VISIBLE);
+            imageView3.setVisibility(View.GONE);
+            tv_integral.setText(data.getScore());
+        } else {
+            l_integral.setVisibility(View.GONE);
+            imageView3.setVisibility(View.VISIBLE);
+        }
+
+
+        final List<Enterprise> recommend = data.getRecommend();
+        final List<NewPublic> newPublic = data.getNewpublic();
+        if (recommend != null && recommend.size() > 0) {
+            llEnterpriseList.setVisibility(View.VISIBLE);
+            listview1.setAdapter(new HomeListview1Adapter(getActivity(), recommend));
+        }else {
+            llEnterpriseList.setVisibility(View.GONE);
+        }
+
+
+        listview1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                start_Activity(getActivity(), CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", recommend.get(i).getEnterprise_id()));
+            }
+        });
+
+        l_homeview.setVisibility(View.VISIBLE);
+    }
+
 
 
     //首页

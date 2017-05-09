@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 搜索结果
@@ -54,7 +56,7 @@ public class SearchResultsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         ButterKnife.bind(context);
-        broadcastManager = LocalBroadcastManager.getInstance(context);
+        broadcastManager = LocalBroadcastManager.getInstance(this);
 
         keyworks = getIntent().getStringExtra("key");
         etSearch.setText(keyworks);
@@ -126,32 +128,17 @@ public class SearchResultsActivity extends BaseActivity {
     }
 
 
-
-    /**
-     * 刷新viewpager
-     */
-    /*private void refreshViewPager() {
-        for (int i = 0; i < fragList.size(); i++) {
-            Fragment fragment = fragList.get(i);
-            resultAdapter.destroyItem(pagerResult, i, fragment);
+    @OnClick(R.id.tv_cancel)
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tv_cancel:
+                hideKeyboard();
+                finish();
+                break;
+            default:
+                break;
         }
-        fragList.clear();
-        titleArr = null;
-        resultAdapter.notifyDataSetChanged();
-
-        fragList.add(new SearchOrderFragment());
-        fragList.add(new SearchStockFragment());
-        fragList.add(new SearchProcessFragment());
-        for (int i = 0; i < 4; i++) {
-            fragList.add(new SearchOrderFragment());
-        }
-
-        titleArr = new String[] {"订做", "现货", "加工", "物流", "设备", "厂家", "招聘"};
-        resultAdapter.notifyDataSetChanged();
-        pagerResult.setCurrentItem(0);
-
-        resultAdapter.notifyDataSetChanged();
-    }*/
+    }
 
 
 }

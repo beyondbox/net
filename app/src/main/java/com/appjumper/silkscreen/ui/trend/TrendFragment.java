@@ -104,7 +104,7 @@ public class TrendFragment extends BaseFragment {
                 }
             }
         });
-        idViewPager.setOffscreenPageLimit(3);
+        idViewPager.setOffscreenPageLimit(2);
     }
 
     public void selectpage(int position) {

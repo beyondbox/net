@@ -14,6 +14,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.base.MyApplication;
+import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.util.manager.MyUserManager;
 import com.appjumper.silkscreen.view.SelectPicPopupWindow;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
@@ -158,5 +161,6 @@ public  class ShareUtil {
                 withMedia(image).
                 share();
 
+        CommonApi.addLiveness(new MyUserManager(MyApplication.appContext).getUserId(), 17);
     }
 }

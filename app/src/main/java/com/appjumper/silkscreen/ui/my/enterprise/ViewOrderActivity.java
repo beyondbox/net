@@ -11,15 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.bean.ProductDetailsResponse;
-import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
@@ -212,6 +213,9 @@ public class ViewOrderActivity extends BaseActivity {
                     if (response.isSuccess()) {
                         Product data = response.getData();
                         initView(data);
+
+                        if (!getUserID().equals(data.getUser_id()))
+                            CommonApi.addLiveness(data.getUser_id(), 20);
                     } else {
                         showErrorToast(response.getError_desc());
                     }

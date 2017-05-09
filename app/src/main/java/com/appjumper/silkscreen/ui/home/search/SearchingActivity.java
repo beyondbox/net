@@ -140,7 +140,7 @@ public class SearchingActivity extends BaseActivity {
                 getMyApplication().getMyUserManager().saveHistory(key);
                 etSearch.setText(key);
                 hideKeyboard();
-                start_Activity(SearchingActivity.this, SearchResultActivity.class, new BasicNameValuePair("key", key));
+                start_Activity(SearchingActivity.this, SearchResultsActivity.class, new BasicNameValuePair("key", key));
                 finish();
             }
         });
@@ -163,7 +163,7 @@ public class SearchingActivity extends BaseActivity {
                             key = tempList.get(position);
                             etSearch.setText(key);
                             hideKeyboard();
-                            start_Activity(SearchingActivity.this, SearchResultActivity.class, new BasicNameValuePair("key", key));
+                            start_Activity(SearchingActivity.this, SearchResultsActivity.class, new BasicNameValuePair("key", key));
                             finish();
                         }
                     });

@@ -14,18 +14,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.EquipmentDetailsResponse;
 import com.appjumper.silkscreen.bean.EquipmentList;
 import com.appjumper.silkscreen.bean.User;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.GalleryAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.WorkshopListViewAdapter;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyLinearLayoutManger;
 import com.appjumper.silkscreen.view.MyListView;
@@ -255,6 +256,9 @@ public class WorkshopDetailsActivity extends BaseActivity {
                     if (baseResponse.isSuccess()) {
                         EquipmentList data = baseResponse.getData();
                         initView(data);
+
+                        if (!getUserID().equals(data.getUser_id()))
+                            CommonApi.addLiveness(data.getUser_id(), 20);
                     } else {
                         showErrorToast(baseResponse.getError_desc());
                     }

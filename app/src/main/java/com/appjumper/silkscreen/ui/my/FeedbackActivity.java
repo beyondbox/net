@@ -7,6 +7,7 @@ import android.os.Message;
 import android.widget.EditText;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.base.BaseActivity;
@@ -98,6 +99,8 @@ public class FeedbackActivity extends BaseActivity {
                     BaseResponse base = (BaseResponse) msg.obj;
                     if (base.isSuccess()) {
                         showSuccessTips("提交成功");
+                        CommonApi.addLiveness(getUserID(), 18);
+                        finish();
                     } else {
                         showErrorToast(base.getError_desc());
                     }

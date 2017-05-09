@@ -10,12 +10,13 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.LineDetails;
 import com.appjumper.silkscreen.bean.LineDetailsResponse;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.scrollView.PullToRefreshBase;
 import com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView;
@@ -23,7 +24,6 @@ import com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
-
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -154,6 +154,9 @@ public class MyLogisticsDetailsActivity extends BaseActivity {
                     if(baseResponse.isSuccess()){
                         LineDetails data = baseResponse.getData();
                         initView(data);
+
+                        if (!getUserID().equals(data.getUser_id()))
+                            CommonApi.addLiveness(data.getUser_id(), 20);
                     }else{
                         showErrorToast(baseResponse.getError_desc());
                     }

@@ -28,6 +28,7 @@ import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.bean.ProductDetailsResponse;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.bean.Spec;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
@@ -360,6 +361,9 @@ public class StockDetailActivity extends BaseActivity {
                     if (response.isSuccess()) {
                         Product data = response.getData();
                         initView(data);
+
+                        if (!getUserID().equals(data.getUser_id()))
+                            CommonApi.addLiveness(data.getUser_id(), 20);
                     } else {
                         showErrorToast(response.getError_desc());
                     }

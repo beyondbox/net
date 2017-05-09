@@ -13,13 +13,14 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.EquipmentCategoryResponse;
 import com.appjumper.silkscreen.bean.ImageResponse;
-import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -228,6 +229,7 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
                     BaseResponse baseResponse = (BaseResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
                         showErrorToast("发布成功");
+                        CommonApi.addLiveness(getUserID(), 19);
                         finish();
                     } else {
                         showErrorToast(baseResponse.getError_desc());

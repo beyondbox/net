@@ -1,7 +1,6 @@
 package com.appjumper.silkscreen.base;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.appjumper.silkscreen.util.Configure;
 import com.appjumper.silkscreen.util.manager.MyUserManager;
@@ -27,7 +26,7 @@ public class MyApplication extends Application{
     public static String QQappId="1105733775";
     public static String QQappKey="c7394704798a158208a74ab60104f0ba";
 
-    public static Context appContext;
+    public static MyApplication appContext;
 
 
     @Override

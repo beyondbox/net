@@ -15,6 +15,7 @@ import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.base.BaseRecyclerAdapter;
 import com.appjumper.silkscreen.bean.AttentModule;
 import com.appjumper.silkscreen.bean.ServiceProduct;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
@@ -601,6 +602,8 @@ public class AttentModuleFragment extends BaseFragment {
                         logisticsList.add(module);
                         logisticsAdapter.notifyDataSetChanged();
                         activity.getAttentNum();
+
+                        CommonApi.addLiveness(getUserID(), 23);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -660,6 +663,8 @@ public class AttentModuleFragment extends BaseFragment {
                         productList.addAll(moduleList);
                         productAdapter.notifyDataSetChanged();
                         activity.getAttentNum();
+
+                        CommonApi.addLiveness(getUserID(), 23);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -705,6 +710,8 @@ public class AttentModuleFragment extends BaseFragment {
                         deviceList.add(module);
                         deviceAdapter.notifyDataSetChanged();
                         activity.getAttentNum();
+
+                        CommonApi.addLiveness(getUserID(), 23);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -749,6 +756,8 @@ public class AttentModuleFragment extends BaseFragment {
                         plantList.add(module);
                         plantAdapter.notifyDataSetChanged();
                         activity.getAttentNum();
+
+                        CommonApi.addLiveness(getUserID(), 23);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -794,6 +803,8 @@ public class AttentModuleFragment extends BaseFragment {
                         postList.add(module);
                         postAdapter.notifyDataSetChanged();
                         activity.getAttentNum();
+
+                        CommonApi.addLiveness(getUserID(), 23);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
