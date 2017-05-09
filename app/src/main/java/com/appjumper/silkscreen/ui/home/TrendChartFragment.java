@@ -44,10 +44,7 @@ public class TrendChartFragment extends BaseFragment {
 
     private String type;
 
-    @Override
-    protected void initData() {
 
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,13 +53,12 @@ public class TrendChartFragment extends BaseFragment {
         return view;
     }
 
+
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void initData() {
         type = getArguments().getString("type");
         new Thread(run).start();
     }
-
 
     private Runnable run = new Runnable() {
 

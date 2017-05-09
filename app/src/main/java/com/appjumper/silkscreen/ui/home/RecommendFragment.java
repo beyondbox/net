@@ -32,10 +32,7 @@ public class RecommendFragment extends BaseFragment {
     private RecommendAdapter dataAdapter;
     private List<Enterprise> dataList;
 
-    @Override
-    protected void initData() {
 
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,11 +41,12 @@ public class RecommendFragment extends BaseFragment {
         return view;
     }
 
+
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void initData() {
         initListView();
     }
+
 
     private void initListView() {
         dataList = new ArrayList<>();

@@ -4,20 +4,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.bean.ProductResponse;
-import com.appjumper.silkscreen.base.BaseFragment;
-import com.appjumper.silkscreen.ui.home.adapter.CompanyProcessListViewAdapter;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.home.adapter.CompanyProcessListViewAdapter;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView;
@@ -50,10 +49,7 @@ public class ServiceFragment extends BaseFragment {
     private List<Product> list;
     private CompanyProcessListViewAdapter adapter;
 
-    @Override
-    protected void initData() {
 
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -64,8 +60,7 @@ public class ServiceFragment extends BaseFragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    protected void initData() {
         type = getArguments().getString("type");
         listView = pullToRefreshView.getRefreshableView();
         mEmptyLayout = LayoutInflater.from(context).inflate(R.layout.pull_listitem_empty_padding, null);
@@ -73,6 +68,7 @@ public class ServiceFragment extends BaseFragment {
         initListener();
         refresh();
     }
+
 
     @Override
     public void onDestroy() {
