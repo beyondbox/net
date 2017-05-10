@@ -157,6 +157,8 @@ public class HomeFragment extends BaseFragment {
     protected void initData() {
         registerBroadcastReceiver();
         initTrendChart();
+        setRefreshLayout();
+        setRecyclerView();
 
         HomeDataResponse homedata = getMyApplication().getMyUserManager().getHome();
         if(homedata!=null){
@@ -164,9 +166,6 @@ public class HomeFragment extends BaseFragment {
         }else{
             new Thread(new HomeDataRun()).start();
         }
-
-        setRefreshLayout();
-        setRecyclerView();
 
         listview1.setFocusable(false);
 
@@ -224,6 +223,7 @@ public class HomeFragment extends BaseFragment {
 
         String [] titleArr = {"丝网订做", "丝网现货", "丝网加工"};
         recommendAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, Arrays.asList(titleArr));
+        pagerRecommend.setOffscreenPageLimit(fragList.size() - 1);
         pagerRecommend.setAdapter(recommendAdapter);
         tabLaytRecommend.setupWithViewPager(pagerRecommend);
     }

@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -264,14 +263,6 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
         String [] arr = list.get(i).getUnit().split(",");
         final SpecChoiceAdapter choiceAdapter = new SpecChoiceAdapter(context, Arrays.asList(arr));
         gridChoice.setAdapter(choiceAdapter);
-
-        gridChoice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                choiceAdapter.changeSelected(position);
-            }
-        });
-
     }
 
 

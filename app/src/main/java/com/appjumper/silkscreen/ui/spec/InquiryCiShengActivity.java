@@ -2,11 +2,11 @@ package com.appjumper.silkscreen.ui.spec;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.CheckBox;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
@@ -18,11 +18,11 @@ import butterknife.ButterKnife;
 
 
 /**
- * 刺绳发布
+ * 刺绳询价
  * Created by Botx on 2017/5/9.
  */
 
-public class ReleaseCiShengActivity extends BasePhotoGridActivity {
+public class InquiryCiShengActivity extends BasePhotoGridActivity {
 
     @Bind(R.id.gridSiJing)
     GridView gridSiJing;
@@ -35,10 +35,8 @@ public class ReleaseCiShengActivity extends BasePhotoGridActivity {
     @Bind(R.id.gridWaiBiao)
     GridView gridWaiBiao;
 
-    @Bind(R.id.etDanKunStart)
-    EditText etDanKunStart;
-    @Bind(R.id.etDanKunEnd)
-    EditText etDanKunEnd;
+    @Bind(R.id.etDanKun)
+    EditText etDanKun;
     @Bind(R.id.etNumber)
     EditText etNumber;
 
@@ -58,7 +56,7 @@ public class ReleaseCiShengActivity extends BasePhotoGridActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_release_cisheng);
+        setContentView(R.layout.activity_inquiry_cisheng);
         ButterKnife.bind(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
@@ -71,28 +69,38 @@ public class ReleaseCiShengActivity extends BasePhotoGridActivity {
 
     private void initData() {
         siJingAdapter = new SpecSelectAdapter(context, Arrays.asList(siJingArr));
+        siJingAdapter.setChoiceMode(SpecSelectAdapter.CHOICE_MODE_SINGLE);
         gridSiJing.setAdapter(siJingAdapter);
+        gridSiJing.setOnItemClickListener(new MyItemClickImpl(siJingAdapter));
 
         ciJuAdapter = new SpecSelectAdapter(context, Arrays.asList(ciJuArr));
+        ciJuAdapter.setChoiceMode(SpecSelectAdapter.CHOICE_MODE_SINGLE);
         gridCiJu.setAdapter(ciJuAdapter);
+        gridCiJu.setOnItemClickListener(new MyItemClickImpl(ciJuAdapter));
 
         ningGuAdapter = new SpecSelectAdapter(context, Arrays.asList(ningGuArr));
+        ningGuAdapter.setChoiceMode(SpecSelectAdapter.CHOICE_MODE_SINGLE);
         gridNingGu.setAdapter(ningGuAdapter);
+        gridNingGu.setOnItemClickListener(new MyItemClickImpl(ningGuAdapter));
 
         siCaiZhiAdapter = new SpecSelectAdapter(context, Arrays.asList(siCaiZhiArr));
+        siCaiZhiAdapter.setChoiceMode(SpecSelectAdapter.CHOICE_MODE_SINGLE);
         gridSiCaiZhi.setAdapter(siCaiZhiAdapter);
+        gridSiCaiZhi.setOnItemClickListener(new MyItemClickImpl(siCaiZhiAdapter));
 
         waiBiaoAdapter = new SpecSelectAdapter(context, Arrays.asList(waiBiaoArr));
+        waiBiaoAdapter.setChoiceMode(SpecSelectAdapter.CHOICE_MODE_SINGLE);
         gridWaiBiao.setAdapter(waiBiaoAdapter);
+        gridWaiBiao.setOnItemClickListener(new MyItemClickImpl(waiBiaoAdapter));
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                setDefault(gridSiJing, 0);
-                setDefault(gridCiJu, 2);
-                setDefault(gridNingGu, 0);
-                setDefault(gridSiCaiZhi, 0);
-                setDefault(gridWaiBiao, 0);
+                setDefault(siJingAdapter, 0);
+                setDefault(ciJuAdapter, 2);
+                setDefault(ningGuAdapter, 0);
+                setDefault(siCaiZhiAdapter, 0);
+                setDefault(waiBiaoAdapter, 0);
             }
         }, 100);
     }
@@ -101,8 +109,25 @@ public class ReleaseCiShengActivity extends BasePhotoGridActivity {
     /**
      * 设置默认项
      */
-    private void setDefault(GridView gridView, int position) {
-        ((CheckBox)((LinearLayout)gridView.getChildAt(position)).getChildAt(0)).setChecked(true);
+    private void setDefault(SpecSelectAdapter adapter, int position) {
+        adapter.changeSelected(position);
+    }
+
+    /**
+     * GridView点击事件
+     */
+    private class MyItemClickImpl implements AdapterView.OnItemClickListener {
+
+        private SpecSelectAdapter adapter;
+
+        public MyItemClickImpl(SpecSelectAdapter adapter) {
+            this.adapter = adapter;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            adapter.changeSelected(position);
+        }
     }
 
 }

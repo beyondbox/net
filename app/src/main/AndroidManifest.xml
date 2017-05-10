@@ -204,6 +204,12 @@
         <activity android:name=".ui.trend.AttentionManageActivity" />
 
 
+        <!--发布刺绳-->
+        <activity android:name=".ui.spec.ReleaseCiShengActivity" />
+        <!--询价刺绳-->
+        <activity android:name=".ui.spec.InquiryCiShengActivity" />
+
+
         <!--动态管理-->
         <activity android:name=".ui.dynamic.DynamicManageActivity" />
 

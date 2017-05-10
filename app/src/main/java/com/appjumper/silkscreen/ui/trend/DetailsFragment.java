@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,21 @@ import com.appjumper.silkscreen.bean.PriceDetails;
 import com.appjumper.silkscreen.bean.PriceDetailsResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.trend.adapter.DetailsListViewAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.BaseFundChartView;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -66,6 +74,9 @@ public class DetailsFragment extends BaseFragment {
 
     @Bind(R.id.rl_company)
     RelativeLayout rl_company;//查看所有公司
+
+    @Bind(R.id.recyclerArticle)
+    RecyclerView recyclerArticle;
 
     private String type;
     private Context context;
@@ -167,6 +178,7 @@ public class DetailsFragment extends BaseFragment {
             @Override
             public void onPullDownToRefresh(com.appjumper.silkscreen.view.scrollView.PullToRefreshBase<ObservableScrollView> refreshView) {
                 new Thread(run).start();
+                getArticle();
             }
 
             @Override
@@ -229,4 +241,33 @@ public class DetailsFragment extends BaseFragment {
             }
         }
     }
+
+
+    /**
+     * 获取分析文章
+     */
+    private void getArticle() {
+        RequestParams params = MyHttpClient.getApiParam("tender", "analysis_list");
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        recyclerArticle.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                recyclerArticle.setVisibility(View.GONE);
+            }
+        });
+    }
+
 }
