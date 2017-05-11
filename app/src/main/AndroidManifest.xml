@@ -202,6 +202,10 @@
         <activity android:name=".ui.my.enterprise.AddServiceCompleteActivity" />
         <!--原材料关注管理-->
         <activity android:name=".ui.trend.AttentionManageActivity" />
+        <!--行情分析文章列表-->
+        <activity android:name=".ui.trend.TrendArticleAllActivity" />
+        <!--行情分析文章详情-->
+        <activity android:name=".ui.trend.ArticleDetailActivity" />
 
 
         <!--发布刺绳-->

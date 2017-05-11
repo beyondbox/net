@@ -719,10 +719,15 @@
                         app:tabSelectedTextColor="@color/orange_color"
                         app:tabTextColor="@color/black_color"/>
 
+                    <View
+                        style="@style/LineStyle"/>
+
                     <com.appjumper.silkscreen.view.MyViewPager
                         android:id="@+id/pagerRecommend"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
+
+
 
 
 

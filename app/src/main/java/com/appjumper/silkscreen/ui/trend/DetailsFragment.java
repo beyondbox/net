@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +17,20 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.bean.PriceDetails;
 import com.appjumper.silkscreen.bean.PriceDetailsResponse;
+import com.appjumper.silkscreen.bean.TrendArticle;
+import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.trend.adapter.ArticleAdapter;
 import com.appjumper.silkscreen.ui.trend.adapter.DetailsListViewAdapter;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.BaseFundChartView;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -79,13 +84,14 @@ public class DetailsFragment extends BaseFragment {
     RecyclerView recyclerArticle;
 
     private String type;
-    private Context context;
+
+    private List<TrendArticle> articleList;
+    private ArticleAdapter articleAdapter;
 
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        context = this.getContext();
         mView = inflater.inflate(R.layout.fragment_details, null);
         ButterKnife.bind(this, mView);
         return mView;
@@ -93,12 +99,29 @@ public class DetailsFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        initArticleView();
+
         type = getArguments().getString("type");
         refresh();
         mPullRefreshScrollView.scrollTo(0, 0);
         listView.setFocusable(false);
     }
 
+
+    private void initArticleView() {
+        articleList = new ArrayList<>();
+        articleAdapter = new ArticleAdapter(R.layout.item_recycler_line_article, articleList);
+        recyclerArticle.setLayoutManager(new LinearLayoutManager(context));
+        articleAdapter.bindToRecyclerView(recyclerArticle);
+        articleAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+
+        articleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                start_Activity(context, TrendArticleAllActivity.class);
+            }
+        });
+    }
 
     private void initView(final PriceDetails data) {
         BaseFundChartView v_avg_list = new BaseFundChartView(getContext());
@@ -167,12 +190,14 @@ public class DetailsFragment extends BaseFragment {
 
     @Override
     public void onDestroy() {
-        ButterKnife.unbind(context);
+        ButterKnife.unbind(this);
         super.onDestroy();
     }
 
     private void refresh() {
         new Thread(run).start();
+        getArticle();
+
         mPullRefreshScrollView.setOnRefreshListener(new com.appjumper.silkscreen.view.scrollView.PullToRefreshBase.OnRefreshListener2<ObservableScrollView>() {
 
             @Override
@@ -256,7 +281,14 @@ public class DetailsFragment extends BaseFragment {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        recyclerArticle.setVisibility(View.VISIBLE);
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        List<TrendArticle> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), TrendArticle.class);
+                        articleList.clear();
+                        if (list.size() > 5)
+                            articleList.addAll(list.subList(0, 5));
+                        else
+                            articleList.addAll(list);
+                        articleAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -265,7 +297,16 @@ public class DetailsFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                recyclerArticle.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (articleList.size() == 0)
+                    recyclerArticle.setVisibility(View.GONE);
+                else
+                    recyclerArticle.setVisibility(View.VISIBLE);
             }
         });
     }

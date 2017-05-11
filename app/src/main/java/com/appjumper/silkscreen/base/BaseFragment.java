@@ -29,6 +29,8 @@ import org.apache.http.message.BasicNameValuePair;
  * Created by Administrator on 2016/6/29.
  */
 public abstract class BaseFragment extends Fragment {
+
+
     public final static int NETWORK_SUCCESS_DATA_RIGHT = 0x01;
     public final static int NETWORK_SUCCESS_PAGER_RIGHT = 0x02;
     public final static int NETWORK_OTHER = 0x19;
@@ -74,6 +76,14 @@ public abstract class BaseFragment extends Fragment {
             initData();
             isDataInited = true;
         }
+    }
+
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        isViewCreated = false;
+        isDataInited = false;
     }
 
     /**
@@ -199,7 +209,7 @@ public abstract class BaseFragment extends Fragment {
      * @param content
      */
     public void showFailTips(String content) {
-        AppToast tipsToast = AppToast.makeText(getActivity().getApplication().getBaseContext(), content, AppToast.LENGTH_SHORT);
+        AppToast tipsToast = AppToast.makeText(context, content, AppToast.LENGTH_SHORT);
         tipsToast.show();
     }
 
@@ -209,7 +219,7 @@ public abstract class BaseFragment extends Fragment {
      * @param content
      */
     public void showSuccessTips(String content) {
-        AppToast tipsToast = AppToast.makeText(getActivity().getApplication().getBaseContext(), content, AppToast.LENGTH_SHORT);
+        AppToast tipsToast = AppToast.makeText(context, content, AppToast.LENGTH_SHORT);
         tipsToast.setIcon(R.mipmap.tips_success);
         tipsToast.show();
     }
@@ -221,7 +231,7 @@ public abstract class BaseFragment extends Fragment {
      * @param err
      */
     public void showErrorToast(String err) {
-        Toast.makeText(getActivity().getApplicationContext(), err, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, err, Toast.LENGTH_SHORT).show();
     }
 
     public void setPullLvHeight(ListView pull) {

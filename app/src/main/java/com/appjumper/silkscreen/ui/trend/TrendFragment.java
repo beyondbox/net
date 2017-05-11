@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by yc on 2016/11/7.
- * 动态
+ * 走势
  */
 public class TrendFragment extends BaseFragment {
     @Bind(R.id.rg_tab)
@@ -44,7 +44,6 @@ public class TrendFragment extends BaseFragment {
     @Override
     protected void initData() {
         setupViews();
-
     }
 
 
@@ -70,6 +69,7 @@ public class TrendFragment extends BaseFragment {
         mTab.add(new MaterialFragment());
         mTab.add(new FuturesFragment());
         mTab.add(new MarketFragment());
+        idViewPager.setOffscreenPageLimit(mTab.size() - 1);
         idViewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
         idViewPager.setCurrentItem(0);
         idViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -104,7 +104,7 @@ public class TrendFragment extends BaseFragment {
                 }
             }
         });
-        idViewPager.setOffscreenPageLimit(2);
+
     }
 
     public void selectpage(int position) {

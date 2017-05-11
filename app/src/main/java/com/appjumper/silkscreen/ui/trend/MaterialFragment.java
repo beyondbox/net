@@ -5,16 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,21 +20,14 @@ import android.widget.LinearLayout;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.bean.MaterProduct;
-import com.appjumper.silkscreen.bean.MaterProductResponse;
 import com.appjumper.silkscreen.net.CommonApi;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
-import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.trend.adapter.MyViewPagerAdapter;
 import com.appjumper.silkscreen.ui.trend.cmaterialyreclerView.ChannelAdapter;
-import com.appjumper.silkscreen.ui.trend.cmaterialyreclerView.ItemDragHelperCallback;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.db.DBManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -94,7 +83,7 @@ public class MaterialFragment extends BaseFragment {
         dbHelper = new DBManager(getContext());
         mylist = dbHelper.query();
 
-        new Thread(new AllproductRun()).start();
+        //new Thread(new AllproductRun()).start();
         l_add.setVisibility(View.GONE);
         l_dynamic.setVisibility(View.VISIBLE);
         initFragData();
@@ -163,7 +152,7 @@ public class MaterialFragment extends BaseFragment {
         }
     }
 
-    //所有产品
+    /*//所有产品
     private class AllproductRun implements Runnable {
         private MaterProductResponse response;
         @SuppressWarnings("unchecked")
@@ -182,9 +171,9 @@ public class MaterialFragment extends BaseFragment {
                 handler.sendEmptyMessage(NETWORK_FAIL);
             }
         }
-    };
+    };*/
 
-    private MyHandler handler = new MyHandler();
+    /*private MyHandler handler = new MyHandler();
     private  class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -207,9 +196,9 @@ public class MaterialFragment extends BaseFragment {
                     break;
             }
         }
-    };
+    };*/
 
-    private void init(){
+    /*private void init(){
         GridLayoutManager manager = new GridLayoutManager(getActivity(), 3);
         rv_mater.setLayoutManager(manager);
         ItemDragHelperCallback callback = new ItemDragHelperCallback();
@@ -226,7 +215,7 @@ public class MaterialFragment extends BaseFragment {
             }
         });
         rv_mater.setAdapter(adapter);
-    }
+    }*/
 
 
     private void initFragData() {
@@ -247,12 +236,12 @@ public class MaterialFragment extends BaseFragment {
 
     private void configViews() {
         mViewPagerAdapter = new MyViewPagerAdapter(getChildFragmentManager(), mylist, mFragments);
+        mViewPager.setOffscreenPageLimit(mylist.size() - 1);
         mViewPager.setAdapter(mViewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
 
-        mViewPager.setOffscreenPageLimit(mylist.size() - 1);
 
 //        // 初始化ViewPager的适配器，并设置给它
 //        mViewPagerAdapter = new MyViewPagerAdapter(getChildFragmentManager(), mylist, mFragments);

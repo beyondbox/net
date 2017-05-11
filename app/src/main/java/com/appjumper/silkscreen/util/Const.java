@@ -102,5 +102,6 @@ public class Const {
     public static final String KEY_ERROR_CODE = "error_code";
     public static final String KEY_ACTION = "action";
     public static final String KEY_OBJECT = "object";
+    public static final String KEY_TOTAL = "total";
 
 }
