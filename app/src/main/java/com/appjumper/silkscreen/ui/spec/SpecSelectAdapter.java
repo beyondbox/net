@@ -45,7 +45,7 @@ public class SpecSelectAdapter extends MyBaseAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder vh = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_grid_spec_choice2, null);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_spec_choice_single, null);
             vh = new ViewHolder();
             ButterKnife.bind(vh, convertView);
             convertView.setTag(vh);

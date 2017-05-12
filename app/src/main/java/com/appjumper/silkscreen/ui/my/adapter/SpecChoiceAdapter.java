@@ -28,6 +28,8 @@ public class SpecChoiceAdapter extends MyBaseAdapter<String> {
 
     private int currSelected = -1;
 
+
+
     public SpecChoiceAdapter(Context context, List<String> list) {
         super(context, list);
     }
@@ -41,11 +43,15 @@ public class SpecChoiceAdapter extends MyBaseAdapter<String> {
         notifyDataSetChanged();
     }
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder vh = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_grid_spec_choice, null);
+            if (choiceMode == CHOICE_MODE_SINGLE)
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_spec_choice_single, null);
+            else
+                convertView = LayoutInflater.from(context).inflate(R.layout.item_spec_choice_multi, null);
             vh = new ViewHolder();
             ButterKnife.bind(vh, convertView);
             convertView.setTag(vh);

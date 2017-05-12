@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:button="@null"
-    android:drawableLeft="@drawable/selector_checkbox"
+    android:drawableLeft="@drawable/selector_checkbox_blue_round"
     android:drawablePadding="6dp"
     android:paddingBottom="12dp"
     android:paddingTop="12dp"

@@ -250,7 +250,7 @@ public class StockDetailActivity extends BaseActivity {
      * 弹出选择规格对话框
      */
     private void showSepcSelectPopup() {
-        View contentView = LayoutInflater.from(context).inflate(R.layout.layout_spec_select, null);
+        View contentView = LayoutInflater.from(context).inflate(R.layout.layout_stock_spec_select, null);
         final PopupWindow popup = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         ImageView imgViClose = (ImageView) contentView.findViewById(R.id.imgViClose);

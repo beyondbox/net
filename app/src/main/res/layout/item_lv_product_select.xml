@@ -30,7 +30,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:button="@null"
-            android:background="@drawable/selector_checkbox_product"
+            android:background="@drawable/selector_checkbox_green_rect"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:visibility="gone"/>

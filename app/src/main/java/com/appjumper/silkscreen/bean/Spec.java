@@ -21,6 +21,13 @@ public class Spec implements Serializable{
     private String name;
     private String create_time;
 
+    private String unit_default;
+    private String min_value;
+    private String max_value;
+
+
+
+
     public String getProduct_id() {
         return product_id;
     }
@@ -123,5 +130,29 @@ public class Spec implements Serializable{
 
     public void setCreate_time(String create_time) {
         this.create_time = create_time;
+    }
+
+    public String getUnit_default() {
+        return unit_default;
+    }
+
+    public void setUnit_default(String unit_default) {
+        this.unit_default = unit_default;
+    }
+
+    public String getMin_value() {
+        return min_value;
+    }
+
+    public void setMin_value(String min_value) {
+        this.min_value = min_value;
+    }
+
+    public String getMax_value() {
+        return max_value;
+    }
+
+    public void setMax_value(String max_value) {
+        this.max_value = max_value;
     }
 }
