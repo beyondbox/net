@@ -327,9 +327,9 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                                     return;
                                 }
                                 if(list.get(i).getDatatype().equals("number*number")){
-                                    jsonObject.put(list.get(i).getFieldname(),etLow.getText().toString()+"*"+etHigh.getText().toString());
+                                    jsonObject.put(list.get(i).getFieldname(),etLow.getText().toString().trim() + "*" + etHigh.getText().toString().trim());
                                 }else{
-                                    jsonObject.put(list.get(i).getFieldname(),etLow.getText().toString()+"-"+etHigh.getText().toString());
+                                    jsonObject.put(list.get(i).getFieldname(),etLow.getText().toString().trim() + "-" + etHigh.getText().toString().trim());
                                 }
                             }
                         }

@@ -273,18 +273,40 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                             View editView = llSpecification.findViewWithTag("edit" + i);
                             EditText etLow = (EditText) editView.findViewWithTag(i + "low");
                             EditText etHigh = (EditText) editView.findViewWithTag(i + "high");
-                            if (etLow.getText().toString().trim().length() < 1) {
-                                showErrorToast("请输入" + list.get(i).getName() + "最小值");
-                                return;
+
+                            String low = etLow.getText().toString().trim();
+                            String high = etHigh.getText().toString().trim();
+
+                            if(list.get(i).getRequire().equals("1")) {
+                                if (TextUtils.isEmpty(low)) {
+                                    showErrorToast("请输入" + list.get(i).getName() + "最小值");
+                                    return;
+                                }
+                                if (TextUtils.isEmpty(high)) {
+                                    showErrorToast("请输入" + list.get(i).getName() + "最大值");
+                                    return;
+                                }
                             }
-                            if (etHigh.getText().toString().trim().length() < 1) {
-                                showErrorToast("请输入" + list.get(i).getName() + "最大值");
-                                return;
+
+                            String minValue = list.get(i).getMin_value();
+                            String maxValue = list.get(i).getMax_value();
+                            if (!TextUtils.isEmpty(minValue) || !TextUtils.isEmpty(maxValue)) {
+                                if (!TextUtils.isEmpty(low) || !TextUtils.isEmpty(high)) {
+                                    if (TextUtils.isEmpty(low) || TextUtils.isEmpty(high)) {
+                                        showErrorToast(list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
+                                        return;
+                                    } else if (Integer.valueOf(low) < Integer.valueOf(minValue) || Integer.valueOf(high) > Integer.valueOf(maxValue)) {
+                                        showErrorToast(list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
+                                        return;
+                                    }
+                                }
                             }
+
+
                             if (list.get(i).getDatatype().equals("number*number")) {
-                                jsonObject.put(list.get(i).getFieldname(), etLow.getText().toString() + "*" + etHigh.getText().toString());
+                                jsonObject.put(list.get(i).getFieldname(), low + "*" + high);
                             } else {
-                                jsonObject.put(list.get(i).getFieldname(), etLow.getText().toString() + "-" + etHigh.getText().toString());
+                                jsonObject.put(list.get(i).getFieldname(), low + "-" + high);
                             }
                         }
 
