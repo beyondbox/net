@@ -11,7 +11,7 @@
         android:id="@+id/imgViCom"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:src="@mipmap/icon_home_banner_bg"
+        android:src="@mipmap/icon_logo_image61"
         android:scaleType="centerCrop"/>
 
     <TextView

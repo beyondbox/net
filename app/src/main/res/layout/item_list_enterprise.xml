@@ -9,7 +9,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/home_supply_process"/>
+        android:src="@mipmap/icon_logo_image61"/>
 
     <TextView
         android:id="@+id/txtName"
@@ -42,18 +42,21 @@
         android:layout_alignLeft="@id/txtName">
 
         <ImageView
+            android:id="@+id/imgViCertiBlue"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginRight="5dp"
             android:src="@mipmap/icon_certification"/>
 
         <ImageView
+            android:id="@+id/imgViCertiYellow"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@mipmap/icon_certification_yellow"/>
     </LinearLayout>
 
     <TextView
+        android:id="@+id/txtDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -63,6 +66,7 @@
         android:textSize="13sp"/>
 
     <TextView
+        android:id="@+id/txtService"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxLines="1"
