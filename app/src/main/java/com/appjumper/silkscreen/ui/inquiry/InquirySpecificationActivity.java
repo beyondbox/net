@@ -47,6 +47,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.appjumper.silkscreen.R.id.et_remark;
+
 /**
  * Created by Administrator on 2016-11-22.
  */
@@ -69,7 +71,7 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
             TextView tvEnterpriseInfo;
     @Bind(R.id.tv_info_length)//信息时长
             TextView tvInfoLength;
-    @Bind(R.id.et_remark)//备注
+    @Bind(et_remark)//备注
             EditText etRemark;
 
     private String type;
@@ -93,7 +95,8 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
         initBack();
         ButterKnife.bind(this);
         initView();
-        initProgressDialog();
+        initProgressDialog(false, "正在发布...");
+
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
         identity = getIntent().getStringExtra("identity");
@@ -108,12 +111,13 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
             llFit.setVisibility(View.GONE);
             user_ids = intent.getStringExtra("eid");
         }
+
         productType = intent.getStringExtra("productType");
         service = (ServiceProduct) intent.getSerializableExtra("service");
         list = service.getProduct_spec();
         initTitle(service.getName());
         tvName.setText(service.getName());
-        initViewSpecification();
+
         rgTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -132,82 +136,29 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                 }
             }
         });
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initViewSpecification();
+                etRemark.setHint(service.getRemark());
+            }
+        }, 50);
     }
+
+
 
     /**
      * 初始化规格
      */
     private void initViewSpecification() {
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getFieldinput().equals("radio")) {
+            String fildType = list.get(i).getFieldinput();
+
+            if (fildType.equals("radio")) {
                 initChoiceData(i);
-
-
-
-                /*View choiceView = LayoutInflater.from(this).inflate(R.layout.layout_specification_choice, null);
-                llSpecification.addView(choiceView);
-                choiceView.setTag("choice" + i);
-                TextView tvName = (TextView) choiceView.findViewById(R.id.tv_name);//规格名字
-                tvName.setText(list.get(i).getName());
-                final int finalI = i;
-                choiceView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.putExtra("title", list.get(finalI).getName());
-                        intent.putExtra("list", list.get(finalI).getUnit());
-                        intent.putExtra("fieldname", list.get(finalI).getFieldname());
-                        if (type.equals("3")) {
-                            intent.setClass(InquirySpecificationActivity.this, SingleChoiceActivity.class);
-                            startActivityForResult(intent, 12);
-                        } else {
-                            intent.setClass(InquirySpecificationActivity.this, MultipleChoiceActivity.class);
-                            startActivityForResult(intent, 10);
-                        }
-
-                        overridePendingTransition(R.anim.push_left_in,
-                                R.anim.push_left_out);
-                    }
-                });
-                TextView tvMaterial = (TextView) choiceView.findViewById(R.id.tv_material);//材质
-                tvMaterial.setHint("请选择" + list.get(i).getName());
-                tvMaterial.setTag("material" + i);*/
-            } else {
-                View editView = LayoutInflater.from(this).inflate(R.layout.layout_specification_edit_one2, null);
-                llSpecification.addView(editView);
-                editView.setTag("edit" + i);
-                EditText etLow = (EditText) editView.findViewById(R.id.et_low);//输入
-                TextView tvName = (TextView) editView.findViewById(R.id.tv_name);//规格名字
-                TextView tvUnit = (TextView) editView.findViewById(R.id.tv_unit);//单位
-                String datatype = list.get(i).getDatatype();
-                switch (datatype) {
-                    case "integer"://'数字  1 或者 1-1',
-                        etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                        break;
-                    case "currency":// '货币 1.00',
-                        etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                        break;
-                    case "require":// '文本',
-                        etLow.setInputType(InputType.TYPE_CLASS_TEXT);
-                        break;
-                    case "english"://'英文字母',
-                        etLow.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                        etLow.setImeOptions(EditorInfo.IME_ACTION_DONE);
-                        break;
-                    case "number*number":// '数字*数字  1*1',
-                        etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                        break;
-                    default:
-                        break;
-                }
-                etLow.setHint("输入" + list.get(i).getName());
-                tvName.setText(list.get(i).getName());
-                etLow.setTag(i + "low");
-                tvUnit.setText(list.get(i).getUnit());
-                if (list.get(i).getName().equals("存量") && !type.equals("3")) {
-                    editView.setVisibility(View.GONE);
-                }
-
+            } else if(fildType.equals("text")) {
+                initInputValue(i);
             }
         }
     }
@@ -215,19 +166,24 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
 
 
     /**
-     * 渲染单选选项视图和数据
+     * 渲染单选选项
      * @param i
      */
     private void initChoiceData(int i) {
-        View choiceView = LayoutInflater.from(context).inflate(R.layout.layout_specification_option, null);
+        Spec spec = list.get(i);
+
+        View choiceView = LayoutInflater.from(context).inflate(R.layout.layout_spec_choice, null);
         llSpecification.addView(choiceView);
         choiceView.setTag("choice" + i);
 
-        TextView tvName = (TextView) choiceView.findViewById(R.id.tv_name);//规格名字
-        tvName.setText(list.get(i).getName());
+        TextView txtRequired = (TextView) choiceView.findViewById(R.id.txtRequired);
+        txtRequired.setVisibility(spec.getRequire().equals("1") ? View.VISIBLE : View.INVISIBLE);
+
+        TextView txtName = (TextView) choiceView.findViewById(R.id.txtName);//规格名字
+        txtName.setText(spec.getName());
 
         GridView gridChoice = (GridView) choiceView.findViewById(R.id.gridChoice);
-        String [] arr = list.get(i).getUnit().split(",");
+        String [] arr = spec.getUnit().split(",");
         final SpecChoiceAdapter choiceAdapter = new SpecChoiceAdapter(context, Arrays.asList(arr));
         choiceAdapter.setChoiceMode(SpecChoiceAdapter.CHOICE_MODE_SINGLE);
         gridChoice.setAdapter(choiceAdapter);
@@ -239,7 +195,59 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
             }
         });
 
+        String defaultChoice = spec.getUnit_default();
+        if (!TextUtils.isEmpty(defaultChoice)) {
+            int position = Integer.parseInt(defaultChoice);
+            choiceAdapter.changeSelected(position);
+        }
     }
+
+
+
+    /**
+     * 渲染输入值
+     * @param i
+     */
+    private void initInputValue(int i) {
+        Spec spec = list.get(i);
+
+        View editView = LayoutInflater.from(this).inflate(R.layout.layout_spec_input_inquiry, null);
+        llSpecification.addView(editView);
+        editView.setTag("edit" + i);
+
+        TextView txtRequired = (TextView) editView.findViewById(R.id.txtRequired);
+        txtRequired.setVisibility(spec.getRequire().equals("1") ? View.VISIBLE : View.INVISIBLE);
+
+        TextView txtName = (TextView) editView.findViewById(R.id.txtName);//规格名字
+        EditText etValue = (EditText) editView.findViewById(R.id.etValue);//输入
+        txtName.setText(spec.getName());
+        etValue.setTag(i + "value");
+        if (!TextUtils.isEmpty(spec.getMin_value()) && !TextUtils.isEmpty(spec.getMax_value()))
+            etValue.setHint(spec.getMin_value() + " - " + spec.getMax_value());
+
+        String datatype = spec.getDatatype();
+        switch (datatype){
+            case "integer"://'数字  1 或者 1-1',
+                etValue.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                break;
+            case "currency":// '货币 1.00',
+                etValue.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                break;
+            case "require":// '文本',
+                etValue.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+            case "english"://'英文字母',
+                etValue.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                etValue .setImeOptions(EditorInfo.IME_ACTION_DONE);
+                break;
+            case "number*number":// '数字*数字  1*1',
+                etValue.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                break;
+            default:
+                break;
+        }
+    }
+
 
 
 
@@ -262,49 +270,69 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                             }
                         }
 
-                        if (TextUtils.isEmpty(checkedResult)) {
-                            showErrorToast("请选择" + list.get(i).getName());
-                            return;
+                        if (list.get(i).getRequire().equals("1")) {
+                            if (TextUtils.isEmpty(checkedResult)) {
+                                showErrorToast("请选择" + list.get(i).getName());
+                                return;
+                            }
                         }
+
                         checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
                         map.put(list.get(i).getFieldname(), checkedResult);
 
-
-
-                        /*View choiceView = llSpecification.findViewWithTag("choice" + i);
-                        TextView tvMaterial = (TextView) choiceView.findViewWithTag("material" + i);
-                        if (tvMaterial.getText().toString().length() < 1) {
-                            showErrorToast("请选择" + list.get(i).getName());
-                            return;
-                        }
-                        map.put(list.get(i).getFieldname(), tvMaterial.getText().toString());*/
-                    } else {
+                    } else if (list.get(i).getFieldinput().equals("text")) {
                         View editView = llSpecification.findViewWithTag("edit" + i);
-                        EditText etLow = (EditText) editView.findViewWithTag(i + "low");
-                        if (editView.getVisibility() == View.VISIBLE) {
-                            if (etLow.getText().toString().trim().length() < 1) {
+                        EditText etValue = (EditText) editView.findViewWithTag(i + "value");
+                        String value = etValue.getText().toString().trim();
+
+                        if(list.get(i).getRequire().equals("1")) {
+                            if (TextUtils.isEmpty(value)) {
                                 showErrorToast("请输入" + list.get(i).getName());
                                 return;
                             }
-                            map.put(list.get(i).getFieldname(), etLow.getText().toString().trim());
                         }
+
+                        String minValue = list.get(i).getMin_value();
+                        String maxValue = list.get(i).getMax_value();
+                        if (!TextUtils.isEmpty(minValue) || !TextUtils.isEmpty(maxValue)) {
+                            if (!TextUtils.isEmpty(value)) {
+                                if (Integer.valueOf(value) < Integer.valueOf(minValue) || Integer.valueOf(value) > Integer.valueOf(maxValue)) {
+                                    showErrorToast(list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
+                                    return;
+                                }
+                            }
+                        }
+
+                        if (!TextUtils.isEmpty(value))
+                            map.put(list.get(i).getFieldname(), value);
 
                     }
                 }
+
                 if (identity.equals("2") && user_ids.equals("0")) {
                     showErrorToast("请选择符合厂家");
                     return;
                 }
-                if (thumbPictures.size() <= 1) {
-                    progress.show();
-                    progress.setMessage("正在发布...");
-                    new Thread(submitRun).start();
-                } else {
 
+
+                if (service.getImg_require().equals("1")) {
+                    if (selectedPicture.size() == 0) {
+                        showErrorToast("请选择产品图片");
+                        return;
+                    }
                     progress.show();
-                    progress.setMessage("正在上传图片...");
                     new Thread(new UpdateStringRun(thumbPictures)).start();
+
+                } else {
+                    if (selectedPicture.size() > 0) {
+                        progress.show();
+                        new Thread(new UpdateStringRun(thumbPictures)).start();
+                    } else {
+                        progress.show();
+                        new Thread(submitRun).start();
+                    }
                 }
+
                 break;
             case R.id.ll_fit://符合厂家
                 startForResult_Activity(this, SelectCompanyActivity.class, 11, new BasicNameValuePair("type", type), new BasicNameValuePair("product_id", service.getId()), new BasicNameValuePair("product_type", productType));
@@ -323,6 +351,8 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                 break;
         }
     }
+
+
 
     // 如果不是切割的upLoadBitmap就很大
     public class UpdateStringRun implements Runnable {
@@ -371,11 +401,14 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                 map.put("uid", getUserID());
                 map.put("remark", etRemark.getText().toString().trim());
                 map.put("expiry_date", expiry_datatime + "");
-                map.put("product_type", productType);
+                //map.put("product_type", productType);
                 map.put("product_id", service.getId());
                 map.put("user_ids", user_ids);
                 map.put("type", type);
-                map.put("imgs", imags(imgResponse.getData()));
+
+                if (imgResponse != null)
+                    map.put("imgs", imags(imgResponse.getData()));
+
                 response = JsonParser.getBaseResponse(HttpUtil.postMsg(
                         HttpUtil.getData(map), Url.INQUIRY_ADD));
             } catch (Exception e) {
@@ -410,22 +443,20 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                 return;
             }
 
-            progress.dismiss();
             switch (msg.what) {
                 case 3://上传图片
                     imgResponse = (ImageResponse) msg.obj;
                     if (imgResponse.isSuccess()) {
-                        progress.show();
-                        progress.setMessage("正在发布...");
                         new Thread(submitRun).start();
                     } else {
+                        progress.dismiss();
                         activity.showErrorToast(imgResponse.getError_desc());
                     }
                     break;
                 case NETWORK_SUCCESS_PAGER_RIGHT://发布
+                    progress.dismiss();
                     BaseResponse baseResponse = (BaseResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
-                        //showErrorToast("发布成功");
                         start_Activity(context, InquiryCompleteActivity.class);
                         CommonApi.addLiveness(getUserID(), 5);
                         finish();
@@ -438,10 +469,12 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
 
                     break;
                 case NETWORK_FAIL:
-                    activity.showErrorToast();
+                    progress.dismiss();
+                    activity.showFailTips(getResources().getString(R.string.requst_fail));
                     break;
                 default:
-                    activity.showErrorToast();
+                    progress.dismiss();
+                    activity.showFailTips(getResources().getString(R.string.requst_fail));
                     break;
             }
         }
@@ -458,6 +491,7 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
         }
         return str;
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -529,5 +563,163 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                 break;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 初始化规格(旧版)
+     */
+    /*private void initViewSpecification2() {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getFieldinput().equals("radio")) {
+
+                View choiceView = LayoutInflater.from(this).inflate(R.layout.layout_specification_choice, null);
+                llSpecification.addView(choiceView);
+                choiceView.setTag("choice" + i);
+                TextView tvName = (TextView) choiceView.findViewById(R.id.tv_name);//规格名字
+                tvName.setText(list.get(i).getName());
+                final int finalI = i;
+                choiceView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.putExtra("title", list.get(finalI).getName());
+                        intent.putExtra("list", list.get(finalI).getUnit());
+                        intent.putExtra("fieldname", list.get(finalI).getFieldname());
+                        if (type.equals("3")) {
+                            intent.setClass(InquirySpecificationActivity.this, SingleChoiceActivity.class);
+                            startActivityForResult(intent, 12);
+                        } else {
+                            intent.setClass(InquirySpecificationActivity.this, MultipleChoiceActivity.class);
+                            startActivityForResult(intent, 10);
+                        }
+
+                        overridePendingTransition(R.anim.push_left_in,
+                                R.anim.push_left_out);
+                    }
+                });
+                TextView tvMaterial = (TextView) choiceView.findViewById(R.id.tv_material);//材质
+                tvMaterial.setHint("请选择" + list.get(i).getName());
+                tvMaterial.setTag("material" + i);
+            } else {
+                View editView = LayoutInflater.from(this).inflate(R.layout.layout_specification_edit_one2, null);
+                llSpecification.addView(editView);
+                editView.setTag("edit" + i);
+                EditText etLow = (EditText) editView.findViewById(R.id.et_low);//输入
+                TextView tvName = (TextView) editView.findViewById(R.id.tv_name);//规格名字
+                TextView tvUnit = (TextView) editView.findViewById(R.id.tv_unit);//单位
+                String datatype = list.get(i).getDatatype();
+                switch (datatype) {
+                    case "integer"://'数字  1 或者 1-1',
+                        etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        break;
+                    case "currency":// '货币 1.00',
+                        etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        break;
+                    case "require":// '文本',
+                        etLow.setInputType(InputType.TYPE_CLASS_TEXT);
+                        break;
+                    case "english"://'英文字母',
+                        etLow.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                        etLow.setImeOptions(EditorInfo.IME_ACTION_DONE);
+                        break;
+                    case "number*number":// '数字*数字  1*1',
+                        etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        break;
+                    default:
+                        break;
+                }
+                etLow.setHint("输入" + list.get(i).getName());
+                tvName.setText(list.get(i).getName());
+                etLow.setTag(i + "low");
+                tvUnit.setText(list.get(i).getUnit());
+                if (list.get(i).getName().equals("存量") && !type.equals("3")) {
+                    editView.setVisibility(View.GONE);
+                }
+
+            }
+        }
+    }*/
+
+
+
+
+    /**
+     * 发布询价（旧版）
+     */
+    /*private void submit() {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getFieldinput().equals("radio")) {
+                View choiceView = llSpecification.findViewWithTag("choice" + i);
+                GridView gridChoice = (GridView) choiceView.findViewById(R.id.gridChoice);
+                String [] valueArr = list.get(i).getUnit().split(",");
+
+                String checkedResult = "";
+                for (int j = 0; j < valueArr.length; j++) {
+                    LinearLayout linearLayout = (LinearLayout) gridChoice.getChildAt(j);
+                    if (((CheckBox)linearLayout.getChildAt(0)).isChecked()) {
+                        checkedResult += valueArr[j] + ",";
+                    }
+                }
+
+                if (TextUtils.isEmpty(checkedResult)) {
+                    showErrorToast("请选择" + list.get(i).getName());
+                    return;
+                }
+                checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
+                map.put(list.get(i).getFieldname(), checkedResult);
+
+
+
+                        *//*View choiceView = llSpecification.findViewWithTag("choice" + i);
+                        TextView tvMaterial = (TextView) choiceView.findViewWithTag("material" + i);
+                        if (tvMaterial.getText().toString().length() < 1) {
+                            showErrorToast("请选择" + list.get(i).getName());
+                            return;
+                        }
+                        map.put(list.get(i).getFieldname(), tvMaterial.getText().toString());*//*
+            } else {
+                View editView = llSpecification.findViewWithTag("edit" + i);
+                EditText etLow = (EditText) editView.findViewWithTag(i + "value");
+                if (editView.getVisibility() == View.VISIBLE) {
+                    if (etLow.getText().toString().trim().length() < 1) {
+                        showErrorToast("请输入" + list.get(i).getName());
+                        return;
+                    }
+                    map.put(list.get(i).getFieldname(), etLow.getText().toString().trim());
+                }
+
+            }
+        }
+        if (identity.equals("2") && user_ids.equals("0")) {
+            showErrorToast("请选择符合厂家");
+            return;
+        }
+        if (thumbPictures.size() <= 1) {
+            progress.show();
+            progress.setMessage("正在发布...");
+            new Thread(submitRun).start();
+        } else {
+
+            progress.show();
+            progress.setMessage("正在上传图片...");
+            new Thread(new UpdateStringRun(thumbPictures)).start();
+        }
+    }*/
 
 }

@@ -71,7 +71,7 @@
 
         <com.appjumper.silkscreen.view.IndexSideBar
             android:id="@+id/sideBar"
-            android:layout_width="28dp"
+            android:layout_width="26dp"
             android:layout_height="match_parent"
             android:layout_above="@id/lLaytConfirm"
             android:layout_alignParentRight="true"

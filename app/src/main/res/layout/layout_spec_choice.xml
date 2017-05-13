@@ -37,8 +37,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:numColumns="2"
-            android:horizontalSpacing="15dp"
-            android:verticalSpacing="12dp"/>
+            android:horizontalSpacing="10dp"
+            android:verticalSpacing="5dp"/>
 
     </LinearLayout>
 

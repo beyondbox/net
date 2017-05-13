@@ -47,6 +47,8 @@ public class ServiceProduct implements Serializable{
     private String is_collection; //0未关注，1已关注
     private String img;
     private String product_type_name;
+    private String img_require; //图片是否必须传 0可不传  1必传
+    private String remark; //备注提示
 
     @SerializedName("initial")
     private String section;
@@ -195,6 +197,24 @@ public class ServiceProduct implements Serializable{
     public void setSection(String section) {
         this.section = section;
     }
+
+    public String getImg_require() {
+        return img_require;
+    }
+
+    public void setImg_require(String img_require) {
+        this.img_require = img_require;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+
 
 
 

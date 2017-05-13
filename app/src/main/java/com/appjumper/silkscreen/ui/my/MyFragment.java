@@ -24,8 +24,6 @@ import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.AuthenticationAdministrationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ServiceAdministrationActivity;
-import com.appjumper.silkscreen.ui.spec.InquiryCiShengActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseCiShengActivity;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.ShareUtil;
 import com.squareup.picasso.Picasso;
@@ -189,8 +187,8 @@ public class MyFragment extends BaseFragment {
                 }
                 break;
             case R.id.rl_feedback://意见反馈
-                //start_Activity(getActivity(), FeedbackActivity.class);
-                start_Activity(context, ReleaseCiShengActivity.class);
+                start_Activity(getActivity(), FeedbackActivity.class);
+                //start_Activity(context, ReleaseCiShengActivity.class);
                 break;
             case R.id.rl_enterprise://企业信息
                 if (checkLogined()) {
@@ -203,8 +201,8 @@ public class MyFragment extends BaseFragment {
                 }
                 break;
             case R.id.rl_system_setting://系统设置
-                //start_Activity(getActivity(), SystemSettingActivity.class);
-                start_Activity(context, InquiryCiShengActivity.class);
+                start_Activity(getActivity(), SystemSettingActivity.class);
+                //start_Activity(context, InquiryCiShengActivity.class);
                 break;
             case R.id.ll_view://查看公司认证
                 if (checkLogined()) {

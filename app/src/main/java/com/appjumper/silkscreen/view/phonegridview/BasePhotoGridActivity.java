@@ -56,7 +56,7 @@ public class BasePhotoGridActivity extends BaseActivity implements PhotoPopupWin
 	private String camera_pic_path;
 
 	// 选择的原图路径
-	private ArrayList<String> selectedPicture = new ArrayList<String>();
+	protected ArrayList<String> selectedPicture = new ArrayList<String>();
 
 	// 压缩后的临时路径
 	public ArrayList<String> thumbPictures = new ArrayList<String>();

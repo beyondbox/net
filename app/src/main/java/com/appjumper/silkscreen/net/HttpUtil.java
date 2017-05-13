@@ -248,6 +248,7 @@ public class HttpUtil {
 
         int responseCode = httpUrlConnection.getResponseCode();
         if (responseCode != 200) {
+            Log.e("log", "返回码------------------" + responseCode);
             return callback;
         }
         inputStream = httpUrlConnection.getInputStream();

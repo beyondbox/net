@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -88,9 +89,17 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
         service = (ServiceProduct)intent.getSerializableExtra("service");
         list = service.getProduct_spec();
         initTitle(service.getName());
+        initProgressDialog(false, "正在添加服务...");
 
-        initViewSpecification(llSpecification);
-        initListView();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initViewSpecification(llSpecification);
+                initListView();
+                et_remark.setHint(service.getRemark());
+            }
+        }, 50);
+
     }
 
 
@@ -130,139 +139,99 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
      */
     private void initViewSpecification(LinearLayout parentLayout) {
         for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).getFieldinput().equals("radio")) {
+            String fildType = list.get(i).getFieldinput();
+
+            if (fildType.equals("radio")) {
                 initChoiceData(parentLayout, i);
-
-
-                /*View choiceView = LayoutInflater.from(this).inflate(R.layout.layout_specification_choice, null);
-                llSpecification.addView(choiceView);
-                choiceView.setTag("choice" + i);
-                TextView tvName = (TextView) choiceView.findViewById(R.id.tv_name);//规格名字
-                tvName.setText(list.get(i).getName());
-                final int finalI = i;
-                choiceView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(SpecificationActivity.this, MultipleChoiceActivity.class);
-                        intent.putExtra("title", list.get(finalI).getName());
-                        intent.putExtra("list", list.get(finalI).getUnit());
-                        intent.putExtra("fieldname", list.get(finalI).getFieldname());
-                        startActivityForResult(intent, 10);
-                        overridePendingTransition(R.anim.push_left_in,
-                                R.anim.push_left_out);
-                    }
-                });
-                TextView tvMaterial = (TextView) choiceView.findViewById(R.id.tv_material);//材质
-                tvMaterial.setHint("请选择" + list.get(i).getName());
-                tvMaterial.setTag("material" + i);*/
-            } else {
-                if(type.equals("3")){
-                    View editView = LayoutInflater.from(this).inflate(R.layout.layout_specification_edit_one, null);
-                    parentLayout.addView(editView);
-                    editView.setTag("edit" + i);
-                    EditText etLow = (EditText) editView.findViewById(R.id.et_low);//输入
-                    TextView tvName = (TextView) editView.findViewById(R.id.tv_name);//规格名字
-                    TextView tvUnit = (TextView) editView.findViewById(R.id.tv_unit);//单位
-                    String datatype = list.get(i).getDatatype();
-                    switch (datatype){
-                        case "integer"://'数字  1 或者 1-1',
-                            etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                            break;
-                        case "currency":// '货币 1.00',
-                            etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                            break;
-                        case "require":// '文本',
-                            etLow.setInputType(InputType.TYPE_CLASS_TEXT);
-                            break;
-                        case "english"://'英文字母',
-                            etLow.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                            etLow .setImeOptions(EditorInfo.IME_ACTION_DONE);
-                            break;
-                        case "number*number":// '数字*数字  1*1',
-                            etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                            break;
-                        default:
-
-                            break;
-                    }
-                    tvName.setText(list.get(i).getName());
-                    etLow.setTag(i + "low");
-                    tvUnit.setText(list.get(i).getUnit());
-                }else{
-                    if(!list.get(i).getFieldname().equals("cunliang")){
-                        View editView = LayoutInflater.from(this).inflate(R.layout.layout_specification_edit, null);
-                        parentLayout.addView(editView);
-                        editView.setTag("edit" + i);
-                        EditText etLow = (EditText) editView.findViewById(R.id.et_low);//范围低值
-                        View v_horizontal_line = (View) editView.findViewById(R.id.v_horizontal_line);//横线
-                        TextView tv_take = (TextView) editView.findViewById(R.id.tv_take);//*号
-                        EditText etHigh = (EditText) editView.findViewById(R.id.et_high);//范围高值
-                        TextView tvName = (TextView) editView.findViewById(R.id.tv_name);//规格名字
-                        TextView tvUnit = (TextView) editView.findViewById(R.id.tv_unit);//单位
-                        String datatype = list.get(i).getDatatype();
-                        switch (datatype){
-                            case "integer"://'数字  1 或者 1-1',
-                                etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                                etHigh.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                                v_horizontal_line.setVisibility(View.VISIBLE);
-                                tv_take.setVisibility(View.GONE);
-                                break;
-                            case "currency":// '货币 1.00',
-                                etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                                etHigh.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                                v_horizontal_line.setVisibility(View.VISIBLE);
-                                tv_take.setVisibility(View.GONE);
-                                break;
-                            case "require":// '文本',
-                                etLow.setInputType(InputType.TYPE_CLASS_TEXT);
-                                etHigh.setInputType(InputType.TYPE_CLASS_TEXT);
-                                v_horizontal_line.setVisibility(View.VISIBLE);
-                                tv_take.setVisibility(View.GONE);
-                                break;
-                            case "english"://'英文字母',
-                                etLow.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                                etLow .setImeOptions(EditorInfo.IME_ACTION_DONE);
-                                etHigh.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                                etHigh .setImeOptions(EditorInfo.IME_ACTION_DONE);
-                                v_horizontal_line.setVisibility(View.VISIBLE);
-                                tv_take.setVisibility(View.GONE);
-                                break;
-                            case "number*number":// '数字*数字  1*1',
-                                etLow.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                                etHigh.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                                v_horizontal_line.setVisibility(View.GONE);
-                                tv_take.setVisibility(View.VISIBLE);
-                                break;
-                            default:
-                                break;
-                        }
-                        tvName.setText(list.get(i).getName());
-                        etLow.setTag(i + "low");
-                        etHigh.setTag(i + "high");
-                        tvUnit.setText(list.get(i).getUnit());
-                    }
-                }
+            } else if(fildType.equals("text")) {
+                initInputValue(parentLayout, i);
             }
         }
     }
 
 
+
     /**
-     * 渲染多选选项视图和数据
+     * 渲染单选选项
      * @param i
      */
     private void initChoiceData(LinearLayout parentLayout, int i) {
-        View choiceView = LayoutInflater.from(context).inflate(R.layout.layout_specification_option, null);
+        Spec spec = list.get(i);
+
+        View choiceView = LayoutInflater.from(context).inflate(R.layout.layout_spec_choice, null);
         parentLayout.addView(choiceView);
         choiceView.setTag("choice" + i);
 
-        TextView tvName = (TextView) choiceView.findViewById(R.id.tv_name);//规格名字
-        tvName.setText(list.get(i).getName());
+        TextView txtRequired = (TextView) choiceView.findViewById(R.id.txtRequired);
+        txtRequired.setVisibility(spec.getRequire().equals("1") ? View.VISIBLE : View.INVISIBLE);
+
+        TextView txtName = (TextView) choiceView.findViewById(R.id.txtName);//规格名字
+        txtName.setText(spec.getName());
 
         GridView gridChoice = (GridView) choiceView.findViewById(R.id.gridChoice);
-        String [] arr = list.get(i).getUnit().split(",");
+        String [] arr = spec.getUnit().split(",");
         final SpecChoiceAdapter choiceAdapter = new SpecChoiceAdapter(context, Arrays.asList(arr));
+        choiceAdapter.setChoiceMode(SpecChoiceAdapter.CHOICE_MODE_SINGLE);
         gridChoice.setAdapter(choiceAdapter);
+
+        gridChoice.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                choiceAdapter.changeSelected(position);
+            }
+        });
+
+        String defaultChoice = spec.getUnit_default();
+        if (!TextUtils.isEmpty(defaultChoice)) {
+            int position = Integer.parseInt(defaultChoice);
+            choiceAdapter.changeSelected(position);
+        }
+    }
+
+
+
+    /**
+     * 渲染输入值
+     * @param i
+     */
+    private void initInputValue(LinearLayout parentLayout, int i) {
+        Spec spec = list.get(i);
+
+        View editView = LayoutInflater.from(this).inflate(R.layout.layout_spec_input_release, null);
+        parentLayout.addView(editView);
+        editView.setTag("edit" + i);
+
+        TextView txtRequired = (TextView) editView.findViewById(R.id.txtRequired);
+        txtRequired.setVisibility(spec.getRequire().equals("1") ? View.VISIBLE : View.INVISIBLE);
+
+        TextView txtName = (TextView) editView.findViewById(R.id.txtName);//规格名字
+        EditText etValue = (EditText) editView.findViewById(R.id.etValue);//输入
+        txtName.setText(spec.getName());
+        etValue.setTag(i + "value");
+        if (!TextUtils.isEmpty(spec.getMin_value()) && !TextUtils.isEmpty(spec.getMax_value()))
+            etValue.setHint(spec.getMin_value() + " - " + spec.getMax_value());
+
+        String datatype = spec.getDatatype();
+        switch (datatype){
+            case "integer"://'数字  1 或者 1-1',
+                etValue.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                break;
+            case "currency":// '货币 1.00',
+                etValue.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                break;
+            case "require":// '文本',
+                etValue.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+            case "english"://'英文字母',
+                etValue.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+                etValue .setImeOptions(EditorInfo.IME_ACTION_DONE);
+                break;
+            case "number*number":// '数字*数字  1*1',
+                etValue.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                break;
+            default:
+                break;
+        }
     }
 
 
@@ -288,60 +257,50 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                             }
                         }
 
-                        if (TextUtils.isEmpty(checkedResult)) {
-                            showErrorToast("请选择" + list.get(i).getName());
-                            return;
+                        if (list.get(i).getRequire().equals("1")) {
+                            if (TextUtils.isEmpty(checkedResult)) {
+                                showErrorToast("请选择" + list.get(i).getName());
+                                return;
+                            }
                         }
+
                         checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
                         jsonObject.put(list.get(i).getFieldname(), checkedResult);
 
+                    } else if (list.get(i).getFieldinput().equals("text")) {
+                        View editView = llSpecification.findViewWithTag("edit" + i);
+                        EditText etValue = (EditText) editView.findViewWithTag(i + "value");
+                        String value = etValue.getText().toString().trim();
 
-
-                        /*View choiceView = llSpecification.findViewWithTag("choice" + i);
-                        TextView tvMaterial = (TextView) choiceView.findViewWithTag("material" + i);
-                        if (tvMaterial.getText().toString().length() < 1) {
-                            showErrorToast("请选择" + list.get(i).getName());
-                            return;
-                        }
-                        jsonObject.put(list.get(i).getFieldname(),tvMaterial.getText().toString());*/
-                    } else {
-                        if(type.equals("3")){
-                            View editView = llSpecification.findViewWithTag("edit" + i);
-                            EditText etLow = (EditText) editView.findViewWithTag(i + "low");
-                            if (etLow.getText().toString().trim().length() < 1) {
-                                showErrorToast("请输入" + list.get(i));
+                        if(list.get(i).getRequire().equals("1")) {
+                            if (TextUtils.isEmpty(value)) {
+                                showErrorToast("请输入" + list.get(i).getName());
                                 return;
                             }
-                            jsonObject.put(list.get(i).getFieldname(),etLow.getText().toString());
-                        }else{
-                            if(!list.get(i).getFieldname().equals("cunliang")){
-                                View editView = llSpecification.findViewWithTag("edit" + i);
-                                EditText etLow = (EditText) editView.findViewWithTag(i + "low");
-                                EditText etHigh = (EditText) editView.findViewWithTag(i + "high");
-                                if (etLow.getText().toString().trim().length() < 1) {
-                                    showErrorToast("请输入" + list.get(i).getName() + "最小值");
+                        }
+
+                        String minValue = list.get(i).getMin_value();
+                        String maxValue = list.get(i).getMax_value();
+                        if (!TextUtils.isEmpty(minValue) || !TextUtils.isEmpty(maxValue)) {
+                            if (!TextUtils.isEmpty(value)) {
+                                if (Integer.valueOf(value) < Integer.valueOf(minValue) || Integer.valueOf(value) > Integer.valueOf(maxValue)) {
+                                    showErrorToast(list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
                                     return;
-                                }
-                                if (etHigh.getText().toString().trim().length() < 1) {
-                                    showErrorToast("请输入" + list.get(i).getName() + "最大值");
-                                    return;
-                                }
-                                if(list.get(i).getDatatype().equals("number*number")){
-                                    jsonObject.put(list.get(i).getFieldname(),etLow.getText().toString().trim() + "*" + etHigh.getText().toString().trim());
-                                }else{
-                                    jsonObject.put(list.get(i).getFieldname(),etLow.getText().toString().trim() + "-" + etHigh.getText().toString().trim());
                                 }
                             }
                         }
+
+
+                        if (!TextUtils.isEmpty(value))
+                            jsonObject.put(list.get(i).getFieldname(), value);
 
                     }
                 }
                 jsonArray.add(jsonObject);
                 json = jsonArray.toJSONString();
                 Log.e("Log",jsonArray.toJSONString()+"-----");
-                initProgressDialog();
+
                 progress.show();
-                progress.setMessage("正在添加服务...");
                 new Thread(new UpdateStringRun(thumbPictures)).start();
 
                 break;
@@ -355,6 +314,8 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                 break;
         }
     }
+
+
 
     // 如果不是切割的upLoadBitmap就很大
     public class UpdateStringRun implements Runnable {
@@ -432,7 +393,7 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                     break;
                 default:
                     progress.dismiss();
-                    activity.showErrorToast();
+                    activity.showFailTips(getResources().getString(R.string.requst_fail));
                     break;
             }
         }
@@ -448,6 +409,8 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
         }
         return str;
     }
+
+
     //添加服务接口
     private Runnable serviceAddRun = new Runnable() {
         private BaseResponse response;
@@ -455,6 +418,12 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "service");
+                data.put("a", "add");
+
+
+
                 data.put("uid", getUserID());
                 data.put("type", type);
                 //data.put("product_type",productType);
@@ -462,8 +431,8 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                 data.put("imgs", imags(imgResponse.getData()));
                 data.put("spec", json);
                 data.put("remark", et_remark.getText().toString());
-                response = JsonParser.getBaseResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.SERVICEADD));
+                //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEADD));
+                response = JsonParser.getBaseResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 progress.dismiss();
                 e.printStackTrace();

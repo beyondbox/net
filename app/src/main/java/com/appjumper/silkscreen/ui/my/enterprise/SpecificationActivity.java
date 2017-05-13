@@ -77,11 +77,13 @@ public class SpecificationActivity extends BasePhotoGridActivity {
         service = (ServiceProduct)intent.getSerializableExtra("service");
         list = service.getProduct_spec();
         initTitle(service.getName());
+        initProgressDialog(false, "正在添加服务...");
 
        new Handler().postDelayed(new Runnable() {
            @Override
            public void run() {
                initViewSpecification();
+               et_remark.setHint(service.getRemark());
            }
        }, 50);
 
@@ -140,49 +142,6 @@ public class SpecificationActivity extends BasePhotoGridActivity {
 
     }
 
-
-    /**
-     * 渲染输入值
-     * @param i
-     */
-    private void initInputValue(int i) {
-        Spec spec = list.get(i);
-
-        View editView = LayoutInflater.from(this).inflate(R.layout.layout_spec_input_release, null);
-        llSpecification.addView(editView);
-        editView.setTag("edit" + i);
-
-        TextView txtRequired = (TextView) editView.findViewById(R.id.txtRequired);
-        txtRequired.setVisibility(spec.getRequire().equals("1") ? View.VISIBLE : View.INVISIBLE);
-
-        TextView txtName = (TextView) editView.findViewById(R.id.txtName);//规格名字
-        EditText etValue = (EditText) editView.findViewById(R.id.etValue);//输入
-        txtName.setText(spec.getName());
-        etValue.setHint(spec.getMin_value() + " - " + spec.getMax_value());
-        etValue.setTag(i + "value");
-
-        String datatype = spec.getDatatype();
-        switch (datatype){
-            case "integer"://'数字  1 或者 1-1',
-                etValue.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                break;
-            case "currency":// '货币 1.00',
-                etValue.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                break;
-            case "require":// '文本',
-                etValue.setInputType(InputType.TYPE_CLASS_TEXT);
-                break;
-            case "english"://'英文字母',
-                etValue.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-                etValue .setImeOptions(EditorInfo.IME_ACTION_DONE);
-                break;
-            case "number*number":// '数字*数字  1*1',
-                etValue.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
-                break;
-            default:
-                break;
-        }
-    }
 
 
     /**
@@ -261,14 +220,17 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                             }
                         }
 
-                        if (TextUtils.isEmpty(checkedResult)) {
-                            showErrorToast("请选择" + list.get(i).getName());
-                            return;
+                        if (list.get(i).getRequire().equals("1")) {
+                            if (TextUtils.isEmpty(checkedResult)) {
+                                showErrorToast("请选择" + list.get(i).getName());
+                                return;
+                            }
                         }
+
                         checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
                         jsonObject.put(list.get(i).getFieldname(), checkedResult);
 
-                    } else {
+                    } else if (list.get(i).getFieldinput().equals("text")) {
                         if (!list.get(i).getFieldname().equals("cunliang")) {
                             View editView = llSpecification.findViewWithTag("edit" + i);
                             EditText etLow = (EditText) editView.findViewWithTag(i + "low");
@@ -303,11 +265,14 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                             }
 
 
-                            if (list.get(i).getDatatype().equals("number*number")) {
-                                jsonObject.put(list.get(i).getFieldname(), low + "*" + high);
-                            } else {
-                                jsonObject.put(list.get(i).getFieldname(), low + "-" + high);
+                            if (!TextUtils.isEmpty(low) && !TextUtils.isEmpty(high)) {
+                                if (list.get(i).getDatatype().equals("number*number")) {
+                                    jsonObject.put(list.get(i).getFieldname(), low + "*" + high);
+                                } else {
+                                    jsonObject.put(list.get(i).getFieldname(), low + "-" + high);
+                                }
                             }
+
                         }
 
                     }
@@ -315,11 +280,9 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                 jsonArray.add(jsonObject);
                 json = jsonArray.toJSONString();
                 Log.e("Log",jsonArray.toJSONString()+"-----");
-                initProgressDialog();
-                progress.show();
-                progress.setMessage("正在添加服务...");
-                new Thread(new UpdateStringRun(thumbPictures)).start();
 
+                progress.show();
+                new Thread(new UpdateStringRun(thumbPictures)).start();
                 break;
             default:
                 break;
@@ -381,6 +344,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
             if(activity == null){
                 return;
             }
+
             switch (msg.what) {
                 case 3://上传图片
                     imgResponse = (ImageResponse) msg.obj;
@@ -405,7 +369,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                     break;
                 default:
                     progress.dismiss();
-                    activity.showErrorToast();
+                    activity.showFailTips(getResources().getString(R.string.requst_fail));
                     break;
             }
         }
@@ -421,6 +385,8 @@ public class SpecificationActivity extends BasePhotoGridActivity {
         }
         return str;
     }
+
+
     //添加服务接口
     private Runnable serviceAddRun = new Runnable() {
         private BaseResponse response;
@@ -428,15 +394,22 @@ public class SpecificationActivity extends BasePhotoGridActivity {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "service");
+                data.put("a", "add");
+
+
                 data.put("uid", getUserID());
                 data.put("type", type);
-                //data.put("product_type",productType);
+                //data.put("product_type", productType);
                 data.put("product_id", service.getId());
-                data.put("imgs", imags(imgResponse.getData()));
                 data.put("spec", json);
                 data.put("remark", et_remark.getText().toString());
-                response = JsonParser.getBaseResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.SERVICEADD));
+                data.put("imgs", imags(imgResponse.getData()));
+
+                //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEADD));
+                //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.HOST));
+                response = JsonParser.getBaseResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 progress.dismiss();
                 e.printStackTrace();
@@ -496,7 +469,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
     /**
      * 初始化规格(旧版)
      */
-    private void initViewSpecification2() {
+    /*private void initViewSpecification2() {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getFieldinput().equals("radio")) {
 
@@ -561,7 +534,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                         editView.setTag("edit" + i);
                         EditText etLow = (EditText) editView.findViewById(R.id.et_low);//范围低值
                         View v_horizontal_line = (View) editView.findViewById(R.id.v_horizontal_line);//横线
-                        TextView tv_take = (TextView) editView.findViewById(R.id.tv_take);//*号
+                        TextView tv_take = (TextView) editView.findViewById(R.id.tv_take);/*//*号
                         EditText etHigh = (EditText) editView.findViewById(R.id.et_high);//范围高值
                         TextView tvName = (TextView) editView.findViewById(R.id.tv_name);//规格名字
                         TextView tvUnit = (TextView) editView.findViewById(R.id.tv_unit);//单位
@@ -610,7 +583,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                 }
             }
         }
-    }
+    }*/
 
 
 
@@ -618,7 +591,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
     /**
      * 提交发布（旧版）
      */
-    private void submit() {
+    /*private void submit() {
         JSONArray jsonArray = new JSONArray();
         List<Map<String,String>> listval = new ArrayList<>();
         JSONObject jsonObject = new JSONObject();
@@ -671,7 +644,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
         progress.show();
         progress.setMessage("正在添加服务...");
         new Thread(new UpdateStringRun(thumbPictures)).start();
-    }
+    }*/
 
 
 

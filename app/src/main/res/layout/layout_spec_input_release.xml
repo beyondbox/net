@@ -42,7 +42,7 @@
 
             <EditText
                 android:id="@+id/etValue"
-                android:layout_width="65dp"
+                android:layout_width="75dp"
                 android:inputType="number|numberDecimal"
                 android:layout_height="wrap_content"
                 android:background="@drawable/gid_background"
