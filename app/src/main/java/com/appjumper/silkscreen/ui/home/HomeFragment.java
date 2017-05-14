@@ -16,7 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -29,7 +28,6 @@ import com.appjumper.silkscreen.bean.HomeData;
 import com.appjumper.silkscreen.bean.HomeDataResponse;
 import com.appjumper.silkscreen.bean.MaterProduct;
 import com.appjumper.silkscreen.bean.MyInquiry;
-import com.appjumper.silkscreen.bean.NewPublic;
 import com.appjumper.silkscreen.bean.Notice;
 import com.appjumper.silkscreen.bean.ScoreResponse;
 import com.appjumper.silkscreen.net.CommonApi;
@@ -38,7 +36,6 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
-import com.appjumper.silkscreen.ui.home.adapter.HomeListview1Adapter;
 import com.appjumper.silkscreen.ui.home.adapter.HotInquiryAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.TrendChartAdapter;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentActivity;
@@ -133,15 +130,18 @@ public class HomeFragment extends BaseFragment {
     private List<MyInquiry> hotInquiryList;//热门产品询价
     private HotInquiryAdapter hotInquiryAdapter;
 
-    private List<MaterProduct> materList;
-    private List<Fragment> trendFragList;
-    private TrendChartAdapter trendChartAdapter;
+    private List<MaterProduct> materList; //关注的原材料
+    private List<Fragment> trendFragList; //走势图fragment集合
+    private TrendChartAdapter trendChartAdapter; //走势图适配器
 
     private ScheduledExecutorService scheduledExecutorService;
     private ScheduledFuture future;
     private int currTrendItem = 0;
 
+    private List<Fragment> recommendFragList; //推荐企业
     private ViewPagerFragAdapter recommendAdapter;
+
+    private HomeData data;
 
 
 
@@ -153,19 +153,13 @@ public class HomeFragment extends BaseFragment {
         return view;
     }
 
+
     @Override
     protected void initData() {
         registerBroadcastReceiver();
         initTrendChart();
-        setRefreshLayout();
         setRecyclerView();
-
-        HomeDataResponse homedata = getMyApplication().getMyUserManager().getHome();
-        if(homedata!=null){
-            initView(homedata.getData());
-        }else{
-            new Thread(new HomeDataRun()).start();
-        }
+        setRefreshLayout();
 
         listview1.setFocusable(false);
 
@@ -180,6 +174,14 @@ public class HomeFragment extends BaseFragment {
                 }
             }
         });
+
+        HomeDataResponse homedata = getMyApplication().getMyUserManager().getHome();
+        if(homedata != null){
+            data = homedata.getData();
+            initView();
+        }
+
+        new Thread(new HomeDataRun()).start();
     }
 
 
@@ -216,21 +218,23 @@ public class HomeFragment extends BaseFragment {
         /**
          * 推荐
          */
-        List<Fragment> fragList = new ArrayList<>();
+        recommendFragList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            fragList.add(new RecommendFragment());
+            recommendFragList.add(new RecommendFragment());
         }
 
         String [] titleArr = {"丝网订做", "丝网现货", "丝网加工"};
-        recommendAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, Arrays.asList(titleArr));
-        pagerRecommend.setOffscreenPageLimit(fragList.size() - 1);
+        recommendAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), recommendFragList, Arrays.asList(titleArr));
+        pagerRecommend.setOffscreenPageLimit(recommendFragList.size() - 1);
         pagerRecommend.setAdapter(recommendAdapter);
         tabLaytRecommend.setupWithViewPager(pagerRecommend);
     }
 
 
 
-    private void initView(HomeData data) {
+    private void initView() {
+        l_homeview.setVisibility(View.VISIBLE);
+
         setTrendChartData();
 
         final List<Notice> notice = data.getNotice();
@@ -262,7 +266,21 @@ public class HomeFragment extends BaseFragment {
         }
 
 
-        final List<Enterprise> recommend = data.getRecommend();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                List<Enterprise> recommend0 = data.getRecommend();
+                List<Enterprise> recommend1 = data.getRecommend_xianhuo();
+                List<Enterprise> recommend2 = data.getRecommend_jiagong();
+
+                ((RecommendFragment)recommendFragList.get(0)).refresh(recommend0);
+                ((RecommendFragment)recommendFragList.get(1)).refresh(recommend1);
+                ((RecommendFragment)recommendFragList.get(2)).refresh(recommend2);
+            }
+        }, 100);
+
+
+        /*final List<Enterprise> recommend = data.getRecommend();
         final List<NewPublic> newPublic = data.getNewpublic();
         if (recommend != null && recommend.size() > 0) {
             llEnterpriseList.setVisibility(View.VISIBLE);
@@ -277,9 +295,8 @@ public class HomeFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 start_Activity(getActivity(), CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", recommend.get(i).getEnterprise_id()));
             }
-        });
+        });*/
 
-        l_homeview.setVisibility(View.VISIBLE);
     }
 
 
@@ -344,7 +361,8 @@ public class HomeFragment extends BaseFragment {
                 case NETWORK_SUCCESS_PAGER_RIGHT:
                     HomeDataResponse detailsResponse = (HomeDataResponse) msg.obj;
                     if (detailsResponse.isSuccess()) {
-                        initView(detailsResponse.getData());
+                        data = detailsResponse.getData();
+                        initView();
                         getMyApplication().getMyUserManager().storeHomeInfo(detailsResponse);
                     } else {
                         showErrorToast(detailsResponse.getError_desc());
