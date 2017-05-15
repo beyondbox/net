@@ -103,4 +103,72 @@
         android:layout_centerHorizontal="true"
         android:src="@mipmap/icon_release"/>
 
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/transparent_color"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingBottom="4dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="4dp"
+            android:gravity="center"
+            android:text=""
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/markTrend"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="4dp"
+            android:gravity="center"
+            android:text=""
+            android:textSize="10sp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="4dp"
+            android:gravity="center"
+            android:text=""
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/markDynamic"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="4dp"
+            android:gravity="center"
+            android:text=""
+            android:textSize="10sp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="4dp"
+            android:gravity="center"
+            android:text=""
+            android:textSize="10sp"/>
+
+    </LinearLayout>
+
+
+
+
+
 </RelativeLayout>

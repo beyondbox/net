@@ -129,6 +129,8 @@ public class HomeFragment extends BaseFragment {
     @Bind(R.id.recyclerHotInquiry)
     RecyclerView recyclerHotInquiry;
 
+    @Bind(R.id.txtMsg)
+    ImageView txtMsg;
     @Bind(R.id.rl_tender)
     RelativeLayout rl_tender;
     @Bind(R.id.rl_exhibition)
@@ -137,6 +139,7 @@ public class HomeFragment extends BaseFragment {
     RelativeLayout rl_news;
 
 
+    private QBadgeView badgeMsg; //右上角小红点
     private QBadgeView badgeTender; //招投标信息小红点
     private QBadgeView badgeExhibition; //展会信息小红点
     private QBadgeView badgeNews; //行业新闻小红点
@@ -205,10 +208,12 @@ public class HomeFragment extends BaseFragment {
      * 初始化未读小红点
      */
     private void initUnread() {
+        badgeMsg = new QBadgeView(context);
         badgeTender = new QBadgeView(context);
         badgeExhibition = new QBadgeView(context);
         badgeNews = new QBadgeView(context);
 
+        badgeMsg.bindTarget(txtMsg).setBadgeBackgroundColor(0xffffffff).setBadgeTextColor(0xffff6000).setGravityOffset(0, true).setBadgeTextSize(10, true);
         badgeTender.bindTarget(rl_tender);
         badgeExhibition.bindTarget(rl_exhibition);
         badgeNews.bindTarget(rl_news);
@@ -536,6 +541,7 @@ public class HomeFragment extends BaseFragment {
                 setTrendChartData();
             } else if (action.equals(Const.ACTION_UNREAD_REFRESH)) {
                 UnRead unRead = (UnRead) intent.getSerializableExtra(Const.KEY_OBJECT);
+                badgeMsg.setBadgeNumber(unRead.getReadNum());
                 badgeTender.setBadgeNumber(unRead.getTenderNum());
                 badgeExhibition.setBadgeNumber(unRead.getExpoNum());
                 badgeNews.setBadgeNumber(unRead.getNewsNum());

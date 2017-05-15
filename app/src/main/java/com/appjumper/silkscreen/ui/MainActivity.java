@@ -15,8 +15,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
@@ -53,6 +53,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import q.rorbin.badgeview.QBadgeView;
 
 
 /**
@@ -68,8 +69,13 @@ public class MainActivity extends FragmentActivity {
     @Bind(R.id.id_view_pager)
     public ViewPager idViewPager;
 
-    @Bind(R.id.rd_trend)
-    RadioButton rd_trend;
+    @Bind(R.id.markTrend)
+    TextView markTrend;
+    @Bind(R.id.markDynamic)
+    TextView markDynamic;
+
+    private QBadgeView badgeTrend; //走势小红点
+    private QBadgeView badgeDynamic; //动态小红点
 
     private MoreWindow mMoreWindow;
 
@@ -83,6 +89,20 @@ public class MainActivity extends FragmentActivity {
         ButterKnife.bind(this);
         setupViews();
         checkNewVersion();
+
+        initUnread();
+    }
+
+
+    /**
+     * 初始化未读小红点
+     */
+    private void initUnread() {
+        badgeTrend = new QBadgeView(this);
+        badgeDynamic = new QBadgeView(this);
+
+        badgeTrend.bindTarget(markTrend).setGravityOffset(11, 1, true);
+        badgeDynamic.bindTarget(markDynamic).setGravityOffset(12, 1, true);
     }
 
 
@@ -391,6 +411,16 @@ public class MainActivity extends FragmentActivity {
                         unRead.setNewsNum(dataObj.getJSONArray("newsNum").optInt(0));
                         unRead.setAnalysisNum(dataObj.getJSONArray("analysisNum").optInt(0));
                         unRead.setCollectionNum(dataObj.getJSONArray("collectionNum").optInt(0));
+
+                        if (unRead.getAnalysisNum() > 0)
+                            badgeTrend.setBadgeNumber(-1);
+                        else
+                            badgeTrend.setBadgeNumber(0);
+
+                        if (unRead.getCollectionNum() > 0)
+                            badgeDynamic.setBadgeNumber(-1);
+                        else
+                            badgeDynamic.setBadgeNumber(0);
 
                         Intent intent = new Intent();
                         intent.setAction(Const.ACTION_UNREAD_REFRESH);
