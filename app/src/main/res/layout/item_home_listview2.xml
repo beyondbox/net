@@ -6,7 +6,7 @@
         android:id="@+id/iv_enterprise_logo"
         android:layout_width="51dp"
         android:layout_height="51dp"
-        android:src="@mipmap/icon_logo_image61"
+        android:src="@mipmap/img_error"
         android:layout_marginLeft="12dp"
         android:scaleType="centerCrop"
         android:layout_marginTop="12dp"

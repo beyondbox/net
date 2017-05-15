@@ -105,8 +105,10 @@ public class DynamicFragment extends BaseFragment {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.right: //管理
-                intent = new Intent(context, DynamicManageActivity.class);
-                startActivity(intent);
+                if (checkLogined()) {
+                    intent = new Intent(context, DynamicManageActivity.class);
+                    startActivity(intent);
+                }
                 break;
             default:
                 break;

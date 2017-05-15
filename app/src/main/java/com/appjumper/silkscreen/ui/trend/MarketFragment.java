@@ -44,7 +44,7 @@ public class MarketFragment extends BaseFragment {
 
 
     private void init() {
-        webView.setVisibility(View.VISIBLE);
+        //webView.setVisibility(View.VISIBLE);
         WebSettings mWebSettings = webView.getSettings();
         mWebSettings.setJavaScriptEnabled(true);
 //        mWebSettings.setTextZoom(22);

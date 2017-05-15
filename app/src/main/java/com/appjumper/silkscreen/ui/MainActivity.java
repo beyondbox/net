@@ -15,26 +15,36 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.base.MyApplication;
+import com.appjumper.silkscreen.bean.UnRead;
 import com.appjumper.silkscreen.bean.Update;
 import com.appjumper.silkscreen.bean.UpdateResponse;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.dynamic.DynamicFragment;
 import com.appjumper.silkscreen.ui.home.HomeFragment;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.ui.my.MyFragment;
 import com.appjumper.silkscreen.ui.trend.TrendFragment;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.morewindow.MoreWindow;
 import com.appjumper.silkscreen.view.SureOrCancelVersionDialog;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.umeng.analytics.MobclickAgent;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -58,6 +68,9 @@ public class MainActivity extends FragmentActivity {
     @Bind(R.id.id_view_pager)
     public ViewPager idViewPager;
 
+    @Bind(R.id.rd_trend)
+    RadioButton rd_trend;
+
     private MoreWindow mMoreWindow;
 
     private long lastClickTime = 0;
@@ -71,6 +84,7 @@ public class MainActivity extends FragmentActivity {
         setupViews();
         checkNewVersion();
     }
+
 
     /**
      * 版本更新
@@ -229,6 +243,7 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        getUnRead();
     }
 
     @Override
@@ -347,6 +362,51 @@ public class MainActivity extends FragmentActivity {
         public int getCount() {
             return mTab.size();
         }
+    }
+
+
+    /**
+     * 获取消息未读数
+     */
+    private void getUnRead() {
+        if ("".equals(getUser()) || getUser() == null) {
+            return;
+        }
+
+        RequestParams params = MyHttpClient.getApiParam("inquiry", "noReadNum");
+        params.put("uid", getUser().getId());
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        UnRead unRead = new UnRead();
+                        unRead.setReadNum(dataObj.getJSONArray("readNum").optInt(0));
+                        unRead.setTenderNum(dataObj.getJSONArray("tenderNum").optInt(0));
+                        unRead.setExpoNum(dataObj.getJSONArray("expoNum").optInt(0));
+                        unRead.setNewsNum(dataObj.getJSONArray("newsNum").optInt(0));
+                        unRead.setAnalysisNum(dataObj.getJSONArray("analysisNum").optInt(0));
+                        unRead.setCollectionNum(dataObj.getJSONArray("collectionNum").optInt(0));
+
+                        Intent intent = new Intent();
+                        intent.setAction(Const.ACTION_UNREAD_REFRESH);
+                        intent.putExtra(Const.KEY_OBJECT, unRead);
+                        sendBroadcast(intent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
 

@@ -82,10 +82,12 @@ public class TrendArticleAllActivity extends BaseActivity {
         articleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(context, ArticleDetailActivity.class);
-                intent.putExtra(Const.KEY_TOTAL, articleList.get(0).getId());
-                intent.putExtra("id", articleList.get(position).getId());
-                startActivity(intent);
+                if (checkLogined()) {
+                    Intent intent = new Intent(context, ArticleDetailActivity.class);
+                    intent.putExtra(Const.KEY_TOTAL, articleList.get(0).getId());
+                    intent.putExtra("id", articleList.get(position).getId());
+                    startActivity(intent);
+                }
             }
         });
 
@@ -156,6 +158,8 @@ public class TrendArticleAllActivity extends BaseActivity {
                 articleAdapter.loadMoreComplete();
                 if (totalSize == articleList.size())
                     articleAdapter.loadMoreEnd();
+
+                articleAdapter.setEmptyView(R.layout.layout_empty_view_common);
             }
         });
     }

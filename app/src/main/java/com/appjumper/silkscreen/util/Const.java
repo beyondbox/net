@@ -79,6 +79,11 @@ public class Const {
      * 搜索结果刷新
      */
     public static final String ACTION_SEARCHING_REFRESH = "com.appjumper.silkscreen.SEARCHING_REFRESH";
+    /**
+     * 未读消息数刷新
+     */
+    public static final String ACTION_UNREAD_REFRESH = "com.appjumper.silkscreen.UNREAD_REFRESH";
+
 
 
 

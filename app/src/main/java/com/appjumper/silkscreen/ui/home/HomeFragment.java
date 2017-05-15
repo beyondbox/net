@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.appjumper.silkscreen.bean.MaterProduct;
 import com.appjumper.silkscreen.bean.MyInquiry;
 import com.appjumper.silkscreen.bean.Notice;
 import com.appjumper.silkscreen.bean.ScoreResponse;
+import com.appjumper.silkscreen.bean.UnRead;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
@@ -77,6 +79,7 @@ import java.util.concurrent.TimeUnit;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import q.rorbin.badgeview.QBadgeView;
 
 
 /**
@@ -87,7 +90,6 @@ public class HomeFragment extends BaseFragment {
 
     @Bind(R.id.listview1)
     MyListView listview1;
-
 
     @Bind(R.id.imageView3)//签到按钮
             ImageView imageView3;
@@ -127,6 +129,18 @@ public class HomeFragment extends BaseFragment {
     @Bind(R.id.recyclerHotInquiry)
     RecyclerView recyclerHotInquiry;
 
+    @Bind(R.id.rl_tender)
+    RelativeLayout rl_tender;
+    @Bind(R.id.rl_exhibition)
+    RelativeLayout rl_exhibition;
+    @Bind(R.id.rl_news)
+    RelativeLayout rl_news;
+
+
+    private QBadgeView badgeTender; //招投标信息小红点
+    private QBadgeView badgeExhibition; //展会信息小红点
+    private QBadgeView badgeNews; //行业新闻小红点
+
     private List<MyInquiry> hotInquiryList;//热门产品询价
     private HotInquiryAdapter hotInquiryAdapter;
 
@@ -156,6 +170,8 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        initUnread();
+
         registerBroadcastReceiver();
         initTrendChart();
         setRecyclerView();
@@ -182,6 +198,20 @@ public class HomeFragment extends BaseFragment {
         }
 
         new Thread(new HomeDataRun()).start();
+    }
+
+
+    /**
+     * 初始化未读小红点
+     */
+    private void initUnread() {
+        badgeTender = new QBadgeView(context);
+        badgeExhibition = new QBadgeView(context);
+        badgeNews = new QBadgeView(context);
+
+        badgeTender.bindTarget(rl_tender);
+        badgeExhibition.bindTarget(rl_exhibition);
+        badgeNews.bindTarget(rl_news);
     }
 
 
@@ -277,7 +307,7 @@ public class HomeFragment extends BaseFragment {
                 ((RecommendFragment)recommendFragList.get(1)).refresh(recommend1);
                 ((RecommendFragment)recommendFragList.get(2)).refresh(recommend2);
             }
-        }, 100);
+        }, 200);
 
 
         /*final List<Enterprise> recommend = data.getRecommend();
@@ -494,6 +524,7 @@ public class HomeFragment extends BaseFragment {
     private void registerBroadcastReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Const.ACTION_ATTENTION_MATER_REFRESH);
+        filter.addAction(Const.ACTION_UNREAD_REFRESH);
         context.registerReceiver(myReceiver, filter);
     }
 
@@ -503,6 +534,11 @@ public class HomeFragment extends BaseFragment {
             String action = intent.getAction();
             if (action.equals(Const.ACTION_ATTENTION_MATER_REFRESH)) {
                 setTrendChartData();
+            } else if (action.equals(Const.ACTION_UNREAD_REFRESH)) {
+                UnRead unRead = (UnRead) intent.getSerializableExtra(Const.KEY_OBJECT);
+                badgeTender.setBadgeNumber(unRead.getTenderNum());
+                badgeExhibition.setBadgeNumber(unRead.getExpoNum());
+                badgeNews.setBadgeNumber(unRead.getNewsNum());
             }
         }
     };

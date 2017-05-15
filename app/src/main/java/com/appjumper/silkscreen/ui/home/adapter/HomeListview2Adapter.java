@@ -28,14 +28,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.NewPublic;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -119,35 +117,43 @@ public class HomeListview2Adapter extends BaseAdapter {
     switch (item.getType()){
       case "1"://订做
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_order);
-       Picasso.with(mContext).load(item.getImg_list().get(0).getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
+        if (item.getImg_list() != null)
+          Picasso.with(mContext).load(item.getImg_list().get(0).getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "2"://加工
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_machine);
-        Picasso.with(mContext).load(item.getImg_list().get(0).getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
+        if (item.getImg_list() != null)
+          Picasso.with(mContext).load(item.getImg_list().get(0).getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "3"://现货
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_spot);
-        Picasso.with(mContext).load(item.getImg_list().get(0).getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
+        if (item.getImg_list() != null)
+          Picasso.with(mContext).load(item.getImg_list().get(0).getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "4"://物流
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_circuit);
-        Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
+        if (item.getImg_list() != null)
+          Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "5"://设备
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_facility);
-        Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
+        if (item.getImg_list() != null)
+          Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "6"://找车
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_car);
-        Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
+        if (item.getImg_list() != null)
+          Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "7"://招聘
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_recruit);
-        Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
+        if (item.getImg_list() != null)
+          Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "8"://厂房
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_plant_information);
-        Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
+        if (item.getImg_list() != null)
+          Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
     }
   }

@@ -79,9 +79,9 @@ public class AttentProductFragment extends BaseFragment {
         recyclerAttentProduct.addItemDecoration(new ItemSpaceDecorationGrid(2, 18, 20));
 
         productAdapter = new AttentProductAdapter(R.layout.item_recycler_grid_attent_product, productList);
+        productAdapter.bindToRecyclerView(recyclerAttentProduct);
         productAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         productAdapter.isFirstOnly(false);
-        recyclerAttentProduct.setAdapter(productAdapter);
     }
 
 
@@ -125,6 +125,7 @@ public class AttentProductFragment extends BaseFragment {
             public void onFinish() {
                 super.onFinish();
                 progress.dismiss();
+                productAdapter.setEmptyView(R.layout.layout_empty_view_common);
             }
         });
     }

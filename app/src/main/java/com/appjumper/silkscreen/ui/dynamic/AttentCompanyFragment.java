@@ -80,9 +80,9 @@ public class AttentCompanyFragment extends BaseFragment {
         recyclerAttentCom.setLayoutManager(layoutManager);
 
         companyAdapter = new AttentCompanyAdapter(R.layout.item_recycler_line_attent_company, companyList);
+        companyAdapter.bindToRecyclerView(recyclerAttentCom);
         companyAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
         companyAdapter.isFirstOnly(false);
-        recyclerAttentCom.setAdapter(companyAdapter);
 
         companyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -164,6 +164,7 @@ public class AttentCompanyFragment extends BaseFragment {
             public void onFinish() {
                 super.onFinish();
                 progress.dismiss();
+                companyAdapter.setEmptyView(R.layout.layout_empty_view_common);
             }
         });
     }

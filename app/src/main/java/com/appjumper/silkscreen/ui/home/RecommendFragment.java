@@ -55,6 +55,11 @@ public class RecommendFragment extends Fragment {
 
 
     private void initListView() {
+        View emptyView = LayoutInflater.from(context).inflate(R.layout.pull_listitem_empty_padding, null);
+        ViewGroup parentView = (ViewGroup)lvData.getParent();
+        parentView.addView(emptyView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lvData.setEmptyView(emptyView);
+
         dataList = new ArrayList<>();
         dataAdapter = new RecommendAdapter(context, dataList);
         lvData.setAdapter(dataAdapter);
