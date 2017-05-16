@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.view.phonegridview;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
@@ -24,6 +26,7 @@ import android.widget.PopupWindow;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyGridView;
 import com.squareup.picasso.Picasso;
 
@@ -68,6 +71,8 @@ public class BasePhotoGridActivity extends BaseActivity implements PhotoPopupWin
 		if (savedInstanceState != null) {
 			camera_pic_path = savedInstanceState.getString("camera_pic_path");
 		}
+
+		ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, Const.REQUEST_CODE_PERMISSION);
 	}
 
 	protected void initView() {

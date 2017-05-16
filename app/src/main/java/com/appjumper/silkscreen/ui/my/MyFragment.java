@@ -18,6 +18,7 @@ import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.bean.UserResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
@@ -26,8 +27,11 @@ import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ServiceAdministrationActivity;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.ShareUtil;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.HashMap;
@@ -202,6 +206,7 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.rl_system_setting://系统设置
                 start_Activity(getActivity(), SystemSettingActivity.class);
+                //test();
                 //start_Activity(context, InquiryCiShengActivity.class);
                 break;
             case R.id.ll_view://查看公司认证
@@ -282,4 +287,28 @@ public class MyFragment extends BaseFragment {
             }
         }
     };
+
+
+    /**
+     * 测试接口
+     */
+    private void test() {
+        RequestParams params = MyHttpClient.getApiParam("Analysis", "edit_analysis_post");
+        params.remove("g");
+        params.put("g", "Admin");
+        params.put("id", 8);
+
+        MyHttpClient.getInstance().post(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
 }

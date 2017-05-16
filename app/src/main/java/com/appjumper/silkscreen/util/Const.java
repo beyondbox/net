@@ -51,6 +51,10 @@ public class Const {
      * 加工询价
      */
     public static final int REQUEST_CODE_INQUIRY_PROCESS = 2010;
+    /**
+     * 请求权限
+     */
+    public static final int REQUEST_CODE_PERMISSION = 2011;
 
 
 
@@ -64,6 +68,8 @@ public class Const {
      * 需要刷新数据
      */
     public static final int RESULT_CODE_NEED_REFRESH = 1001;
+
+
 
 
 

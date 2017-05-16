@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.ui.common;
 
+import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,10 +19,10 @@ import android.view.WindowManager;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.util.Applibrary;
+import com.appjumper.silkscreen.util.Const;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -62,12 +64,13 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
          random=new Random();
 
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, Const.REQUEST_CODE_PERMISSION);
     }
 
     private void init(){
         int nextsize = random.nextInt(20);
         Log.e("log",nextsize+"随机数");
-        file = new File(Applibrary.IMAGE_CACHE_DIR, System.currentTimeMillis()+nextsize + ".jpg");
+        file = new File(Applibrary.IMAGE_CACHE_DIR, System.currentTimeMillis() + nextsize + ".jpg");
         imageUri= Uri.fromFile(file);
     }
 
@@ -95,6 +98,7 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
     public void startCropTakePhoto(){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        //intent.addCategory(Intent.CATEGORY_DEFAULT);
         intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
     }
@@ -221,6 +225,7 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
         if(uri != null) {
             Intent intent = new Intent("com.android.camera.action.CROP");
             intent.setDataAndType(uri, "image/*");
+            //intent.setDataAndType(Uri.parse("file:///" + AppTool.getImageAbsolutePath(this, uri)), "image/*");
             intent.putExtra("crop", true);
             intent.putExtra("aspectX", aspectX);
             intent.putExtra("aspectY", aspectY);
@@ -281,7 +286,7 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
     }
 
     private void saveRequestImage(){
-        if (file != null && file.isFile()) {
+        if (file != null && file.exists()) {
             String path = file.getAbsolutePath();
             requestImage(new String[]{path});
         }

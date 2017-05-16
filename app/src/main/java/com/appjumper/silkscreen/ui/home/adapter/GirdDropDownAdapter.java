@@ -20,7 +20,7 @@ public class GirdDropDownAdapter extends BaseAdapter {
 
     private Context context;
     private List<String> list;
-    private int checkItemPosition = 0;
+    public int checkItemPosition = 0;
 
     public void setCheckItem(int position) {
         checkItemPosition = position;

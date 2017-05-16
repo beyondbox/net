@@ -9,9 +9,10 @@ public class SDCardUtil {
 		String state = android.os.Environment.getExternalStorageState();
 		// 判断SdCard是否存在并且是可用的
 		if (android.os.Environment.MEDIA_MOUNTED.equals(state)) {
-			if (android.os.Environment.getExternalStorageDirectory().canWrite()) {
+			/*if (android.os.Environment.getExternalStorageDirectory().canWrite()) {
 				return android.os.Environment.getExternalStorageDirectory().getPath();
-			}
+			}*/
+			return android.os.Environment.getExternalStorageDirectory().getPath();
 		}
 		return null;
 	}

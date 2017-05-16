@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.ui.home.adapter.RecommendAdapter;
+import com.appjumper.silkscreen.util.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class RecommendFragment extends Fragment {
     private List<Enterprise> dataList;
 
     private FragmentActivity context;
+    private int serviceType;
 
 
     @Override
@@ -50,6 +52,7 @@ public class RecommendFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
+        serviceType = getArguments().getInt(Const.KEY_SERVICE_TYPE);
         initListView();
     }
 
@@ -96,6 +99,7 @@ public class RecommendFragment extends Fragment {
         switch (view.getId()) {
             case R.id.txtMore:
                 intent  = new Intent(context, EnterpriseListActivity.class);
+                intent.putExtra(Const.KEY_SERVICE_TYPE, serviceType);
                 startActivity(intent);
                 break;
             default:

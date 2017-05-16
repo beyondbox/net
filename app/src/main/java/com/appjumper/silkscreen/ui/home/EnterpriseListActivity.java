@@ -1,33 +1,38 @@
 package com.appjumper.silkscreen.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.EnterpriseResponse;
 import com.appjumper.silkscreen.bean.ProductType;
 import com.appjumper.silkscreen.bean.ProductTypeResponse;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.bean.ServiceProductResponse;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.home.adapter.EnterpriseListListViewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.GirdDropDownAdapter;
 import com.appjumper.silkscreen.ui.home.process.ProcessingDetailsActivity;
 import com.appjumper.silkscreen.ui.my.adapter.ChoiceRecyclerAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ProductionListViewAdapter;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
@@ -45,6 +50,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by yc on 2016/11/11.
@@ -53,9 +59,13 @@ import butterknife.ButterKnife;
 public class EnterpriseListActivity extends BaseActivity {
     @Bind(R.id.dropDownMenu)
     DropDownMenu mDropDownMenu;
+    @Bind(R.id.txtProductSelect)
+    TextView txtProductSelect;
+
+
     private String headers[] = {"全部公司", "全部服务", "全部产品"};
     private String auth[] = {"全部公司", "认证公司", "未认证公司"};
-    private String service[] = {"全部服务", "加工", "订做", "现货"};
+    private String service[] = {"全部服务", "订做", "加工", "现货"};
     private List<View> popupViews = new ArrayList<>();
     private GirdDropDownAdapter cityAdapter;
     private GirdDropDownAdapter agesAdapter;
@@ -82,8 +92,16 @@ public class EnterpriseListActivity extends BaseActivity {
         initLocation();
         ButterKnife.bind(this);
         initBack();
-        initView();
 
+        Intent intent = getIntent();
+        if (intent.hasExtra(Const.KEY_SERVICE_TYPE)) {
+            int serviceType = intent.getIntExtra(Const.KEY_SERVICE_TYPE, 0);
+            service_id = serviceType + "";
+            String temp = service[serviceType];
+            headers[1] = temp;
+        }
+
+        initView();
     }
     
     //产品类型列表
@@ -185,16 +203,18 @@ public class EnterpriseListActivity extends BaseActivity {
 
         final ListView serviceView = new ListView(this);
         agesAdapter = new GirdDropDownAdapter(this, Arrays.asList(service));
+        if (!TextUtils.isEmpty(service_id))
+            agesAdapter.checkItemPosition = Integer.parseInt(service_id);
         serviceView.setDividerHeight(0);
         serviceView.setAdapter(agesAdapter);
         serviceView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 agesAdapter.setCheckItem(position);
-                mDropDownMenu.setTabText(position == 0 ? headers[1] : service[position]);
+                mDropDownMenu.setTabText(service[position]);
                 mDropDownMenu.closeMenu();
-                service_id=position+"";
-                new Thread(serviceTypelistRun).start();
+                service_id = position + "";
+                //new Thread(serviceTypelistRun).start();
                 refresh();
             }
         });
@@ -392,6 +412,46 @@ public class EnterpriseListActivity extends BaseActivity {
             }
         }
     }
+
+
+    @OnClick({R.id.txtProductSelect})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.txtProductSelect: //选择产品
+                if (TextUtils.isEmpty(service_id) || service_id.equals("0")) {
+                    showErrorToast("请先选择服务");
+                    return;
+                }
+
+                Intent intent = new Intent(context, ProductSelectActivity.class);
+                intent.putExtra(Const.KEY_SERVICE_TYPE, Integer.parseInt(service_id));
+                intent.putExtra(Const.KEY_IS_FILTER_MODE, true);
+                startActivityForResult(intent, Const.REQUEST_CODE_SELECT_PRODUCT);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null)
+            return;
+
+        switch (requestCode) {
+            case Const.REQUEST_CODE_SELECT_PRODUCT:
+                ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
+                product_id = product.getId();
+                txtProductSelect.setText(product.getName());
+                refresh();
+                break;
+            default:
+                break;
+        }
+    }
+
 
     @Override
     public void onBackPressed() {

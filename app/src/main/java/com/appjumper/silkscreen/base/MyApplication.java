@@ -2,7 +2,6 @@ package com.appjumper.silkscreen.base;
 
 import android.app.Application;
 
-import com.appjumper.silkscreen.util.Configure;
 import com.appjumper.silkscreen.util.manager.MyUserManager;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -36,7 +35,7 @@ public class MyApplication extends Application{
         UMShareAPI.get(this);
         FIR.init(this);
         // 初始化配置信息
-        Configure.init(this);
+        //Configure.init(this);
         checkInit();
     }
 

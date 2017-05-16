@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -8,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -35,6 +38,7 @@ import com.appjumper.silkscreen.ui.home.HomeFragment;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.ui.my.MyFragment;
 import com.appjumper.silkscreen.ui.trend.TrendFragment;
+import com.appjumper.silkscreen.util.Configure;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.morewindow.MoreWindow;
 import com.appjumper.silkscreen.view.SureOrCancelVersionDialog;
@@ -82,11 +86,17 @@ public class MainActivity extends FragmentActivity {
     private long lastClickTime = 0;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        //安卓6.0以后需要手动请求写入权限，才能在存储设备上创建文件夹
+        //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.REQUEST_CODE_PERMISSION);
+
         setupViews();
         checkNewVersion();
 
@@ -438,6 +448,25 @@ public class MainActivity extends FragmentActivity {
             }
         });
     }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case Const.REQUEST_CODE_PERMISSION:
+                boolean isSuccess = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (isSuccess)
+                    Configure.init(this);
+                else
+                    Toast.makeText(this, "请开启读写存储权限，否则将无法使用上传图片功能！", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
+    }
+
 
 
     @Override

@@ -253,10 +253,25 @@ public class HomeFragment extends BaseFragment {
         /**
          * 推荐
          */
+        RecommendFragment orderFrag = new RecommendFragment();
+        Bundle bundle1 =  new Bundle();
+        bundle1.putInt(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_ORDER);
+        orderFrag.setArguments(bundle1);
+
+        RecommendFragment stockFrag = new RecommendFragment();
+        Bundle bundle2 =  new Bundle();
+        bundle2.putInt(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
+        stockFrag.setArguments(bundle2);
+
+        RecommendFragment processFrag = new RecommendFragment();
+        Bundle bundle3 =  new Bundle();
+        bundle3.putInt(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_PROCESS);
+        processFrag.setArguments(bundle3);
+
         recommendFragList = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            recommendFragList.add(new RecommendFragment());
-        }
+        recommendFragList.add(orderFrag);
+        recommendFragList.add(stockFrag);
+        recommendFragList.add(processFrag);
 
         String [] titleArr = {"丝网订做", "丝网现货", "丝网加工"};
         recommendAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), recommendFragList, Arrays.asList(titleArr));
