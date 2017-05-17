@@ -118,7 +118,10 @@ public class ProductSelectActivity extends BaseActivity {
                 initTitle("加工产品选择");
                 break;
             case Const.SERVICE_TYPE_STOCK:
-                initTitle("现货产品选择");
+                if (action.equals(Const.ACTION_ADD_PRODUCT))
+                    initTitle("产品选择");
+                else
+                    initTitle("现货产品选择");
                 break;
             default:
                 initTitle("产品选择");
@@ -170,6 +173,11 @@ public class ProductSelectActivity extends BaseActivity {
                                 productList.get(position).setIs_collection("1");
                             else
                                 productList.get(position).setIs_collection("0");
+                        } else if (action.equals(Const.ACTION_ADD_PRODUCT)) {
+                            if (((CheckBox)view).isChecked())
+                                productList.get(position).setIs_car("1");
+                            else
+                                productList.get(position).setIs_car("0");
                         }
 
                         productAdapter.notifyDataSetChanged();
@@ -270,6 +278,9 @@ public class ProductSelectActivity extends BaseActivity {
                 for (ServiceProduct product : productList) {
                     if (action.equals(Const.ACTION_ATTENT_PRODUCT_MANAGE)) {
                         if (product.getIs_collection().equals("1"))
+                            list.add(product);
+                    } else if (action.equals(Const.ACTION_ADD_PRODUCT)) {
+                        if (product.getIs_car().equals("1"))
                             list.add(product);
                     }
                 }

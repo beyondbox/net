@@ -107,38 +107,6 @@ public class AttentModuleFragment extends BaseFragment {
         plantList = new ArrayList<>();
         postList = new ArrayList<>();
 
-        /*AttentModule logistics1 = new AttentModule();
-        logistics1.setName("安平");
-        logisticsList.add(logistics1);
-        AttentModule logistics2 = new AttentModule();
-        logistics2.setName("成都");
-        logisticsList.add(logistics2);
-        AttentModule logistics3 = new AttentModule();
-        logistics3.setName("乌鲁木齐");
-        logisticsList.add(logistics3);
-
-        AttentModule product1 = new AttentModule();
-        product1.setName("金刚网");
-        productList.add(product1);
-        AttentModule product2 = new AttentModule();
-        product2.setName("石笼网");
-        productList.add(product2);
-
-        AttentModule device1 = new AttentModule();
-        device1.setName("金刚网织机");
-        deviceList.add(device1);
-        AttentModule device2 = new AttentModule();
-        device2.setName("直丝机");
-        deviceList.add(device2);
-
-        AttentModule post1 = new AttentModule();
-        post1.setName("会计");
-        postList.add(post1);
-
-        AttentModule plant1 = new AttentModule();
-        plant1.setName("安平");
-        plantList.add(plant1);*/
-
         recyclerLogistics.setLayoutManager(new GridLayoutManager(context, 3));
         recyclerProduct.setLayoutManager(new GridLayoutManager(context, 3));
         recyclerDevice.setLayoutManager(new GridLayoutManager(context, 3));
@@ -210,9 +178,9 @@ public class AttentModuleFragment extends BaseFragment {
                     break;
                 case AttentModuleAdapter.TAG_ADD:
                     Intent intent = new Intent(context, ProductSelectActivity.class);
-                    intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_ORDER);
+                    intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
                     intent.putExtra(Const.KEY_IS_MULTI_MODE, true);
-                    intent.putExtra(Const.KEY_ACTION, Const.ACTION_ATTENT_PRODUCT_MANAGE);
+                    intent.putExtra(Const.KEY_ACTION, Const.ACTION_ADD_PRODUCT);
                     startActivityForResult(intent, Const.REQUEST_CODE_SELECT_PRODUCT);
                     break;
                 default:
@@ -627,7 +595,7 @@ public class AttentModuleFragment extends BaseFragment {
     /**
      * 添加找车的货物
      */
-    private void addProduct(final List<ServiceProduct> list) {
+    private void addProduct(List<ServiceProduct> list) {
         final List<AttentModule> moduleList = new ArrayList<>();
         for (ServiceProduct product : list) {
             AttentModule module = new AttentModule();

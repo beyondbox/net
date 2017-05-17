@@ -103,11 +103,19 @@ public class OrderListviewAdapter extends BaseAdapter {
       viewHolder.img_enterprise_productivity_auth_status.setVisibility(View.GONE);
     }
 
-    if(!item.getProduct_alias().equals("")){
-      viewHolder.tv_aliasname.setText(" （"+item.getProduct_alias()+"）");
-    }else{
+
+    if (item.getProduct_alias() != null) {
+      if (!item.getProduct_alias().trim().equals("")) {
+        viewHolder.tv_aliasname.setText(" （" + item.getProduct_alias() + "）");
+      } else {
+        viewHolder.tv_aliasname.setText("");
+      }
+
+    } else {
       viewHolder.tv_aliasname.setText("");
     }
+
+
     viewHolder.tv_name.setText(item.getProduct_name());
     viewHolder.tv_company_name.setText(item.getEnterprise_name());
     List<Spec> spec = item.getService_spec();
@@ -116,7 +124,7 @@ public class OrderListviewAdapter extends BaseAdapter {
       if(i<4){
         str+=spec.get(i).getName()+spec.get(i).getValue();
         if(i!=(spec.size()-1)){
-          str+=",";
+          str+=", ";
         }
       }
     }

@@ -44,7 +44,8 @@ public class ServiceProduct implements Serializable{
     private String is_goods;
     private String goods_type;
     private String alias;
-    private String is_collection; //0未关注，1已关注
+    private String is_collection; //0未关注的产品，1已关注的产品
+    private String is_car; //0未关注的找车货物，1已关注的找车货物
     private String img;
     private String product_type_name;
     private String img_require; //图片是否必须传 0可不传  1必传
@@ -58,6 +59,7 @@ public class ServiceProduct implements Serializable{
     //旧的字段
     private String product_type_id;
     private String spec;
+    private List<Avatar> img_list;
 
 
 
@@ -214,12 +216,13 @@ public class ServiceProduct implements Serializable{
         this.remark = remark;
     }
 
+    public String getIs_car() {
+        return is_car;
+    }
 
-
-
-
-
-
+    public void setIs_car(String is_car) {
+        this.is_car = is_car;
+    }
 
     public String getProduct_type_id() {
         return product_type_id;
@@ -235,5 +238,13 @@ public class ServiceProduct implements Serializable{
 
     public void setSpec(String spec) {
         this.spec = spec;
+    }
+
+    public List<Avatar> getImg_list() {
+        return img_list;
+    }
+
+    public void setImg_list(List<Avatar> img_list) {
+        this.img_list = img_list;
     }
 }

@@ -65,9 +65,12 @@ public class ProductListAdapter extends MyBaseAdapter<ServiceProduct> implements
             vh.chkSelect.setVisibility(View.VISIBLE);
             if (action.equals(Const.ACTION_ATTENT_PRODUCT_MANAGE))
                 vh.chkSelect.setChecked(product.getIs_collection().equals("1"));
+            else if (action.equals(Const.ACTION_ADD_PRODUCT))
+                vh.chkSelect.setChecked(product.getIs_car().equals("1"));
         } else {
             vh.chkSelect.setVisibility(View.GONE);
         }
+
 
         if (getPositionForSection(getSectionForPosition(position)) == position) {
             vh.txtSection.setText(product.getSection().toUpperCase());
@@ -75,6 +78,7 @@ public class ProductListAdapter extends MyBaseAdapter<ServiceProduct> implements
         } else {
             vh.txtSection.setVisibility(View.GONE);
         }
+
 
         Picasso.with(context)
                 .load(product.getImg())

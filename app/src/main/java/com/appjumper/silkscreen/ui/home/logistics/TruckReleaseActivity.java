@@ -17,14 +17,17 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.CommonApi;
-import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.bean.BaseResponse;
-import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
+import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.bean.ServiceProduct;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
+import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
+import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
+import com.appjumper.silkscreen.util.Const;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -91,7 +94,7 @@ public class TruckReleaseActivity extends BaseActivity {
                     return;
                 }
                 if (etGoodsName.getText().toString().trim().length() < 1) {
-                    showErrorToast("请输入货物名称");
+                    showErrorToast("请选择货物");
                     return;
                 }
                 if (etGoodsNumber.getText().toString().trim().length() < 1) {
@@ -184,8 +187,9 @@ public class TruckReleaseActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.tv_start, R.id.tv_end, R.id.tv_load_time, R.id.tv_info_length})
+    @OnClick({R.id.tv_start, R.id.tv_end, R.id.tv_load_time, R.id.tv_info_length, R.id.et_goods_name})
     public void onClick(View v) {
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.tv_start://起点
                 startForResult_Activity(this, AddressSelectActivity.class, 1, new BasicNameValuePair("code", "1"), new BasicNameValuePair("type", "1"));
@@ -197,7 +201,7 @@ public class TruckReleaseActivity extends BaseActivity {
                 viewData();
                 break;
             case R.id.tv_info_length://信息时长
-                Intent intent = new Intent(TruckReleaseActivity.this, InformationSelectActivity.class);
+                intent = new Intent(TruckReleaseActivity.this, InformationSelectActivity.class);
                 Bundle b = new Bundle();
                 b.putStringArray("val", expiry);
                 intent.putExtras(b);
@@ -205,6 +209,12 @@ public class TruckReleaseActivity extends BaseActivity {
                 startActivityForResult(intent, 3);
                 overridePendingTransition(R.anim.push_left_in,
                         R.anim.push_left_out);
+                break;
+            case R.id.et_goods_name:
+                intent = new Intent(context, ProductSelectActivity.class);
+                intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
+                intent.putExtra(Const.KEY_ACTION, Const.ACTION_ADD_PRODUCT);
+                startActivityForResult(intent, Const.REQUEST_CODE_SELECT_PRODUCT);
                 break;
             default:
                 break;
@@ -308,6 +318,10 @@ public class TruckReleaseActivity extends BaseActivity {
                         break;
                 }
                 tvInfoLength.setText(expiry[expiry_date]);
+                break;
+            case Const.REQUEST_CODE_SELECT_PRODUCT: //选择货物
+                ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
+                etGoodsName.setText(product.getName());
                 break;
             default:
                 break;

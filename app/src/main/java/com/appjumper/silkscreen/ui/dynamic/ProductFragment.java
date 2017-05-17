@@ -1,18 +1,21 @@
-package com.appjumper.silkscreen.ui.trend;
+package com.appjumper.silkscreen.ui.dynamic;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.bean.TrendArticle;
+import com.appjumper.silkscreen.base.BaseFragment;
+import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.trend.adapter.ArticleAllAdapter;
+import com.appjumper.silkscreen.ui.dynamic.adapter.ProductAdapter;
+import com.appjumper.silkscreen.ui.home.process.ProcessingDetailsActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -22,6 +25,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -32,91 +36,100 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 行情分析分章——全部
- * Created by Botx on 2017/5/11.
+ * 产品
+ * Created by Botx on 2017/5/17.
  */
 
-public class TrendArticleAllActivity extends BaseActivity {
+public class ProductFragment extends BaseFragment {
 
     @Bind(R.id.ptrLayt)
     PtrClassicFrameLayout ptrLayt;
-    @Bind(R.id.recyclerArticle)
-    RecyclerView recyclerArticle;
+    @Bind(R.id.recyclerData)
+    RecyclerView recyclerData;
 
-    private List<TrendArticle> articleList;
-    private ArticleAllAdapter articleAdapter;
+    private List<Product> dataList;
+    private ProductAdapter adapter;
 
     private int page = 1;
     private int pageSize = 20;
     private int totalSize;
 
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_dynamic_data, container, false);
+        ButterKnife.bind(this, view);
+        return view;
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trend_article_all);
-        ButterKnife.bind(this);
-
-        initBack();
-        initTitle("行情分析");
+    protected void initData() {
         initRecyclerView();
+        initRefreshLayout();
 
         ptrLayt.postDelayed(new Runnable() {
             @Override
             public void run() {
                 ptrLayt.autoRefresh();
             }
-        }, 100);
+        }, 50);
     }
 
 
     private void initRecyclerView() {
-        articleList = new ArrayList<>();
-        articleAdapter = new ArticleAllAdapter(R.layout.item_recycler_line_article_all, articleList);
-        recyclerArticle.setLayoutManager(new LinearLayoutManager(context));
-        articleAdapter.bindToRecyclerView(recyclerArticle);
-        articleAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        dataList = new ArrayList<>();
 
-        articleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        adapter = new ProductAdapter(R.layout.item_recycler_dynamic_product, dataList);
+        recyclerData.setLayoutManager(new LinearLayoutManager(context));
+        adapter.bindToRecyclerView(recyclerData);
+        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (checkLogined()) {
-                    Intent intent = new Intent(context, ArticleDetailActivity.class);
-                    intent.putExtra(Const.KEY_TOTAL, articleList.get(0).getId());
-                    intent.putExtra("id", articleList.get(position).getId());
-                    startActivity(intent);
-                }
+                start_Activity(context, ProcessingDetailsActivity.class,
+                        new BasicNameValuePair("title", dataList.get(position).getProduct_name() + dataList.get(position).getService_type_name()),
+                        new BasicNameValuePair("id", dataList.get(position).getId()));
             }
         });
 
-        articleAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 page++;
-                getArticle();
+                getData();
             }
-        }, recyclerArticle);
+        }, recyclerData);
 
-        articleAdapter.setEnableLoadMore(false);
+        adapter.setEnableLoadMore(false);
+    }
 
+
+    /**
+     * 设置下拉刷新
+     */
+    private void initRefreshLayout() {
+        ptrLayt.setLastUpdateTimeRelateObject(this);
         ptrLayt.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 page = 1;
-                getArticle();
+                getData();
             }
         });
     }
 
 
+
     /**
-     * 获取分析文章
+     * 获取数据
      */
-    private void getArticle() {
-        RequestParams params = MyHttpClient.getApiParam("tender", "analysis_list");
+    private void getData() {
+        RequestParams params = MyHttpClient.getApiParam("service", "collection_product");
         params.put("page", page);
         params.put("pagesize", pageSize);
+        params.put("uid", getUserID());
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
@@ -127,16 +140,16 @@ public class TrendArticleAllActivity extends BaseActivity {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
-                        List<TrendArticle> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), TrendArticle.class);
+                        List<Product> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), Product.class);
                         totalSize = dataObj.optInt("total");
 
                         if (page == 1)
-                            articleList.clear();
-                        articleList.addAll(list);
-                        articleAdapter.notifyDataSetChanged();
+                            dataList.clear();
+                        dataList.addAll(list);
+                        adapter.notifyDataSetChanged();
 
-                        if (articleList.size() < totalSize)
-                            articleAdapter.setEnableLoadMore(true);
+                        if (dataList.size() < totalSize)
+                            adapter.setEnableLoadMore(true);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -154,13 +167,16 @@ public class TrendArticleAllActivity extends BaseActivity {
             public void onFinish() {
                 super.onFinish();
                 ptrLayt.refreshComplete();
-                articleAdapter.loadMoreComplete();
-                if (totalSize == articleList.size())
-                    articleAdapter.loadMoreEnd();
+                adapter.loadMoreComplete();
+                if (totalSize == dataList.size())
+                    adapter.loadMoreEnd();
 
-                articleAdapter.setEmptyView(R.layout.layout_empty_view_common);
+                adapter.setEmptyView(R.layout.layout_empty_view_common);
             }
         });
+
+
     }
+
 
 }

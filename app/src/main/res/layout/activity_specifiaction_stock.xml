@@ -184,18 +184,18 @@
 
 
 
-                <com.appjumper.silkscreen.view.MyEditText
+                <EditText
                     android:id="@+id/et_remark"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:background="@color/view_background_gray_color"
-                    android:gravity="top"
+                    android:gravity="left|top"
                     android:padding="10dp"
                     android:inputType="textMultiLine"
                     android:lineSpacingExtra="3dp"
                     android:maxLength="1000"
-                    android:scrollbars="vertical"
+                    android:minLines="6"
                     android:hint=""
                     android:textColor="@color/text_black_color"
                     android:textColorHint="@color/light_gray_color"

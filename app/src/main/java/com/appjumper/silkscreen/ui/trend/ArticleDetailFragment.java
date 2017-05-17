@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.bean.TrendArticle;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
@@ -97,6 +98,8 @@ public class ArticleDetailFragment extends BaseFragment {
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         article = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), TrendArticle.class);
                         setData();
+
+                        CommonApi.addLiveness(getUserID(), 11);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

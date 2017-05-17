@@ -60,6 +60,9 @@ public class ExhibitionActivity extends BaseActivity {
         listView = pullToRefreshView.getRefreshableView();
         mEmptyLayout = LayoutInflater.from(this).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
+
+        refresh();
+
         initLocation();
         mlocationClient.setLocationListener(new AMapLocationListener() {
             @Override

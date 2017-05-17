@@ -103,7 +103,7 @@ public class SearchStockFragment extends BaseFragment {
             public void run() {
                 ptrResult.autoRefresh();
             }
-        }, 100);
+        }, 50);
     }
 
 
@@ -133,7 +133,7 @@ public class SearchStockFragment extends BaseFragment {
                     public void run() {
                         ptrResult.autoRefresh();
                     }
-                }, 100);
+                }, 50);
             }
         });
 
@@ -156,6 +156,7 @@ public class SearchStockFragment extends BaseFragment {
 
         resultAdapter = new SearchProductAdapter(R.layout.item_processing_listview, resultList);
         resultAdapter.bindToRecyclerView(recyclerResult);
+        resultAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
 
         resultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -272,7 +273,7 @@ public class SearchStockFragment extends BaseFragment {
                         public void run() {
                             ptrResult.autoRefresh();
                         }
-                    }, 100);
+                    }, 50);
                 }
             }
         }

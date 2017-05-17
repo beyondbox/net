@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Gravity;
@@ -205,7 +207,17 @@ public class BasePhotoGridActivity extends BaseActivity implements PhotoPopupWin
 		}
 		camera_pic_path = SAVEPATH + "/" + name;
 		File mCurrentPhotoFile = new File(camera_pic_path);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mCurrentPhotoFile));
+
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, mCurrentPhotoFile);
+			intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+		} else {
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mCurrentPhotoFile));
+		}
+
+
 		startActivityForResult(intent, PHOTO_CAMERA_WITH_DATA);
 	}
 

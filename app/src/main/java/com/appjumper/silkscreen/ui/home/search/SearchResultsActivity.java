@@ -20,6 +20,7 @@ import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.LogHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -100,6 +101,7 @@ public class SearchResultsActivity extends BaseActivity {
                         longitude = aMapLocation.getLongitude();//获取经度
                         accuracy = aMapLocation.getAccuracy();//获取精度信息
                         mlocationClient.stopLocation();
+                        LogHelper.e("定位定位定位定位", "***************************");
                         broadcastManager.sendBroadcast(new Intent(Const.ACTION_SEARCHING_REFRESH));
                     }
                 }

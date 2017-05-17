@@ -2,24 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include layout="@layout/layout_header_with_text"/>
 
-    <com.chanven.lib.cptr.PtrClassicFrameLayout
-        android:id="@+id/ptrDynamic"
-        xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayt"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:tabBackground="@color/white"
+        app:tabIndicatorColor="@color/theme_color"
+        app:tabIndicatorHeight="1dp"
+        app:tabTextColor="@color/text_black_color"
+        app:tabSelectedTextColor="@color/theme_color"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerDynamic"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical">
 
-        </android.support.v7.widget.RecyclerView>
+    <View style="@style/LineStyle" />
 
-    </com.chanven.lib.cptr.PtrClassicFrameLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 
 </LinearLayout>

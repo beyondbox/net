@@ -43,6 +43,7 @@ public class LoginActivity extends BaseActivity{
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initBack();
+        initProgressDialog(false, "正在登录...");
     }
 
     @OnClick({R.id.btn_register,R.id.login_btn,R.id.tv_repassword})
@@ -65,9 +66,7 @@ public class LoginActivity extends BaseActivity{
                     return;
                 }
                 hideKeyboard();
-                initProgressDialog();
                 progress.show();
-                progress.setMessage("正在登录...");
                 new Thread(loginRun).start();
                 break;
             default:
@@ -150,7 +149,6 @@ public class LoginActivity extends BaseActivity{
         if (resultCode == Const.RESULT_CODE_REGISTER_SUCCESS) {
             et_name.setText(data.getStringExtra(Const.KEY_MOBILE));
             et_pwd.setText(data.getStringExtra(Const.KEY_PASSWORD));
-            progress.setMessage("正在登录...");
             progress.show();
             new Thread(loginRun).start();
         }

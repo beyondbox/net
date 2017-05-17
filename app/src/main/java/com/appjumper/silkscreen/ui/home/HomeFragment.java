@@ -32,6 +32,7 @@ import com.appjumper.silkscreen.bean.MyInquiry;
 import com.appjumper.silkscreen.bean.Notice;
 import com.appjumper.silkscreen.bean.ScoreResponse;
 import com.appjumper.silkscreen.bean.UnRead;
+import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
@@ -426,6 +427,9 @@ public class HomeFragment extends BaseFragment {
                         l_integral.setVisibility(View.VISIBLE);
                         imageView3.setVisibility(View.GONE);
                         tv_integral.setText(baseResponse.getData().getScore());
+                        User user = getUser();
+                        user.setScore(baseResponse.getData().getScore());
+                        getMyApplication().getMyUserManager().storeUserInfo(user);
                         CommonApi.addLiveness(getUserID(), 2);
                     } else {
                         showErrorToast(baseResponse.getError_desc());

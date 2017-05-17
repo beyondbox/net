@@ -292,4 +292,6 @@ public class Product implements Serializable{
     public void setSection(String section) {
         this.section = section;
     }
+
+
 }

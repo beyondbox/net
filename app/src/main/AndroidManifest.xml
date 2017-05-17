@@ -15,6 +15,18 @@
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService"></service>
 
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.appjumper.silkscreen.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+
         <activity
             android:name=".ui.WelcomeActivity"
             android:label="@string/app_name"

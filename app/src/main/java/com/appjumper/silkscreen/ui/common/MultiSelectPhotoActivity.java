@@ -6,10 +6,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -85,14 +87,28 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
             Toast.makeText(getApplicationContext(), "SD卡不可用", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(mCropTaskPhoto){
+        /*if(mCropTaskPhoto){
             startCropTakePhoto();
         }else{
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+        }*/
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, file);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        } else {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         }
+
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+
     }
 
     public void startCropTakePhoto(){
@@ -224,6 +240,7 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
     public void startPhotoZoom(Uri uri) {
         if(uri != null) {
             Intent intent = new Intent("com.android.camera.action.CROP");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.setDataAndType(uri, "image/*");
             //intent.setDataAndType(Uri.parse("file:///" + AppTool.getImageAbsolutePath(this, uri)), "image/*");
             intent.putExtra("crop", true);
@@ -246,7 +263,13 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
             switch (requestCode) {
                 case REQUEST_TAKE_PHOTO: // 拍照
                     if(mCropTaskPhoto){
-                        startPhotoZoom(imageUri);
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, file);//通过FileProvider创建一个content类型的Uri
+                            startPhotoZoom(uri);
+                        } else {
+                            startPhotoZoom(imageUri);
+                        }
+
                     }else{
                         saveRequestImage();
                     }

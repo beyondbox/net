@@ -82,6 +82,10 @@ public class Const {
      */
     public static final String ACTION_ATTENT_PRODUCT_MANAGE = "com.appjumper.silkscreen.ATTENT_PRODUCT_MANAGE";
     /**
+     * 添加找车的货物
+     */
+    public static final String ACTION_ADD_PRODUCT = "com.appjumper.silkscreen.ADD_PRODUCT";
+    /**
      * 搜索结果刷新
      */
     public static final String ACTION_SEARCHING_REFRESH = "com.appjumper.silkscreen.SEARCHING_REFRESH";
@@ -115,4 +119,7 @@ public class Const {
     public static final String KEY_OBJECT = "object";
     public static final String KEY_TOTAL = "total";
 
+
+
+    public static final String FILE_PROVIDER = "com.appjumper.silkscreen.fileprovider";
 }
