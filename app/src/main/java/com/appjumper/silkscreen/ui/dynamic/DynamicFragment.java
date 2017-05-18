@@ -47,7 +47,7 @@ public class DynamicFragment extends BaseFragment {
     private ViewPagerFragAdapter pagerAdapter;
     private List<Fragment> fragList;
 
-    private String [] titleArr = {"产品", "物流", "找车的货物", "设备", "出租厂房", "招聘"};
+    private String [] titleArr = {"产品", "物流", "找车", "设备", "厂房", "招聘"};
 
     private DynamicAdapter dynamicAdapter;
     private List<String> dynamicList;
@@ -69,7 +69,6 @@ public class DynamicFragment extends BaseFragment {
     @Override
     protected void initData() {
         initViewPager();
-
         CommonApi.addLiveness(getUserID(), 15);
     }
 
@@ -77,15 +76,18 @@ public class DynamicFragment extends BaseFragment {
 
     private void initViewPager() {
         fragList = new ArrayList<>();
-        for (int i = 0; i < titleArr.length; i++) {
-            fragList.add(new ProductFragment());
-        }
+        fragList.add(new ProductFragment());
+        fragList.add(new LogisticsFragment());
+        fragList.add(new FindCarFragment());
+        fragList.add(new DeviceFragment());
+        fragList.add(new WorkShopFragment());
+        fragList.add(new JobFragment());
 
         pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, Arrays.asList(titleArr));
         viewPager.setOffscreenPageLimit(titleArr.length - 1);
         viewPager.setAdapter(pagerAdapter);
 
-        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
+        //tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayt.setupWithViewPager(viewPager);
     }
 

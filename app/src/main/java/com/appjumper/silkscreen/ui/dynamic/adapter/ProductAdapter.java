@@ -1,6 +1,5 @@
 package com.appjumper.silkscreen.ui.dynamic.adapter;
 
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +12,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import static com.appjumper.silkscreen.R.id.imgViCertiBlue;
 
 /**
  * 产品adapter
@@ -33,10 +34,16 @@ public class ProductAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
                 .error(R.mipmap.img_error)
                 .into((ImageView) helper.getView(R.id.imgViHead));
 
+        TextView txtName = helper.getView(R.id.txtName);
+        if (item.getEnterprise_auth_status().equals("2"))
+            txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 118));
+        else
+            txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 138));
+
         helper.setText(R.id.txtTitle, item.getProduct_name() + item.getService_type_name())
                 .setText(R.id.txtName, item.getEnterprise_name())
                 .setText(R.id.txtTime, item.getCreate_time().replaceAll("-", "\\.").substring(0, 16))
-                .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
+                .setVisible(imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
                 .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"));
 
         List<Spec> spec = item.getService_spec();
@@ -52,13 +59,6 @@ public class ProductAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
 
         helper.setText(R.id.txtSubTitle, str);
 
-
-        TextView txtName = helper.getView(R.id.txtName);
-        ImageView imgViCertiBlue = helper.getView(R.id.imgViCertiBlue);
-        if (imgViCertiBlue.getVisibility() == View.VISIBLE)
-            txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 118));
-        else
-            txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 138));
     }
 
 }

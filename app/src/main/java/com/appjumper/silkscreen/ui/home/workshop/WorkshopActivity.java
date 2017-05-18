@@ -92,6 +92,9 @@ public class WorkshopActivity extends BaseActivity {
         });
         new Thread(addressrun).start();
         initView();
+
+        refresh();
+
         initListener();
         initLocation();
         mlocationClient.setLocationListener(new AMapLocationListener() {

@@ -22,16 +22,18 @@ public class RecruitList {
     private String update_time;
     private String mobile;
     private String user_nicename;
-    private String avatar;
+    private Avatar avatar;
     private String enterprise_id;
     private String enterprise_name;
     private String enterprise_address;
     private String enterprise_auth_status;
     private String enterprise_productivity_auth_status;
-    private String enterprise_logo;
+    private Avatar enterprise_logo;
     private Enterprise enterprise;
     private User user;
     private List<RecruitList> recommend;
+
+
 //    private AreaBean location;
 //
 //    public AreaBean getLocation() {
@@ -194,13 +196,6 @@ public class RecruitList {
         this.user_nicename = user_nicename;
     }
 
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
 
     public String getEnterprise_id() {
         return enterprise_id;
@@ -242,11 +237,19 @@ public class RecruitList {
         this.enterprise_productivity_auth_status = enterprise_productivity_auth_status;
     }
 
-    public String getEnterprise_logo() {
+    public Avatar getEnterprise_logo() {
         return enterprise_logo;
     }
 
-    public void setEnterprise_logo(String enterprise_logo) {
+    public void setEnterprise_logo(Avatar enterprise_logo) {
         this.enterprise_logo = enterprise_logo;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 }

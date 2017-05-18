@@ -2,12 +2,12 @@ package com.appjumper.silkscreen.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.appjumper.silkscreen.R;

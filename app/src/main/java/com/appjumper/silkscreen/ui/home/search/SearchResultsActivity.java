@@ -101,7 +101,6 @@ public class SearchResultsActivity extends BaseActivity {
                         longitude = aMapLocation.getLongitude();//获取经度
                         accuracy = aMapLocation.getAccuracy();//获取精度信息
                         mlocationClient.stopLocation();
-                        LogHelper.e("定位定位定位定位", "***************************");
                         broadcastManager.sendBroadcast(new Intent(Const.ACTION_SEARCHING_REFRESH));
                     }
                 }

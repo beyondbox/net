@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="12dp">
 
-    <ImageView
+    <com.appjumper.silkscreen.view.BorderRectImageView
         android:id="@+id/imageView"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageView"
         android:layout_marginLeft="10dp"
-        android:maxLines="1"
+        android:maxLines="2"
         android:ellipsize="end"
         android:text="安平县优加网络科技有限公司"
         android:textSize="14sp"

@@ -4,11 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <ImageView
+    <com.appjumper.silkscreen.view.RoundCornerImageView
         android:id="@+id/imgViProduct"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center_horizontal"
+        android:background="@color/transparent_color"
         android:scaleType="centerCrop"
         android:src="@mipmap/silkscreen"/>
 

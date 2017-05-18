@@ -20,7 +20,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
         android:text="52000元/年"
         android:textSize="14sp"
         android:textColor="#ff6000"/>
@@ -31,8 +30,9 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imgViHead"
         android:layout_toLeftOf="@id/txtPrice"
-        android:maxLines="1"
+        android:maxLines="2"
         android:ellipsize="end"
+        android:lineSpacingExtra="2dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="铁丝拔丝现货"
@@ -46,6 +46,7 @@
         android:layout_below="@id/txtTitle"
         android:layout_alignLeft="@id/txtTitle"
         android:layout_marginTop="4dp"
+        android:visibility="gone"
         android:lines="2"
         android:ellipsize="end"
         android:lineSpacingExtra="2dp"
@@ -53,18 +54,25 @@
         android:textColor="#4c4c4c"
         android:text="丝径100-200，网孔4-10厘米，尺寸100*200-200-400"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtTitle"
+        android:layout_alignLeft="@id/txtTitle"
+        android:layout_marginTop="8dp"/>
+
+
     <TextView
         android:id="@+id/txtLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/txtSubTitle"
-        android:layout_marginTop="20dp"
-        android:visibility="gone"
+        android:layout_below="@id/recyclerImage"
+        android:layout_marginTop="6dp"
         android:text="衡水安平"
         android:textColor="#4c4c4c"
         android:textSize="11sp"/>
-
 
 
     <TextView
@@ -72,9 +80,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/imgViHead"
-        android:layout_marginTop="6dp"
-        android:layout_marginLeft="8dp"
+        android:layout_below="@id/txtLocation"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="10dp"
         android:text="2017.03.15 15:30"
         android:textColor="#858585"
         android:textSize="11sp"/>
