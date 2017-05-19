@@ -197,11 +197,12 @@ public class ProcessingDetailsActivity extends BaseActivity {
                     serviceProduct.setName(product.getProduct_name());
                     serviceProduct.setId(product.getProduct_id());
                     serviceProduct.setProduct_spec(product.getService_spec());
+                    serviceProduct.setRemark(product.getRemark());
+                    serviceProduct.setImg_require(product.getImg_require());
                     bundle.putSerializable("service", serviceProduct);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.push_left_in,
-                            R.anim.push_left_out);
+                    overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
                 }
                 break;
             case R.id.rl_company:

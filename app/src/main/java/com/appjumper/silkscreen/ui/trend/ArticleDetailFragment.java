@@ -3,10 +3,12 @@ package com.appjumper.silkscreen.ui.trend;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
@@ -27,6 +29,7 @@ import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 文章详情
@@ -43,14 +46,28 @@ public class ArticleDetailFragment extends BaseFragment {
     ImageView imageView;
     @Bind(R.id.txtContent)
     TextView txtContent;
+    @Bind(R.id.llPraise)
+    LinearLayout llPraise;
 
     @Bind(R.id.back)
     ImageView back;
     @Bind(R.id.title)
     TextView title;
 
+    @Bind(R.id.imgViUp)
+    ImageView imgViUp;
+    @Bind(R.id.imgViDown)
+    ImageView imgViDown;
+    @Bind(R.id.txtUpNum)
+    TextView txtUpNum;
+    @Bind(R.id.txtDownNum)
+    TextView txtDownNum;
+
     private int id;
     private TrendArticle article;
+
+    private int upNum; //点赞数
+    private int downNum; //点踩数
 
 
 
@@ -70,6 +87,7 @@ public class ArticleDetailFragment extends BaseFragment {
         id = bundle.getInt("id");
 
         initProgressDialog();
+        progress.show();
         getData();
     }
 
@@ -86,7 +104,7 @@ public class ArticleDetailFragment extends BaseFragment {
             @Override
             public void onStart() {
                 super.onStart();
-                progress.show();
+                //progress.show();
             }
 
             @Override
@@ -96,6 +114,7 @@ public class ArticleDetailFragment extends BaseFragment {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
+                        llPraise.setVisibility(View.VISIBLE);
                         article = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), TrendArticle.class);
                         setData();
 
@@ -124,13 +143,113 @@ public class ArticleDetailFragment extends BaseFragment {
      * 渲染数据
      */
     private void setData() {
-        Picasso.with(context)
-                .load(article.getImg())
-                .into(imageView);
+        if (!TextUtils.isEmpty(article.getImg())) {
+            Picasso.with(context)
+                    .load(article.getImg())
+                    .into(imageView);
+        }
 
         txtTitle.setText(article.getTitle());
         txtDate.setText(article.getCreate_time());
         txtContent.setText(Html.fromHtml(article.getContent()));
+        txtUpNum.setText("(" + article.getUp() + ")");
+        txtDownNum.setText("(" + article.getDown() + ")");
+
+        upNum = Integer.parseInt(article.getUp());
+        downNum = Integer.parseInt(article.getDown());
+    }
+
+
+    /**
+     * 点赞
+     */
+    private void up() {
+        RequestParams params = MyHttpClient.getApiParam("tender", "analysis_up");
+        params.put("uid", getUserID());
+        params.put("analysis_id", id);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        imgViUp.setImageResource(R.mipmap.praise_blue);
+                        imgViDown.setImageResource(R.mipmap.tread_black);
+                        getData();
+                        CommonApi.addLiveness(getUserID(), 12);
+                    } else {
+                        showErrorToast(jsonObj.getString("error_desc"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+        });
+    }
+
+
+
+    /**
+     * 点踩
+     */
+    private void down() {
+        RequestParams params = MyHttpClient.getApiParam("tender", "analysis_down");
+        params.put("uid", getUserID());
+        params.put("analysis_id", id);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        imgViUp.setImageResource(R.mipmap.praise_black);
+                        imgViDown.setImageResource(R.mipmap.tread_blue);
+                        getData();
+                        CommonApi.addLiveness(getUserID(), 12);
+                    } else {
+                        showErrorToast(jsonObj.getString("error_desc"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+        });
+    }
+
+
+
+    @OnClick({R.id.imgViUp, R.id.imgViDown})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imgViUp:
+                up();
+                break;
+            case R.id.imgViDown:
+                down();
+                break;
+            default:
+                break;
+        }
     }
 
 }

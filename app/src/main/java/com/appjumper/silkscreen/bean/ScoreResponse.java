@@ -18,6 +18,8 @@ public class ScoreResponse extends BaseResponse{
     public class Data{
         private String score;
 
+        private String integral;
+
         public String getScore() {
             return score;
         }
@@ -25,5 +27,16 @@ public class ScoreResponse extends BaseResponse{
         public void setScore(String score) {
             this.score = score;
         }
+
+
+        public String getIntegral() {
+            return integral;
+        }
+
+        public void setIntegral(String integral) {
+            this.integral = integral;
+        }
     }
+
+
 }

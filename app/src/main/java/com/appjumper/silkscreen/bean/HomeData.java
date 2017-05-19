@@ -9,7 +9,7 @@ import java.util.List;
 public class HomeData {
     private List<HomeBanner> banner;
     private String checkin;//是否签到
-    private String score;//积分
+    private String[] score;//当日积分
     private List<Notice> notice;//公告
     private List<Enterprise> recommend;//订做推荐企业
     private List<HomeBanner> ad;//广告
@@ -45,13 +45,6 @@ public class HomeData {
         this.checkin = checkin;
     }
 
-    public String getScore() {
-        return score;
-    }
-
-    public void setScore(String score) {
-        this.score = score;
-    }
 
     public List<Notice> getNotice() {
         return notice;
@@ -91,5 +84,13 @@ public class HomeData {
 
     public void setRecommend_jiagong(List<Enterprise> recommend_jiagong) {
         this.recommend_jiagong = recommend_jiagong;
+    }
+
+    public String[] getScore() {
+        return score;
+    }
+
+    public void setScore(String[] score) {
+        this.score = score;
     }
 }

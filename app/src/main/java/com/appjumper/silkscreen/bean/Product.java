@@ -41,8 +41,16 @@ public class Product implements Serializable{
     private String url;
     private List<Avatar> img_list;
 
+    private String img_require;
+
     @SerializedName("initial")
     private String section;
+
+
+
+
+
+
 
     public String getUrl() {
         return url;
@@ -293,5 +301,11 @@ public class Product implements Serializable{
         this.section = section;
     }
 
+    public String getImg_require() {
+        return img_require;
+    }
 
+    public void setImg_require(String img_require) {
+        this.img_require = img_require;
+    }
 }

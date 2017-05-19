@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 产品实体类，重新生成的，字段名与服务器一致
+ * 产品列表实体类
  * Created by Botx on 2017/4/27.
  */
 

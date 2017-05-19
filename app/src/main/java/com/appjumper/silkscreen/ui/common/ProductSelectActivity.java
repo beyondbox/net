@@ -30,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -257,14 +258,45 @@ public class ProductSelectActivity extends BaseActivity {
 
 
 
-    @OnClick({R.id.back, R.id.txtConfirm, R.id.txtNoSelect})
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null)
+            return;
+
+        if (isMultiMode) {
+            ArrayList<ServiceProduct> list = (ArrayList<ServiceProduct>) data.getSerializableExtra("list");
+            for (ServiceProduct product : list) {
+                for (ServiceProduct product1 : productList) {
+                    if (product.getId().equals(product1.getId())) {
+                        if (action.equals(Const.ACTION_ATTENT_PRODUCT_MANAGE)) {
+                            product1.setIs_collection(product.getIs_collection());
+                        } else if (action.equals(Const.ACTION_ADD_PRODUCT)) {
+                            product1.setIs_car(product.getIs_car());
+                        }
+                        break;
+                    }
+                }
+            }
+
+            productAdapter.notifyDataSetChanged();
+        } else {
+            setResult(0, data);
+            finish();
+        }
+
+    }
+
+
+
+    @OnClick({R.id.back, R.id.txtConfirm, R.id.txtNoSelect, R.id.imgViSearch})
     public void onClick(View view) {
         Intent data = new Intent();
         switch (view.getId()) {
             case R.id.back:
                 finish();
                 break;
-            case R.id.txtNoSelect:
+            case R.id.txtNoSelect: //全部产品
                 ServiceProduct pro = new ServiceProduct();
                 pro.setId("");
                 pro.setName("全部产品");
@@ -273,7 +305,7 @@ public class ProductSelectActivity extends BaseActivity {
                 setResult(0, data);
                 finish();
                 break;
-            case R.id.txtConfirm:
+            case R.id.txtConfirm: //完成
                 ArrayList<ServiceProduct> list = new ArrayList<>();
                 for (ServiceProduct product : productList) {
                     if (action.equals(Const.ACTION_ATTENT_PRODUCT_MANAGE)) {
@@ -289,8 +321,20 @@ public class ProductSelectActivity extends BaseActivity {
                 setResult(0, data);
                 finish();
                 break;
+            case R.id.imgViSearch: //搜索
+                if (productList.size() == 0)
+                    return;
+                Intent intent = new Intent(context, ProductSearchActivity.class);
+                intent.putExtra("list", (Serializable)productList);
+                intent.putExtra(Const.KEY_IS_MULTI_MODE, isMultiMode);
+                intent.putExtra(Const.KEY_ACTION, action);
+                startActivityForResult(intent, 0);
+                break;
             default:
                 break;
         }
     }
+
+
+
 }

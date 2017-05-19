@@ -148,8 +148,13 @@ public class ProductFragment extends BaseFragment {
                         dataList.addAll(list);
                         adapter.notifyDataSetChanged();
 
-                        if (dataList.size() < totalSize)
-                            adapter.setEnableLoadMore(true);
+                        if (dataList.size() < totalSize) {
+                            if (list.size() > 0)
+                                adapter.setEnableLoadMore(true);
+                            else
+                                adapter.setEnableLoadMore(false);
+                        }
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

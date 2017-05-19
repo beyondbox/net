@@ -311,6 +311,8 @@ public class StockDetailActivity extends BaseActivity {
         serviceProduct.setName(product.getProduct_name());
         serviceProduct.setId(product.getProduct_id());
         serviceProduct.setProduct_spec(product.getService_spec());
+        serviceProduct.setRemark(product.getRemark());
+        serviceProduct.setImg_require(product.getImg_require());
         bundle.putSerializable("service", serviceProduct);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -447,7 +449,7 @@ public class StockDetailActivity extends BaseActivity {
 
 
     /**
-     * 规格弹窗
+     * 规格弹窗 （没用着）
      *
      * @param v
      */

@@ -218,16 +218,14 @@
         <activity android:name=".ui.trend.TrendArticleAllActivity" />
         <!--行情分析文章详情-->
         <activity android:name=".ui.trend.ArticleDetailActivity" />
-
-
         <!--发布刺绳-->
         <activity android:name=".ui.spec.ReleaseCiShengActivity" />
         <!--询价刺绳-->
         <activity android:name=".ui.spec.InquiryCiShengActivity" />
-
-
         <!--动态管理-->
         <activity android:name=".ui.dynamic.DynamicManageActivity" />
+        <!--本地产品搜索-->
+        <activity android:name=".ui.common.ProductSearchActivity" />
 
 
         <!-- 【必须】 信鸽receiver广播接收 -->

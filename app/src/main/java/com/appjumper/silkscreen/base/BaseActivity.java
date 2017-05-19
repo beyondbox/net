@@ -31,6 +31,8 @@ import com.appjumper.silkscreen.util.MProgressDialog;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import butterknife.ButterKnife;
+
 
 /**
  * Created by Administrator on 2016/6/29.
@@ -94,6 +96,8 @@ public class BaseActivity extends FragmentActivity {
             mlocationClient.stopLocation();
             mlocationClient.onDestroy();
         }
+
+        ButterKnife.unbind(this);
     }
 
     /**
@@ -415,4 +419,7 @@ public class BaseActivity extends FragmentActivity {
         }
         return false;
     }
+
+
+
 }

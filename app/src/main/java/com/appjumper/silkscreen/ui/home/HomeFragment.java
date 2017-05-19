@@ -310,7 +310,8 @@ public class HomeFragment extends BaseFragment {
         if (data.getCheckin().equals("1")) {
             l_integral.setVisibility(View.VISIBLE);
             imageView3.setVisibility(View.GONE);
-            tv_integral.setText(data.getScore());
+            String[] scoreArr = data.getScore();
+            tv_integral.setText(scoreArr[0]);
         } else {
             l_integral.setVisibility(View.GONE);
             imageView3.setVisibility(View.VISIBLE);
@@ -428,7 +429,7 @@ public class HomeFragment extends BaseFragment {
                         imageView3.setVisibility(View.GONE);
                         tv_integral.setText(baseResponse.getData().getScore());
                         User user = getUser();
-                        user.setScore(baseResponse.getData().getScore());
+                        user.setScore(baseResponse.getData().getIntegral());
                         getMyApplication().getMyUserManager().storeUserInfo(user);
                         CommonApi.addLiveness(getUserID(), 2);
                     } else {

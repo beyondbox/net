@@ -24,6 +24,8 @@ import com.appjumper.silkscreen.util.MProgressDialog;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import butterknife.ButterKnife;
+
 
 /**
  * Created by Administrator on 2016/6/29.
@@ -85,6 +87,14 @@ public abstract class BaseFragment extends Fragment {
         isViewCreated = false;
         isDataInited = false;
     }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
+    }
+
 
     /**
      * 打开Activity
