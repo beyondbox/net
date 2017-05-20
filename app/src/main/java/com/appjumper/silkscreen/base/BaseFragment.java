@@ -133,7 +133,7 @@ public abstract class BaseFragment extends Fragment {
      * @param message
      */
     public void initProgressDialog(boolean cancel, String message) {
-        initProgressDialog(getActivity(), cancel, message);
+        progress = new MProgressDialog(getActivity(), cancel, message);
     }
 
     public void initProgressDialog(Context mContext, boolean cancel,

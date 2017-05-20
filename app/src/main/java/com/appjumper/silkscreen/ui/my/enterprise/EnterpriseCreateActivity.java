@@ -3,17 +3,29 @@ package com.appjumper.silkscreen.ui.my.enterprise;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
@@ -23,18 +35,23 @@ import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
+import com.appjumper.silkscreen.util.Applibrary;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.manager.ActivityTaskManager;
+import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,7 +61,7 @@ import butterknife.OnClick;
  * Created by yc on 2016/11/18.
  * 创建企业（基本信息）
  */
-public class EnterpriseCreateActivity extends MultiSelectPhotoActivity {
+public class EnterpriseCreateActivity extends BasePhotoGridActivity {
     @Bind(R.id.iv_logo)
     ImageView iv_logo;
 
@@ -96,8 +113,9 @@ public class EnterpriseCreateActivity extends MultiSelectPhotoActivity {
         hideKeyboard();
         ButterKnife.bind(this);
         initBack();
+        initView();
         initLocation();
-        initProgressDialog();
+        initProgressDialog(false, "正在创建企业...");
         type = getIntent().getStringExtra("type");
         if (type.equals("1")) {
             enterprise = (Enterprise) getIntent().getSerializableExtra("enterprise");
@@ -178,20 +196,24 @@ public class EnterpriseCreateActivity extends MultiSelectPhotoActivity {
                         return;
                     }
                 }
+
                 if (!logoPath.equals("")) {
                     progress.show();
                     new Thread(new UpdateStringRun(logoPath)).start();
+                } else if (selectedPicture.size() > 0) {
+                    finalLogo = logoUrl;
+                    progress.show();
+                    new Thread(new UpdateStringRun2(thumbPictures)).start();
                 } else {
                     finalLogo = logoUrl;
                     progress.show();
-                    progress.setMessage("正在创建企业...");
                     new Thread(new SubmitRun()).start();
                 }
                 break;
             case R.id.rl_logo://上传logo
-                setCropSingleImage(true);
+                /*setCropSingleImage(true);
                 setSingleImage(true);
-                setCropTaskPhoto(true);
+                setCropTaskPhoto(true);*/
                 showWindowSelectList(v);
                 break;
             default:
@@ -236,7 +258,7 @@ public class EnterpriseCreateActivity extends MultiSelectPhotoActivity {
                 }).show();
     }
 
-    @Override
+
     protected void requestImage(String[] path) {
         if (!logoPath.equals("")) {
             // 删除临时的100K左右的图片
@@ -252,6 +274,7 @@ public class EnterpriseCreateActivity extends MultiSelectPhotoActivity {
 
     }
 
+    //上传logo
     // 如果不是切割的upLoadBitmap就很大
     public class UpdateStringRun implements Runnable {
         private String newPicturePath;
@@ -282,6 +305,49 @@ public class EnterpriseCreateActivity extends MultiSelectPhotoActivity {
             }
         }
     }
+
+
+
+
+    //上传多张图片
+    // 如果不是切割的upLoadBitmap就很大
+    public class UpdateStringRun2 implements Runnable {
+        private ArrayList<String> thumbPictures;
+
+        // thumbPictures 是 List<压缩图路径>
+        public UpdateStringRun2(ArrayList<String> thumbPictures) {
+            this.thumbPictures = new ArrayList<String>();
+            for (String str : thumbPictures) {
+                if (!str.equals("" + BasePhotoGridActivity.PICTURE_UPDATE_ICON)) {
+                    //去掉最后一个 +图片
+                    this.thumbPictures.add(str);
+                }
+            }
+        }
+
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            ImageResponse retMap = null;
+            try {
+                // 如果不是切割的upLoadBitmap就很大,在这里压缩
+                retMap = JsonParser.getImageResponse(HttpUtil.upload(thumbPictures, Url.UPLOADIMAGE));
+
+            } catch (Exception e) {
+                // TODO Auto-generated catch block XDEBUG_SESSION_START=1
+                e.printStackTrace();
+            }
+            if (retMap != null) {
+                handler.sendMessage(handler.obtainMessage(
+                        4, retMap));
+            } else {
+                handler.sendMessage(handler
+                        .obtainMessage(NETWORK_SUCCESS_DATA_ERROR));
+            }
+        }
+    }
+
+
 
 
     private class SubmitRun implements Runnable {
@@ -345,20 +411,37 @@ public class EnterpriseCreateActivity extends MultiSelectPhotoActivity {
             if (activity == null) {
                 return;
             }
-            activity.progress.dismiss();
+
             switch (msg.what) {
-                case 3://上传头像回调
+                case 3://上传logo回调
                     imgResponse = (ImageResponse) msg.obj;
                     if (imgResponse.isSuccess()) {
                         finalLogo = imgResponse.getData().get(0).getOrigin();
-                        progress.show();
-                        progress.setMessage("正在创建企业...");
-                        new Thread(new SubmitRun()).start();
+
+                        if (selectedPicture.size() > 0)
+                            new Thread(new UpdateStringRun2(thumbPictures)).start();
+                        else
+                            new Thread(new SubmitRun()).start();
+
                     } else {
+                        progress.dismiss();
                         activity.showErrorToast(imgResponse.getError_desc());
                     }
                     break;
+
+                case 4://上传多张图片
+                    imgResponse = (ImageResponse) msg.obj;
+                    if (imgResponse.isSuccess()) {
+                        imgsUrl = imags(imgResponse.getData());
+                        new Thread(new SubmitRun()).start();
+                    } else {
+                        progress.dismiss();
+                        activity.showErrorToast(imgResponse.getError_desc());
+                    }
+                    break;
+
                 case NETWORK_SUCCESS_PAGER_RIGHT://创建企业回调
+                    progress.dismiss();
                     BaseResponse userResponse = (BaseResponse) msg.obj;
                     if (userResponse.isSuccess()) {
                         activity.finish();
@@ -369,17 +452,233 @@ public class EnterpriseCreateActivity extends MultiSelectPhotoActivity {
 
                     break;
                 case NETWORK_FAIL:
+                    progress.dismiss();
                     activity.showErrorToast();
                     break;
                 case NETWORK_SUCCESS_DATA_ERROR:
+                    progress.dismiss();
                     activity.showErrorToast();
                     break;
-
                 default:
+                    progress.dismiss();
                     activity.showErrorToast();
                     break;
             }
         }
     }
 
+
+    private String imags(List<ImageResponse.Data> data) {
+        String str = "";
+        for (int i = 0; i < data.size(); i++) {
+            str += data.get(i).getImg_id();
+            if (i < (data.size() - 1)) {
+                str += ",";
+            }
+        }
+        return str;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /**
+     * 以下是上传企业logo调用部分
+     */
+
+
+
+    private void init() {
+        int nextsize = random.nextInt(20);
+        Log.e("log",nextsize+"随机数");
+        file = new File(Applibrary.IMAGE_CACHE_DIR, System.currentTimeMillis() + nextsize + ".jpg");
+        imageUri= Uri.fromFile(file);
+    }
+
+
+    public void showWindowSelectList(View v) {
+        init();
+        View view = getLayoutInflater().inflate(R.layout.bottom_photo_select_popupwindow, null);
+        final PopupWindow pop = new PopupWindow(this);
+        pop.setAnimationStyle(R.style.BottomPopupAnimation);
+        pop.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        pop.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        pop.setFocusable(true);
+        pop.setOutsideTouchable(true);
+        pop.setContentView(view);
+        backgroundAlpha(0.4f);
+        ColorDrawable dw = new ColorDrawable(0x00000000);
+        //设置SelectPicPopupWindow弹出窗体的背景
+        pop.setBackgroundDrawable(dw);
+        pop.showAtLocation(v, Gravity.BOTTOM, 0, 0);
+
+
+        View camera = view.findViewById(R.id.btn_take_photo);
+        View photo = view.findViewById(R.id.btn_pick_photo);
+        View cancel = view.findViewById(R.id.btn_cancel);
+        pop.setOnDismissListener(new popupDismissListener());
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pop.dismiss();
+            }
+        });
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pop.dismiss();
+                startPickImage();
+            }
+        });
+
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pop.dismiss();
+                startTakePhoto();
+            }
+        });
+    }
+
+
+    class popupDismissListener implements PopupWindow.OnDismissListener {
+        @Override
+        public void onDismiss() {
+            backgroundAlpha(1f);
+        }
+    }
+
+
+    /**
+     * 相册单选模式
+     */
+    private void startPickImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");//相片类型
+        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+    }
+
+
+    /**
+     * 开始照相
+     */
+    public void startTakePhoto() {
+
+        // 检测sd是否可用
+        String sdStatus = Environment.getExternalStorageState();
+        if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
+            Toast.makeText(getApplicationContext(), "SD卡不可用", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, file);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        } else {
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        }
+
+        startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+
+    }
+
+
+
+    /**
+     * 裁剪
+     */
+    public void startPhotoZoom(Uri uri) {
+        if(uri != null) {
+            Intent intent = new Intent("com.android.camera.action.CROP");
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(uri, "image/*");
+            //intent.setDataAndType(Uri.parse("file:///" + AppTool.getImageAbsolutePath(this, uri)), "image/*");
+            intent.putExtra("crop", true);
+            intent.putExtra("aspectX", aspectX);
+            intent.putExtra("aspectY", aspectY);
+            intent.putExtra("outputX", aspectX * 100);
+            intent.putExtra("outputY", aspectY * 100);
+            intent.putExtra("return-data", false);
+            intent.putExtra("noFaceDetection", true);
+            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());// 返回格式
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            startActivityForResult(intent, REQUESTCODE_CUTTING);
+        }
+    }
+
+
+    private void saveRequestImage(){
+        if (file != null && file.exists()) {
+            String path = file.getAbsolutePath();
+            requestImage(new String[]{path});
+        }
+    }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {// 单张 图片 ，拍照后返回
+
+            switch (requestCode) {
+                case REQUEST_TAKE_PHOTO: // 拍照
+                        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, file);//通过FileProvider创建一个content类型的Uri
+                            startPhotoZoom(uri);
+                        } else {
+                            startPhotoZoom(imageUri);
+                        }
+                    break;
+                case REQUEST_CODE_PICK_IMAGE: //单选
+                        startPhotoZoom(data.getData());
+                    break;
+                case REQUESTCODE_CUTTING://裁剪后相片
+                    saveRequestImage();
+                    break;
+            }
+
+        }
+
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    private static final int REQUEST_CODE_PICK_IMAGE = 160;
+    private static final int REQUESTCODE_CUTTING = 150;
+    public static final int REQUEST_TAKE_PHOTO = 120;
+
+    private File file;
+
+    private Random random = new Random();
+
+    private Uri imageUri;
+
+    // 裁剪比例
+    private int aspectX = 5;
+    private int aspectY = 5;
 }

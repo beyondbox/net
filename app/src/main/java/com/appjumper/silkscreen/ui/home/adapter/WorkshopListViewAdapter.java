@@ -20,6 +20,7 @@
 package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,7 +112,10 @@ public class WorkshopListViewAdapter extends BaseAdapter {
             viewHolder.llLine.setVisibility(View.VISIBLE);
         }
         viewHolder.tvCompanyName.setText(item.getEnterprise_name());
-        Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.ivLogo);
+        if (TextUtils.isEmpty(item.getEnterprise_logo().getSmall()))
+            viewHolder.ivLogo.setImageResource(R.mipmap.icon_logo_image61);
+        else
+            Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.ivLogo);
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
         viewHolder.tvEnterpriseArea.setText(item.getArea() + "m²");
         viewHolder.tvPrice.setText(item.getPrice() + "元/年");

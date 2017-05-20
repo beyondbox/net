@@ -399,7 +399,14 @@ public class MainActivity extends FragmentActivity {
      * 获取消息未读数
      */
     private void getUnRead() {
-        if ("".equals(getUser()) || getUser() == null) {
+        if (getUser() == null) {
+            Intent intent = new Intent();
+            intent.setAction(Const.ACTION_UNREAD_REFRESH);
+            intent.putExtra(Const.KEY_OBJECT, new UnRead());
+            sendBroadcast(intent);
+
+            badgeTrend.setBadgeNumber(0);
+            badgeDynamic.setBadgeNumber(0);
             return;
         }
 

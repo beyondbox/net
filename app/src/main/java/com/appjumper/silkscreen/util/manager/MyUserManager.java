@@ -143,4 +143,27 @@ public class MyUserManager {
         editor.clear();
         editor.commit();
     }
+
+
+    /**
+     * 设置是否删除已失效的询价记录
+     * @param deleteInvalid
+     */
+    public void setInvalidInquiryOption(boolean deleteInvalid) {
+        SharedPreferences pref = mContext.getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("deleteInvalidInquiry", deleteInvalid);
+        editor.commit();
+    }
+
+
+    /**
+     * 拿到是否删除失效询价记录的设置
+     * @return
+     */
+    public boolean getInvalidInquiryOption() {
+        SharedPreferences pref = mContext.getSharedPreferences("USER", Activity.MODE_PRIVATE);
+        return pref.getBoolean("deleteInvalidInquiry", false);
+    }
+
 }

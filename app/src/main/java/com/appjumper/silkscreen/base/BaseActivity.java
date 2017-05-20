@@ -241,7 +241,8 @@ public class BaseActivity extends FragmentActivity {
      * @param message
      */
     public void initProgressDialog(boolean cancel, String message) {
-        initProgressDialog(this, cancel, message);
+        progress = new MProgressDialog(this, cancel, message);
+        //initProgressDialog(this, cancel, message);
     }
 
     public void initProgressDialog(Context mContext, boolean cancel,

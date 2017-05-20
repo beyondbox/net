@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">丝网2.8</string>
+    <string name="app_name">丝网2.9</string>
 
     <string name="pull_to_load_pull_label">向上滑动加载更多…</string>
     <string name="pull_to_load_release_label">加载更多…</string>

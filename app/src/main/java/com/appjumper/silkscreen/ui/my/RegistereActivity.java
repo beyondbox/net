@@ -172,6 +172,10 @@ public class RegistereActivity extends BaseActivity{
             if(activity == null){
                 return;
             }
+
+            if (activity.isDestroyed())
+                return;
+
             switch (msg.what) {
                 case NETWORK_OTHER: // 验证码倒计时
                     if (activity.CURRENTDELAYTIME <= 0) {
@@ -234,6 +238,26 @@ public class RegistereActivity extends BaseActivity{
         };
         timer.schedule(task, 0, 1000);
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (task != null) {
+            task.cancel();
+            task = null;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
     /**
      * 登录

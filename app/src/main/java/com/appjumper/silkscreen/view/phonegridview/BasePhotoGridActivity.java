@@ -246,17 +246,20 @@ public class BasePhotoGridActivity extends BaseActivity implements PhotoPopupWin
 			switch (requestCode) {
 				case PHOTO_CAMERA_WITH_DATA://拍照成功
 					selectedPicture.add(camera_pic_path);
+					// 在子线程中处理，并展示
+					new Thread(new CompressRun(selectedPicture)).start();
 					break;
-				default://从相册选择图片集合
-					selectedPicture = (ArrayList<String>) data
-							.getSerializableExtra(SelectPictureActivity.INTENT_SELECTED_PICTURE);
+				case REQUEST_PICK: //从相册选择图片集合
+					selectedPicture = (ArrayList<String>) data.getSerializableExtra(SelectPictureActivity.INTENT_SELECTED_PICTURE);
+					// 在子线程中处理，并展示
+					new Thread(new CompressRun(selectedPicture)).start();
+					break;
+				default:
 					break;
 			}
 //			if(progress != null){
 //				progress.show();
 //			}
-			// 在子线程中处理，并展示
-			new Thread(new CompressRun(selectedPicture)).start();
 		}
 	}
 

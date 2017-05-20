@@ -29,6 +29,7 @@ import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,10 +75,11 @@ public class MessageActivity extends BaseActivity {
     private String type = "1";//我的报价或者我的询价
     private InquiryAdapter inquiryAdapter;
     private List<MyInquiry> inquiryList;
-    private List<Myoffer> offerList;
     private OfferAdapter offerAdapter;
 
     private MyAlertDialog invalidDialog;
+
+    private List<Myoffer> filterOfferList = new ArrayList<>(); //过滤后的我的报价数据
 
 
     @Override
@@ -99,16 +101,24 @@ public class MessageActivity extends BaseActivity {
                 selectRadioBtn();
             }
         });
+
         initListener();
+
         if (getUser() != null) {
             refresh();
+
+            if (!getMyApplication().getMyUserManager().getInvalidInquiryOption())
+                invalidDialog.show();
         }
+
     }
+
 
     private void refresh() {
         pullToRefreshView.setRefreshing();
         new Thread(run).start();
     }
+
 
     @Override
     protected void onStart() {
@@ -119,8 +129,8 @@ public class MessageActivity extends BaseActivity {
                 inquiryList.clear();
                 inquiryAdapter.notifyDataSetChanged();
             }
-            if (offerList != null) {
-                offerList.clear();
+            if (filterOfferList.size() > 0) {
+                filterOfferList.clear();
                 offerAdapter.notifyDataSetChanged();
             }
             mEmptyLayout = LayoutInflater.from(context).inflate(R.layout.activity_money_login, null);
@@ -142,7 +152,7 @@ public class MessageActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         if (getUser() != null) {
-            refresh();
+            new Thread(run).start();
         }
     }
 
@@ -158,8 +168,8 @@ public class MessageActivity extends BaseActivity {
 
                 switch (type) {
                     case "1":
-                        if (offerList != null && offerList.size() > 0) {
-                            start_Activity(context, OfferDetailsActivity.class, new BasicNameValuePair("id", offerList.get(position).getId()));
+                        if (filterOfferList != null && filterOfferList.size() > 0) {
+                            start_Activity(context, OfferDetailsActivity.class, new BasicNameValuePair("id", filterOfferList.get(position).getId()));
                         }
                         break;
                     case "2":
@@ -289,6 +299,9 @@ public class MessageActivity extends BaseActivity {
     public class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            if (isDestroyed())
+                return;
+
             pullToRefreshView.onRefreshComplete();
             myEmptyLayout = LayoutInflater.from(context).inflate(R.layout.pull_listitem_empty_padding, null);
             switch (msg.what) {
@@ -323,14 +336,14 @@ public class MessageActivity extends BaseActivity {
                 case 3:
                     MyofferResponse offerresponse = (MyofferResponse) msg.obj;
                     if (offerresponse.isSuccess()) {
-                        offerList = offerresponse.getData().getItems();
-                        offerAdapter = new OfferAdapter(context, offerList);
+                        List<Myoffer> list = offerresponse.getData().getItems();
+                        myOfferFilter(list, true);
+                        offerAdapter = new OfferAdapter(context, filterOfferList);
                         listView.setAdapter(offerAdapter);
                         listView.onFinishLoading(offerresponse.getData().hasMore());
                         pageNumber = 2;
-                        pullToRefreshView.setEmptyView(offerList.isEmpty() ? myEmptyLayout : null);
+                        pullToRefreshView.setEmptyView(filterOfferList.isEmpty() ? myEmptyLayout : null);
 
-                        checkInvalidData();
                     } else {
                         listView.onFinishLoading(false);
                         showErrorToast(offerresponse.getError_desc());
@@ -339,9 +352,8 @@ public class MessageActivity extends BaseActivity {
                 case 4:
                     MyofferResponse offerpageResponse = (MyofferResponse) msg.obj;
                     if (offerpageResponse.isSuccess()) {
-                        List<Myoffer> tempList = offerpageResponse.getData()
-                                .getItems();
-                        offerList.addAll(tempList);
+                        List<Myoffer> tempList = offerpageResponse.getData().getItems();
+                        myOfferFilter(tempList, false);
                         offerAdapter.notifyDataSetChanged();
                         listView.onFinishLoading(offerpageResponse.getData().hasMore());
                         pageNumber++;
@@ -367,7 +379,7 @@ public class MessageActivity extends BaseActivity {
                 type = "1";
                 if (getUser() != null) {
                     pageNumber = 1;
-                    new Thread(run).start();
+                    refresh();
                 } else {
                     pullToRefreshView.onRefreshComplete();
                 }
@@ -377,7 +389,7 @@ public class MessageActivity extends BaseActivity {
                 type = "2";
                 if (getUser() != null) {
                     pageNumber = 1;
-                    new Thread(run).start();
+                    refresh();
                 } else {
                     pullToRefreshView.onRefreshComplete();
                 }
@@ -385,6 +397,7 @@ public class MessageActivity extends BaseActivity {
                 break;
         }
     }
+
 
     /**
      * 初始化删除无效记录对话框
@@ -397,24 +410,33 @@ public class MessageActivity extends BaseActivity {
                 .setPositiveButton("是", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        getMyApplication().getMyUserManager().setInvalidInquiryOption(true);
+                        refresh();
                     }
                 });
 
         invalidDialog = builder.create();
     }
 
+
+
     /**
-     * 检查是否有已失效的询价记录
+     * 过滤我的报价
      */
-    private void checkInvalidData() {
-        for (Myoffer myoffer : offerList) {
-            if (myoffer.getStatus().equals("0")) {
-                invalidDialog.show();
-                break;
+    private void myOfferFilter(List<Myoffer> list, boolean isFirstPage) {
+
+        if (getMyApplication().getMyUserManager().getInvalidInquiryOption()) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getStatus().equals("0"))
+                    list.remove(i);
             }
         }
+
+        if (isFirstPage)
+            filterOfferList.clear();
+        filterOfferList.addAll(list);
     }
+
 
 
     @Override

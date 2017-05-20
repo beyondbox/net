@@ -184,23 +184,27 @@
                 android:layout_height="12dp"
                 android:background="@color/view_background_gray_color" />
 
-            <View style="@style/LineStyle" />
+            <View style="@style/LineStyle"
+                android:visibility="gone"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
+                android:visibility="gone"
                 android:text="其他信息"
                 android:textColor="@color/black_color"
                 android:textSize="14sp" />
 
             <View
                 style="@style/LineStyle"
-                android:layout_marginLeft="12dp" />
+                android:layout_marginLeft="12dp"
+                android:visibility="gone"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -255,11 +259,13 @@
 
             <View
                 style="@style/LineStyle"
-                android:layout_marginLeft="12dp" />
+                android:layout_marginLeft="12dp"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
@@ -284,11 +290,13 @@
 
             <View
                 style="@style/LineStyle"
-                android:layout_marginLeft="12dp" />
+                android:layout_marginLeft="12dp"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <TextView
@@ -318,8 +326,7 @@
                 android:orientation="vertical">
 
                 <View
-                    style="@style/LineStyle"
-                    android:layout_marginLeft="12dp" />
+                    style="@style/LineStyle"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -345,9 +352,12 @@
                         android:textSize="14sp" />
 
                 </LinearLayout>
+
+                <View style="@style/LineStyle" />
+
             </LinearLayout>
 
-            <View style="@style/LineStyle" />
+
 
             <View
                 android:layout_width="match_parent"

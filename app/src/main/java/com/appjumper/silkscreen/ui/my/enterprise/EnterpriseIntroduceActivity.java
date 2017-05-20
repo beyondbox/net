@@ -180,7 +180,7 @@ public class EnterpriseIntroduceActivity extends BasePhotoGridActivity {
         }
     }
 
-    ;
+
 
     private String imags(List<ImageResponse.Data> data) {
         String str = "";

@@ -38,9 +38,11 @@
                 android:textSize="18sp" />
         </RelativeLayout>
     </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,378 +54,372 @@
             <RelativeLayout
                 android:id="@+id/rl_logo"
                 android:layout_width="match_parent"
-                android:background="@drawable/shape_item_area_bg"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:paddingTop="15dp"
+                android:background="@drawable/shape_item_area_bg"
                 android:paddingBottom="15dp"
                 android:paddingLeft="10dp"
-                android:paddingRight="10dp">
+                android:paddingRight="10dp"
+                android:paddingTop="15dp">
 
                 <com.appjumper.silkscreen.view.BorderCircleImageView
                     android:id="@+id/iv_logo"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
-                    app:border_width="1dp"
+                    android:src="@mipmap/avatar_company"
                     app:border_color="@color/border_gray_light"
-                    android:src="@mipmap/avatar_company"/>
+                    app:border_width="1dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true">
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textColor="@color/black_color"
-                        android:text="点击上传图片"
-                        android:gravity="center_vertical"
                         android:layout_centerVertical="true"
-                        android:layout_margin="12dp"/>
+                        android:layout_margin="12dp"
+                        android:gravity="center_vertical"
+                        android:text="点击上传图片"
+                        android:textColor="@color/black_color"
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:src="@mipmap/arrow_right"/>
+                        android:src="@mipmap/arrow_right" />
                 </LinearLayout>
 
             </RelativeLayout>
 
 
-
-
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/shape_item_area_bg"
                 android:orientation="vertical"
-                android:layout_marginTop="12dp"
                 android:padding="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/select_white_background"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/select_white_background"
                     android:paddingBottom="12dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textColor="@color/black_color"
-                        android:text="企业名称"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="12dp"/>
+                        android:layout_marginRight="12dp"
+                        android:text="* 企业名称"
+                        android:textColor="@color/black_color"
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/et_enterprise_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:background="@color/while_color"
-                        android:textColor="@color/black_color"
                         android:hint="点击输入企业名称"
-                        android:textSize="14sp"
-                        android:inputType="text"
                         android:imeOptions="actionNext"
+                        android:inputType="text"
                         android:singleLine="true"
-                        android:layout_gravity="center_vertical"/>
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
                     style="@style/LineStyle"
-                    android:layout_marginLeft="70dp"/>
+                    android:layout_marginLeft="70dp" />
 
                 <LinearLayout
                     android:id="@+id/lv_enterprise_create_time"
                     android:layout_width="match_parent"
-                    android:background="@drawable/select_white_background"
                     android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp">
+                    android:background="@drawable/select_white_background"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp">
 
                     <TextView
+                        android:id="@+id/textView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textColor="@color/black_color"
-                        android:text="注册时间"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="12dp"/>
+                        android:layout_marginRight="12dp"
+                        android:text="* 注册时间"
+                        android:textColor="@color/black_color"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/tv_enterprise_create_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:textColor="@color/black_color"
-                        android:textSize="14sp"
-                        android:layout_gravity="center_vertical"/>
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
                     style="@style/LineStyle"
-                    android:layout_marginLeft="70dp"/>
+                    android:layout_marginLeft="70dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/select_white_background"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/select_white_background"
                     android:orientation="horizontal"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp">
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp">
 
                     <TextView
+                        android:id="@+id/textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textColor="@color/black_color"
-                        android:text="注册资本"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="12dp"
-                        android:id="@+id/textView" />
+                        android:text="* 注册资本"
+                        android:textColor="@color/black_color"
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/et_create_money"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/while_color"
-                        android:textColor="@color/black_color"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="60dp"
+                        android:layout_toEndOf="@+id/textView"
+                        android:background="@color/while_color"
+                        android:imeOptions="actionNext"
                         android:inputType="numberDecimal"
                         android:maxLength="9"
-                        android:textSize="14sp"
-                        android:imeOptions="actionNext"
                         android:singleLine="true"
-                        android:layout_gravity="center_vertical"
-                        android:layout_toEndOf="@+id/textView" />
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/black_color"
-                        android:text="万元"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="12dp"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true" />
+                        android:text="万元"
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
                 <View
                     style="@style/LineStyle"
-                    android:layout_marginLeft="70dp"/>
+                    android:layout_marginLeft="70dp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/select_white_background"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/select_white_background"
                     android:paddingTop="12dp">
 
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textColor="@color/black_color"
-                        android:text="员工人数"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginRight="12dp"/>
+                        android:layout_marginRight="12dp"
+                        android:text="* 员工人数"
+                        android:textColor="@color/black_color"
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/et_number_employees"
-                        android:layout_toEndOf="@+id/textView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/while_color"
-                        android:textColor="@color/black_color"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginRight="60dp"
-                        android:maxLength="6"
-                        android:inputType="number"
-                        android:textSize="14sp"
+                        android:layout_toEndOf="@+id/textView2"
+                        android:background="@color/while_color"
                         android:imeOptions="actionNext"
+                        android:inputType="number"
+                        android:maxLength="6"
                         android:singleLine="true"
-                        android:layout_gravity="center_vertical"/>
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:textColor="@color/black_color"
-                        android:text="人"
+                        android:layout_alignParentRight="true"
                         android:layout_marginLeft="12dp"
-                        android:layout_alignParentRight="true" />
+                        android:text="人"
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
                 </RelativeLayout>
 
             </LinearLayout>
 
 
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/shape_item_area_bg"
                 android:orientation="vertical"
-                android:layout_marginTop="12dp"
                 android:padding="12dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/select_white_background"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/select_white_background"
                     android:paddingBottom="12dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         android:drawableLeft="@mipmap/company_contact"
                         android:drawablePadding="8dp"
-                        android:textSize="15sp"
-                        android:textColor="@color/black_color"
-                        android:text="联系人"
                         android:gravity="center_vertical"
-                        android:layout_gravity="center_vertical"/>
+                        android:text="*联系人"
+                        android:textColor="@color/black_color"
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/et_enterprise_contacts"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="4"
                         android:background="@color/while_color"
-                        android:textColor="@color/black_color"
-                        android:textSize="14sp"
                         android:hint="点击输入联系人"
                         android:imeOptions="actionNext"
                         android:singleLine="true"
-                        android:layout_gravity="center_vertical"/>
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
                     style="@style/LineStyle"
-                    android:layout_marginLeft="100dp"/>
+                    android:layout_marginLeft="100dp" />
 
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/select_white_background"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp">
+                    android:background="@drawable/select_white_background"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         android:drawableLeft="@mipmap/company_phone"
                         android:drawablePadding="7dp"
-                        android:textSize="15sp"
+                        android:text="*联系电话"
                         android:textColor="@color/black_color"
-                        android:text="联系电话"
-                        android:layout_gravity="center_vertical"/>
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/et_enterprise_tel"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="4"
                         android:background="@color/while_color"
-                        android:textColor="@color/black_color"
-                        android:inputType="number"
                         android:hint="点击输入联系电话"
-                        android:textSize="14sp"
                         android:imeOptions="actionNext"
+                        android:inputType="number"
                         android:singleLine="true"
-                        android:layout_gravity="center_vertical"
-                        />
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <View
                     style="@style/LineStyle"
-                    android:layout_marginLeft="100dp"/>
+                    android:layout_marginLeft="100dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:background="@drawable/select_white_background"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/select_white_background"
                     android:paddingTop="12dp">
+
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         android:drawableLeft="@mipmap/company_address"
                         android:drawablePadding="9dp"
-                        android:textSize="15sp"
+                        android:text="*地址"
                         android:textColor="@color/black_color"
-                        android:text="地址"
-                        android:layout_gravity="center_vertical"/>
+                        android:textSize="15sp" />
 
                     <EditText
                         android:id="@+id/et_enterprise_address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="4"
                         android:background="@color/while_color"
-                        android:textColor="@color/black_color"
-                        android:inputType="text"
                         android:hint="点击输入企业地址"
-                        android:textSize="14sp"
                         android:imeOptions="actionNext"
+                        android:inputType="text"
                         android:singleLine="true"
-                        android:layout_gravity="center_vertical"/>
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
-
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/shape_item_area_bg"
-                android:orientation="vertical"
-                android:layout_marginTop="12dp">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black_color"
-                    android:textSize="15sp"
-                    android:text="企业简介"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginTop="12dp"/>
+                    android:layout_marginTop="12dp"
+                    android:text="* 企业简介"
+                    android:textColor="@color/black_color"
+                    android:textSize="15sp" />
 
                 <View
                     style="@style/LineStyle"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp" />
 
                 <EditText
                     android:id="@+id/editSms"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:hint="您可以写写企业的优势，例如产品质量、服务等......"
-                    android:inputType="textMultiLine"
                     android:layout_margin="12dp"
                     android:background="@null"
-                    android:textColor="@color/black_color"
-                    android:textSize="13sp"
                     android:gravity="left|top"
-                    android:minLines="6" />
+                    android:hint="您可以写写企业的优势，例如产品质量、服务等......"
+                    android:inputType="textMultiLine"
+                    android:minLines="8"
+                    android:textColor="@color/black_color"
+                    android:textSize="13sp" />
 
                 <com.appjumper.silkscreen.view.MyGridView
                     android:id="@+id/gridview"
+                    style="@style/GridViewStyle"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="12dp"
-                    android:layout_marginLeft="12dp"
-                    style="@style/GridViewStyle"
-                    android:layout_height="wrap_content"></com.appjumper.silkscreen.view.MyGridView>
+                    android:layout_marginLeft="12dp" />
             </LinearLayout>
 
 
@@ -431,20 +427,17 @@
                 android:id="@+id/next_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/selector_btn_blue"
                 android:gravity="center"
-                android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="12dp"
+                android:paddingTop="12dp"
                 android:text="创建企业"
-                android:textSize="16sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
-
-
-
 
 
     <!--*******************************旧版本的选项****************************-->
