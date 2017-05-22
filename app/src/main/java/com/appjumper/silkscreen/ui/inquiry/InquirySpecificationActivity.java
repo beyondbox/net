@@ -296,7 +296,7 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                         String maxValue = list.get(i).getMax_value();
                         if (!TextUtils.isEmpty(minValue) || !TextUtils.isEmpty(maxValue)) {
                             if (!TextUtils.isEmpty(value)) {
-                                if (Integer.valueOf(value) < Integer.valueOf(minValue) || Integer.valueOf(value) > Integer.valueOf(maxValue)) {
+                                if (Float.valueOf(value) < Float.valueOf(minValue) || Float.valueOf(value) > Float.valueOf(maxValue)) {
                                     showErrorToast(list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
                                     return;
                                 }
@@ -317,7 +317,7 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
 
                 if (service.getImg_require().equals("1")) {
                     if (selectedPicture.size() == 0) {
-                        showErrorToast("请选择产品图片");
+                        showErrorToast("请上传图纸信息");
                         return;
                     }
                     progress.show();

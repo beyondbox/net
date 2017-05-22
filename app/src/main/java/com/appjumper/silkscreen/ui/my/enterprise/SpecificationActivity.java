@@ -257,7 +257,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                                     if (TextUtils.isEmpty(low) || TextUtils.isEmpty(high)) {
                                         showErrorToast(list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
                                         return;
-                                    } else if (Integer.valueOf(low) < Integer.valueOf(minValue) || Integer.valueOf(high) > Integer.valueOf(maxValue)) {
+                                    } else if (Float.valueOf(low) < Float.valueOf(minValue) || Float.valueOf(high) > Float.valueOf(maxValue)) {
                                         showErrorToast(list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
                                         return;
                                     }
@@ -281,6 +281,10 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                 json = jsonArray.toJSONString();
                 Log.e("Log",jsonArray.toJSONString()+"-----");
 
+                if (selectedPicture.size() == 0) {
+                    showErrorToast("请上传产品图片");
+                    return;
+                }
                 progress.show();
                 new Thread(new UpdateStringRun(thumbPictures)).start();
                 break;

@@ -226,6 +226,8 @@
         <activity android:name=".ui.dynamic.DynamicManageActivity" />
         <!--本地产品搜索-->
         <activity android:name=".ui.common.ProductSearchActivity" />
+        <!--护栏网发布-->
+        <activity android:name=".ui.spec.ReleaseHuLanActivity" />
 
 
         <!-- 【必须】 信鸽receiver广播接收 -->

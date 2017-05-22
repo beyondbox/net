@@ -178,7 +178,7 @@ public class AddressSelectActivity extends BaseActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == Integer.parseInt(code)){
+        if(resultCode == Integer.parseInt(code)) {
             this.setResult(Integer.parseInt(code),data);
             this.finish();
         }

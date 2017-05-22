@@ -55,6 +55,8 @@ public class AddressSelectCityActivity extends BaseActivity {
     private String id;
     private String type;
 
+    private String levelName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,23 @@ public class AddressSelectCityActivity extends BaseActivity {
         type = intent.getStringExtra("type");//type=1到市 type=2到村
         et_search.setText("县区选择");
 
-        tv_name.setText(intent.getStringExtra("name"));
+        levelName = intent.getStringExtra("name");
+        tv_name.setText(levelName);
+
+        tv_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(type.equals("1")){
+                    Intent intent = new Intent();
+                    intent.putExtra("id", id);
+                    intent.putExtra("name", levelName);
+                    setResult(Integer.parseInt(code), intent);
+                    finish();
+                }
+            }
+        });
+
+
         lv_data.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
