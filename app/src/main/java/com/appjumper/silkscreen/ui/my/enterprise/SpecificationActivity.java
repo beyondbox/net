@@ -271,6 +271,8 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                                 } else {
                                     jsonObject.put(list.get(i).getFieldname(), low + "-" + high);
                                 }
+                            } else {
+                                jsonObject.put(list.get(i).getFieldname(), " ");
                             }
 
                         }

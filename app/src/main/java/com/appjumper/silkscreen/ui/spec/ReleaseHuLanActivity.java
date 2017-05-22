@@ -306,7 +306,7 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
         String lSuhou = lowSuHou.getText().toString().trim();
         String hSuhou = highSuHOu.getText().toString().trim();
         if (TextUtils.isEmpty(lSuhou) || TextUtils.isEmpty(hSuhou)) {
-            showErrorToast("请输入完整的塑后丝径");
+            showErrorToast("请输入塑后丝径");
             return false;
         }
         if (Float.valueOf(lSuhou) < 2.5 || Float.valueOf(hSuhou) > 8) {
@@ -331,7 +331,7 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
         String lKongkuan = lowKongKuan.getText().toString().trim();
         String hKongkuan = highKongKuan.getText().toString().trim();
         if (TextUtils.isEmpty(lKongkuan) || TextUtils.isEmpty(hKongkuan)) {
-            showErrorToast("请输入完整的网孔宽度");
+            showErrorToast("请输入网孔宽度");
             return false;
         }
         if (Float.valueOf(lKongkuan) < 5 || Float.valueOf(hKongkuan) > 20) {
@@ -342,7 +342,7 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
         String lKongchang = lowKongChang.getText().toString().trim();
         String hKongchang = highKongChang.getText().toString().trim();
         if (TextUtils.isEmpty(lKongchang) || TextUtils.isEmpty(hKongchang)) {
-            showErrorToast("请输入完整的网孔长度");
+            showErrorToast("请输入网孔长度");
             return false;
         }
         if (Float.valueOf(lKongchang) < 5 || Float.valueOf(hKongchang) > 30) {
@@ -353,7 +353,7 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
         String lPiankuan = lowPianKuan.getText().toString().trim();
         String hPiankuan = highPianKuan.getText().toString().trim();
         if (TextUtils.isEmpty(lPiankuan) || TextUtils.isEmpty(hPiankuan)) {
-            showErrorToast("请输入完整的网片宽度");
+            showErrorToast("请输入网片宽度");
             return false;
         }
         if (Float.valueOf(lPiankuan) < 0.1 || Float.valueOf(hPiankuan) > 10) {
@@ -364,7 +364,7 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
         String lPianchang = lowPianChang.getText().toString().trim();
         String hPianchang = highPianChang.getText().toString().trim();
         if (TextUtils.isEmpty(lPianchang) || TextUtils.isEmpty(hPianchang)) {
-            showErrorToast("请输入完整的网片长度");
+            showErrorToast("请输入网片长度");
             return false;
         }
         if (Float.valueOf(lPianchang) < 0.1 || Float.valueOf(hPianchang) > 10) {
