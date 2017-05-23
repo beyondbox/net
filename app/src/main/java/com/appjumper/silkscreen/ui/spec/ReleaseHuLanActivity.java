@@ -170,6 +170,7 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
 
         initView();
         initData();
+        initTitle("护栏网");
         initProgressDialog(false, "正在添加服务...");
     }
 

@@ -13,18 +13,24 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
 import com.appjumper.silkscreen.ui.inquiry.InquiryCompleteActivity;
+import com.appjumper.silkscreen.ui.inquiry.SelectCompanyActivity;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.LogHelper;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -110,6 +116,20 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
     EditText etNumber;
     @Bind(R.id.et_remark)
     EditText et_remark;
+    @Bind(R.id.tv_info_length)//信息时长
+    TextView tvInfoLength;
+    @Bind(R.id.tv_enterprise_info)//符合厂家信息
+    TextView tvEnterpriseInfo;
+    @Bind(R.id.rg_tab)
+    RadioGroup rgTab;
+    @Bind(R.id.ll_fit)//符合企业
+    LinearLayout llFit;
+    @Bind(R.id.txtPic)
+    TextView txtPic;
+    @Bind(R.id.llTime)
+    LinearLayout llTime;
+    @Bind(R.id.tv_next)
+    TextView tv_next;
 
 
     private String [] xzGuanArr = {"方管", "圆管"};
@@ -127,6 +147,11 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
 
     private int action;
     private String type;
+    private String user_ids = "0";
+    private String identity;
+
+    private long expiry_datatime = 3600;
+    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天"};
 
 
 
@@ -140,10 +165,30 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
         Intent intent = getIntent();
         action = intent.getIntExtra(Const.KEY_ACTION, 0);
         type = intent.getStringExtra("type");
+        if (action == Const.REQUEST_CODE_RELEASE_STOCK) {
+            rgTab.setVisibility(View.GONE);
+            txtPic.setText("产品图片");
+            llTime.setVisibility(View.GONE);
+            tv_next.setText("确定");
+        } else {
+            identity = getIntent().getStringExtra("identity");
+            if (identity.equals("2")) {
+                rgTab.setVisibility(View.GONE);
+                llFit.setVisibility(View.VISIBLE);
+            } else if (identity.equals("3")) {
+                rgTab.setVisibility(View.VISIBLE);
+                llFit.setVisibility(View.GONE);
+            }else if(identity.equals("4")){
+                rgTab.setVisibility(View.GONE);
+                llFit.setVisibility(View.GONE);
+                user_ids = intent.getStringExtra("eid");
+            }
+        }
 
 
         initData();
         initView();
+        initTitle("护栏网");
         initProgressDialog(false, "正在发布...");
     }
 
@@ -202,6 +247,25 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
         llTaoXingZhu.setVisibility(View.GONE);
         llSpecLiZhu.setVisibility(View.GONE);
         llSpecKuangJia.setVisibility(View.GONE);
+
+        rgTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_all:
+                        user_ids = "0";
+                        break;
+                    case R.id.rb_auth:
+                        user_ids = "1";
+                        break;
+                    case R.id.rb_noauth:
+                        user_ids = "2";
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
 
@@ -272,7 +336,15 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
         }
 
         progress.show();
-        new Thread(new UpdateStringRun(thumbPictures)).start();
+        if (action == Const.REQUEST_CODE_RELEASE_STOCK) {
+            new Thread(new UpdateStringRun(thumbPictures)).start();
+        } else {
+            if (selectedPicture.size() > 0) {
+                new Thread(new UpdateStringRun(thumbPictures)).start();
+            } else {
+                new Thread(submitRun).start();
+            }
+        }
 
     }
 
@@ -344,6 +416,8 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
                 data.put("product_id", "104");
                 data.put("imgs", imags(imgResponse.getData()));
                 data.put("spec", new JSONArray().put(new JSONObject(map)).toString());
+                LogHelper.e("SpecJson", new JSONArray().put(new JSONObject(map)).toString());
+                Thread.interrupted();
                 data.put("remark", et_remark.getText().toString());
                 //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEADD));
                 response = JsonParser.getBaseResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
@@ -367,7 +441,7 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
 
         @SuppressWarnings("unchecked")
         public void run() {
-            /*try {
+            try {
                 map.put("uid", getUserID());
                 map.put("remark", et_remark.getText().toString().trim());
                 map.put("expiry_date", expiry_datatime + "");
@@ -390,7 +464,7 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
                         NETWORK_SUCCESS_PAGER_RIGHT, response));
             } else {
                 handler2.sendEmptyMessage(NETWORK_FAIL);
-            }*/
+            }
         }
     };
 
@@ -509,6 +583,18 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
             if (!checkInput(lowWeightLiZhu, "立柱重量", "0.1", "100")) return false;
         }
 
+        if (action == Const.REQUEST_CODE_RELEASE_STOCK) {
+            if (selectedPicture.size() == 0) {
+                showErrorToast("请上传产品图片");
+                return false;
+            }
+        } else {
+            if (identity.equals("2") && user_ids.equals("0")) {
+                showErrorToast("请选择符合厂家");
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -582,16 +668,76 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
     }
 
 
-    @OnClick(R.id.tv_next)
+    @OnClick({R.id.tv_next, R.id.ll_fit, R.id.tv_info_length})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_next:
                 submit();
                 break;
+            case R.id.ll_fit://符合厂家
+                startForResult_Activity(this, SelectCompanyActivity.class, 11, new BasicNameValuePair("type", type), new BasicNameValuePair("product_id", "104"), new BasicNameValuePair("product_type", ""));
+                break;
+            case R.id.tv_info_length://信息时长
+                Intent intent = new Intent(context, InformationSelectActivity.class);
+                Bundle b = new Bundle();
+                b.putStringArray("val", expiry);
+                intent.putExtras(b);
+                intent.putExtra("title", "信息时长");
+                startActivityForResult(intent, 3);
+                overridePendingTransition(R.anim.push_left_in,
+                        R.anim.push_left_out);
+                break;
             default:
                 break;
         }
     }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            return;
+        }
+        List<Enterprise> enterpriseList;
+        switch (requestCode) {
+            case 11:
+                enterpriseList = (List<Enterprise>) data.getSerializableExtra("list");
+                tvEnterpriseInfo.setText(enterpriseList.get(0).getEnterprise_name() + "等" + enterpriseList.size() + "家企业");
+                String ids = "";
+                for (int i = 0; i < enterpriseList.size(); i++) {
+                    ids += "," + enterpriseList.get(i).getEnterprise_id();
+                }
+                ids = ids.substring(1);
+                user_ids = ids;
+                break;
+            case 3://信息时长
+                int expiry_date = Integer.parseInt(data.getStringExtra("val"));
+                switch (expiry_date) {
+                    case 0://一小时
+                        expiry_datatime = 3600 * 1;
+                        break;
+                    case 1://5小时
+                        expiry_datatime = 3600 * 5;
+                        break;
+                    case 2://12小时
+                        expiry_datatime = 3600 * 12;
+                        break;
+                    case 3://一天
+                        expiry_datatime = 3600 * 24;
+                        break;
+                    case 4://两天
+                        expiry_datatime = 3600 * 48;
+                        break;
+                }
+                tvInfoLength.setText(expiry[expiry_date]);
+                break;
+            default:
+                break;
+        }
+    }
+
 
 
     @OnCheckedChanged({R.id.chkKuangJia, R.id.chkLiZhu})

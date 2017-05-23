@@ -33,6 +33,7 @@ import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.PropertyAdapter;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
+import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.ShareUtil;
 import com.appjumper.silkscreen.view.MyListView;
@@ -187,7 +188,11 @@ public class ProcessingDetailsActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_inquiry://询价
                 if (checkLogined()) {
-                    Intent intent = new Intent(ProcessingDetailsActivity.this, InquirySpecificationActivity.class);
+                    Intent intent = null;
+                    if (product.getProduct_id().equals("104"))
+                        intent = new Intent(context, InquiryHuLanActivity.class);
+                    else
+                        intent = new Intent(context, InquirySpecificationActivity.class);
                     intent.putExtra("type", product.getType());
                     intent.putExtra("identity", "4");
                     intent.putExtra("eid", product.getEnterprise_id());

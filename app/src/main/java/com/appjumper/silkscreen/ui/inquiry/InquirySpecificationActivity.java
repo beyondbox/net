@@ -335,7 +335,7 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
 
                 break;
             case R.id.ll_fit://符合厂家
-                startForResult_Activity(this, SelectCompanyActivity.class, 11, new BasicNameValuePair("type", type), new BasicNameValuePair("product_id", service.getId()), new BasicNameValuePair("product_type", productType));
+                startForResult_Activity(this, SelectCompanyActivity.class, 11, new BasicNameValuePair("type", type), new BasicNameValuePair("product_id", service.getId()), new BasicNameValuePair("product_type", ""));
                 break;
             case R.id.tv_info_length://信息时长
                 Intent intent = new Intent(context, InformationSelectActivity.class);

@@ -9,6 +9,8 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
+import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 
 import butterknife.Bind;
@@ -102,17 +104,27 @@ public class AddServiceCompleteActivity extends BaseActivity {
         Intent intent = null;
         switch (requestCode) {
             case Const.REQUEST_CODE_RELEASE_ORDER:
-                intent = new Intent(context, SpecificationActivity.class);
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, ReleaseHuLanActivity.class);
+                else
+                    intent = new Intent(context, SpecificationActivity.class);
                 intent.putExtra("service", product);
                 intent.putExtra("type", Const.SERVICE_TYPE_ORDER + "");
                 break;
             case Const.REQUEST_CODE_RELEASE_PROCESS:
-                intent = new Intent(context, SpecificationActivity.class);
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, ReleaseHuLanActivity.class);
+                else
+                    intent = new Intent(context, SpecificationActivity.class);
                 intent.putExtra("service", product);
                 intent.putExtra("type", Const.SERVICE_TYPE_PROCESS + "");
                 break;
             case Const.REQUEST_CODE_RELEASE_STOCK:
-                intent = new Intent(context, SpecificationStockActivity.class);
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, InquiryHuLanActivity.class);
+                else
+                    intent = new Intent(context, SpecificationStockActivity.class);
+                intent.putExtra(Const.KEY_ACTION, Const.REQUEST_CODE_RELEASE_STOCK);
                 intent.putExtra("service", product);
                 intent.putExtra("type", Const.SERVICE_TYPE_STOCK + "");
                 break;

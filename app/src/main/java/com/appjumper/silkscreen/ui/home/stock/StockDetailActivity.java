@@ -38,6 +38,7 @@ import com.appjumper.silkscreen.ui.home.adapter.SpecGridAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SpecSelectGridAdapter;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
+import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
@@ -301,7 +302,11 @@ public class StockDetailActivity extends BaseActivity {
      * 跳转到询价界面
      */
     private void goToInquiry() {
-        Intent intent = new Intent(context, InquirySpecificationActivity.class);
+        Intent intent = null;
+        if (product.getProduct_id().equals("104"))
+            intent = new Intent(context, InquiryHuLanActivity.class);
+        else
+            intent = new Intent(context, InquirySpecificationActivity.class);
         intent.putExtra("type", product.getType());
         intent.putExtra("identity", "4");
         intent.putExtra("eid", product.getEnterprise_id());

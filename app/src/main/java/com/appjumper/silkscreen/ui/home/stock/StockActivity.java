@@ -43,6 +43,7 @@ import com.appjumper.silkscreen.ui.my.adapter.ProductionListViewAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthenticationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
+import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyGridView;
 import com.appjumper.silkscreen.view.MyRecyclerView;
@@ -697,10 +698,15 @@ public class StockActivity extends BaseActivity {
                         showErrorToast("暂无数据");
                         return;
                     }
-                    Intent intent = new Intent(StockActivity.this, InquirySpecificationActivity.class);
+
+                    Intent intent = null;
+                    if (listData.get(0).getProduct_id().equals("104"))
+                        intent = new Intent(context, InquiryHuLanActivity.class);
+                    else
+                        intent = new Intent(context, InquirySpecificationActivity.class);
                     intent.putExtra("type", type);
                     intent.putExtra("identity", "2");
-                    intent.putExtra("productType", productType);
+                    intent.putExtra("productType", "");
                     Bundle bundle = new Bundle();
                     ServiceProduct serviceProduct = new ServiceProduct();
                     serviceProduct.setName(listData.get(0).getProduct_name());
@@ -745,7 +751,12 @@ public class StockActivity extends BaseActivity {
                 refresh();
                 break;
             case Const.REQUEST_CODE_RELEASE_STOCK:
-                Intent intent = new Intent(context, SpecificationStockActivity.class);
+                Intent intent = null;
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, InquiryHuLanActivity.class);
+                else
+                    intent = new Intent(context, SpecificationStockActivity.class);
+                intent.putExtra(Const.KEY_ACTION, Const.REQUEST_CODE_RELEASE_STOCK);
                 intent.putExtra("service", product);
                 intent.putExtra("type", Const.SERVICE_TYPE_STOCK + "");
                 startActivity(intent);

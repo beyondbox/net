@@ -20,6 +20,7 @@ import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthenticationActivit
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
+import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 
@@ -147,7 +148,10 @@ public class PlusActivity extends BaseActivity {
         Intent intent = null;
         switch (requestCode) {
             case Const.REQUEST_CODE_RELEASE_PROCESS:
-                intent = new Intent(context, SpecificationActivity.class);
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, ReleaseHuLanActivity.class);
+                else
+                    intent = new Intent(context, SpecificationActivity.class);
                 intent.putExtra("service", product);
                 intent.putExtra("type", Const.SERVICE_TYPE_PROCESS + "");
                 break;
@@ -160,18 +164,28 @@ public class PlusActivity extends BaseActivity {
                 intent.putExtra("type", Const.SERVICE_TYPE_ORDER + "");
                 break;
             case Const.REQUEST_CODE_RELEASE_STOCK:
-                intent = new Intent(context, SpecificationStockActivity.class);
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, InquiryHuLanActivity.class);
+                else
+                    intent = new Intent(context, SpecificationStockActivity.class);
+                intent.putExtra(Const.KEY_ACTION, Const.REQUEST_CODE_RELEASE_STOCK);
                 intent.putExtra("service", product);
                 intent.putExtra("type", Const.SERVICE_TYPE_STOCK + "");
                 break;
             case Const.REQUEST_CODE_INQUIRY_ORDER:
-                intent = new Intent(context, InquirySpecificationActivity.class);
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, InquiryHuLanActivity.class);
+                else
+                    intent = new Intent(context, InquirySpecificationActivity.class);
                 intent.putExtra("identity", "3");
                 intent.putExtra("service", product);
                 intent.putExtra("type", Const.SERVICE_TYPE_ORDER + "");
                 break;
             case Const.REQUEST_CODE_INQUIRY_STOCK:
-                intent = new Intent(context, InquirySpecificationActivity.class);
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, InquiryHuLanActivity.class);
+                else
+                    intent = new Intent(context, InquirySpecificationActivity.class);
                 intent.putExtra("identity", "3");
                 intent.putExtra("service", product);
                 intent.putExtra("type", Const.SERVICE_TYPE_STOCK + "");
