@@ -51,7 +51,6 @@ public class AddServiceCompleteActivity extends BaseActivity {
                 break;
             case R.id.txtAdd:
                 continueAdd();
-                finish();
                 break;
             default:
                 break;
@@ -122,6 +121,7 @@ public class AddServiceCompleteActivity extends BaseActivity {
         }
 
         startActivity(intent);
+        finish();
     }
 
 }

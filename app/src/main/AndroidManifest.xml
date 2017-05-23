@@ -228,6 +228,8 @@
         <activity android:name=".ui.common.ProductSearchActivity" />
         <!--护栏网发布-->
         <activity android:name=".ui.spec.ReleaseHuLanActivity" />
+        <!--护栏网询价-->
+        <activity android:name=".ui.spec.InquiryHuLanActivity" />
 
 
         <!-- 【必须】 信鸽receiver广播接收 -->

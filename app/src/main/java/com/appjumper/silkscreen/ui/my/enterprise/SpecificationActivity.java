@@ -227,7 +227,8 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                             }
                         }
 
-                        checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
+                        if (!TextUtils.isEmpty(checkedResult))
+                            checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
                         jsonObject.put(list.get(i).getFieldname(), checkedResult);
 
                     } else if (list.get(i).getFieldinput().equals("text")) {
@@ -272,7 +273,7 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                                     jsonObject.put(list.get(i).getFieldname(), low + "-" + high);
                                 }
                             } else {
-                                jsonObject.put(list.get(i).getFieldname(), " ");
+                                jsonObject.put(list.get(i).getFieldname(), "");
                             }
 
                         }

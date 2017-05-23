@@ -1,9 +1,12 @@
 package com.appjumper.silkscreen.ui.spec;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -12,14 +15,28 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.bean.ImageResponse;
+import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
+import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
+import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.LogHelper;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -120,6 +137,9 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
     @Bind(R.id.highWeightLizhu)
     EditText highWeightLizhu;
 
+    @Bind(R.id.et_remark)
+    EditText et_remark;
+
 
 
     private String [] xzGuanArr = {"方管", "圆管"};
@@ -132,6 +152,9 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
     private SpecChoiceAdapter zhiJingAdapter;
     private SpecChoiceAdapter chiCunAdapter;
 
+    private String specJson = "";
+    private ImageResponse imgResponse;
+    private String type;
 
 
 
@@ -140,9 +163,14 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_release_hulan);
         ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        Intent intent = getIntent();
+        type = intent.getStringExtra("type");
 
         initView();
         initData();
+        initProgressDialog(false, "正在添加服务...");
     }
 
 
@@ -190,19 +218,22 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
             @Override
             public void run() {
                 setDefault(choiceXZGuan, 0);
-                setDefault(choiceXZLiZhu, 0);
                 setDefault(choiceZhiJing, 0);
                 setDefault(choiceChiCun, 0);
+
+                xzLiZhuAdapter.changeSelected(0);
+                llFangZhu.setVisibility(View.GONE);
+                llTaoXingZhu.setVisibility(View.GONE);
             }
-        }, 50);
+        }, 80);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                llSpecKuangJia.setVisibility(View.GONE);
                 llSpecLiZhu.setVisibility(View.GONE);
+                llSpecKuangJia.setVisibility(View.GONE);
             }
-        }, 100);
+        }, 120);
     }
 
 
@@ -227,18 +258,18 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
 
         try {
             jsonObj.put("suhousijing", lowSuHou.getText().toString().trim() + "-" + highSuHOu.getText().toString().trim());
-            jsonObj.put("wanglongkuan", lowKongKuan.getText().toString().trim() + "-" + highKongKuan.getText().toString().trim());
-            jsonObj.put("wanglongchang", lowKongChang.getText().toString().trim() + "-" + highKongChang.getText().toString().trim());
+            jsonObj.put("wangkongkuan", lowKongKuan.getText().toString().trim() + "-" + highKongKuan.getText().toString().trim());
+            jsonObj.put("wangkongchang", lowKongChang.getText().toString().trim() + "-" + highKongChang.getText().toString().trim());
             jsonObj.put("wangpiankuan", lowPianKuan.getText().toString().trim() + "-" + highPianKuan.getText().toString().trim());
             jsonObj.put("wangpianchang", lowPianChang.getText().toString().trim() + "-" + highPianChang.getText().toString().trim());
 
             if (TextUtils.isEmpty(lowSuQian.getText().toString().trim()))
-                jsonObj.put("suqiansijing", " ");
+                jsonObj.put("suqiansijing", "");
             else
                 jsonObj.put("suqiansijing", lowSuQian.getText().toString().trim() + "-" + highSuQian.getText().toString().trim());
 
             if (TextUtils.isEmpty(lowWeightWangPian.getText().toString().trim()))
-                jsonObj.put("wangpianzhongliang", " ");
+                jsonObj.put("wangpianzhongliang", "");
             else
                 jsonObj.put("wangpianzhongliang", lowWeightWangPian.getText().toString().trim() + "-" + highWeightWangPian.getText().toString().trim());
 
@@ -250,50 +281,255 @@ public class ReleaseHuLanActivity extends BasePhotoGridActivity {
                         gxzStr += xzGuanArr[i] + ",";
                     }
                 }
+                if (!TextUtils.isEmpty(gxzStr))
+                    gxzStr = gxzStr.substring(0, gxzStr.length() - 1);
                 jsonObj.put("guanxingzhuang", gxzStr);
 
                 if (TextUtils.isEmpty(lowMianKuan.getText().toString().trim()))
-                    jsonObj.put("guanhengjiemiankuan", " ");
+                    jsonObj.put("guanhengjiemiankuan", "");
                 else
                     jsonObj.put("guanhengjiemiankuan", lowMianKuan.getText().toString().trim() + "-" + highMianKuan.getText().toString().trim());
 
                 if (TextUtils.isEmpty(lowMianChang.getText().toString().trim()))
-                    jsonObj.put("guanhengjiemianchang", " ");
+                    jsonObj.put("guanhengjiemianchang", "");
                 else
                     jsonObj.put("guanhengjiemianchang", lowMianChang.getText().toString().trim() + "-" + highMianChang.getText().toString().trim());
 
                 if (TextUtils.isEmpty(lowGuanHou.getText().toString().trim()))
-                    jsonObj.put("guanghoudu", " ");
+                    jsonObj.put("guanghoudu", "");
                 else
                     jsonObj.put("guanghoudu", lowGuanHou.getText().toString().trim() + "-" + highGuanHou.getText().toString().trim());
             } else {
-                jsonObj.put("guanxingzhuang", " ");
-                jsonObj.put("guanhengjiemiankuan", " ");
-                jsonObj.put("guanhengjiemianchang", " ");
-                jsonObj.put("guanghoudu", " ");
+                jsonObj.put("guanxingzhuang", "");
+                jsonObj.put("guanhengjiemiankuan", "");
+                jsonObj.put("guanhengjiemianchang", "");
+                jsonObj.put("guanghoudu", "");
             }
 
 
 
             if (chkLiZhu.isChecked()) {
+                String xzLizhuStr = "";
+                for (int i = 0; i < 2; i++) {
+                    LinearLayout linearLayout = (LinearLayout) choiceXZLiZhu.getChildAt(i);
+                    if (((CheckBox)linearLayout.getChildAt(0)).isChecked()) {
+                        xzLizhuStr = xzLiZhuArr[i];
+                    }
+                }
+                jsonObj.put("lizhuxingzhuang", xzLizhuStr);
+
+
                 if (llYuanZhu.getVisibility() == View.VISIBLE) {
+                    String zhijingStr = "";
+                    for (int i = 0; i < 2; i++) {
+                        LinearLayout linearLayout = (LinearLayout) choiceZhiJing.getChildAt(i);
+                        if (((CheckBox)linearLayout.getChildAt(0)).isChecked()) {
+                            zhijingStr += zhiJingArr[i] + ",";
+                        }
+                    }
+                    if (!TextUtils.isEmpty(zhijingStr))
+                        zhijingStr = zhijingStr.substring(0, zhijingStr.length() - 1);
+                    jsonObj.put("zhijing", zhijingStr);
+                } else {
+                    jsonObj.put("zhijing", "");
+                }
+
+                if (llFangZhu.getVisibility() == View.VISIBLE) {
+                    if (TextUtils.isEmpty(lowLiZhuKuan.getText().toString().trim()))
+                        jsonObj.put("kuan", "");
+                    else
+                        jsonObj.put("kuan", lowLiZhuKuan.getText().toString().trim() + "-" + highLiZhuKuan.getText().toString().trim());
+
+                    if (TextUtils.isEmpty(lowLiZhuChang.getText().toString().trim()))
+                        jsonObj.put("chang", "");
+                    else
+                        jsonObj.put("chang", lowLiZhuChang.getText().toString().trim() + "-" + highLiZhuChang.getText().toString().trim());
 
                 } else {
-
+                    jsonObj.put("kuan", "");
+                    jsonObj.put("chang", "");
                 }
+
+                if (llTaoXingZhu.getVisibility() == View.VISIBLE) {
+                    String chicunStr = "";
+                    for (int i = 0; i < 2; i++) {
+                        LinearLayout linearLayout = (LinearLayout) choiceChiCun.getChildAt(i);
+                        if (((CheckBox)linearLayout.getChildAt(0)).isChecked()) {
+                            chicunStr += chiCunArr[i] + ",";
+                        }
+                    }
+                    if (!TextUtils.isEmpty(chicunStr))
+                        chicunStr = chicunStr.substring(0, chicunStr.length() - 1);
+                    jsonObj.put("chicun", chicunStr);
+                } else {
+                    jsonObj.put("chicun", "");
+                }
+
+                if (TextUtils.isEmpty(lowBiHou.getText().toString().trim()))
+                    jsonObj.put("bihou", "");
+                else
+                    jsonObj.put("bihou", lowBiHou.getText().toString().trim() + "-" + highBiHou.getText().toString().trim());
+
+                if (TextUtils.isEmpty(lowHeight.getText().toString().trim()))
+                    jsonObj.put("gaodu", "");
+                else
+                    jsonObj.put("gaodu", lowHeight.getText().toString().trim() + "-" + highHeight.getText().toString().trim());
+
+                if (TextUtils.isEmpty(lowWeightLiZhu.getText().toString().trim()))
+                    jsonObj.put("lizhuzhongliang", "");
+                else
+                    jsonObj.put("lizhuzhongliang", lowWeightLiZhu.getText().toString().trim() + "-" + highWeightLizhu.getText().toString().trim());
+
+
+            } else {
+                jsonObj.put("lizhuxingzhuang", "");
+                jsonObj.put("zhijing", "");
+                jsonObj.put("kuan", "");
+                jsonObj.put("chang", "");
+                jsonObj.put("chicun", "");
+                jsonObj.put("bihou", "");
+                jsonObj.put("gaodu", "");
+                jsonObj.put("lizhuzhongliang", "");
             }
 
+            jsonArr.put(jsonObj);
+            specJson = jsonArr.toString();
+            LogHelper.i("SpecJson", specJson);
+
+            progress.show();
+            new Thread(new UpdateStringRun(thumbPictures)).start();
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
 
 
+    // 如果不是切割的upLoadBitmap就很大
+    public class UpdateStringRun implements Runnable {
+        private ArrayList<String> thumbPictures;
+
+        // thumbPictures 是 List<压缩图路径>
+        public UpdateStringRun(ArrayList<String> thumbPictures) {
+            this.thumbPictures = new ArrayList<String>();
+            for (String str :thumbPictures) {
+                if (!str.equals(""+ BasePhotoGridActivity.PICTURE_UPDATE_ICON)) {
+                    //去掉最后一个 +图片
+                    this.thumbPictures.add(str);
+                }
+            }
+        }
+
+        @Override
+        public void run() {
+            ImageResponse retMap = null;
+            try {
+                // 如果不是切割的upLoadBitmap就很大,在这里压缩
+                retMap = JsonParser.getImageResponse(HttpUtil.upload(thumbPictures, Url.UPLOADIMAGE));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (retMap != null) {
+                handler.sendMessage(handler.obtainMessage(
+                        3, retMap));
+            } else {
+                handler.sendMessage(handler
+                        .obtainMessage(NETWORK_SUCCESS_DATA_ERROR));
+            }
+        }
+    }
+
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (isDestroyed())
+                return;
+
+            switch (msg.what) {
+                case 3://上传图片
+                    imgResponse = (ImageResponse) msg.obj;
+                    if (imgResponse.isSuccess()) {
+                        new Thread(serviceAddRun).start();
+                    } else {
+                        progress.dismiss();
+                        showErrorToast(imgResponse.getError_desc());
+                    }
+                    break;
+                case NETWORK_SUCCESS_PAGER_RIGHT://添加服务
+                    progress.dismiss();
+                    BaseResponse listResponse = (BaseResponse) msg.obj;
+                    if(listResponse.isSuccess()){
+                        //showErrorToast("添加服务成功");
+                        start_Activity(context, AddServiceCompleteActivity.class, new BasicNameValuePair(Const.KEY_SERVICE_TYPE, type));
+                        CommonApi.addLiveness(getUserID(), 19);
+                        finish();
+                    }else{
+                        showErrorToast(listResponse.getError_desc());
+                    }
+                    break;
+                default:
+                    progress.dismiss();
+                    showFailTips(getResources().getString(R.string.requst_fail));
+                    break;
+            }
+        }
+    };
 
 
 
+    //添加服务接口
+    private Runnable serviceAddRun = new Runnable() {
+        private BaseResponse response;
+        @SuppressWarnings("unchecked")
+        public void run() {
+            try {
+                Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "service");
+                data.put("a", "add");
+
+
+                data.put("uid", getUserID());
+                data.put("type", type);
+                //data.put("product_type", productType);
+                data.put("product_id", "104");
+                data.put("spec", specJson);
+                data.put("remark", et_remark.getText().toString());
+                data.put("imgs", imags(imgResponse.getData()));
+
+                //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEADD));
+                //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.HOST));
+                response = JsonParser.getBaseResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
+            } catch (Exception e) {
+                progress.dismiss();
+                e.printStackTrace();
+            }
+            if (response != null) {
+                handler.sendMessage(handler.obtainMessage(
+                        NETWORK_SUCCESS_PAGER_RIGHT, response));
+            } else {
+                handler.sendEmptyMessage(NETWORK_FAIL);
+            }
+        }
+    };
+
+
+
+
+    private String imags(List<ImageResponse.Data> data){
+        String str="";
+        for(int i=0;i<data.size();i++){
+            str+=data.get(i).getImg_id();
+            if(i<(data.size()-1)){
+                str+=",";
+            }
+        }
+        return str;
+    }
 
 
 

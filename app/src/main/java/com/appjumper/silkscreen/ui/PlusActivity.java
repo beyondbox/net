@@ -20,6 +20,7 @@ import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthenticationActivit
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -151,7 +152,10 @@ public class PlusActivity extends BaseActivity {
                 intent.putExtra("type", Const.SERVICE_TYPE_PROCESS + "");
                 break;
             case Const.REQUEST_CODE_RELEASE_ORDER:
-                intent = new Intent(context, SpecificationActivity.class);
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, ReleaseHuLanActivity.class);
+                else
+                    intent = new Intent(context, SpecificationActivity.class);
                 intent.putExtra("service", product);
                 intent.putExtra("type", Const.SERVICE_TYPE_ORDER + "");
                 break;

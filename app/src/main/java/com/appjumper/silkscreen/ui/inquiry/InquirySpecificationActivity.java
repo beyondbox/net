@@ -277,7 +277,8 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                             }
                         }
 
-                        checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
+                        if (!TextUtils.isEmpty(checkedResult))
+                            checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
                         map.put(list.get(i).getFieldname(), checkedResult);
 
                     } else if (list.get(i).getFieldinput().equals("text")) {
@@ -303,8 +304,7 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                             }
                         }
 
-                        if (!TextUtils.isEmpty(value))
-                            map.put(list.get(i).getFieldname(), value);
+                        map.put(list.get(i).getFieldname(), value);
 
                     }
                 }

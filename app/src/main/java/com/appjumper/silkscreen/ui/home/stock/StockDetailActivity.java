@@ -353,6 +353,9 @@ public class StockDetailActivity extends BaseActivity {
 
         @Override
         public void handleMessage(Message msg) {
+            if (isDestroyed())
+                return;
+
             mPullRefreshScrollView.onRefreshComplete();
             if (progress != null) {
                 progress.dismiss();

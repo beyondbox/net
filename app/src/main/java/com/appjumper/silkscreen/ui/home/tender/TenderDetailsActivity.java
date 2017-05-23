@@ -128,6 +128,9 @@ public class TenderDetailsActivity extends BaseActivity {
             if (activity == null) {
                 return;
             }
+            if (isDestroyed())
+                return;
+
             mPullRefreshScrollView.onRefreshComplete();
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT:

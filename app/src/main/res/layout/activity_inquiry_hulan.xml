@@ -4,32 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/view_background_gray_color">
 
-
+    <!-- title -->
     <include
         android:id="@+id/title_layout"
         layout="@layout/layout_header_with_text"/>
 
 
-
-
-    <TextView
-        android:id="@+id/tv_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="6dp"
-        android:background="@drawable/selector_btn_blue"
-        android:gravity="center"
-        android:text="确定"
-        android:textColor="@color/while_color"
-        android:textSize="16sp" />
-
     <ScrollView
-        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title_layout"
-        android:layout_above="@id/tv_confirm">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_layout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,30 +21,46 @@
             android:background="@color/while_color"
             android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:drawableRight="@mipmap/arrow_right"
+                android:padding="12dp"
+                android:visibility="gone"
+                android:text="石笼网"
+                android:textColor="@color/black_color"
+                android:textSize="14sp" />
 
-                <com.appjumper.silkscreen.view.MyGridView
-                    android:id="@+id/gridview"
-                    style="@style/GridViewStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="12dp"/>
-
-            </LinearLayout>
-
-            <View style="@style/LineStyle" />
+            <View style="@style/LineStyle"
+                android:visibility="gone"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
+                android:visibility="gone"
                 android:background="@color/view_background_gray_color" />
 
-            <View style="@style/LineStyle" />
+            <View style="@style/LineStyle"
+                android:visibility="gone"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="产品信息"
+                android:textColor="@color/theme_color"
+                android:textSize="14sp" />
+
+            <View
+                style="@style/LineStyle"/>
+
+
+
+
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -123,7 +123,7 @@
             <View
                 style="@style/LineStyle"/>
 
-   <!--*****************************************网片规格****************************************-->
+        <!--*****************************************网片规格****************************************-->
 
             <LinearLayout
                 android:id="@+id/llSpecWangPian"
@@ -170,35 +170,13 @@
 
                         <EditText
                             android:id="@+id/lowSuHou"
-                            android:layout_width="65dp"
+                            android:layout_width="80dp"
                             android:inputType="number|numberDecimal"
                             android:layout_height="wrap_content"
                             android:background="@drawable/gid_background"
                             android:gravity="center"
                             android:imeOptions="actionNext"
-                            android:hint="2.5"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highSuHou"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="8"
+                            android:hint="2.5 - 8"
                             android:padding="5dp"
                             android:maxLines="1"
                             android:textColor="@color/text_black_color"
@@ -206,9 +184,7 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
-
 
                 <View style="@style/LineStyle"/>
 
@@ -251,35 +227,13 @@
 
                         <EditText
                             android:id="@+id/lowSuQian"
-                            android:layout_width="65dp"
+                            android:layout_width="80dp"
                             android:inputType="number|numberDecimal"
                             android:layout_height="wrap_content"
                             android:background="@drawable/gid_background"
                             android:gravity="center"
                             android:imeOptions="actionNext"
-                            android:hint="2"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highSuQian"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="6"
+                            android:hint="2 - 6"
                             android:padding="5dp"
                             android:maxLines="1"
                             android:textColor="@color/text_black_color"
@@ -287,9 +241,7 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
-
 
                 <View style="@style/LineStyle"/>
 
@@ -334,35 +286,13 @@
 
                         <EditText
                             android:id="@+id/lowKongKuan"
-                            android:layout_width="65dp"
+                            android:layout_width="80dp"
                             android:inputType="number|numberDecimal"
                             android:layout_height="wrap_content"
                             android:background="@drawable/gid_background"
                             android:gravity="center"
                             android:imeOptions="actionNext"
-                            android:hint="5"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highKongKuan"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="20"
+                            android:hint="5 - 20"
                             android:padding="5dp"
                             android:maxLines="1"
                             android:textColor="@color/text_black_color"
@@ -370,9 +300,7 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
-
 
                 <View style="@style/LineStyle"/>
 
@@ -415,35 +343,13 @@
 
                         <EditText
                             android:id="@+id/lowKongChang"
-                            android:layout_width="65dp"
+                            android:layout_width="80dp"
                             android:inputType="number|numberDecimal"
                             android:layout_height="wrap_content"
                             android:background="@drawable/gid_background"
                             android:gravity="center"
                             android:imeOptions="actionNext"
-                            android:hint="5"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highKongChang"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="30"
+                            android:hint="5 - 30"
                             android:padding="5dp"
                             android:maxLines="1"
                             android:textColor="@color/text_black_color"
@@ -451,9 +357,7 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
-
 
                 <View style="@style/LineStyle"/>
 
@@ -497,35 +401,13 @@
 
                         <EditText
                             android:id="@+id/lowPianKuan"
-                            android:layout_width="65dp"
+                            android:layout_width="80dp"
                             android:inputType="number|numberDecimal"
                             android:layout_height="wrap_content"
                             android:background="@drawable/gid_background"
                             android:gravity="center"
                             android:imeOptions="actionNext"
-                            android:hint="0.1"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highPianKuan"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="10"
+                            android:hint="0.1 - 10"
                             android:padding="5dp"
                             android:maxLines="1"
                             android:textColor="@color/text_black_color"
@@ -533,9 +415,7 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
-
 
                 <View style="@style/LineStyle"/>
 
@@ -580,35 +460,13 @@
 
                         <EditText
                             android:id="@+id/lowPianChang"
-                            android:layout_width="65dp"
+                            android:layout_width="80dp"
                             android:inputType="number|numberDecimal"
                             android:layout_height="wrap_content"
                             android:background="@drawable/gid_background"
                             android:gravity="center"
                             android:imeOptions="actionNext"
-                            android:hint="0.1"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highPianChang"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="10"
+                            android:hint="0.1 - 10"
                             android:padding="5dp"
                             android:maxLines="1"
                             android:textColor="@color/text_black_color"
@@ -616,9 +474,7 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
-
 
                 <View style="@style/LineStyle"/>
 
@@ -663,35 +519,13 @@
 
                         <EditText
                             android:id="@+id/lowWeightWangPian"
-                            android:layout_width="65dp"
+                            android:layout_width="80dp"
                             android:inputType="number|numberDecimal"
                             android:layout_height="wrap_content"
                             android:background="@drawable/gid_background"
                             android:gravity="center"
                             android:imeOptions="actionNext"
-                            android:hint="1"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highWeightWangPian"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="100"
+                            android:hint="1 - 100"
                             android:padding="5dp"
                             android:maxLines="1"
                             android:textColor="@color/text_black_color"
@@ -699,15 +533,73 @@
                             android:textSize="14sp" />
 
                     </LinearLayout>
-
                 </LinearLayout>
+
+                <View style="@style/LineStyle"/>
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginRight="1dp"
+                        android:visibility="invisible"
+                        android:gravity="top"
+                        android:text="*"
+                        android:textSize="14sp"
+                        android:textColor="@color/red_color"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="数量(套)"
+                        android:textColor="@color/text_black_color"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/etNumber"
+                            android:layout_width="80dp"
+                            android:inputType="number|numberDecimal"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/gid_background"
+                            android:gravity="center"
+                            android:imeOptions="actionNext"
+                            android:hint="1 - 1000"
+                            android:padding="5dp"
+                            android:maxLines="1"
+                            android:textColor="@color/text_black_color"
+                            android:textColorHint="@color/light_gray_color"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
 
             </LinearLayout>
 
             <View style="@style/LineStyle"/>
 
 
-  <!--*****************************************框架规格****************************************-->
+            <!--*****************************************框架规格****************************************-->
 
 
 
@@ -826,35 +718,13 @@
 
                             <EditText
                                 android:id="@+id/lowMianKuan"
-                                android:layout_width="65dp"
+                                android:layout_width="80dp"
                                 android:inputType="number|numberDecimal"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/gid_background"
                                 android:gravity="center"
                                 android:imeOptions="actionNext"
-                                android:hint="1"
-                                android:padding="5dp"
-                                android:maxLines="1"
-                                android:textColor="@color/text_black_color"
-                                android:textColorHint="@color/light_gray_color"
-                                android:textSize="14sp" />
-
-                            <View
-                                android:layout_width="12dp"
-                                android:layout_height="1dp"
-                                android:layout_marginLeft="12dp"
-                                android:layout_marginRight="12dp"
-                                android:background="@color/theme_color" />
-
-                            <EditText
-                                android:id="@+id/highMianKuan"
-                                android:layout_width="65dp"
-                                android:inputType="number|numberDecimal"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/gid_background"
-                                android:gravity="center"
-                                android:imeOptions="actionNext"
-                                android:hint="10"
+                                android:hint="1 - 10"
                                 android:padding="5dp"
                                 android:maxLines="1"
                                 android:textColor="@color/text_black_color"
@@ -862,9 +732,7 @@
                                 android:textSize="14sp" />
 
                         </LinearLayout>
-
                     </LinearLayout>
-
 
                     <View style="@style/LineStyle"/>
 
@@ -908,35 +776,13 @@
 
                             <EditText
                                 android:id="@+id/lowMianChang"
-                                android:layout_width="65dp"
+                                android:layout_width="80dp"
                                 android:inputType="number|numberDecimal"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/gid_background"
                                 android:gravity="center"
                                 android:imeOptions="actionNext"
-                                android:hint="1"
-                                android:padding="5dp"
-                                android:maxLines="1"
-                                android:textColor="@color/text_black_color"
-                                android:textColorHint="@color/light_gray_color"
-                                android:textSize="14sp" />
-
-                            <View
-                                android:layout_width="12dp"
-                                android:layout_height="1dp"
-                                android:layout_marginLeft="12dp"
-                                android:layout_marginRight="12dp"
-                                android:background="@color/theme_color" />
-
-                            <EditText
-                                android:id="@+id/highMianChang"
-                                android:layout_width="65dp"
-                                android:inputType="number|numberDecimal"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/gid_background"
-                                android:gravity="center"
-                                android:imeOptions="actionNext"
-                                android:hint="10"
+                                android:hint="1 - 10"
                                 android:padding="5dp"
                                 android:maxLines="1"
                                 android:textColor="@color/text_black_color"
@@ -944,9 +790,7 @@
                                 android:textSize="14sp" />
 
                         </LinearLayout>
-
                     </LinearLayout>
-
 
                     <View style="@style/LineStyle"/>
 
@@ -990,35 +834,13 @@
 
                             <EditText
                                 android:id="@+id/lowGuanHou"
-                                android:layout_width="65dp"
+                                android:layout_width="80dp"
                                 android:inputType="number|numberDecimal"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/gid_background"
                                 android:gravity="center"
                                 android:imeOptions="actionNext"
-                                android:hint="0.1"
-                                android:padding="5dp"
-                                android:maxLines="1"
-                                android:textColor="@color/text_black_color"
-                                android:textColorHint="@color/light_gray_color"
-                                android:textSize="14sp" />
-
-                            <View
-                                android:layout_width="12dp"
-                                android:layout_height="1dp"
-                                android:layout_marginLeft="12dp"
-                                android:layout_marginRight="12dp"
-                                android:background="@color/theme_color" />
-
-                            <EditText
-                                android:id="@+id/highGuanHou"
-                                android:layout_width="65dp"
-                                android:inputType="number|numberDecimal"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/gid_background"
-                                android:gravity="center"
-                                android:imeOptions="actionNext"
-                                android:hint="10"
+                                android:hint="0.1 - 10"
                                 android:padding="5dp"
                                 android:maxLines="1"
                                 android:textColor="@color/text_black_color"
@@ -1026,9 +848,7 @@
                                 android:textSize="14sp" />
 
                         </LinearLayout>
-
                     </LinearLayout>
-
 
                 </LinearLayout>
 
@@ -1041,31 +861,594 @@
 
 
 
-  <!--*****************************************立柱规格****************************************-->
+            <!--*****************************************立柱规格****************************************-->
 
 
-        <LinearLayout
-            android:id="@+id/llSpecLiZhu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            android:orientation="vertical">
-
-
-            <View
+            <LinearLayout
+                android:id="@+id/llSpecLiZhu"
                 android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:background="@color/view_background_gray_color" />
-
-            <View style="@style/LineStyle" />
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:text="立柱规格"
-                android:textColor="@color/black_color"
-                android:textSize="14sp" />
+                android:visibility="visible"
+                android:orientation="vertical">
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:background="@color/view_background_gray_color" />
+
+                <View style="@style/LineStyle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="立柱规格"
+                    android:textColor="@color/black_color"
+                    android:textSize="14sp" />
+
+                <View style="@style/LineStyle" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="1dp"
+                            android:gravity="top"
+                            android:visibility="invisible"
+                            android:text="*"
+                            android:textColor="@color/red_color"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="立柱形状"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_black_color"/>
+
+
+                        <com.appjumper.silkscreen.view.MyGridView
+                            android:id="@+id/choiceXZLiZhu"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:numColumns="2"
+                            android:horizontalSpacing="10dp"
+                            android:verticalSpacing="5dp"/>
+
+                    </LinearLayout>
+
+
+                    <View style="@style/LineStyle"/>
+
+
+
+
+
+
+                    <LinearLayout
+                        android:id="@+id/llYuanZhu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="1dp"
+                                android:gravity="top"
+                                android:visibility="invisible"
+                                android:text="*"
+                                android:textColor="@color/red_color"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="直径(mm)"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_black_color"/>
+
+
+                            <com.appjumper.silkscreen.view.MyGridView
+                                android:id="@+id/choiceZhiJing"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:numColumns="2"
+                                android:horizontalSpacing="10dp"
+                                android:verticalSpacing="5dp"/>
+
+                        </LinearLayout>
+
+
+                        <View style="@style/LineStyle"/>
+
+                    </LinearLayout>
+
+
+
+
+
+
+
+                    <LinearLayout
+                        android:id="@+id/llFangZhu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginRight="1dp"
+                                android:visibility="invisible"
+                                android:gravity="top"
+                                android:text="*"
+                                android:textSize="14sp"
+                                android:textColor="@color/red_color"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="宽(cm)"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_black_color"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/lowLiZhuKuan"
+                                    android:layout_width="80dp"
+                                    android:inputType="number|numberDecimal"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/gid_background"
+                                    android:gravity="center"
+                                    android:imeOptions="actionNext"
+                                    android:hint="1 - 20"
+                                    android:padding="5dp"
+                                    android:maxLines="1"
+                                    android:textColor="@color/text_black_color"
+                                    android:textColorHint="@color/light_gray_color"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View style="@style/LineStyle"/>
+
+
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginRight="1dp"
+                                android:visibility="invisible"
+                                android:gravity="top"
+                                android:text="*"
+                                android:textSize="14sp"
+                                android:textColor="@color/red_color"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="长(cm)"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_black_color"/>
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <EditText
+                                    android:id="@+id/lowLiZhuChang"
+                                    android:layout_width="80dp"
+                                    android:inputType="number|numberDecimal"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/gid_background"
+                                    android:gravity="center"
+                                    android:imeOptions="actionNext"
+                                    android:hint="1 - 20"
+                                    android:padding="5dp"
+                                    android:maxLines="1"
+                                    android:textColor="@color/text_black_color"
+                                    android:textColorHint="@color/light_gray_color"
+                                    android:textSize="14sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <View style="@style/LineStyle"/>
+
+
+                    </LinearLayout>
+
+
+
+
+
+
+
+
+
+                    <LinearLayout
+                        android:id="@+id/llTaoXingZhu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="1dp"
+                                android:gravity="top"
+                                android:visibility="invisible"
+                                android:text="*"
+                                android:textColor="@color/red_color"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="尺寸"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_black_color"/>
+
+
+                            <com.appjumper.silkscreen.view.MyGridView
+                                android:id="@+id/choiceChiCun"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:numColumns="2"
+                                android:horizontalSpacing="10dp"
+                                android:verticalSpacing="5dp"/>
+
+                        </LinearLayout>
+
+
+                        <View style="@style/LineStyle"/>
+
+                    </LinearLayout>
+
+
+
+
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="1dp"
+                            android:visibility="invisible"
+                            android:gravity="top"
+                            android:text="*"
+                            android:textSize="14sp"
+                            android:textColor="@color/red_color"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="壁厚(mm)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_black_color"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/lowBiHou"
+                                android:layout_width="80dp"
+                                android:inputType="number|numberDecimal"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/gid_background"
+                                android:gravity="center"
+                                android:imeOptions="actionNext"
+                                android:hint="0.1 - 10"
+                                android:padding="5dp"
+                                android:maxLines="1"
+                                android:textColor="@color/text_black_color"
+                                android:textColorHint="@color/light_gray_color"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View style="@style/LineStyle"/>
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="1dp"
+                            android:visibility="invisible"
+                            android:gravity="top"
+                            android:text="*"
+                            android:textSize="14sp"
+                            android:textColor="@color/red_color"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="高度(m)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_black_color"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/lowHeight"
+                                android:layout_width="80dp"
+                                android:inputType="number|numberDecimal"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/gid_background"
+                                android:gravity="center"
+                                android:imeOptions="actionNext"
+                                android:hint="0.1 - 10"
+                                android:padding="5dp"
+                                android:maxLines="1"
+                                android:textColor="@color/text_black_color"
+                                android:textColorHint="@color/light_gray_color"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View style="@style/LineStyle"/>
+
+
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginRight="1dp"
+                            android:visibility="invisible"
+                            android:gravity="top"
+                            android:text="*"
+                            android:textSize="14sp"
+                            android:textColor="@color/red_color"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="重量(kg)"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_black_color"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/lowWeightLiZhu"
+                                android:layout_width="80dp"
+                                android:inputType="number|numberDecimal"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/gid_background"
+                                android:gravity="center"
+                                android:imeOptions="actionNext"
+                                android:hint="0.1 - 100"
+                                android:padding="5dp"
+                                android:maxLines="1"
+                                android:textColor="@color/text_black_color"
+                                android:textColorHint="@color/light_gray_color"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View style="@style/LineStyle" />
+
+
+            </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <RadioGroup
+                android:id="@+id/rg_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/view_background_gray_color"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="询价范围"
+                    android:textColor="@color/theme_color"
+                    android:textSize="14sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableLeft="@drawable/selector_checkbox_blue_round"
+                    android:drawablePadding="6dp"
+                    android:paddingBottom="14dp"
+                    android:paddingTop="14dp"
+                    android:text="全部企业"
+                    android:textColor="@color/black_color"
+                    android:textSize="13sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_auth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_checkbox_blue_round"
+                    android:drawablePadding="6dp"
+                    android:paddingBottom="14dp"
+                    android:paddingTop="14dp"
+                    android:text="认证企业"
+                    android:textColor="@color/black_color"
+                    android:textSize="13sp" />
+
+                <RadioButton
+                    android:id="@+id/rb_noauth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/selector_checkbox_blue_round"
+                    android:drawablePadding="6dp"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp"
+                    android:visibility="gone"
+                    android:text="未认证企业"
+                    android:textColor="@color/black_color"
+                    android:textSize="14sp" />
+            </RadioGroup>
+
 
             <View style="@style/LineStyle" />
 
@@ -1073,614 +1456,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp">
+                android:padding="12dp">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="图纸信息"
+                    android:textColor="@color/theme_color"
+                    android:textSize="14sp" />
+
+                <View style="@style/LineStyle" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="1dp"
-                        android:gravity="top"
-                        android:visibility="invisible"
-                        android:text="*"
-                        android:textColor="@color/red_color"
-                        android:textSize="14sp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="立柱形状"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_black_color"/>
-
+                    android:padding="12dp">
 
                     <com.appjumper.silkscreen.view.MyGridView
-                        android:id="@+id/choiceXZLiZhu"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:numColumns="2"
-                        android:horizontalSpacing="10dp"
-                        android:verticalSpacing="5dp"/>
-
-                </LinearLayout>
-
-
-                <View style="@style/LineStyle"/>
-
-
-
-
-
-
-                <LinearLayout
-                    android:id="@+id/llYuanZhu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
+                        android:id="@+id/gridview"
+                        style="@style/GridViewStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="1dp"
-                            android:gravity="top"
-                            android:visibility="invisible"
-                            android:text="*"
-                            android:textColor="@color/red_color"
-                            android:textSize="14sp"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="直径(mm)"
-                            android:textSize="14sp"
-                            android:textColor="@color/text_black_color"/>
-
-
-                        <com.appjumper.silkscreen.view.MyGridView
-                            android:id="@+id/choiceZhiJing"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:numColumns="2"
-                            android:horizontalSpacing="10dp"
-                            android:verticalSpacing="5dp"/>
-
-                    </LinearLayout>
-
-
-                    <View style="@style/LineStyle"/>
-
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="12dp"></com.appjumper.silkscreen.view.MyGridView>
                 </LinearLayout>
-
-
-
-
-
-
-
-                <LinearLayout
-                    android:id="@+id/llFangZhu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginRight="1dp"
-                            android:visibility="invisible"
-                            android:gravity="top"
-                            android:text="*"
-                            android:textSize="14sp"
-                            android:textColor="@color/red_color"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="宽(cm)"
-                            android:textSize="14sp"
-                            android:textColor="@color/text_black_color"/>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/lowLiZhuKuan"
-                                android:layout_width="65dp"
-                                android:inputType="number|numberDecimal"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/gid_background"
-                                android:gravity="center"
-                                android:imeOptions="actionNext"
-                                android:hint="1"
-                                android:padding="5dp"
-                                android:maxLines="1"
-                                android:textColor="@color/text_black_color"
-                                android:textColorHint="@color/light_gray_color"
-                                android:textSize="14sp" />
-
-                            <View
-                                android:layout_width="12dp"
-                                android:layout_height="1dp"
-                                android:layout_marginLeft="12dp"
-                                android:layout_marginRight="12dp"
-                                android:background="@color/theme_color" />
-
-                            <EditText
-                                android:id="@+id/highLiZhuKuan"
-                                android:layout_width="65dp"
-                                android:inputType="number|numberDecimal"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/gid_background"
-                                android:gravity="center"
-                                android:imeOptions="actionNext"
-                                android:hint="20"
-                                android:padding="5dp"
-                                android:maxLines="1"
-                                android:textColor="@color/text_black_color"
-                                android:textColorHint="@color/light_gray_color"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-
-                    <View style="@style/LineStyle"/>
-
-
-
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="2dp"
-                            android:layout_marginRight="1dp"
-                            android:visibility="invisible"
-                            android:gravity="top"
-                            android:text="*"
-                            android:textSize="14sp"
-                            android:textColor="@color/red_color"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="长(cm)"
-                            android:textSize="14sp"
-                            android:textColor="@color/text_black_color"/>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <EditText
-                                android:id="@+id/lowLiZhuChang"
-                                android:layout_width="65dp"
-                                android:inputType="number|numberDecimal"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/gid_background"
-                                android:gravity="center"
-                                android:imeOptions="actionNext"
-                                android:hint="1"
-                                android:padding="5dp"
-                                android:maxLines="1"
-                                android:textColor="@color/text_black_color"
-                                android:textColorHint="@color/light_gray_color"
-                                android:textSize="14sp" />
-
-                            <View
-                                android:layout_width="12dp"
-                                android:layout_height="1dp"
-                                android:layout_marginLeft="12dp"
-                                android:layout_marginRight="12dp"
-                                android:background="@color/theme_color" />
-
-                            <EditText
-                                android:id="@+id/highLiZhuChang"
-                                android:layout_width="65dp"
-                                android:inputType="number|numberDecimal"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/gid_background"
-                                android:gravity="center"
-                                android:imeOptions="actionNext"
-                                android:hint="20"
-                                android:padding="5dp"
-                                android:maxLines="1"
-                                android:textColor="@color/text_black_color"
-                                android:textColorHint="@color/light_gray_color"
-                                android:textSize="14sp" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-
-                    <View style="@style/LineStyle"/>
-
-
-                </LinearLayout>
-
-
-
-
-
-
-
-
-
-                <LinearLayout
-                    android:id="@+id/llTaoXingZhu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="1dp"
-                            android:gravity="top"
-                            android:visibility="invisible"
-                            android:text="*"
-                            android:textColor="@color/red_color"
-                            android:textSize="14sp"/>
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="尺寸"
-                            android:textSize="14sp"
-                            android:textColor="@color/text_black_color"/>
-
-
-                        <com.appjumper.silkscreen.view.MyGridView
-                            android:id="@+id/choiceChiCun"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:numColumns="2"
-                            android:horizontalSpacing="10dp"
-                            android:verticalSpacing="5dp"/>
-
-                    </LinearLayout>
-
-
-                    <View style="@style/LineStyle"/>
-
-                </LinearLayout>
-
-
-
-
-
-
-
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginRight="1dp"
-                        android:visibility="invisible"
-                        android:gravity="top"
-                        android:text="*"
-                        android:textSize="14sp"
-                        android:textColor="@color/red_color"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="壁厚(mm)"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_black_color"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/lowBiHou"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="0.1"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highBiHou"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="10"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
-                <View style="@style/LineStyle"/>
-
-
-
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginRight="1dp"
-                        android:visibility="invisible"
-                        android:gravity="top"
-                        android:text="*"
-                        android:textSize="14sp"
-                        android:textColor="@color/red_color"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="高度(m)"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_black_color"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/lowHeight"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="0.1"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highHeight"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="10"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
-                <View style="@style/LineStyle"/>
-
-
-
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginRight="1dp"
-                        android:visibility="invisible"
-                        android:gravity="top"
-                        android:text="*"
-                        android:textSize="14sp"
-                        android:textColor="@color/red_color"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="重量(kg)"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_black_color"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:id="@+id/lowWeightLiZhu"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="0.1"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <View
-                            android:layout_width="12dp"
-                            android:layout_height="1dp"
-                            android:layout_marginLeft="12dp"
-                            android:layout_marginRight="12dp"
-                            android:background="@color/theme_color" />
-
-                        <EditText
-                            android:id="@+id/highWeightLizhu"
-                            android:layout_width="65dp"
-                            android:inputType="number|numberDecimal"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/gid_background"
-                            android:gravity="center"
-                            android:imeOptions="actionNext"
-                            android:hint="100"
-                            android:padding="5dp"
-                            android:maxLines="1"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-
             </LinearLayout>
 
             <View style="@style/LineStyle" />
 
 
-        </LinearLayout>
-
-
-
-
-
-
-
-
-
-
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:background="@color/view_background_gray_color"/>
-
-            <View style="@style/LineStyle" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/while_color"
                 android:padding="12dp">
 
                 <LinearLayout
@@ -1716,19 +1526,114 @@
                     android:lineSpacingExtra="3dp"
                     android:maxLength="1000"
                     android:minLines="6"
-                    android:hint="其他内容请在此备注"
+                    android:hint=""
                     android:textColor="@color/text_black_color"
                     android:textColorHint="@color/light_gray_color"
                     android:textSize="13sp" />
+            </LinearLayout>
+
+            <View style="@style/LineStyle"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="信息时长"
+                    android:textColor="@color/black_color"
+                    android:textSize="14sp" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_info_length"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp"
+                        android:text="一小时"
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:src="@mipmap/arrow_right" />
+                </LinearLayout>
 
             </LinearLayout>
 
+            <View style="@style/LineStyle" />
 
-            <View
+
+            <LinearLayout
+                android:id="@+id/ll_fit"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:background="@color/view_background_gray_color" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/select_white_background"
+                android:gravity="center_vertical"
+                android:visibility="gone">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="符合厂家"
+                    android:textColor="@color/black_color"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tv_enterprise_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="请选择厂家"
+                    android:paddingBottom="12dp"
+                    android:paddingLeft="12dp"
+                    android:paddingTop="12dp"
+                    android:textColor="@color/black_color"
+                    android:textColorHint="@color/light_gray_color"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="3dp"
+                    android:src="@mipmap/icon_arrows_right_01" />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@color/view_background_gray_color"
+                >
+                <TextView
+                    android:id="@+id/tv_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/selector_btn_blue"
+                    android:gravity="center"
+                    android:text="发布询价"
+                    android:textColor="@color/while_color"
+                    android:textSize="16sp" />
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
