@@ -30,8 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.bean.EquipmentList;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.bean.EquipmentList;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopDetailsActivity;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyLinearLayoutManger;
@@ -102,6 +102,8 @@ public class WorkshopListViewAdapter extends BaseAdapter {
             adapter.setOnItemClickLitener(new GalleryAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view, int pos) {
+                    if (!mContext.checkLogined())
+                        return;
                     mContext.start_Activity(mContext, WorkshopDetailsActivity.class, new BasicNameValuePair("id", item.getId()));
                 }
             });

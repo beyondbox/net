@@ -480,7 +480,7 @@ public class MainActivity extends FragmentActivity {
     public void onBackPressed() {
         long currTime = System.currentTimeMillis();
         if ((currTime - lastClickTime) > 2000) {
-            Toast.makeText(this, "再按一次退出应用", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "再按一次退出丝网+", Toast.LENGTH_SHORT).show();
             lastClickTime = currTime;
         } else {
             finish();

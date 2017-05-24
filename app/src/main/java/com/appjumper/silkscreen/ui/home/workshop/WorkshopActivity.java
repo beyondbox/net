@@ -289,6 +289,8 @@ public class WorkshopActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!checkLogined())
+                    return;
                 start_Activity(WorkshopActivity.this, WorkshopDetailsActivity.class, new BasicNameValuePair("id", list.get(position - 1).getId()));
             }
         });

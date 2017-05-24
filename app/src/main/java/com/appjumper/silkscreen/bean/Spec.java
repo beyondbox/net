@@ -155,4 +155,5 @@ public class Spec implements Serializable{
     public void setMax_value(String max_value) {
         this.max_value = max_value;
     }
+
 }

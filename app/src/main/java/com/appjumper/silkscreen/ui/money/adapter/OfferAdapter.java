@@ -102,6 +102,12 @@ public class OfferAdapter extends BaseAdapter {
         }
 
 
+        if (viewHolder.countDownTimer != null) {
+            viewHolder.countDownTimer.cancel();
+            viewHolder.countDownTimer = null;
+        }
+
+
         if (item.getStatus().equals("0")) {
             viewHolder.tvHandle.setText("未报价");
             viewHolder.tvHandle.setTextColor(mContext.getResources().getColor(R.color.text_gray_color));
@@ -138,11 +144,6 @@ public class OfferAdapter extends BaseAdapter {
      * 开始倒计时
      */
     private void startCountDown(final ViewHolder vh, long endTime) {
-        if (vh.countDownTimer != null) {
-            vh.countDownTimer.cancel();
-            vh.countDownTimer = null;
-        }
-
         long countDownTime = endTime - System.currentTimeMillis();
         if (countDownTime > 0) {
             vh.countDownTimer = new CountDownTimer(countDownTime, 1000) {

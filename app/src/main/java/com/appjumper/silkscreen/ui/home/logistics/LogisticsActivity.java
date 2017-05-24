@@ -176,6 +176,9 @@ public class LogisticsActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (!checkLogined())
+                    return;
+
                 start_Activity(LogisticsActivity.this, LogisticsDetailsActivity.class, new BasicNameValuePair("id", list.get((i - 1)).getId()), new BasicNameValuePair("type", type));
             }
         });

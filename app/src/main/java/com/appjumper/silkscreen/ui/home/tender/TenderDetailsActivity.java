@@ -99,6 +99,7 @@ public class TenderDetailsActivity extends BaseActivity {
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
                 data.put("id", id);
+                data.put("uid", getUserID());
                 response = JsonParser.getTenderDetailsResponse(HttpUtil.postMsg(HttpUtil.getData(data),Url.TENDERDETAILS));
             } catch (Exception e) {
                 e.printStackTrace();

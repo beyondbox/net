@@ -115,12 +115,11 @@
 
 
 
-
-
             <com.appjumper.silkscreen.view.MyListView
                 android:id="@+id/lvSpec"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:listSelector="#00000000"
                 android:divider="@null">
 
@@ -130,6 +129,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:background="@color/view_background_gray_color">
 
                 <TextView
@@ -150,6 +150,12 @@
 
 
 
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/view_background_gray_color" />
 
 
             <View style="@style/LineStyle" />

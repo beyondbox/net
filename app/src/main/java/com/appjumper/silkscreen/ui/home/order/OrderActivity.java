@@ -323,7 +323,8 @@ public class OrderActivity extends BaseActivity {
                 EditText etLow = (EditText) editView.findViewById(R.id.et_low);//最小值
                 EditText etHigh = (EditText) editView.findViewById(R.id.et_high);//最大值
                 TextView tvName = (TextView) editView.findViewById(R.id.tv_name);//规格名字
-                tvName.setText(spec.get(i).getName()+"（"+spec.get(i).getUnit()+"）");
+                //tvName.setText(spec.get(i).getName()+"（"+spec.get(i).getUnit()+"）");
+                tvName.setText(spec.get(i).getName());
                 etLow.setTag(i + "low");
                 etHigh.setTag(i + "high");
                 l_screening2.addView(editView);
@@ -334,7 +335,8 @@ public class OrderActivity extends BaseActivity {
                 View choiceView = LayoutInflater.from(this).inflate(R.layout.layout_filter_choice, null);
                 choiceView.setTag("choice" + i);
                 TextView tvName = (TextView) choiceView.findViewById(R.id.tv_name);//规格名字
-                tvName.setText(spec.get(i).getName()+"（"+spec.get(i).getUnit()+"）");
+                //tvName.setText(spec.get(i).getName()+"（"+spec.get(i).getUnit()+"）");
+                tvName.setText(spec.get(i).getName());
                 MyViewGroup radioGroup = (MyViewGroup) choiceView.findViewById(R.id.my_view_group);
                 String[] sqlitunit = spec.get(i).getUnit().split(",");
                 for (int j = 0; j < sqlitunit.length; j++) {
@@ -438,6 +440,8 @@ public class OrderActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (!checkLogined())
+                    return;
                 start_Activity(OrderActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", listData.get((i - 1)).getProduct_name() + listData.get((i - 1)).getService_type_name()), new BasicNameValuePair("id", listData.get((i - 1)).getId()));
             }
         });

@@ -31,6 +31,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.Bind;
@@ -426,9 +427,11 @@ public class MessageActivity extends BaseActivity {
     private void myOfferFilter(List<Myoffer> list, boolean isFirstPage) {
 
         if (getMyApplication().getMyUserManager().getInvalidInquiryOption()) {
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getStatus().equals("0"))
-                    list.remove(i);
+            Iterator<Myoffer> it = list.iterator();
+            while (it.hasNext()) {
+                Myoffer myoffer = it.next();
+                if (myoffer.getStatus().equals("0"))
+                    it.remove();
             }
         }
 

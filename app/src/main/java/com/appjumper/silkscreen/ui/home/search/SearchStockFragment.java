@@ -23,7 +23,7 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.adapter.GirdDropDownAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SearchProductAdapter;
-import com.appjumper.silkscreen.ui.home.process.ProcessingDetailsActivity;
+import com.appjumper.silkscreen.ui.home.stock.StockDetailActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -161,7 +161,9 @@ public class SearchStockFragment extends BaseFragment {
         resultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                start_Activity(context, ProcessingDetailsActivity.class,
+                if (!checkLogined())
+                    return;
+                start_Activity(context, StockDetailActivity.class,
                         new BasicNameValuePair("title", resultList.get(position).getProduct_name() + resultList.get(position).getService_type_name()),
                         new BasicNameValuePair("id", resultList.get(position).getId()));
             }

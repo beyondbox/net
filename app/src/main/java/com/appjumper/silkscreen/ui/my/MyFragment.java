@@ -25,7 +25,6 @@ import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.AuthenticationAdministrationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ServiceAdministrationActivity;
-import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.ShareUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -192,8 +191,8 @@ public class MyFragment extends BaseFragment {
                 }
                 break;
             case R.id.rl_feedback://意见反馈
-                //start_Activity(getActivity(), FeedbackActivity.class);
-                start_Activity(context, InquiryHuLanActivity.class);
+                start_Activity(getActivity(), FeedbackActivity.class);
+                //start_Activity(context, InquiryHuLanActivity.class);
                 break;
             case R.id.rl_enterprise://企业信息
                 if (checkLogined()) {

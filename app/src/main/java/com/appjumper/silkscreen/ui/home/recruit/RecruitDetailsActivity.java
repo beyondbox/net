@@ -194,6 +194,7 @@ public class RecruitDetailsActivity extends BaseActivity {
             try {
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("id", id);
+                data.put("uid", getUserID());
                 response = JsonParser.getRecruitDetailsResponse(HttpUtil.postMsg(
                         HttpUtil.getData(data), Url.RECRUIT_DETAILS));
             } catch (Exception e) {

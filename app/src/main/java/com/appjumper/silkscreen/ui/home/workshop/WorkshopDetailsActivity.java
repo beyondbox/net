@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -185,7 +186,7 @@ public class WorkshopDetailsActivity extends BaseActivity {
                 tv_name.setText(user.getUser_nicename());
                 mobile = user.getMobile();
                 tv_mobile.setText(user.getMobile());
-                if (user.getAvatar() != null && !user.getAvatar().getSmall().equals("")) {
+                if (user.getAvatar() != null && !TextUtils.isEmpty(user.getAvatar().getSmall())) {
                     Picasso.with(this).load(user.getAvatar().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head).into(iv_img);
                 }
             }
@@ -217,6 +218,7 @@ public class WorkshopDetailsActivity extends BaseActivity {
             try {
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("id", id);
+                data.put("uid", getUserID());
                 response = JsonParser.getEquipmentDetailsResponse(HttpUtil.postMsg(
                         HttpUtil.getData(data), Url.WORKSHOP_DETAILS));
             } catch (Exception e) {

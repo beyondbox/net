@@ -74,6 +74,9 @@ public class ReleaseHistoryActivity extends BaseActivity{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 NewPublic item = list.get(i);
+                if (!checkLogined())
+                    return;
+
                 switch (item.getType()){
                     case "1"://定做
                         start_Activity(ReleaseHistoryActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", item.getTitle()+item.getSubtitle()),new BasicNameValuePair("id",item.getInfo_id()));

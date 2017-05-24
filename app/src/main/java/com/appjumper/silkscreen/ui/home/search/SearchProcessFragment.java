@@ -161,6 +161,8 @@ public class SearchProcessFragment extends BaseFragment {
         resultAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (!checkLogined())
+                    return;
                 start_Activity(context, ProcessingDetailsActivity.class,
                         new BasicNameValuePair("title", resultList.get(position).getProduct_name() + resultList.get(position).getService_type_name()),
                         new BasicNameValuePair("id", resultList.get(position).getId()));

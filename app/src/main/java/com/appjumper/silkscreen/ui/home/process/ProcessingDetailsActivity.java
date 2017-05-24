@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -163,7 +164,22 @@ public class ProcessingDetailsActivity extends BaseActivity {
 //            mList.add(selectProMap);
 //        }
 //        SpecificationAdapter adapter = new SpecificationAdapter(this, mList);
-        listView.setAdapter(new ViewOrderListViewAdapter(this,service_spec));
+
+
+        //过滤空字段
+        List<Spec> tempList = new ArrayList<>();
+
+        for (int i = 0; i < service_spec.size(); i++) {
+            Spec spec = service_spec.get(i);
+            if (!TextUtils.isEmpty(spec.getValue().trim())) {
+                tempList.add(spec);
+            }
+        }
+
+        //listView.setAdapter(new ViewOrderListViewAdapter(this, service_spec));
+        listView.setAdapter(new ViewOrderListViewAdapter(this, tempList));
+
+
 //        listView.setAdapter(adapter);
     }
 

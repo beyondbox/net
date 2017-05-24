@@ -188,6 +188,7 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
 
         initData();
         initView();
+        initBack();
         initTitle("护栏网");
         initProgressDialog(false, "正在发布...");
     }

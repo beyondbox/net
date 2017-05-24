@@ -105,6 +105,10 @@ public class TenderActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 i=i-1;
+
+                if (!checkLogined())
+                    return;
+
                 if (type.equals("1")) {
                     start_Activity(TenderActivity.this, TenderDetailsActivity.class,new BasicNameValuePair("id",list.get(i).getId()));
                 } else if (type.equals("2")) {

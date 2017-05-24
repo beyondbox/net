@@ -330,7 +330,8 @@ public class StockActivity extends BaseActivity {
             if(!mTitles.get(i).getFieldname().equals("cunliang")){
                 View listView = LayoutInflater.from(this).inflate(R.layout.layout_filter_list, null);
                 TextView tvName = (TextView) listView.findViewById(R.id.tv_name);//规格名字
-                tvName.setText(mTitles.get(i).getName() + "(" + mTitles.get(i).getUnit() + ")");
+                //tvName.setText(mTitles.get(i).getName() + "(" + mTitles.get(i).getUnit() + ")");
+                tvName.setText(mTitles.get(i).getName());
                 MyGridView gridView = (MyGridView) listView.findViewById(R.id.grid_view);
                 if (gridView.getChildCount() == 0) {
                     String str = mTitles.get(i).getValue();
@@ -488,6 +489,8 @@ public class StockActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (!checkLogined())
+                    return;
                 start_Activity(StockActivity.this, StockDetailActivity.class, new BasicNameValuePair("title", listData.get((i - 1)).getProduct_name() + listData.get((i - 1)).getService_type_name()), new BasicNameValuePair("id", listData.get((i - 1)).getId()));
             }
         });

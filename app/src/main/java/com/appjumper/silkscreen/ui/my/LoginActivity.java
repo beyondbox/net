@@ -128,6 +128,9 @@ public class LoginActivity extends BaseActivity{
                         getMyApplication().getMyUserManager()
                                 .storeUserInfo(user);
                         CommonApi.addLiveness(getUserID(), 1);
+
+                        sendBroadcast(new Intent(Const.ACTION_LOGIN_SUCCESS));
+
                         finish();
                     }else{
                         showErrorToast(userResponse.getError_desc());

@@ -29,7 +29,7 @@ public class PicassoRoundTransform implements Transformation {
 
         RectF rectF = new RectF(new Rect(0, 0, widthLight, heightLight));
 
-        canvas.drawRoundRect(rectF, widthLight / 5, heightLight / 5, paintColor);
+        canvas.drawRoundRect(rectF, widthLight / 10, heightLight / 10, paintColor);
 
         Paint paintImage = new Paint();
         paintImage.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_ATOP));

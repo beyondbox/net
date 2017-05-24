@@ -179,6 +179,9 @@ public class EquipmentActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!checkLogined())
+                    return;
+
                 start_Activity(EquipmentActivity.this, EquipmentDetailsActivity.class, new BasicNameValuePair("id", list.get(position - 1).getId()));
             }
         });

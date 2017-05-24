@@ -44,11 +44,17 @@ public class WorkShopAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHol
         TextView txtName = helper.getView(R.id.txtName);
 
         if (TextUtils.isEmpty(item.getEnterprise_name())) { //个人
-            Picasso.with(mContext)
-                    .load(item.getAvatar().getSmall())
-                    .placeholder(R.mipmap.img_error_head)
-                    .error(R.mipmap.img_error_head)
-                    .into((ImageView) helper.getView(R.id.imgViHead));
+
+            ImageView imageView = helper.getView(R.id.imgViHead);
+            if (TextUtils.isEmpty(item.getAvatar().getSmall())) {
+                imageView.setImageResource(R.mipmap.img_error_head);
+            } else {
+                Picasso.with(mContext)
+                        .load(item.getAvatar().getSmall())
+                        .placeholder(R.mipmap.img_error_head)
+                        .error(R.mipmap.img_error_head)
+                        .into(imageView);
+            }
 
             txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 138));
 

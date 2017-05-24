@@ -298,7 +298,7 @@ public class PersonalAuthenticationActivity extends MultiSelectPhotoActivity{
                 case NETWORK_SUCCESS_PAGER_RIGHT://企业认证
                     BaseResponse baseresponse = (BaseResponse) msg.obj;
                     if(baseresponse.isSuccess()){
-                        showErrorToast("企业认证提交成功");
+                        showErrorToast("个人认证提交成功");
                         finish();
                     }else{
                         activity.showErrorToast(baseresponse.getError_desc());

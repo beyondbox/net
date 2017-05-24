@@ -582,6 +582,9 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     NewPublic item = newPublic.get(i);
+                    if (!checkLogined())
+                        return;
+
                     switch (item.getType()) {
                         case "1"://定做
                             start_Activity(CompanyDetailsActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", item.getTitle() + item.getSubtitle()), new BasicNameValuePair("id", item.getInfo_id()));

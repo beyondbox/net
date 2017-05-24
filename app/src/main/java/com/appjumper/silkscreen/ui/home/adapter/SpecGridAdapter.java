@@ -40,7 +40,11 @@ public class SpecGridAdapter extends MyBaseAdapter<Spec> {
 
         Spec spec = list.get(position);
         vh.txtName.setText(spec.getName());
-        vh.txtValue.setText(spec.getValue() + spec.getUnit());
+
+        if (spec.getFieldinput().equals("radio"))
+            vh.txtValue.setText(spec.getValue());
+        else
+            vh.txtValue.setText(spec.getValue() + spec.getUnit());
 
         return convertView;
     }

@@ -93,6 +93,10 @@ public class Const {
      * 未读消息数刷新
      */
     public static final String ACTION_UNREAD_REFRESH = "com.appjumper.silkscreen.UNREAD_REFRESH";
+    /**
+     * 登录成功
+     */
+    public static final String ACTION_LOGIN_SUCCESS = "com.appjumper.silkscreen.LOGIN_SUCCESS";
 
 
 

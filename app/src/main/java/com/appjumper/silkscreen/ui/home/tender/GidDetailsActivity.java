@@ -90,6 +90,7 @@ public class GidDetailsActivity extends BaseActivity {
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
                 data.put("id", id);
+                data.put("uid", getUserID());
                 response = JsonParser.getTenderDetailsResponse(HttpUtil.getMsg(Url.SELECTDETAILS + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();

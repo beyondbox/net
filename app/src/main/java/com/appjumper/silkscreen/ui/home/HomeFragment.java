@@ -550,6 +550,7 @@ public class HomeFragment extends BaseFragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Const.ACTION_ATTENTION_MATER_REFRESH);
         filter.addAction(Const.ACTION_UNREAD_REFRESH);
+        filter.addAction(Const.ACTION_LOGIN_SUCCESS);
         context.registerReceiver(myReceiver, filter);
     }
 
@@ -565,6 +566,8 @@ public class HomeFragment extends BaseFragment {
                 badgeTender.setBadgeNumber(unRead.getTenderNum());
                 badgeExhibition.setBadgeNumber(unRead.getExpoNum());
                 badgeNews.setBadgeNumber(unRead.getNewsNum());
+            } else if (action.equals(Const.ACTION_LOGIN_SUCCESS)) {
+                new Thread(new HomeDataRun()).start();
             }
         }
     };

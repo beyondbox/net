@@ -169,6 +169,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
             try {
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("id", id);
+                data.put("uid", getUserID());
                 response = JsonParser.getEquipmentDetailsResponse(HttpUtil.postMsg(
                         HttpUtil.getData(data), Url.EQUIPMENT_DETAILS));
             } catch (Exception e) {

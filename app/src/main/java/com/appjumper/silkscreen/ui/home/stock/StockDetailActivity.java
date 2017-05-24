@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -188,9 +189,33 @@ public class StockDetailActivity extends BaseActivity {
      * 渲染规格数据
      */
     private void setSpec(List<Spec> specList) {
+        if (specList.size() == 0)
+            return;
+
         View headerView = LayoutInflater.from(context).inflate(R.layout.layout_header_spec, null);
+        //设置右上角存量显示
+        TextView txtCunLiang = (TextView) headerView.findViewById(R.id.txtCunLiang);
+        for (Spec spec : specList) {
+            if (spec.getFieldname().equals("cunliang")) {
+                if (!TextUtils.isEmpty(spec.getValue())) {
+                    txtCunLiang.setText("存量" + spec.getValue() + spec.getUnit());
+                    txtCunLiang.setVisibility(View.VISIBLE);
+                }
+                break;
+            }
+        }
+
+        //过滤空字段
+        List<Spec> tempList = new ArrayList<>();
+        for (int i = 0; i < specList.size(); i++) {
+            Spec spec = specList.get(i);
+            if (!TextUtils.isEmpty(spec.getValue().trim())) {
+                tempList.add(spec);
+            }
+        }
+
         lLaytSpec.addView(headerView);
-        lLaytSpec.addView(getGridView(specList));
+        lLaytSpec.addView(getGridView(tempList));
     }
 
     /**
@@ -232,7 +257,8 @@ public class StockDetailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_inquiry://询价
                 if (checkLogined()) {
-                    showSepcSelectPopup();
+                    //showSepcSelectPopup();
+                    goToInquiry();
                 }
                 break;
             case R.id.rl_company:

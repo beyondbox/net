@@ -7,8 +7,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.bean.User;
+import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.util.manager.ActivityTaskManager;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.tencent.android.tpush.XGPushManager;
@@ -68,7 +69,11 @@ public class SystemSettingActivity extends BaseActivity {
                     public void onSureButtonClick() {
                         XGPushManager.registerPush(SystemSettingActivity.this, "*");
                         getMyApplication().getMyUserManager().clean();
-                        finish();
+                        //finish();
+
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
                     }
                 });
                 followDialog.show();

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
@@ -13,19 +14,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.MyInquiry;
 import com.appjumper.silkscreen.bean.MyInquiryDetailsResponse;
 import com.appjumper.silkscreen.bean.Spec;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.GalleryAdapter;
 import com.appjumper.silkscreen.ui.money.adapter.InquiryListViewAdapter;
 import com.appjumper.silkscreen.ui.money.adapter.InquirySpecificationAdapter;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
@@ -39,6 +40,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -347,7 +349,20 @@ public class InquiryDetailsAlreadyActivity extends BaseActivity {
                 }
             });
         }
-        initSpecification(data.getSpec());
+
+
+        //过滤空字段
+        List<Spec> list = data.getSpec();
+        Iterator<Spec> it = list.iterator();
+        while (it.hasNext()) {
+            Spec spec = it.next();
+            if (TextUtils.isEmpty(spec.getValue().trim()))
+                it.remove();
+        }
+        initSpecification(list);
+        //initSpecification(data.getSpec());
+
+
         if (data.getImg_list().size() > 0) {
             initViewRecyclerView(data.getImg_list());
         } else {

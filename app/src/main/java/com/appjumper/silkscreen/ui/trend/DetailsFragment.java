@@ -118,7 +118,7 @@ public class DetailsFragment extends BaseFragment {
         articleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                start_Activity(context, TrendArticleAllActivity.class);
+                start_Activity(context, TrendArticleAllActivity.class, new BasicNameValuePair("type", type));
             }
         });
     }
@@ -276,6 +276,8 @@ public class DetailsFragment extends BaseFragment {
      */
     private void getArticle() {
         RequestParams params = MyHttpClient.getApiParam("tender", "analysis_list");
+        params.put("type", type);
+
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {

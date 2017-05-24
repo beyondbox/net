@@ -247,6 +247,8 @@ public class EnterpriseListActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!checkLogined())
+                    return;
                 start_Activity(EnterpriseListActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", "电镀锌片"));
             }
         });

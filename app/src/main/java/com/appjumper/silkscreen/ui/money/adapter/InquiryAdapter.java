@@ -90,6 +90,13 @@ public class InquiryAdapter extends BaseAdapter {
                 break;
         }
         viewHolder.tv_datatime.setText(myInquiry.getCreate_time().substring(5, 16));
+
+
+        if (viewHolder.countDownTimer != null) {
+            viewHolder.countDownTimer.cancel();
+            viewHolder.countDownTimer = null;
+        }
+
         if (myInquiry.getStatus().equals("0")) {//已取消
             if (myInquiry.getOffer_num() != null && !myInquiry.getOffer_num().equals("") && Integer.parseInt(myInquiry.getOffer_num()) > 0) {
                 viewHolder.tv_yes_quotation.setVisibility(View.VISIBLE);
@@ -148,11 +155,6 @@ public class InquiryAdapter extends BaseAdapter {
      * 开始倒计时
      */
     private void startCountDown(final ViewHolder vh, long endTime) {
-        if (vh.countDownTimer != null) {
-            vh.countDownTimer.cancel();
-            vh.countDownTimer = null;
-        }
-
         long countDownTime = endTime - System.currentTimeMillis();
         if (countDownTime > 0) {
             vh.countDownTimer = new CountDownTimer(countDownTime, 1000) {

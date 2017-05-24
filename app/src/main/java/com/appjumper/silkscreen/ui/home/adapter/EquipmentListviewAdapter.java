@@ -29,8 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.bean.EquipmentList;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.bean.EquipmentList;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentDetailsActivity;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyLinearLayoutManger;
@@ -107,6 +107,9 @@ public class EquipmentListviewAdapter extends BaseAdapter {
             adapter.setOnItemClickLitener(new GalleryAdapter.OnItemClickLitener() {
                 @Override
                 public void onItemClick(View view, int pos) {
+                    if (!mContext.checkLogined())
+                        return;
+
                     mContext.start_Activity(mContext, EquipmentDetailsActivity.class, new BasicNameValuePair("id", list.get(position).getId()));
                 }
             });

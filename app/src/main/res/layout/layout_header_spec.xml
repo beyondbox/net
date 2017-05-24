@@ -25,10 +25,11 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/txtStock"
+            android:id="@+id/txtCunLiang"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
+            android:visibility="invisible"
             android:text="存量48吨"
             android:textSize="14sp"
             android:textColor="@color/orange_color"/>

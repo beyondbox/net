@@ -50,6 +50,8 @@ public class TrendArticleAllActivity extends BaseActivity {
     private int pageSize = 20;
     private int totalSize;
 
+    private String type;
+
 
 
     @Override
@@ -57,6 +59,8 @@ public class TrendArticleAllActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trend_article_all);
         ButterKnife.bind(this);
+
+        type = getIntent().getStringExtra("type");
 
         initBack();
         initTitle("行情分析");
@@ -117,6 +121,7 @@ public class TrendArticleAllActivity extends BaseActivity {
         RequestParams params = MyHttpClient.getApiParam("tender", "analysis_list");
         params.put("page", page);
         params.put("pagesize", pageSize);
+        params.put("type", type);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

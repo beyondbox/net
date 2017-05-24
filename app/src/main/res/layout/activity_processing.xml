@@ -139,6 +139,7 @@
         android:layout_width="230dp"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:fitsSystemWindows="true"
         android:clickable="true"
         android:background="@color/while_color"
         android:layout_gravity="right">
