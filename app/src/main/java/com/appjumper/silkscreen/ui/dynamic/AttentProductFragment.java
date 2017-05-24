@@ -162,6 +162,7 @@ public class AttentProductFragment extends BaseFragment {
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         getMyAttention();
                         activity.getAttentNum();
+                        activity.hasChanged = true;
 
                         if (list.size() > 0)
                             CommonApi.addLiveness(getUserID(), 22);
@@ -183,6 +184,7 @@ public class AttentProductFragment extends BaseFragment {
             }
         });
     }
+
 
 
     @Override

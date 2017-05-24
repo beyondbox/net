@@ -404,6 +404,9 @@ public class HomeFragment extends BaseFragment {
     private class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            if (context.isDestroyed())
+                return;
+
             mPullRefreshScrollView.refreshComplete();
             if (progress != null) {
                 progress.dismiss();

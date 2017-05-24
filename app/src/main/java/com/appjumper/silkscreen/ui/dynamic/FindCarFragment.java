@@ -1,7 +1,12 @@
 package com.appjumper.silkscreen.ui.dynamic;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -53,6 +58,17 @@ public class FindCarFragment extends BaseFragment {
     private int page = 1;
     private int pageSize = 20;
     private int totalSize;
+
+    private LocalBroadcastManager broadcastManager;
+
+
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerBroadcastReceiver();
+    }
 
 
     @Override
@@ -121,6 +137,41 @@ public class FindCarFragment extends BaseFragment {
 
 
 
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_DYNAMIC_REFRESH);
+        broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        broadcastManager.registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_DYNAMIC_REFRESH)) {
+                if (isDataInited) {
+                    ptrLayt.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ptrLayt.autoRefresh();
+                        }
+                    }, 50);
+                }
+            }
+        }
+    };
+
+
+
+    @Override
+    public void onDestroy() {
+        broadcastManager.unregisterReceiver(myReceiver);
+        super.onDestroy();
+    }
+
+
+
+
     /**
      * 获取数据
      */
@@ -142,8 +193,10 @@ public class FindCarFragment extends BaseFragment {
                         List<LineList> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), LineList.class);
                         totalSize = dataObj.optInt("total");
 
-                        if (page == 1)
+                        if (page == 1) {
                             dataList.clear();
+                            recyclerData.smoothScrollToPosition(0);
+                        }
                         dataList.addAll(list);
                         adapter.notifyDataSetChanged();
 
@@ -165,6 +218,9 @@ public class FindCarFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
+                if (context.isDestroyed())
+                    return;
+
                 ptrLayt.refreshComplete();
                 adapter.loadMoreComplete();
                 if (totalSize == dataList.size())

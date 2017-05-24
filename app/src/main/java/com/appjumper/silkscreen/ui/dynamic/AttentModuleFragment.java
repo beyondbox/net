@@ -341,6 +341,7 @@ public class AttentModuleFragment extends BaseFragment {
                         logisticsAdapter.notifyItemRemoved(position);
                         logisticsAdapter.notifyItemRangeChanged(position, logisticsList.size() - position);
                         activity.getAttentNum();
+                        activity.hasChanged = true;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -387,6 +388,7 @@ public class AttentModuleFragment extends BaseFragment {
                         productAdapter.notifyItemRemoved(position);
                         productAdapter.notifyItemRangeChanged(position, productList.size() - position);
                         activity.getAttentNum();
+                        activity.hasChanged = true;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -433,6 +435,7 @@ public class AttentModuleFragment extends BaseFragment {
                         deviceAdapter.notifyItemRemoved(position);
                         deviceAdapter.notifyItemRangeChanged(position, deviceList.size() - position);
                         activity.getAttentNum();
+                        activity.hasChanged = true;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -479,6 +482,7 @@ public class AttentModuleFragment extends BaseFragment {
                         plantAdapter.notifyItemRemoved(position);
                         plantAdapter.notifyItemRangeChanged(position, plantList.size() - position);
                         activity.getAttentNum();
+                        activity.hasChanged = true;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -525,6 +529,7 @@ public class AttentModuleFragment extends BaseFragment {
                         postAdapter.notifyItemRemoved(position);
                         postAdapter.notifyItemRangeChanged(position, postList.size() - position);
                         activity.getAttentNum();
+                        activity.hasChanged = true;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -808,6 +813,7 @@ public class AttentModuleFragment extends BaseFragment {
         if (data == null)
             return;
 
+        activity.hasChanged = true;
         AttentModule module = new AttentModule();
         switch (requestCode) {
             case Const.REQUEST_CODE_SELECT_LOGISTICS:

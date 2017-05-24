@@ -158,6 +158,9 @@ public class TrendArticleAllActivity extends BaseActivity {
             @Override
             public void onFinish() {
                 super.onFinish();
+                if (isDestroyed())
+                    return;
+
                 ptrLayt.refreshComplete();
                 articleAdapter.loadMoreComplete();
                 if (totalSize == articleList.size())

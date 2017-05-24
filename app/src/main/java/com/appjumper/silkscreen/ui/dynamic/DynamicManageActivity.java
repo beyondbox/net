@@ -40,6 +40,8 @@ public class DynamicManageActivity extends BaseActivity {
     private List<Fragment> fragList;
     private List<String> titleList;
 
+    public boolean hasChanged = false; //标记用户的关注是否有变化
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,4 +122,12 @@ public class DynamicManageActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    public void finish() {
+        if (hasChanged)
+            setResult(Const.RESULT_CODE_NEED_REFRESH);
+
+        super.finish();
+    }
 }

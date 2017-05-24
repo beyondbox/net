@@ -97,6 +97,10 @@ public class Const {
      * 登录成功
      */
     public static final String ACTION_LOGIN_SUCCESS = "com.appjumper.silkscreen.LOGIN_SUCCESS";
+    /**
+     * 动态刷新
+     */
+    public static final String ACTION_DYNAMIC_REFRESH = "com.appjumper.silkscreen.DYNAMIC_REFRESH";
 
 
 

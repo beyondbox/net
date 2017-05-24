@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,9 +128,20 @@ public class DynamicFragment extends BaseFragment {
         viewPager.setOffscreenPageLimit(titleArr.length - 1);
         viewPager.setAdapter(pagerAdapter);
 
-        //tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayt.setupWithViewPager(viewPager);
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Const.RESULT_CODE_NEED_REFRESH) {
+            LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+            broadcastManager.sendBroadcast(new Intent(Const.ACTION_DYNAMIC_REFRESH));
+        }
+    }
+
 
 
     @OnClick({R.id.right, R.id.txtLogin})
@@ -139,7 +151,7 @@ public class DynamicFragment extends BaseFragment {
             case R.id.right: //管理
                 if (checkLogined()) {
                     intent = new Intent(context, DynamicManageActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 0);
                 }
                 break;
             case R.id.txtLogin: //立即登录

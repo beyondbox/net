@@ -221,8 +221,10 @@ public class SearchOrderFragment extends BaseFragment {
                         List<Product> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), Product.class);
                         totalSize = dataObj.optInt("total");
 
-                        if (page == 1)
+                        if (page == 1) {
                             resultList.clear();
+                            recyclerResult.smoothScrollToPosition(0);
+                        }
                         resultList.addAll(list);
                         resultAdapter.notifyDataSetChanged();
 
@@ -244,6 +246,9 @@ public class SearchOrderFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
+                if (context.isDestroyed())
+                    return;
+
                 ptrResult.refreshComplete();
                 resultAdapter.loadMoreComplete();
                 if (totalSize == resultList.size())
