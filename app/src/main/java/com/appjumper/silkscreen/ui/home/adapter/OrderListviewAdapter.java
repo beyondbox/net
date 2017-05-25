@@ -91,6 +91,13 @@ public class OrderListviewAdapter extends BaseAdapter {
       Picasso.with(mContext).load(item.getImg_list().get(0).getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.iv_logo);
 //    }
     viewHolder.tv_name.setText(item.getEnterprise_name());
+
+    if (item.getAuth_status() != null && item.getAuth_status().equals("2")) {
+      viewHolder.img_auth_status.setVisibility(View.VISIBLE);
+    } else {
+      viewHolder.img_auth_status.setVisibility(View.GONE);
+    }
+
     if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2")) {
       viewHolder.img_enterprise_auth_status.setVisibility(View.VISIBLE);
     } else {
@@ -146,6 +153,9 @@ public class OrderListviewAdapter extends BaseAdapter {
 
     @Bind(R.id.tv_company_name)//公司名称
             TextView tv_company_name;
+
+    @Bind(R.id.img_auth_status) //个人认证
+    ImageView img_auth_status;
 
     @Bind(R.id.img_enterprise_auth_status)//企
             ImageView img_enterprise_auth_status;

@@ -27,8 +27,8 @@ import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.HomeData;
 import com.appjumper.silkscreen.bean.HomeDataResponse;
+import com.appjumper.silkscreen.bean.HotInquiry;
 import com.appjumper.silkscreen.bean.MaterProduct;
-import com.appjumper.silkscreen.bean.MyInquiry;
 import com.appjumper.silkscreen.bean.Notice;
 import com.appjumper.silkscreen.bean.ScoreResponse;
 import com.appjumper.silkscreen.bean.UnRead;
@@ -53,6 +53,7 @@ import com.appjumper.silkscreen.ui.home.stock.StockActivity;
 import com.appjumper.silkscreen.ui.home.tender.TenderActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
+import com.appjumper.silkscreen.ui.money.OfferDetailsActivity;
 import com.appjumper.silkscreen.ui.my.MyPointActivity;
 import com.appjumper.silkscreen.ui.trend.AttentionManageActivity;
 import com.appjumper.silkscreen.util.Const;
@@ -61,6 +62,7 @@ import com.appjumper.silkscreen.view.ItemSpaceDecorationLine;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.VerticalSwitchTextView;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
@@ -145,7 +147,7 @@ public class HomeFragment extends BaseFragment {
     private QBadgeView badgeExhibition; //展会信息小红点
     private QBadgeView badgeNews; //行业新闻小红点
 
-    private List<MyInquiry> hotInquiryList;//热门产品询价
+    private List<HotInquiry> hotInquiryList;//热门产品询价
     private HotInquiryAdapter hotInquiryAdapter;
 
     private List<MaterProduct> materList; //关注的原材料
@@ -241,15 +243,19 @@ public class HomeFragment extends BaseFragment {
          * 热门询价
          */
         hotInquiryList = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            MyInquiry myInquiry = new MyInquiry();
-            hotInquiryList.add(myInquiry);
-        }
-
         hotInquiryAdapter = new HotInquiryAdapter(R.layout.item_recycler_line_hot_inquiry, hotInquiryList);
         recyclerHotInquiry.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         recyclerHotInquiry.addItemDecoration(new ItemSpaceDecorationLine(5,0,0,0));
-        recyclerHotInquiry.setAdapter(hotInquiryAdapter);
+        hotInquiryAdapter.bindToRecyclerView(recyclerHotInquiry);
+        hotInquiryAdapter.setEmptyView(R.layout.pull_listitem_empty_padding);
+
+        hotInquiryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                if (checkLogined())
+                    start_Activity(context, OfferDetailsActivity.class, new BasicNameValuePair("id", hotInquiryList.get(position).getId()));
+            }
+        });
 
         /**
          * 推荐
@@ -318,6 +324,14 @@ public class HomeFragment extends BaseFragment {
         }
 
 
+        //热门询价
+        hotInquiryList.clear();
+        hotInquiryList.addAll(data.getOfferView());
+        hotInquiryAdapter.notifyDataSetChanged();
+        recyclerHotInquiry.smoothScrollToPosition(0);
+
+
+        //推荐企业
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

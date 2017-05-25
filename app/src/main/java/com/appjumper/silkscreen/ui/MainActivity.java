@@ -68,7 +68,7 @@ public class MainActivity extends FragmentActivity {
     List<Fragment> mTab = new ArrayList<>();
 
     @Bind(R.id.rg_tab)
-    RadioGroup bottom_lly;
+    public RadioGroup bottom_lly;
 
     @Bind(R.id.id_view_pager)
     public ViewPager idViewPager;
@@ -201,7 +201,6 @@ public class MainActivity extends FragmentActivity {
                     getPackageName(), 0);
             return packInfo.versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return 0;
         }
@@ -240,6 +239,9 @@ public class MainActivity extends FragmentActivity {
             return true;
         }
     }
+
+
+
     @OnClick(R.id.img_release)
     public void onClick(View v) {
         Intent intent = null;
@@ -269,6 +271,7 @@ public class MainActivity extends FragmentActivity {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, pxValue, context.getResources().getDisplayMetrics());
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -276,11 +279,13 @@ public class MainActivity extends FragmentActivity {
         getUnRead();
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
     }
+
 
     private void setupViews() {
         bottom_lly.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -309,10 +314,13 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         });
+
         mTab.add(new HomeFragment());
         mTab.add(new TrendFragment());
         mTab.add(new DynamicFragment());
         mTab.add(new MyFragment());
+
+        idViewPager.setOffscreenPageLimit(mTab.size() - 1);
         idViewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
         idViewPager.setCurrentItem(0);
         idViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -355,8 +363,9 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         });
-        idViewPager.setOffscreenPageLimit(3);
+
     }
+
 
     public void selectpage(int position) {
         int currIndex = R.id.rd_home;
@@ -467,7 +476,7 @@ public class MainActivity extends FragmentActivity {
                 if (isSuccess)
                     Configure.init(this);
                 else
-                    Toast.makeText(this, "请开启读写存储权限，否则将无法使用上传图片功能！", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "请开启存储权限，否则将无法使用上传图片功能！", Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;

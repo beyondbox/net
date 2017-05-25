@@ -28,10 +28,10 @@ public class Enterprise implements Serializable{
     private String enterprise_qq;
     private String enterprise_address;
     private String enterprise_intro;
-    private String enterprise_auth_status;
+    private String enterprise_auth_status; //企业认证
     private String enterprise_id;
     private String enterprise_staff_num;
-    private String enterprise_productivity_auth_status;
+    private String enterprise_productivity_auth_status; //企业生产力认证
     private String update_time;
     private String distance;
     private String jiagong;
@@ -48,6 +48,8 @@ public class Enterprise implements Serializable{
     private List<Product> service_jiagong;
     private List<LineList> line;
     private List<NewPublic> newpublic;
+    private String auth_status; //个人认证
+
 
     public String getUrl() {
         return url;
@@ -360,4 +362,13 @@ public class Enterprise implements Serializable{
     public void setEnterprise_mobile(String enterprise_mobile) {
         this.enterprise_mobile = enterprise_mobile;
     }
+
+    public String getAuth_status() {
+        return auth_status;
+    }
+
+    public void setAuth_status(String auth_status) {
+        this.auth_status = auth_status;
+    }
+
 }

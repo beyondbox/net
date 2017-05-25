@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,14 @@ public class MaterialFragment extends BaseFragment {
 
 
 
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerBroadcastReceiver();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view;
@@ -79,7 +88,6 @@ public class MaterialFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        registerBroadcastReceiver();
         dbHelper = new DBManager(getContext());
         mylist = dbHelper.query();
 
@@ -97,12 +105,16 @@ public class MaterialFragment extends BaseFragment {
     private void registerBroadcastReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Const.ACTION_ATTENTION_MATER_REFRESH);
-        context.registerReceiver(myReceiver, filter);
+        filter.addAction(Const.ACTION_CHART_DETAIL);
+        getActivity().registerReceiver(myReceiver, filter);
     }
 
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (!isDataInited)
+                return;
+
             String action = intent.getAction();
             if (action.equals(Const.ACTION_ATTENTION_MATER_REFRESH)) {
                 mylist.clear();
@@ -112,17 +124,39 @@ public class MaterialFragment extends BaseFragment {
                 mViewPagerAdapter.setData(mylist, mFragments);
                 mViewPagerAdapter.notifyDataSetChanged();
                 mViewPager.setOffscreenPageLimit(mylist.size() - 1);
+            } else if (action.equals(Const.ACTION_CHART_DETAIL)) {
+                String type = intent.getStringExtra("type");
+                if (!TextUtils.isEmpty(type))
+                    changePage(type);
             }
         }
     };
 
 
+    /**
+     * 根据产品ID跳转到对应位置
+     * @param type
+     */
+    private void changePage(String type) {
+        for (int i = 0; i < mylist.size(); i++) {
+            MaterProduct product = mylist.get(i);
+            if (product.getId().equals(type)) {
+                mViewPager.setCurrentItem(i);
+                break;
+            }
+        }
+    }
+
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
-        dbHelper.closeDB();
-        context.unregisterReceiver(myReceiver);
+        if (dbHelper != null)
+            dbHelper.closeDB();
+        getActivity().unregisterReceiver(myReceiver);
     }
+
 
     @OnClick({R.id.iv_add_service,R.id.tv_add})
     public void onClick(View v) {

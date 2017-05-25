@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,6 +18,8 @@ import com.appjumper.silkscreen.bean.PriceDetailsResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.MainActivity;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.BaseFundChartView;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +30,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 走势图
@@ -144,5 +148,28 @@ public class TrendChartFragment extends BaseFragment {
         }
         tv_avg_diff.setText(data.getAvg_diff());
     }
+
+
+
+    @OnClick(R.id.txtDetail)
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.txtDetail: //详情
+                ((MainActivity)getActivity()).bottom_lly.check(R.id.rd_trend);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Const.ACTION_CHART_DETAIL);
+                        intent.putExtra("type", type);
+                        context.sendBroadcast(intent);
+                    }
+                }, 200);
+                break;
+            default:
+                break;
+        }
+    }
+
 
 }

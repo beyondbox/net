@@ -42,6 +42,13 @@
         android:layout_alignLeft="@id/txtName">
 
         <ImageView
+            android:id="@+id/imgViCertiGreen"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="5dp"
+            android:src="@mipmap/icon_certification_green"/>
+
+        <ImageView
             android:id="@+id/imgViCertiBlue"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -52,6 +59,7 @@
             android:id="@+id/imgViCertiYellow"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:layout_marginRight="5dp"
             android:src="@mipmap/icon_certification_yellow"/>
     </LinearLayout>
 

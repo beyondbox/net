@@ -113,6 +113,9 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
     @Bind(R.id.tv_company_name_details)//公司名称
             TextView tv_company_name;
 
+    @Bind(R.id.tv_auth_status) //个人认证
+    ImageView tv_auth_status;
+
     @Bind(R.id.tv_enterprise_auth_status)//企
             ImageView tv_enterprise_auth_status;
 
@@ -231,6 +234,17 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
         if (enterprise.getEnterprise_logo() != null && !enterprise.getEnterprise_logo().getSmall().equals("")) {
             Picasso.with(this).load(enterprise.getEnterprise_logo().getSmall()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).transform(new CircleTransform()).into(iv_enterprise_logo);
         }
+
+        /*List<String> list = enterprise.getUser_auth_status();
+        if (list != null && list.size() > 0) {
+            if (list.get(0).equals("2"))
+                tv_auth_status.setVisibility(View.VISIBLE);
+            else
+                tv_auth_status.setVisibility(View.GONE);
+        } else {
+            tv_auth_status.setVisibility(View.GONE);
+        }*/
+
         if (enterprise.getEnterprise_auth_status() != null && enterprise.getEnterprise_auth_status().equals("2")) {
             tv_enterprise_auth_status.setVisibility(View.VISIBLE);
         } else {

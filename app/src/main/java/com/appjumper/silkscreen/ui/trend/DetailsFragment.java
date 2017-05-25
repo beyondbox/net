@@ -188,11 +188,6 @@ public class DetailsFragment extends BaseFragment {
 
     }
 
-    @Override
-    public void onDestroy() {
-        ButterKnife.unbind(this);
-        super.onDestroy();
-    }
 
     private void refresh() {
         new Thread(run).start();

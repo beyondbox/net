@@ -20,10 +20,17 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.MyHttpClient;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
-import com.appjumper.silkscreen.ui.dynamic.adapter.DynamicAdapter;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.util.Const;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,14 +59,16 @@ public class DynamicFragment extends BaseFragment {
     ViewPager viewPager;
     @Bind(R.id.llLogin)
     LinearLayout llLogin;
+    @Bind(R.id.llEmpty)
+    LinearLayout llEmpty;
 
     private ViewPagerFragAdapter pagerAdapter;
-    private List<Fragment> fragList;
+    private List<Fragment> fragList = new ArrayList<>();
 
     private String [] titleArr = {"产品", "物流", "找车", "设备", "厂房", "招聘"};
 
-    private DynamicAdapter dynamicAdapter;
-    private List<String> dynamicList;
+    private List<String> titleList = new ArrayList<>();
+
 
 
 
@@ -84,12 +93,15 @@ public class DynamicFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+
         if (getUser() == null) {
             llLogin.setVisibility(View.VISIBLE);
         } else {
-            initViewPager();
+            initViewPager2();
+            getAttentModule();
             CommonApi.addLiveness(getUserID(), 15);
         }
+
     }
 
 
@@ -107,12 +119,88 @@ public class DynamicFragment extends BaseFragment {
             if (action.equals(Const.ACTION_LOGIN_SUCCESS)) {
                 if (isDataInited) {
                     llLogin.setVisibility(View.GONE);
-                    initViewPager();
+                    initViewPager2();
+                    getAttentModule();
                     CommonApi.addLiveness(getUserID(), 15);
                 }
             }
         }
     };
+
+
+    /**
+     * 获取用户已经关注的版块
+     */
+    private void getAttentModule() {
+        RequestParams params = MyHttpClient.getApiParam("service", "collectionNum");
+        params.put("uid", getUserID());
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        titleList.clear();
+                        fragList.clear();
+
+                        if (Integer.parseInt((String)dataObj.getJSONArray("productNum").get(0)) > 0) {
+                            titleList.add("产品");
+                            fragList.add(new ProductFragment());
+                        }
+
+                        if (Integer.parseInt((String)dataObj.getJSONArray("areaNum").get(0)) > 0) {
+                            titleList.add("物流");
+                            fragList.add(new LogisticsFragment());
+                        }
+
+                        if (Integer.parseInt((String)dataObj.getJSONArray("carNum").get(0)) > 0) {
+                            titleList.add("找车");
+                            fragList.add(new FindCarFragment());
+                        }
+
+                        if (Integer.parseInt((String)dataObj.getJSONArray("equipmentNum").get(0)) > 0) {
+                            titleList.add("设备");
+                            fragList.add(new DeviceFragment());
+                        }
+
+                        if (Integer.parseInt((String)dataObj.getJSONArray("workshopNum").get(0)) > 0) {
+                            titleList.add("厂房");
+                            fragList.add(new WorkShopFragment());
+                        }
+
+                        if (Integer.parseInt((String)dataObj.getJSONArray("jobNum").get(0)) > 0) {
+                            titleList.add("招聘");
+                            fragList.add(new JobFragment());
+                        }
+
+                        pagerAdapter.notifyDataSetChanged();
+
+                        if (fragList.size() > 0) {
+                            llEmpty.setVisibility(View.GONE);
+                            LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+                            broadcastManager.sendBroadcast(new Intent(Const.ACTION_DYNAMIC_REFRESH));
+                        } else {
+                            llEmpty.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+        });
+    }
+
 
 
     private void initViewPager() {
@@ -133,12 +221,20 @@ public class DynamicFragment extends BaseFragment {
     }
 
 
+    private void initViewPager2() {
+        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
+        viewPager.setOffscreenPageLimit(5);
+        viewPager.setAdapter(pagerAdapter);
+        tabLayt.setupWithViewPager(viewPager);
+    }
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Const.RESULT_CODE_NEED_REFRESH) {
-            LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
-            broadcastManager.sendBroadcast(new Intent(Const.ACTION_DYNAMIC_REFRESH));
+            getAttentModule();
         }
     }
 

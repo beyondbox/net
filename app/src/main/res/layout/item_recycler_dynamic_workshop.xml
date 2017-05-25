@@ -82,7 +82,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/txtLocation"
         android:layout_marginTop="8dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="8dp"
         android:text="2017.03.15 15:30"
         android:textColor="#858585"
         android:textSize="11sp"/>
@@ -115,7 +115,6 @@
             android:id="@+id/imgViCertiGreen"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:visibility="gone"
             android:src="@mipmap/icon_certification_green"
             android:layout_marginLeft="3dp"/>
 

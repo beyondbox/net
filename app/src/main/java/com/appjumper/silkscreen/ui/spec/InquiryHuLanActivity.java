@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -21,8 +22,10 @@ import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
 import com.appjumper.silkscreen.ui.inquiry.InquiryCompleteActivity;
@@ -32,9 +35,13 @@ import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.LogHelper;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -131,6 +138,11 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
     @Bind(R.id.tv_next)
     TextView tv_next;
 
+    @Bind(R.id.rb_all)//全部企业
+            RadioButton rbAll;
+    @Bind(R.id.rb_auth)//认证企业
+            RadioButton rbAuth;
+
 
     private String [] xzGuanArr = {"方管", "圆管"};
     private String [] xzLiZhuArr = {"圆柱", "方柱", "桃形柱"};
@@ -191,6 +203,9 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
         initBack();
         initTitle("护栏网");
         initProgressDialog(false, "正在发布...");
+
+        if (action != Const.REQUEST_CODE_RELEASE_STOCK)
+            getEnterpriseNum();
     }
 
 
@@ -760,5 +775,45 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
                 break;
         }
     }
+
+
+
+    /**
+     * 获取企业数量
+     */
+    private void getEnterpriseNum() {
+        RequestParams params = MyHttpClient.getApiParam("inquiry", "enterprise_list");
+        params.put("type", type);
+        params.put("product_id", "104");
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        List<Enterprise> authList = GsonUtil.getEntityList(dataObj.getJSONArray("auth").toString(), Enterprise.class);
+                        List<Enterprise> noAuthList = GsonUtil.getEntityList(dataObj.getJSONArray("noauth").toString(), Enterprise.class);
+                        rbAll.setText("全部企业 (" + (authList.size() + noAuthList.size()) + "家)");
+                        rbAuth.setText("认证企业 (" + authList.size() + "家)");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+
+
 
 }

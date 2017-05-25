@@ -27,15 +27,23 @@ import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.bean.Spec;
 import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.manager.ActivityTaskManager;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -136,6 +144,8 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                 }
             }
         });
+
+        getEnterpriseNum();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -371,13 +381,11 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
 
         @Override
         public void run() {
-            // TODO Auto-generated method stub
             ImageResponse retMap = null;
             try {
                 // 如果不是切割的upLoadBitmap就很大,在这里压缩
                 retMap = JsonParser.getImageResponse(HttpUtil.upload(thumbPictures, Url.UPLOADIMAGE));
             } catch (Exception e) {
-                // TODO Auto-generated catch block XDEBUG_SESSION_START=1
                 e.printStackTrace();
             }
             if (retMap != null) {
@@ -566,6 +574,40 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
 
 
 
+    /**
+     * 获取企业数量
+     */
+    private void getEnterpriseNum() {
+        RequestParams params = MyHttpClient.getApiParam("inquiry", "enterprise_list");
+        params.put("type", type);
+        params.put("product_id", service.getId());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        List<Enterprise> authList = GsonUtil.getEntityList(dataObj.getJSONArray("auth").toString(), Enterprise.class);
+                        List<Enterprise> noAuthList = GsonUtil.getEntityList(dataObj.getJSONArray("noauth").toString(), Enterprise.class);
+                        rbAll.setText("全部企业 (" + (authList.size() + noAuthList.size()) + "家)");
+                        rbAuth.setText("认证企业 (" + authList.size() + "家)");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
 
 
 

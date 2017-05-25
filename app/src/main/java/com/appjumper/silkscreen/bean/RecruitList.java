@@ -32,6 +32,7 @@ public class RecruitList {
     private Enterprise enterprise;
     private User user;
     private List<RecruitList> recommend;
+    private String auth_status;
 
 
 //    private AreaBean location;
@@ -251,5 +252,13 @@ public class RecruitList {
 
     public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
+    }
+
+    public String getAuth_status() {
+        return auth_status;
+    }
+
+    public void setAuth_status(String auth_status) {
+        this.auth_status = auth_status;
     }
 }

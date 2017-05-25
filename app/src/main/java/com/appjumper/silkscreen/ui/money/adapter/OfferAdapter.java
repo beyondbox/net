@@ -89,13 +89,13 @@ public class OfferAdapter extends BaseAdapter {
         viewHolder.tv_create_time.setText(item.getCreate_time());
         switch (item.getType()) {
             case "1":
-                viewHolder.tv_service.setText("咨询" + item.getProduct_name() + "订做报价");
+                viewHolder.tv_service.setText("咨询" + item.getProductname() + "订做报价");
                 break;
             case "2":
-                viewHolder.tv_service.setText("咨询" + item.getProduct_name() + "加工报价");
+                viewHolder.tv_service.setText("咨询" + item.getProductname() + "加工报价");
                 break;
             case "3":
-                viewHolder.tv_service.setText("咨询" + item.getProduct_name() + "现货报价");
+                viewHolder.tv_service.setText("咨询" + item.getProductname() + "现货报价");
                 break;
             default:
                 break;

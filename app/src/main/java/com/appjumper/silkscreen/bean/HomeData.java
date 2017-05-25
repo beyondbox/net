@@ -18,6 +18,8 @@ public class HomeData {
     private List<Enterprise> recommend_xianhuo; //现货推荐企业
     private List<Enterprise> recommend_jiagong; //加工推荐企业
 
+    private List<HotInquiry> offerView; //热门询价
+
 
 
 
@@ -92,5 +94,13 @@ public class HomeData {
 
     public void setScore(String[] score) {
         this.score = score;
+    }
+
+    public List<HotInquiry> getOfferView() {
+        return offerView;
+    }
+
+    public void setOfferView(List<HotInquiry> offerView) {
+        this.offerView = offerView;
     }
 }

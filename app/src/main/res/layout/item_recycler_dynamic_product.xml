@@ -102,12 +102,11 @@
         android:layout_toLeftOf="@id/txtTime"
         android:layout_alignBottom="@id/txtName">
 
-
         <ImageView
             android:id="@+id/imgViCertiGreen"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:src="@mipmap/icon_certification_green"
             android:layout_marginLeft="3dp"/>
 

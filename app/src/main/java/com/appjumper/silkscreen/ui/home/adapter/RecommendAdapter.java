@@ -1,6 +1,7 @@
 package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,17 +44,29 @@ public class RecommendAdapter extends MyBaseAdapter<Enterprise> {
 
         Enterprise enterprise = list.get(position);
 
-        if (enterprise.getEnterprise_logo() != null) {
+        if (enterprise.getEnterprise_logo() != null && !TextUtils.isEmpty(enterprise.getEnterprise_logo().getSmall())) {
             Picasso.with(context)
                     .load(enterprise.getEnterprise_logo().getSmall())
                     .placeholder(R.mipmap.icon_logo_image61)
                     .error(R.mipmap.icon_logo_image61)
                     .into(vh.imageView);
+        } else {
+            vh.imageView.setImageResource(R.mipmap.icon_logo_image61);
         }
 
         vh.txtName.setText(enterprise.getEnterprise_name());
         vh.txtTime.setText("入驻时间 : " + enterprise.getCreate_time().substring(0,10));
-        vh.txtDistance.setText(enterprise.getDistance() + "km");
+        if (TextUtils.isEmpty(enterprise.getDistance()))
+            vh.txtDistance.setText("");
+        else
+            vh.txtDistance.setText(enterprise.getDistance() + "km");
+
+
+        if (enterprise.getAuth_status() != null && enterprise.getAuth_status().equals("2")) {
+            vh.imgViCertiGreen.setVisibility(View.VISIBLE);
+        } else {
+            vh.imgViCertiGreen.setVisibility(View.GONE);
+        }
 
         if (enterprise.getEnterprise_auth_status() != null && enterprise.getEnterprise_auth_status().equals("2")) {
             vh.imgViCertiBlue.setVisibility(View.VISIBLE);
@@ -115,6 +128,8 @@ public class RecommendAdapter extends MyBaseAdapter<Enterprise> {
         ImageView imgViCertiBlue;
         @Bind(R.id.imgViCertiYellow)
         ImageView imgViCertiYellow;
+        @Bind(R.id.imgViCertiGreen)
+        ImageView imgViCertiGreen;
     }
 
 }

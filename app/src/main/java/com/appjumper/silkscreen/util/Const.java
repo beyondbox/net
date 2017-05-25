@@ -101,6 +101,10 @@ public class Const {
      * 动态刷新
      */
     public static final String ACTION_DYNAMIC_REFRESH = "com.appjumper.silkscreen.DYNAMIC_REFRESH";
+    /**
+     * 原材料走势图详情跳转
+     */
+    public static final String ACTION_CHART_DETAIL = "com.appjumper.silkscreen.CHART_DETAIL";
 
 
 

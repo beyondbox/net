@@ -275,8 +275,19 @@ public class OfferDetailsActivity extends BaseActivity {
                     tvOfferAmount.setText("已截止");
                     tvOfferAmount.setTextColor(getResources().getColor(R.color.red_color));
                 } else {
-                    showBottom();
-                    myOffer.setVisibility(View.GONE);
+                    if (getUserID().equals(data.getUser_id())) { //从首页热门询价过来的
+                        hideBottom();
+                        if (data.getMy_offer() != null) {
+                            myOffer.setVisibility(View.VISIBLE);
+                            tvOfferAmount.setText("￥" + data.getMy_offer().getMoney());
+                        } else {
+                            myOffer.setVisibility(View.GONE);
+                        }
+
+                    } else {
+                        showBottom();
+                        myOffer.setVisibility(View.GONE);
+                    }
                 }
             }
 

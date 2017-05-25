@@ -7,11 +7,11 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "com.appjumper.silkscreen2"
+        applicationId "com.appjumper.silkscreen"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 13
-        versionName "2.11"
+        versionCode 15
+        versionName "2.0"
     }
     productFlavors {
         xiaomi {}

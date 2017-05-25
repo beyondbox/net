@@ -40,6 +40,7 @@ public class Product implements Serializable{
     private String enterprise_id;
     private String url;
     private List<Avatar> img_list;
+    private String auth_status;
 
     private String img_require;
 
@@ -307,5 +308,13 @@ public class Product implements Serializable{
 
     public void setImg_require(String img_require) {
         this.img_require = img_require;
+    }
+
+    public String getAuth_status() {
+        return auth_status;
+    }
+
+    public void setAuth_status(String auth_status) {
+        this.auth_status = auth_status;
     }
 }

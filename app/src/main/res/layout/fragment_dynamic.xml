@@ -71,4 +71,26 @@
     </LinearLayout>
 
 
+
+    <LinearLayout
+        android:id="@+id/llEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="@color/view_background_gray_color"
+        android:gravity="center"
+        android:layout_below="@id/llTitle"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="请点击右上角添加关注 ~"
+            android:textColor="@color/text_gray_light_color"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+
 </RelativeLayout>

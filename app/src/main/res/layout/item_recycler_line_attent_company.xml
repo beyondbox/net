@@ -53,6 +53,13 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/txtTitle">
 
+        <ImageView
+            android:id="@+id/imgViCertiGreen"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@mipmap/icon_certification_green"
+            android:layout_marginLeft="3dp"/>
+
 
         <ImageView
             android:id="@+id/imgViCertiBlue"

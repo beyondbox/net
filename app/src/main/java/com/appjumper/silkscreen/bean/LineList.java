@@ -38,6 +38,7 @@ public class LineList implements Serializable{
     private String name;
     private String from_distance;
     private String distance;
+    private String auth_status;
 
     public String getDistance() {
         return distance;
@@ -285,5 +286,13 @@ public class LineList implements Serializable{
 
     public void setCar_height(String car_height) {
         this.car_height = car_height;
+    }
+
+    public String getAuth_status() {
+        return auth_status;
+    }
+
+    public void setAuth_status(String auth_status) {
+        this.auth_status = auth_status;
     }
 }

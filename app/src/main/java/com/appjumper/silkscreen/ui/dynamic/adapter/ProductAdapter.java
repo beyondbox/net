@@ -13,8 +13,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static com.appjumper.silkscreen.R.id.imgViCertiBlue;
-
 /**
  * 产品adapter
  * Created by Botx on 2017/5/17.
@@ -36,14 +34,15 @@ public class ProductAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
 
         TextView txtName = helper.getView(R.id.txtName);
         if (item.getEnterprise_auth_status().equals("2"))
-            txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 118));
+            txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 98));
         else
             txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 138));
 
         helper.setText(R.id.txtTitle, item.getProduct_name() + item.getService_type_name())
                 .setText(R.id.txtName, item.getEnterprise_name())
                 .setText(R.id.txtTime, item.getCreate_time().replaceAll("-", "\\.").substring(0, 16))
-                .setVisible(imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
+                .setVisible(R.id.imgViCertiGreen, item.getAuth_status().equals("2"))
+                .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
                 .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"));
 
         List<Spec> spec = item.getService_spec();

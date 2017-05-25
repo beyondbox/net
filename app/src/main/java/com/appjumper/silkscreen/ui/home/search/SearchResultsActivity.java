@@ -20,7 +20,6 @@ import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.util.LogHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +47,8 @@ public class SearchResultsActivity extends BaseActivity {
     private List<Fragment> fragList;
 
     public String keyworks;
-    private String [] titleArr = {"订做", "现货", "加工", "物流", "设备", "厂家", "招聘"};
+    //private String [] titleArr = {"订做", "现货", "加工", "物流", "设备", "厂家", "招聘"};
+    private String [] titleArr = {"订做", "现货", "加工"};
 
     private LocalBroadcastManager broadcastManager;
 
@@ -116,15 +116,15 @@ public class SearchResultsActivity extends BaseActivity {
         fragList.add(new SearchOrderFragment());
         fragList.add(new SearchStockFragment());
         fragList.add(new SearchProcessFragment());
-        for (int i = 0; i < 4; i++) {
+        /*for (int i = 0; i < 4; i++) {
             fragList.add(new SearchOrderFragment());
-        }
+        }*/
 
         resultAdapter = new ViewPagerFragAdapter(getSupportFragmentManager(), fragList, Arrays.asList(titleArr));
         pagerResult.setAdapter(resultAdapter);
         pagerResult.setOffscreenPageLimit(titleArr.length - 1);
 
-        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
+        //tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayt.setupWithViewPager(pagerResult);
     }
 

@@ -46,6 +46,7 @@ public class EquipmentList {
     private String address;
     private Enterprise enterprise;
     private User user;
+    private String auth_status;
 
     public String getAddress() {
         return address;
@@ -358,5 +359,13 @@ public class EquipmentList {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getAuth_status() {
+        return auth_status;
+    }
+
+    public void setAuth_status(String auth_status) {
+        this.auth_status = auth_status;
     }
 }

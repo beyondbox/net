@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.ui.dynamic.adapter;
 
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.appjumper.silkscreen.R;
@@ -29,15 +30,18 @@ public class AttentCompanyAdapter extends BaseQuickAdapter<Enterprise, BaseViewH
                 .setText(R.id.txtTitle, item.getEnterprise_name())
                 .setText(R.id.txtDate, "入驻时间: " + item.getCreate_time().substring(0, 10))
                 .setText(R.id.txtDistance, item.getDistance() + "km")
+                .setVisible(R.id.imgViCertiGreen, item.getAuth_status().equals("2"))
                 .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
                 .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"));
 
-        if (item.getEnterprise_logo() != null) {
+        if (item.getEnterprise_logo() != null && !TextUtils.isEmpty(item.getEnterprise_logo().getSmall())) {
             Picasso.with(mContext)
                     .load(item.getEnterprise_logo().getSmall())
                     .placeholder(R.mipmap.icon_logo_image61)
                     .error(R.mipmap.icon_logo_image61)
                     .into((ImageView) helper.getView(R.id.imgViCom));
+        } else {
+            ((ImageView) helper.getView(R.id.imgViCom)).setImageResource(R.mipmap.icon_logo_image61);
         }
 
 

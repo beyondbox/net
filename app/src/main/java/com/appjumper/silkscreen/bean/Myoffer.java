@@ -19,6 +19,7 @@ public class Myoffer {
     private String nickname;
     private Avatar enterprise_logo;
     private String product_name;
+    private String productname;
     private String city;
     private String user_ids;
     private String offer_time;
@@ -319,5 +320,13 @@ public class Myoffer {
 
     public void setContacts(String contacts) {
         this.contacts = contacts;
+    }
+
+    public String getProductname() {
+        return productname;
+    }
+
+    public void setProductname(String productname) {
+        this.productname = productname;
     }
 }

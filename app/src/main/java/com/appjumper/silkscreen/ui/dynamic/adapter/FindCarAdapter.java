@@ -13,8 +13,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static com.appjumper.silkscreen.R.id.imgViCertiBlue;
-
 /**
  * 找车的货物adapter
  * Created by Botx on 2017/5/17.
@@ -44,7 +42,8 @@ public class FindCarAdapter extends BaseQuickAdapter<LineList, BaseViewHolder> {
             txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 138));
 
             helper.setText(R.id.txtName, item.getUser_nicename())
-                    .setVisible(imgViCertiBlue, false)
+                    .setVisible(R.id.imgViCertiGreen, item.getAuth_status().equals("2"))
+                    .setVisible(R.id.imgViCertiBlue, false)
                     .setVisible(R.id.imgViCertiYellow, false);
 
 
@@ -56,12 +55,13 @@ public class FindCarAdapter extends BaseQuickAdapter<LineList, BaseViewHolder> {
                     .into((ImageView) helper.getView(R.id.imgViHead));
 
             if (item.getEnterprise_auth_status().equals("2"))
-                txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 118));
+                txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 98));
             else
                 txtName.setMaxWidth(DisplayUtil.dip2px(mContext, 138));
 
             helper.setText(R.id.txtName, item.getEnterprise_name())
-                    .setVisible(imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
+                    .setVisible(R.id.imgViCertiGreen, item.getAuth_status().equals("2"))
+                    .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
                     .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"));
         }
 

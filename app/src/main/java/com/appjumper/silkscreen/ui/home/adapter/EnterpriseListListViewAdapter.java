@@ -90,6 +90,14 @@ public class EnterpriseListListViewAdapter extends BaseAdapter {
             Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.iv_enterprise_logo);
         }
         viewHolder.tv_company_name.setText(item.getEnterprise_name());
+
+        if (item.getAuth_status() != null && item.getAuth_status().equals("2")) {
+            viewHolder.tv_auth_status.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.tv_auth_status.setVisibility(View.GONE);
+        }
+
+
         if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2")) {
             viewHolder.tv_enterprise_auth_status.setVisibility(View.VISIBLE);
         } else {
@@ -138,6 +146,9 @@ public class EnterpriseListListViewAdapter extends BaseAdapter {
 
         @Bind(R.id.tv_company_name)//公司名称
                 TextView tv_company_name;
+
+        @Bind(R.id.tv_auth_status)//个人认证
+                ImageView tv_auth_status;
 
         @Bind(R.id.tv_enterprise_auth_status)//企
                 ImageView tv_enterprise_auth_status;

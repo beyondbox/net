@@ -93,10 +93,10 @@ public class HomeListview2Adapter extends BaseAdapter {
     NewPublic item = newPublic.get(position);
     //Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
     viewHolder.tv_title.setText(item.getTitle());
-      SimpleDateFormat sdf = new SimpleDateFormat("MM.dd hh.mm");
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     try {
       Date date = sdf.parse(item.getCreate_time());
-      viewHolder.tv_create_time.setText((new SimpleDateFormat("MM.dd hh.mm")).format(date));
+      viewHolder.tv_create_time.setText((new SimpleDateFormat("MM.dd HH:mm")).format(date));
     } catch (ParseException e) {
       e.printStackTrace();
     }
