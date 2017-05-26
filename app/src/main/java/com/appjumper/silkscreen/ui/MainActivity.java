@@ -472,11 +472,13 @@ public class MainActivity extends FragmentActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case Const.REQUEST_CODE_PERMISSION:
-                boolean isSuccess = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                if (isSuccess)
-                    Configure.init(this);
-                else
-                    Toast.makeText(this, "请开启存储权限，否则将无法使用上传图片功能！", Toast.LENGTH_LONG).show();
+                if (grantResults != null && grantResults.length > 0) {
+                    boolean isSuccess = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                    if (isSuccess)
+                        Configure.init(this);
+                    else
+                        Toast.makeText(this, "请开启存储权限，否则将无法使用上传图片功能！", Toast.LENGTH_LONG).show();
+                }
                 break;
             default:
                 break;

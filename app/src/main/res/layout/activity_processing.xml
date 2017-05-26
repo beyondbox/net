@@ -141,7 +141,7 @@
         android:orientation="vertical"
         android:fitsSystemWindows="true"
         android:clickable="true"
-        android:background="@color/while_color"
+        android:background="@color/view_background_gray_color"
         android:layout_gravity="right">
 
         <LinearLayout

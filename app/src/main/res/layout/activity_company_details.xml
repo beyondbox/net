@@ -65,22 +65,22 @@
                     android:id="@+id/tv_auth_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginLeft="8dp"
+                    android:visibility="visible"
+                    android:layout_marginLeft="6dp"
                     android:src="@mipmap/icon_certification_green" />
 
                 <ImageView
                     android:id="@+id/tv_enterprise_auth_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="6dp"
                     android:src="@mipmap/icon_certification" />
 
                 <ImageView
                     android:id="@+id/tv_enterprise_productivity_auth_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="6dp"
                     android:src="@mipmap/icon_certification_yellow" />
             </LinearLayout>
 

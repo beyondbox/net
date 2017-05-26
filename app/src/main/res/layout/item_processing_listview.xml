@@ -73,24 +73,36 @@
                     android:id="@+id/tv_company_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="阿普匠丝网有限公司"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:maxWidth="130dp"
+                    android:text="阿普匠丝网有限公司有限公司有限公司有限公司"
                     android:textColor="@color/black_color"
                     android:textSize="13sp"
                     android:layout_marginBottom="10dp"
                     />
+
+                <ImageView
+                    android:id="@+id/img_auth_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_certification_green"
+                    android:layout_marginLeft="3dp"
+                    />
+
                 <ImageView
                     android:id="@+id/img_enterprise_auth_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/icon_certification"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginLeft="3dp"
                     />
                 <ImageView
                     android:id="@+id/img_enterprise_productivity_auth_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/icon_certification_yellow"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginLeft="3dp"
                     />
                 <RelativeLayout
                     android:layout_width="match_parent"

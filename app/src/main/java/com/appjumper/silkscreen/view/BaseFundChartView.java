@@ -278,10 +278,10 @@ public class BaseFundChartView extends View {
                 jianBianPath.lineTo(lastx,gridY - 20 - 10);
                 canvas.drawPath(curvePath, chartLinePaint);
                 //Shader mShader = new LinearGradient(0,30 + 10,0,gridY - 20 - 10,new int[] {getResources().getColor(R.color.theme_color),getResources().getColor(R.color.theme_pressed_color),Color.TRANSPARENT},null,Shader.TileMode.REPEAT);
-                Shader mShader = new LinearGradient(0,30 + 10,0,gridY - 20 - 10,new int[] {0xFFFFDDD3, 0xFFFFEAE4, Color.TRANSPARENT},null,Shader.TileMode.REPEAT);
+                Shader mShader = new LinearGradient(0,30 + 10,0,gridY - 20 - 10,new int[] {0xBFFAAC7D, 0xBFFAAC7D, 0xBFF8EBE3},null,Shader.TileMode.REPEAT);
 //新建一个线性渐变，前两个参数是渐变开始的点坐标，第三四个参数是渐变结束的点的坐标。连接这2个点就拉出一条渐变线了，玩过PS的都懂。然后那个数组是渐变的颜色。下一个参数是渐变颜色的分布，如果为空，每个颜色就是均匀分布的。最后是模式，这里设置的是循环渐变
 
-                //chartJianbianPaint.setShader(mShader);
+                chartJianbianPaint.setShader(mShader);
                 canvas.drawPath(jianBianPath, chartJianbianPaint);
             }
         }

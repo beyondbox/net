@@ -157,22 +157,32 @@
                             android:id="@+id/tv_company_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="深圳市阿普匠科技有限公司"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:maxWidth="170dp"
+                            android:text="深圳市阿普匠科技有限公司有限公司有限公司"
                             android:textColor="@color/black_color"
                             android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/img_auth_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="6dp"
+                            android:src="@mipmap/icon_certification_green" />
 
                         <ImageView
                             android:id="@+id/img_enterprise_auth_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="9dp"
+                            android:layout_marginLeft="6dp"
                             android:src="@mipmap/icon_certification" />
 
                         <ImageView
                             android:id="@+id/img_enterprise_productivity_auth_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="9dp"
+                            android:layout_marginLeft="6dp"
                             android:src="@mipmap/icon_certification_yellow" />
                     </LinearLayout>
 

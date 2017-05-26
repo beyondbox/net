@@ -18,7 +18,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.Enterprise;
@@ -26,7 +26,9 @@ import com.appjumper.silkscreen.bean.EnterpriseDetailsResponse;
 import com.appjumper.silkscreen.bean.LineList;
 import com.appjumper.silkscreen.bean.NewPublic;
 import com.appjumper.silkscreen.bean.Product;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.MapviewActivity;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.adapter.CompanyProcessListViewAdapter;
@@ -43,8 +45,6 @@ import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.MyLogisticsDetailsActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ViewOrderActivity;
 import com.appjumper.silkscreen.util.CircleTransform;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.util.ShareUtil;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.MyRecyclerView;
@@ -235,15 +235,11 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
             Picasso.with(this).load(enterprise.getEnterprise_logo().getSmall()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).transform(new CircleTransform()).into(iv_enterprise_logo);
         }
 
-        /*List<String> list = enterprise.getUser_auth_status();
-        if (list != null && list.size() > 0) {
-            if (list.get(0).equals("2"))
-                tv_auth_status.setVisibility(View.VISIBLE);
-            else
-                tv_auth_status.setVisibility(View.GONE);
+        if (enterprise.getUser_auth_status() != null && enterprise.getUser_auth_status().equals("2")) {
+            tv_auth_status.setVisibility(View.VISIBLE);
         } else {
             tv_auth_status.setVisibility(View.GONE);
-        }*/
+        }
 
         if (enterprise.getEnterprise_auth_status() != null && enterprise.getEnterprise_auth_status().equals("2")) {
             tv_enterprise_auth_status.setVisibility(View.VISIBLE);
@@ -280,10 +276,15 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "enterprise");
+                data.put("a", "details");
+
+
                 data.put("id", id);
                 data.put("uid", uid);
-                response = JsonParser.getEnterpriseDetailsResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.ENTERPRISEDETAILS));
+                //response = JsonParser.getEnterpriseDetailsResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.ENTERPRISEDETAILS));
+                response = JsonParser.getEnterpriseDetailsResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -323,6 +324,9 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
     private class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            if (isDestroyed())
+                return;
+
             progress.dismiss();
             switch (msg.what) {
                 case NETWORK_SUCCESS_PAGER_RIGHT://企业详情
@@ -353,8 +357,6 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
             }
         }
     }
-
-    ;
 
 
     /**

@@ -36,6 +36,9 @@ public class SearchProductAdapter extends BaseQuickAdapter<Product, BaseViewHold
                 .setText(R.id.tv_company_name, item.getEnterprise_name())
                 .setText(R.id.tv_service, "提供"+item.getService_type_name()+"服务");
 
+        if (item.getAuth_status() != null && item.getAuth_status().equals("2")) {
+            helper.setVisible(R.id.img_auth_status, true);
+        }
         if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2")) {
             helper.setVisible(R.id.img_enterprise_auth_status, true);
         }

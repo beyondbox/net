@@ -34,7 +34,7 @@
                     android:drawableLeft="@drawable/selector_checkbox_company"
                     android:drawablePadding="12dp"
                     android:padding="12dp"
-                    android:text="认证公司（15）"
+                    android:text="认证公司（0）"
                     android:textColor="@color/black_color"
                     android:textSize="15sp" />
 
@@ -89,7 +89,7 @@
                     android:drawableLeft="@drawable/selector_checkbox_company"
                     android:drawablePadding="12dp"
                     android:padding="12dp"
-                    android:text="未认证公司（15）"
+                    android:text="未认证公司（0）"
                     android:textColor="@color/black_color"
                     android:textSize="15sp" />
 

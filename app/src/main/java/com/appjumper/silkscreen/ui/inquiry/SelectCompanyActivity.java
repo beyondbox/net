@@ -268,6 +268,11 @@ public class SelectCompanyActivity extends BaseActivity {
                 }
                 break;
             case R.id.cb_one:
+                if (auth == null || auth.size() == 0) {
+                    cbOne.setChecked(false);
+                    return;
+                }
+
                 if (cbOne.isChecked()) {
                     for (int i = 0; i < adapterOne.getCount(); i++) {
                         listViewOne.setItemChecked(i, true);
@@ -279,6 +284,11 @@ public class SelectCompanyActivity extends BaseActivity {
                 }
                 break;
             case R.id.cb_two:
+                if (noauth == null || noauth.size() == 0) {
+                    cbTwo.setChecked(false);
+                    return;
+                }
+
                 if (cbTwo.isChecked()) {
                     for (int i = 0; i < adapterTwo.getCount(); i++) {
                         listViewTwo.setItemChecked(i, true);

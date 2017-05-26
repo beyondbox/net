@@ -22,7 +22,7 @@ public class AboutUsActivity extends BaseActivity{
         setContentView(R.layout.activity_aboutus);
         initBack();
         ButterKnife.bind(this);
-        tv_version.setText("v"+getVersionName());
+        tv_version.setText("V"+getVersionName());
 
     }
 }

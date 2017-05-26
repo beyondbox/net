@@ -530,6 +530,9 @@ public class ProcessingActivity extends BaseActivity {
 
         @Override
         public void handleMessage(Message msg) {
+            if (isDestroyed())
+                return;
+
             if(pullToRefreshView!=null){
                 pullToRefreshView.onRefreshComplete();
             }

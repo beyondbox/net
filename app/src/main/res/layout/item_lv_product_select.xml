@@ -35,7 +35,7 @@
             android:layout_marginRight="10dp"
             android:visibility="gone"/>
 
-        <ImageView
+        <com.appjumper.silkscreen.view.BorderRectImageView
             android:id="@+id/imgViProduct"
             android:layout_width="70dp"
             android:layout_height="70dp"

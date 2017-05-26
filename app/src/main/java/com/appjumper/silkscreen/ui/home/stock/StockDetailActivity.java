@@ -92,6 +92,9 @@ public class StockDetailActivity extends BaseActivity {
     @Bind(R.id.tv_company_name)//公司名称
             TextView tv_company_name;
 
+    @Bind(R.id.img_auth_status)//个人认证
+            ImageView img_auth_status;
+
     @Bind(R.id.img_enterprise_auth_status)//企
             ImageView img_enterprise_auth_status;
 
@@ -121,6 +124,13 @@ public class StockDetailActivity extends BaseActivity {
         if (data.getEnterprise_logo() != null && !data.getEnterprise_logo().getSmall().equals("")) {
             Picasso.with(this).load(data.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(iv_logo);
         }
+
+        if (data.getAuth_status() != null && data.getAuth_status().equals("2")) {
+            img_auth_status.setVisibility(View.VISIBLE);
+        } else {
+            img_auth_status.setVisibility(View.GONE);
+        }
+
         if (data.getEnterprise_auth_status() != null && data.getEnterprise_auth_status().equals("2")) {
             img_enterprise_auth_status.setVisibility(View.VISIBLE);
         } else {

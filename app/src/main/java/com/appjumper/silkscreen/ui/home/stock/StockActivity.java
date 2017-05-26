@@ -575,6 +575,9 @@ public class StockActivity extends BaseActivity {
 
         @Override
         public void handleMessage(Message msg) {
+            if (isDestroyed())
+                return;
+
             pullToRefreshView.onRefreshComplete();
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT:

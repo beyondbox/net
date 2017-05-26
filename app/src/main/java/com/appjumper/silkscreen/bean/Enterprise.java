@@ -50,6 +50,8 @@ public class Enterprise implements Serializable{
     private List<NewPublic> newpublic;
     private String auth_status; //个人认证
 
+    private String user_auth_status;
+
 
     public String getUrl() {
         return url;
@@ -371,4 +373,12 @@ public class Enterprise implements Serializable{
         this.auth_status = auth_status;
     }
 
+
+    public String getUser_auth_status() {
+        return user_auth_status;
+    }
+
+    public void setUser_auth_status(String user_auth_status) {
+        this.user_auth_status = user_auth_status;
+    }
 }
