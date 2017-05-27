@@ -221,11 +221,12 @@
                         <View style="@style/LineStyle" />
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/txtNumberUnit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="12dp"
                         android:layout_alignParentRight="true"
-                        android:text="m³"
+                        android:text=""
                         android:textColor="@color/black_color"
                         android:textSize="14sp" />
                 </RelativeLayout>

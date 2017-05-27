@@ -134,8 +134,8 @@ public class TruckDetailsActivity extends BaseActivity {
         tvCarModel.setText(data.getCar_model());
         tvWeigth.setText(data.getWeight()+"KG");
         tvRemark.setText(data.getRemark());
-        tvGoodsName.setText(data.getName());
-        tvNumber.setText(data.getNumber());
+        tvGoodsName.setText(data.getProduct_name());
+        tvNumber.setText(data.getNumber() + data.getProductspec());
         Enterprise enterprise = data.getEnterprise();
         if (enterprise != null) {
             rlCompany.setVisibility(View.VISIBLE);
@@ -179,6 +179,7 @@ public class TruckDetailsActivity extends BaseActivity {
             try {
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("id", id);
+                data.put("uid", getUserID());
                 response = JsonParser.getLineDetailsResponse(HttpUtil.postMsg(
                         HttpUtil.getData(data), Url.TRUCK_DETAILS));
             } catch (Exception e) {

@@ -20,6 +20,7 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.ServiceProduct;
+import com.appjumper.silkscreen.bean.Spec;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -56,6 +58,8 @@ public class TruckReleaseActivity extends BaseActivity {
             EditText etGoodsName;
     @Bind(R.id.et_goods_number)//货物数量
             EditText etGoodsNumber;
+    @Bind(R.id.txtNumberUnit) //数量的单位
+    TextView txtNumberUnit;
     @Bind(R.id.et_goods_weight)//货物重量
             EditText etGoodsWeight;
     @Bind(R.id.tv_load_time)//装货时间
@@ -64,8 +68,11 @@ public class TruckReleaseActivity extends BaseActivity {
             EditText etRemark;
     @Bind(R.id.tv_info_length)//信息时长
             TextView tvInfoLength;
+
     private String start_id;
     private String end_id;
+
+    private ServiceProduct selectedProduct; //选择的货物
 
     private long expiry_datatime = 3600;
 
@@ -129,7 +136,7 @@ public class TruckReleaseActivity extends BaseActivity {
                 data.put("uid",getUserID());
                 data.put("from", start_id);
                 data.put("to", end_id);
-                data.put("name", etGoodsName.getText().toString().trim());
+                data.put("name", selectedProduct.getId());
                 data.put("number", etGoodsNumber.getText().toString().trim());
                 data.put("weight", etGoodsWeight.getText().toString().trim());
                 data.put("remark", etRemark.getText().toString().trim());
@@ -320,8 +327,18 @@ public class TruckReleaseActivity extends BaseActivity {
                 tvInfoLength.setText(expiry[expiry_date]);
                 break;
             case Const.REQUEST_CODE_SELECT_PRODUCT: //选择货物
-                ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
-                etGoodsName.setText(product.getName());
+                selectedProduct = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
+                etGoodsName.setText(selectedProduct.getName());
+                List<Spec> specList = selectedProduct.getProduct_spec();
+                if (specList != null && specList.size() > 0) {
+                    Spec spec = specList.get(specList.size() - 1);
+                    if (spec.getFieldname().equals("cunliang"))
+                        txtNumberUnit.setText(spec.getUnit());
+                    else
+                        txtNumberUnit.setText("");
+                } else {
+                    txtNumberUnit.setText("");
+                }
                 break;
             default:
                 break;

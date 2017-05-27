@@ -211,6 +211,7 @@ public class WorkshopReleaseActivity extends BasePhotoGridActivity {
                     if (imgResponse.isSuccess()) {
                         new Thread(submitRun).start();
                     } else {
+                        progress.dismiss();
                         activity.showErrorToast(imgResponse.getError_desc());
                     }
                     break;

@@ -225,6 +225,7 @@ public class DynamicFragment extends BaseFragment {
         pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
         viewPager.setOffscreenPageLimit(5);
         viewPager.setAdapter(pagerAdapter);
+        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayt.setupWithViewPager(viewPager);
     }
 

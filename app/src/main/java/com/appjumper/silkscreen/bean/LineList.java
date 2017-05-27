@@ -40,6 +40,9 @@ public class LineList implements Serializable{
     private String distance;
     private String auth_status;
 
+    private String product_name;
+    private String productspec;
+
     public String getDistance() {
         return distance;
     }
@@ -294,5 +297,21 @@ public class LineList implements Serializable{
 
     public void setAuth_status(String auth_status) {
         this.auth_status = auth_status;
+    }
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
+    }
+
+    public String getProductspec() {
+        return productspec;
+    }
+
+    public void setProductspec(String productspec) {
+        this.productspec = productspec;
     }
 }

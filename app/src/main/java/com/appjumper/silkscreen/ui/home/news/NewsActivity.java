@@ -9,19 +9,23 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.CommonApi;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.News;
 import com.appjumper.silkscreen.bean.NewsListResponse;
-import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.ui.common.WebViewActivity;
-import com.appjumper.silkscreen.ui.home.adapter.NewsListViewAdapter;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.WebViewActivity;
+import com.appjumper.silkscreen.ui.home.adapter.NewsListViewAdapter;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.lang.ref.WeakReference;
@@ -73,8 +77,11 @@ public class NewsActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                start_Activity(NewsActivity.this, WebViewActivity.class,new BasicNameValuePair("url",list.get(i-1).getUrl()),new BasicNameValuePair("title","详情"));
-                CommonApi.addLiveness(getUserID(), 9);
+                if (checkLogined()) {
+                    getDetail(list.get(i-1).getId());
+                    start_Activity(NewsActivity.this, WebViewActivity.class,new BasicNameValuePair("url",list.get(i-1).getUrl()),new BasicNameValuePair("title","详情"));
+                    CommonApi.addLiveness(getUserID(), 9);
+                }
             }
         });
         listView.setOnLoadMoreListener(new PagedListView.OnLoadMoreListener() {
@@ -191,6 +198,29 @@ public class NewsActivity extends BaseActivity {
                     break;
             }
         }
+
+    }
+
+
+    /**
+     * 详情接口，调一下消除未读
+     */
+    private void getDetail(String id) {
+        RequestParams params = MyHttpClient.getApiParam("news", "details");
+        params.put("id", id);
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
 

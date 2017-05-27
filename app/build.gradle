@@ -10,7 +10,7 @@ android {
         applicationId "com.appjumper.silkscreen"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 16
+        versionCode 17
         versionName "2.0.1"
     }
     productFlavors {

@@ -619,6 +619,9 @@ public class LogisticsActivity extends BaseActivity {
         listView2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (!checkLogined())
+                    return;
+
                 start_Activity(LogisticsActivity.this, TruckDetailsActivity.class, new BasicNameValuePair("title", "电镀锌片"), new BasicNameValuePair("id", list2.get(position - 1).getId()));
             }
         });
