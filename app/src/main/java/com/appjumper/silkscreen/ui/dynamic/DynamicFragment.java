@@ -39,6 +39,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import q.rorbin.badgeview.QBadgeView;
 
 /**
  * 动态
@@ -64,10 +65,13 @@ public class DynamicFragment extends BaseFragment {
 
     private ViewPagerFragAdapter pagerAdapter;
     private List<Fragment> fragList = new ArrayList<>();
-
-    private String [] titleArr = {"产品", "物流", "找车", "设备", "厂房", "招聘"};
-
     private List<String> titleList = new ArrayList<>();
+    private List<QBadgeView> badgeList = new ArrayList<>();
+
+    //全部title
+    private String [] titleArr = {"产品", "物流", "找车", "设备", "厂房", "招聘"};
+    //未读数，与title对应的key值
+    private String [] unReadKeyArr = {"productNum", "areaNum", "carNum", "equipmentNum", "workshopNum", "jobNum"};
 
 
 
@@ -128,6 +132,35 @@ public class DynamicFragment extends BaseFragment {
     };
 
 
+
+    private void initViewPager() {
+        fragList = new ArrayList<>();
+        fragList.add(new ProductFragment());
+        fragList.add(new LogisticsFragment());
+        fragList.add(new FindCarFragment());
+        fragList.add(new DeviceFragment());
+        fragList.add(new WorkShopFragment());
+        fragList.add(new JobFragment());
+
+        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, Arrays.asList(titleArr));
+        viewPager.setOffscreenPageLimit(titleArr.length - 1);
+        viewPager.setAdapter(pagerAdapter);
+
+        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayt.setupWithViewPager(viewPager);
+    }
+
+
+    private void initViewPager2() {
+        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
+        viewPager.setOffscreenPageLimit(5);
+        viewPager.setAdapter(pagerAdapter);
+        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayt.setupWithViewPager(viewPager);
+    }
+
+
+
     /**
      * 获取用户已经关注的版块
      */
@@ -146,6 +179,11 @@ public class DynamicFragment extends BaseFragment {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
                         titleList.clear();
                         fragList.clear();
+                        if (badgeList.size() > 0) {
+                            ((ViewGroup)tabLayt.getChildAt(0)).removeAllViews();
+                            badgeList.clear();
+                        }
+
 
                         if (Integer.parseInt((String)dataObj.getJSONArray("productNum").get(0)) > 0) {
                             titleList.add("产品");
@@ -179,7 +217,9 @@ public class DynamicFragment extends BaseFragment {
 
                         pagerAdapter.notifyDataSetChanged();
 
+
                         if (fragList.size() > 0) {
+                            getUnread();
                             llEmpty.setVisibility(View.GONE);
                             LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getActivity());
                             broadcastManager.sendBroadcast(new Intent(Const.ACTION_DYNAMIC_REFRESH));
@@ -203,30 +243,55 @@ public class DynamicFragment extends BaseFragment {
 
 
 
-    private void initViewPager() {
-        fragList = new ArrayList<>();
-        fragList.add(new ProductFragment());
-        fragList.add(new LogisticsFragment());
-        fragList.add(new FindCarFragment());
-        fragList.add(new DeviceFragment());
-        fragList.add(new WorkShopFragment());
-        fragList.add(new JobFragment());
+    /**
+     * 获取未读数
+     */
+    private void getUnread() {
+        RequestParams params = MyHttpClient.getApiParam("inquiry", "noReadNum");
+        params.put("uid", getUserID());
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
 
-        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, Arrays.asList(titleArr));
-        viewPager.setOffscreenPageLimit(titleArr.length - 1);
-        viewPager.setAdapter(pagerAdapter);
+                        for (int i = 0; i < titleArr.length; i++) {
+                            if (titleList.contains(titleArr[i])) {
 
-        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayt.setupWithViewPager(viewPager);
-    }
+                                int position = 0;
+                                for (int j = 0; j < titleList.size(); j++) {
+                                    if (titleList.get(j).equals(titleArr[i])) {
+                                        position = j;
+                                        break;
+                                    }
+                                }
 
+                                int number = dataObj.getJSONArray(unReadKeyArr[i]).optInt(0);
+                                QBadgeView badgeView = new QBadgeView(context);
+                                badgeView.bindTarget(((ViewGroup)tabLayt.getChildAt(0)).getChildAt(position))
+                                        .setBadgeTextSize(7, true)
+                                        .setGravityOffset(6, 6, true)
+                                        .setBadgeNumber(number);
 
-    private void initViewPager2() {
-        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
-        viewPager.setOffscreenPageLimit(5);
-        viewPager.setAdapter(pagerAdapter);
-        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayt.setupWithViewPager(viewPager);
+                                badgeList.add(badgeView);
+                            }
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
 

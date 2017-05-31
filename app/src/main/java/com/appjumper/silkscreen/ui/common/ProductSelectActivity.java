@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -21,6 +22,7 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.adapter.ProductListAdapter;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.SPUtil;
 import com.appjumper.silkscreen.view.IndexSideBar;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -143,6 +145,7 @@ public class ProductSelectActivity extends BaseActivity {
     }
 
 
+
     private void initListView() {
         productList = new ArrayList<>();
         actualSectionList = new ArrayList<>();
@@ -190,7 +193,21 @@ public class ProductSelectActivity extends BaseActivity {
         });
 
         lvData.setAdapter(productAdapter);
+
+        //加载缓存
+        String cache = SPUtil.getString(null, Const.KEY_PRODUCT_LIST + serviceType, "");
+        if (!TextUtils.isEmpty(cache)) {
+            try {
+                parseJson(new JSONObject(cache));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            progress.show();
+        }
+
     }
+
 
 
     /**
@@ -204,7 +221,7 @@ public class ProductSelectActivity extends BaseActivity {
             @Override
             public void onStart() {
                 super.onStart();
-                progress.show();
+                //progress.show();
             }
 
             @Override
@@ -214,7 +231,10 @@ public class ProductSelectActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        parseJson(jsonObj.getJSONObject("data"));
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        parseJson(dataObj);
+                        //数据缓存到本地
+                        SPUtil.putString(null, Const.KEY_PRODUCT_LIST + serviceType, dataObj.toString());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
