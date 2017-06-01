@@ -236,7 +236,10 @@ public class ProductSelectActivity extends BaseActivity {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
-                        parseJson(dataObj);
+
+                        if (!isDestroyed())
+                            parseJson(dataObj);
+
                         //数据缓存到本地
                         SPUtil.putString(null, Const.KEY_PRODUCT_LIST + serviceType, dataObj.toString());
                     }
@@ -247,13 +250,15 @@ public class ProductSelectActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                showFailTips(getResources().getString(R.string.requst_fail));
+                if (!isDestroyed())
+                    showFailTips(getResources().getString(R.string.requst_fail));
             }
 
             @Override
             public void onFinish() {
                 super.onFinish();
-                progress.dismiss();
+                if (!isDestroyed())
+                    progress.dismiss();
             }
         });
     }
