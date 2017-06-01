@@ -10,8 +10,8 @@ android {
         applicationId "com.appjumper.silkscreen"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 17
-        versionName "2.0.1"
+        versionCode 18
+        versionName "2.0.2"
     }
     productFlavors {
         xiaomi {}
@@ -78,7 +78,7 @@ dependencies {
     compile 'im.fir:fir-sdk:latest.integration@aar'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.chanven.lib:cptr:1.1.0'
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.9'
+    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.18'
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:design:25.2.0'
     compile 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'

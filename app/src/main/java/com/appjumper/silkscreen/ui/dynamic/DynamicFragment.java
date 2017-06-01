@@ -69,11 +69,12 @@ public class DynamicFragment extends BaseFragment {
     private List<QBadgeView> badgeList = new ArrayList<>();
 
     //全部title
-    private String [] titleArr = {"产品", "物流", "找车", "设备", "厂房", "招聘"};
+    private String [] titleAllArr = {"产品", "物流", "找车", "设备", "厂房", "招聘"};
     //未读数，与title对应的key值
     private String [] unReadKeyArr = {"productNum", "areaNum", "carNum", "equipmentNum", "workshopNum", "jobNum"};
 
-
+    //标记是否已加载关注的版块
+    private boolean isModuleLoaded = false;
 
 
 
@@ -106,6 +107,15 @@ public class DynamicFragment extends BaseFragment {
             CommonApi.addLiveness(getUserID(), 15);
         }
 
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isDataInited && getUser() != null && isModuleLoaded) {
+            getUnread();
+        }
     }
 
 
@@ -142,8 +152,8 @@ public class DynamicFragment extends BaseFragment {
         fragList.add(new WorkShopFragment());
         fragList.add(new JobFragment());
 
-        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, Arrays.asList(titleArr));
-        viewPager.setOffscreenPageLimit(titleArr.length - 1);
+        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, Arrays.asList(titleAllArr));
+        viewPager.setOffscreenPageLimit(titleAllArr.length - 1);
         viewPager.setAdapter(pagerAdapter);
 
         tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -216,6 +226,7 @@ public class DynamicFragment extends BaseFragment {
                         }
 
                         pagerAdapter.notifyDataSetChanged();
+                        isModuleLoaded = true;
 
 
                         if (fragList.size() > 0) {
@@ -259,26 +270,31 @@ public class DynamicFragment extends BaseFragment {
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
 
-                        for (int i = 0; i < titleArr.length; i++) {
-                            if (titleList.contains(titleArr[i])) {
+                        //清掉之前绑定的小红点
+                        if (badgeList.size() > 0) {
+                            ((ViewGroup)tabLayt.getChildAt(0)).removeAllViews();
+                            pagerAdapter.notifyDataSetChanged();
+                            badgeList.clear();
+                        }
 
-                                int position = 0;
-                                for (int j = 0; j < titleList.size(); j++) {
-                                    if (titleList.get(j).equals(titleArr[i])) {
-                                        position = j;
-                                        break;
-                                    }
+                        //重新绑定小红点
+                        for (int i = 0; i < titleList.size(); i++) {
+                            int position = 0;
+                            for (int j = 0; j < titleAllArr.length; j++) {
+                                if (titleList.get(i).equals(titleAllArr[j])) {
+                                    position = j;
+                                    break;
                                 }
-
-                                int number = dataObj.getJSONArray(unReadKeyArr[i]).optInt(0);
-                                QBadgeView badgeView = new QBadgeView(context);
-                                badgeView.bindTarget(((ViewGroup)tabLayt.getChildAt(0)).getChildAt(position))
-                                        .setBadgeTextSize(7, true)
-                                        .setGravityOffset(6, 6, true)
-                                        .setBadgeNumber(number);
-
-                                badgeList.add(badgeView);
                             }
+
+                            int number = dataObj.getJSONArray(unReadKeyArr[position]).optInt(0);
+                            QBadgeView badgeView = new QBadgeView(context);
+                            badgeView.bindTarget(((ViewGroup)tabLayt.getChildAt(0)).getChildAt(i))
+                                    .setBadgeTextSize(7, true)
+                                    .setGravityOffset(6, 6, true)
+                                    .setBadgeNumber(number);
+
+                            badgeList.add(badgeView);
                         }
 
                     }
@@ -299,19 +315,25 @@ public class DynamicFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == Const.RESULT_CODE_NEED_REFRESH) {
-            getAttentModule();
+            boolean hasChanged = data.getBooleanExtra(Const.KEY_HAS_CHANGED, false);
+            if (hasChanged)
+                getAttentModule();
+            else
+                isModuleLoaded = true;
         }
     }
 
 
 
-    @OnClick({R.id.right, R.id.txtLogin})
+    @OnClick({R.id.right, R.id.txtLogin, R.id.llEmpty})
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.right: //管理
                 if (checkLogined()) {
+                    isModuleLoaded = false;
                     intent = new Intent(context, DynamicManageActivity.class);
                     startActivityForResult(intent, 0);
                 }
@@ -319,6 +341,8 @@ public class DynamicFragment extends BaseFragment {
             case R.id.txtLogin: //立即登录
                 intent = new Intent(context, LoginActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.llEmpty:
                 break;
             default:
                 break;

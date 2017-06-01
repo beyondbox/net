@@ -76,6 +76,8 @@ public class PersonalReleaseActivity extends BaseActivity {
             MyRecyclerView gv_passby;
     @Bind(R.id.tv_hint)//提示
             TextView tvHint;
+    @Bind(R.id.llExpiry)
+    LinearLayout llExpiry;
 
 
     private long expiry_datatime = 3600;
@@ -101,6 +103,7 @@ public class PersonalReleaseActivity extends BaseActivity {
 
         if(type.equals("1")){
             initTitle("货站发布");
+            llExpiry.setVisibility(View.GONE);
         }else{
             initTitle("个人发布");
         }
@@ -182,8 +185,11 @@ public class PersonalReleaseActivity extends BaseActivity {
                 data.put("car_height", et_car_height.getText().toString().trim());
                 data.put("car_load", et_car_load.getText().toString().trim());
                 data.put("remark", et_remark.getText().toString().trim());
-                data.put("expiry_date", expiry_datatime + "");
                 data.put("date", startdata);
+
+                if (!type.equals("1"))
+                    data.put("expiry_date", expiry_datatime + "");
+
                 response = JsonParser.getBaseResponse(HttpUtil.postMsg(
                         HttpUtil.getData(data), Url.LINEADD));
             } catch (Exception e) {

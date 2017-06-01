@@ -33,6 +33,7 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
+import com.appjumper.silkscreen.ui.my.UserEditActivity;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.manager.ActivityTaskManager;
@@ -265,6 +266,12 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_next://发布询价
+
+                if (TextUtils.isEmpty(getUser().getUser_nicename())) {
+                    showErrorToast("您尚未设置昵称");
+                    start_Activity(context, UserEditActivity.class,new BasicNameValuePair("title","昵称"),new BasicNameValuePair("hinttitle","点击输入昵称"),new BasicNameValuePair("key","nickname"));
+                    return;
+                }
 
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).getFieldinput().equals("radio")) {

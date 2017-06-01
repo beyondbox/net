@@ -194,16 +194,20 @@ public class ProductSelectActivity extends BaseActivity {
 
         lvData.setAdapter(productAdapter);
 
-        //加载缓存
-        String cache = SPUtil.getString(null, Const.KEY_PRODUCT_LIST + serviceType, "");
-        if (!TextUtils.isEmpty(cache)) {
-            try {
-                parseJson(new JSONObject(cache));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
+        if (isMultiMode) {
             progress.show();
+        } else {
+            //加载缓存
+            String cache = SPUtil.getString(null, Const.KEY_PRODUCT_LIST + serviceType, "");
+            if (!TextUtils.isEmpty(cache)) {
+                try {
+                    parseJson(new JSONObject(cache));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                progress.show();
+            }
         }
 
     }
@@ -259,6 +263,9 @@ public class ProductSelectActivity extends BaseActivity {
      * json数据解析
      */
     private void parseJson(JSONObject dataObj) {
+        actualSectionList.clear();
+        productList.clear();
+
         Iterator<String> it = dataObj.keys();
 
         while (it.hasNext()) {

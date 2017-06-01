@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.ui.dynamic;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -125,8 +126,9 @@ public class DynamicManageActivity extends BaseActivity {
 
     @Override
     public void finish() {
-        if (hasChanged)
-            setResult(Const.RESULT_CODE_NEED_REFRESH);
+        Intent intent = new Intent();
+        intent.putExtra(Const.KEY_HAS_CHANGED, hasChanged);
+        setResult(Const.RESULT_CODE_NEED_REFRESH, intent);
 
         super.finish();
     }

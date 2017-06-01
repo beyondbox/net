@@ -30,6 +30,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
 import com.appjumper.silkscreen.ui.inquiry.InquiryCompleteActivity;
 import com.appjumper.silkscreen.ui.inquiry.SelectCompanyActivity;
+import com.appjumper.silkscreen.ui.my.UserEditActivity;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.util.Const;
@@ -688,6 +689,13 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_next:
+                if (action != Const.REQUEST_CODE_RELEASE_STOCK) {
+                    if (TextUtils.isEmpty(getUser().getUser_nicename())) {
+                        showErrorToast("您尚未设置昵称");
+                        start_Activity(context, UserEditActivity.class,new BasicNameValuePair("title","昵称"),new BasicNameValuePair("hinttitle","点击输入昵称"),new BasicNameValuePair("key","nickname"));
+                        return;
+                    }
+                }
                 submit();
                 break;
             case R.id.ll_fit://符合厂家
