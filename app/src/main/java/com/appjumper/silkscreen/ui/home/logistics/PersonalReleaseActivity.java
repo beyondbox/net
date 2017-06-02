@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -82,7 +83,7 @@ public class PersonalReleaseActivity extends BaseActivity {
 
     private long expiry_datatime = 3600;
 
-    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天"};
+    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天", "3天"};
 
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private String startdata;
@@ -113,26 +114,39 @@ public class PersonalReleaseActivity extends BaseActivity {
         initRightButton("发布", new RightButtonListener() {
             @Override
             public void click() {
-                if (et_car_length.getText().toString().trim().length() < 0) {
-                    showErrorToast("请输入车辆长度");
+                if (TextUtils.isEmpty(start_id)) {
+                    showErrorToast("请选择起点");
                     return;
                 }
-                if (et_car_height.getText().toString().trim().length() < 0) {
-                    showErrorToast("请输入车辆高度");
-                    return;
-                }
-                if (et_car_load.getText().toString().trim().length() < 0) {
-                    showErrorToast("请输入车辆载重");
-                    return;
-                }
-                if (et_car_width.getText().toString().trim().length() < 0) {
-                    showErrorToast("请输入车辆宽度");
+                if (TextUtils.isEmpty(end_id)) {
+                    showErrorToast("请选择终点");
                     return;
                 }
                 if (ids.equals("")) {
                     showErrorToast("请添加途经地");
                     return;
                 }
+                if (TextUtils.isEmpty(tv_start_time.getText().toString().trim())) {
+                    showErrorToast("请选择出发时间");
+                    return;
+                }
+                if (et_car_length.getText().toString().trim().length() < 1) {
+                    showErrorToast("请输入车辆长度");
+                    return;
+                }
+                if (et_car_height.getText().toString().trim().length() < 1) {
+                    showErrorToast("请输入车辆高度");
+                    return;
+                }
+                if (et_car_load.getText().toString().trim().length() < 1) {
+                    showErrorToast("请输入车辆载重");
+                    return;
+                }
+                if (et_car_width.getText().toString().trim().length() < 1) {
+                    showErrorToast("请输入车辆宽度");
+                    return;
+                }
+
                 hideKeyboard();
                 initProgressDialog();
                 progress.show();
@@ -175,6 +189,8 @@ public class PersonalReleaseActivity extends BaseActivity {
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("from", start_id);
                 data.put("to", end_id);
+                data.put("from_name", tv_start.getText().toString());
+                data.put("to_name", tv_end.getText().toString());
                 data.put("type", type);
                 data.put("uid", getUserID());
                 data.put("passby", ids);//途经地 id
@@ -368,6 +384,9 @@ public class PersonalReleaseActivity extends BaseActivity {
                         break;
                     case 4://两天
                         expiry_datatime = 3600 * 48;
+                        break;
+                    case 5://三天
+                        expiry_datatime = 3600 * 72;
                         break;
                 }
                 tv_expiry_date.setText(expiry[expiry_date]);

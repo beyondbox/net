@@ -57,7 +57,7 @@ public class RecruitReleaseActivity extends BaseActivity {
 
     private long expiry_datatime = 3600;
 
-    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天"};//信息时长
+    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天", "3天"};//信息时长
 
     private String[] experiences = {"不限", "本科", "大专", "高中"};//学历
     private String[] genders = {"不限","男", "女"};//性别
@@ -267,6 +267,9 @@ public class RecruitReleaseActivity extends BaseActivity {
                         break;
                     case 4://两天
                         expiry_datatime = 3600 * 48;
+                        break;
+                    case 5://三天
+                        expiry_datatime = 3600 * 72;
                         break;
                 }
                 tvInfoLength.setText(expiry[expiry_date]);

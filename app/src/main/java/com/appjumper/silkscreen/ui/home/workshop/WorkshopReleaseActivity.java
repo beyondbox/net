@@ -57,7 +57,7 @@ public class WorkshopReleaseActivity extends BasePhotoGridActivity {
 
     private long expiry_datatime = 3600;
 
-    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天"};//信息时长
+    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天", "3天"};//信息时长
 
     private String[] forms = {"出租", "转让"};//出租形式
     private ImageResponse imgResponse;
@@ -294,6 +294,9 @@ public class WorkshopReleaseActivity extends BasePhotoGridActivity {
                         break;
                     case 4://两天
                         expiry_datatime = 3600 * 48;
+                        break;
+                    case 5://三天
+                        expiry_datatime = 3600 * 72;
                         break;
                 }
                 tvInfoLength.setText(expiry[expiry_date]);

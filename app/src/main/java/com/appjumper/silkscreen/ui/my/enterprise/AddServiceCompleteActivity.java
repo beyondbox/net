@@ -76,6 +76,7 @@ public class AddServiceCompleteActivity extends BaseActivity {
                 break;
             case Const.SERVICE_TYPE_LOGISTICS://物流路线
                 start_Activity(this, EnterpriseReleaseActivity.class);
+                finish();
                 break;
             default:
                 break;

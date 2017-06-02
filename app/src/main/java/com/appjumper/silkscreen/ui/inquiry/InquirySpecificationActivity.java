@@ -93,7 +93,7 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
     private String identity;
 
     private long expiry_datatime = 3600;
-    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天"};
+    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天", "3天"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -570,6 +570,9 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                         break;
                     case 4://两天
                         expiry_datatime = 3600 * 48;
+                        break;
+                    case 5://三天
+                        expiry_datatime = 3600 * 72;
                         break;
                 }
                 tvInfoLength.setText(expiry[expiry_date]);

@@ -76,7 +76,7 @@ public class TruckReleaseActivity extends BaseActivity {
 
     private long expiry_datatime = 3600;
 
-    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天"};
+    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天", "3天"};
 
     private String startdata = "";
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -322,6 +322,9 @@ public class TruckReleaseActivity extends BaseActivity {
                         break;
                     case 4://两天
                         expiry_datatime = 3600 * 48;
+                        break;
+                    case 5://三天
+                        expiry_datatime = 3600 * 72;
                         break;
                 }
                 tvInfoLength.setText(expiry[expiry_date]);
