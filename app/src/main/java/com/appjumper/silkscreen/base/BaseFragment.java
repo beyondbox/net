@@ -119,6 +119,31 @@ public abstract class BaseFragment extends Fragment {
 
 
 
+
+    /**
+     * 打开ForResultActivity
+     *
+     * @param activity
+     * @param cls
+     * @param name
+     */
+    protected void startForResult_Activity(Activity activity, Class<?> cls, int requestCode,
+                                               BasicNameValuePair... name) {
+        Intent intent = new Intent();
+        intent.setClass(activity, cls);
+        if (name != null)
+            for (int i = 0; i < name.length; i++) {
+                intent.putExtra(name[i].getName(), name[i].getValue());
+            }
+        startActivityForResult(intent, requestCode);
+        activity.overridePendingTransition(R.anim.push_left_in,
+                R.anim.push_left_out);
+
+    }
+
+
+
+
     /**
      * 不带文字转转框
      */

@@ -19,19 +19,19 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.AreaBean;
 import com.appjumper.silkscreen.bean.AreaBeanResponse;
 import com.appjumper.silkscreen.bean.LineList;
 import com.appjumper.silkscreen.bean.LineListResponse;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
-import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.ui.home.adapter.AddRessRecyclerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.CityListViewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.LogisticsStandingListviewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.TruckListviewAdapter;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
@@ -212,10 +212,10 @@ public class LogisticsActivity extends BaseActivity {
                 data.put("type", type);
                 data.put("pagesize", pagesize);
                 data.put("page", "1");
-                if (!end_id.equals("") && !start_id.equals("")) {
+                //if (!end_id.equals("") && !start_id.equals("")) {
                     data.put("from", start_id);
                     data.put("to", end_id);
-                }
+                //}
                 response = JsonParser.getLineListResponse(HttpUtil.getMsg(Url.LINELIST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -236,10 +236,10 @@ public class LogisticsActivity extends BaseActivity {
             LineListResponse response = null;
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
-                if (!end_id.equals("") && !start_id.equals("")) {
+                //if (!end_id.equals("") && !start_id.equals("")) {
                     data.put("from", start_id);
                     data.put("to", end_id);
-                }
+                //}
                 data.put("pagesize", pagesize);
                 data.put("page", "" + pageNumber);
                 data.put("type", type);

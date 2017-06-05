@@ -48,7 +48,7 @@ public class SearchResultsActivity extends BaseActivity {
 
     public String keyworks;
     //private String [] titleArr = {"订做", "现货", "加工", "物流", "设备", "厂家", "招聘"};
-    private String [] titleArr = {"订做", "现货", "加工"};
+    private String [] titleArr = {"订做", "现货", "加工", "物流", "设备", "厂房"};
 
     private LocalBroadcastManager broadcastManager;
 
@@ -116,6 +116,9 @@ public class SearchResultsActivity extends BaseActivity {
         fragList.add(new SearchOrderFragment());
         fragList.add(new SearchStockFragment());
         fragList.add(new SearchProcessFragment());
+        fragList.add(new SearchLogisticsFragment());
+        fragList.add(new SearchDeviceFragment());
+        fragList.add(new SearchWorkshopFragment());
         /*for (int i = 0; i < 4; i++) {
             fragList.add(new SearchOrderFragment());
         }*/

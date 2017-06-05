@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/view_background_gray_color"
+    android:orientation="vertical">
+
+
+    <com.yyydjk.library.DropDownMenu
+        android:id="@+id/dropDownMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:dddividerColor="@color/view_background_gray_color"
+        app:ddmaskColor="#20000000"
+        app:ddmenuBackgroundColor="@color/while_color"
+        app:ddmenuSelectedIcon="@mipmap/icon_arrows_up"
+        app:ddmenuTextSize="13sp"
+        app:ddmenuUnselectedIcon="@mipmap/icon_arrows_down"
+        app:ddtextSelectedColor="@color/theme_color"
+        app:ddtextUnselectedColor="@color/text_black_color"
+        app:ddunderlineColor="@color/view_background_gray_color" />
+
+
+
+</RelativeLayout>

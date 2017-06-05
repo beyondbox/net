@@ -35,6 +35,7 @@ public class RecruitList {
     private String auth_status;
 
 
+
 //    private AreaBean location;
 //
 //    public AreaBean getLocation() {
@@ -261,4 +262,5 @@ public class RecruitList {
     public void setAuth_status(String auth_status) {
         this.auth_status = auth_status;
     }
+
 }
