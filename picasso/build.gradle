@@ -1,0 +1,42 @@
+/*buildscript {
+  dependencies {
+    classpath dep.androidPlugin
+  }
+}*/
+
+apply plugin: 'com.android.library'
+
+android {
+  compileSdkVersion 25
+  buildToolsVersion '25.0.2'
+
+  /*compileOptions {
+    sourceCompatibility rootProject.ext.sourceCompatibilityVersion
+    targetCompatibility rootProject.ext.targetCompatibilityVersion
+  }*/
+
+  lintOptions {
+    textOutput 'stdout'
+    textReport true
+    lintConfig file('lint.xml')
+  }
+
+  /*dexOptions {
+    preDexLibraries = !rootProject.ext.isCi
+  }*/
+
+  defaultConfig {
+    minSdkVersion 17
+    targetSdkVersion 25
+
+    consumerProguardFiles 'consumer-proguard-rules.txt'
+  }
+
+}
+
+dependencies {
+  compile 'com.android.support:support-annotations:25.2.0'
+  compile 'com.squareup.okhttp3:okhttp:3.8.0'
+}
+
+/*apply from: rootProject.file('gradle/gradle-mvn-push.gradle')*/

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.appjumper.silkscreen.view.RoundCornerImageView
+    <com.appjumper.silkscreen.view.BorderRectImageView
         android:id="@+id/imgViProduct"
         android:layout_width="80dp"
         android:layout_height="80dp"

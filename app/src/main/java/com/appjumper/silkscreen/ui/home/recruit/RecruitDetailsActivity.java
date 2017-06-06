@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Enterprise;
+import com.appjumper.silkscreen.bean.RecruitDetail;
 import com.appjumper.silkscreen.bean.RecruitDetailsResponse;
-import com.appjumper.silkscreen.bean.RecruitList;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
@@ -27,7 +27,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.MapviewActivity;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
-import com.appjumper.silkscreen.ui.home.adapter.RecruitListViewAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.RecruitDetailAdapter;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
@@ -119,7 +119,7 @@ public class RecruitDetailsActivity extends BaseActivity {
         refresh();
     }
 
-    private void initView(final RecruitList data) {
+    private void initView(final RecruitDetail data) {
         eid = data.getEnterprise().getEnterprise_id();
         tvTitle.setText(data.getName());
         tvRemark.setText(data.getResponsibilities());
@@ -129,7 +129,7 @@ public class RecruitDetailsActivity extends BaseActivity {
         tvJobForm.setText(data.getRemark());
         tvWorkExperience.setText(data.getExperience() + "年");
         tvDate.setText(data.getCreate_time().substring(5, 16));
-        listView.setAdapter(new RecruitListViewAdapter(this, data.getRecommend()));
+        listView.setAdapter(new RecruitDetailAdapter(this, data.getRecommend()));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -236,7 +236,7 @@ public class RecruitDetailsActivity extends BaseActivity {
                     RecruitDetailsResponse baseResponse = (RecruitDetailsResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
                         layout.setVisibility(View.VISIBLE);
-                        RecruitList data = baseResponse.getData();
+                        RecruitDetail data = baseResponse.getData();
                         initView(data);
 
                         if (!getUserID().equals(data.getUser_id()))

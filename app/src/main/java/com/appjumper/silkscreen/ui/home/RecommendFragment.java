@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Enterprise;
@@ -32,6 +33,8 @@ public class RecommendFragment extends Fragment {
 
     @Bind(R.id.lvData)
     ListView lvData;
+    @Bind(R.id.txtIntroduce)
+    TextView txtIntroduce;
 
     private RecommendAdapter dataAdapter;
     private List<Enterprise> dataList;
@@ -54,6 +57,20 @@ public class RecommendFragment extends Fragment {
         context = getActivity();
         serviceType = getArguments().getInt(Const.KEY_SERVICE_TYPE);
         initListView();
+
+        switch (serviceType) {
+            case Const.SERVICE_TYPE_ORDER:
+                txtIntroduce.setText("接受丝网产品订做的厂家信息");
+                break;
+            case Const.SERVICE_TYPE_STOCK:
+                txtIntroduce.setText("接受丝网产品现货的厂家信息");
+                break;
+            case Const.SERVICE_TYPE_PROCESS:
+                txtIntroduce.setText("接受丝网产品加工的厂家信息");
+                break;
+            default:
+                break;
+        }
     }
 
 

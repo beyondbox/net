@@ -6,12 +6,14 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
+import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.util.DisplayUtil;
+
+import static android.R.attr.width;
 
 public class BorderRectImageView extends ImageView {
 
@@ -28,7 +30,8 @@ public class BorderRectImageView extends ImageView {
 		Path path = new Path();
 		//int radius = getWidth() / 2;
 		//path.addCircle(radius, radius, radius, Direction.CW);
-		path.addRect(0, 0, getWidth(), getHeight(), Direction.CW);
+		//path.addRect(0, 0, getWidth(), getHeight(), Direction.CW);
+		path.addRoundRect(new RectF(0, 0, getWidth(), getHeight()), 8.0f, 8.0f, Direction.CW);
 		canvas.clipPath(path);
 		
 		super.onDraw(canvas);

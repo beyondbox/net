@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -89,6 +90,17 @@ public class BaseActivity extends FragmentActivity {
 
     }
 
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //强制竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        context = this;
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -174,11 +186,6 @@ public class BaseActivity extends FragmentActivity {
         }
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        context = this;
-    }
 
 
     //返回按钮

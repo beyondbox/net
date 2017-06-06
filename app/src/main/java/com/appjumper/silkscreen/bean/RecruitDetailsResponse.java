@@ -5,13 +5,13 @@ package com.appjumper.silkscreen.bean;
  * 设备详情
  */
 public class RecruitDetailsResponse extends BaseResponse {
-    private RecruitList data;
+    private RecruitDetail data;
 
-    public RecruitList getData() {
+    public RecruitDetail getData() {
         return data;
     }
 
-    public void setData(RecruitList data) {
+    public void setData(RecruitDetail data) {
         this.data = data;
     }
 }

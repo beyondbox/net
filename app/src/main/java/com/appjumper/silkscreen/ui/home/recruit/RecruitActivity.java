@@ -168,7 +168,7 @@ public class RecruitActivity extends BaseActivity {
         list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                name = data.get(position).getId();
+                name = data.get(position).getName();
                 subListViewAdapter.setCurrentSelectPosition(position);
                 subListViewAdapter.notifyDataSetChanged();
                 mDropDownMenu.setTabText(data.get(position).getName());

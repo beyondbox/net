@@ -47,8 +47,7 @@ public class SearchResultsActivity extends BaseActivity {
     private List<Fragment> fragList;
 
     public String keyworks;
-    //private String [] titleArr = {"订做", "现货", "加工", "物流", "设备", "厂家", "招聘"};
-    private String [] titleArr = {"订做", "现货", "加工", "物流", "设备", "厂房"};
+    private String [] titleArr = {"订做", "现货", "加工", "物流", "设备", "厂房", "招聘"};
 
     private LocalBroadcastManager broadcastManager;
 
@@ -119,6 +118,7 @@ public class SearchResultsActivity extends BaseActivity {
         fragList.add(new SearchLogisticsFragment());
         fragList.add(new SearchDeviceFragment());
         fragList.add(new SearchWorkshopFragment());
+        fragList.add(new SearchJobFragment());
         /*for (int i = 0; i < 4; i++) {
             fragList.add(new SearchOrderFragment());
         }*/
@@ -127,7 +127,7 @@ public class SearchResultsActivity extends BaseActivity {
         pagerResult.setAdapter(resultAdapter);
         pagerResult.setOffscreenPageLimit(titleArr.length - 1);
 
-        //tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayt.setupWithViewPager(pagerResult);
     }
 
