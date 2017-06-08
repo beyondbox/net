@@ -148,7 +148,15 @@ public class DetailsFragment extends BaseFragment {
                 max = val;
             }
         }
-        max += 200;
+        //max += 200;
+
+        int temp = (int) max;
+        String str = temp + "";
+        str = str.substring(0, str.length() - 2);
+        str = str + "00";
+        max = Integer.parseInt(str) + 100;
+
+
         List<Float> datas = new ArrayList<>();
         datas.add((float) 0);
         datas.add(max / 5 * 1);

@@ -10,7 +10,6 @@ import android.graphics.Path;
 import android.graphics.PathEffect;
 import android.graphics.Point;
 import android.graphics.Shader;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -55,7 +54,8 @@ public class BaseFundChartView extends View {
         chartJianbianPaint = new Paint();
 
         //设置绘制模式为-虚线作为背景线。
-        effect = new DashPathEffect(new float[] { 6, 6, 6, 6, 6}, 2);
+        //effect = new DashPathEffect(new float[] { 6, 6, 6, 6, 6}, 2);
+        effect = new DashPathEffect(new float[] {6, 6, 6, 6}, 0);
         //背景虚线路径.
         path = new Path();
         //只是绘制的XY轴
@@ -68,7 +68,7 @@ public class BaseFundChartView extends View {
 
         //XY刻度上的字
         textPaint.setStyle(Paint.Style.FILL);// 设置非填充
-        textPaint.setStrokeWidth(2);// 笔宽5像素
+        textPaint.setStrokeWidth(1);// 笔宽5像素
         textPaint.setColor(Color.BLACK);// 设置为蓝笔
         textPaint.setAntiAlias(true);// 锯齿不显示
         textPaint.setTextAlign(Paint.Align.CENTER);
@@ -83,13 +83,13 @@ public class BaseFundChartView extends View {
         xyChartPaint.setTextSize(18);
         //绘制的折线
         chartLinePaint.setStyle(Paint.Style.STROKE);
-        chartLinePaint.setStrokeWidth(5);
+        chartLinePaint.setStrokeWidth(2);
         chartLinePaint.setColor(Color.BLUE);
         chartLinePaint.setAntiAlias(true);
 
         //绘制的折线
         chartJianbianPaint.setStyle(Paint.Style.FILL);
-        chartJianbianPaint.setStrokeWidth(5);
+        chartJianbianPaint.setStrokeWidth(2);
         //chartJianbianPaint.setColor(Color.YELLOW);
 
         chartJianbianPaint.setAntiAlias(true);
@@ -98,7 +98,7 @@ public class BaseFundChartView extends View {
     /**
      * 重要参数，两点之间分为几段描画，数字愈大分段越多，描画的曲线就越精细.
      */
-    private static final int STEPS = 12;
+    private static final int STEPS = 1;
 
     float gridX,gridY,xSpace = 0,ySpace = 0,spaceYT = 0,yStart=0;
     List<String> dateX = null;
@@ -220,11 +220,13 @@ public class BaseFundChartView extends View {
                     //画除X轴之外的------背景虚线一条-------
                     path.moveTo(gridX, my);//背景【虚线起点】。
                     path.lineTo(getWidth(), my);//背景【虚线终点】。
-                    linePaint.setColor(ContextCompat.getColor(getContext(),R.color.gray_color));
+                    //linePaint.setColor(ContextCompat.getColor(getContext(), R.color.gray_color));
+                    linePaint.setColor(Color.parseColor("#C7C7C7"));
                     canvas.drawPath(path, linePaint);
                 }
-
             }
+
+            linePaint.setColor(Color.BLACK);
         }
 
         if(data!=null&&data.size()>0){

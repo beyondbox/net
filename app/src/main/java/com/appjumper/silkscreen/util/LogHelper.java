@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by Botx on 2017/3/16.
  */
 public class LogHelper {
-	private static boolean debug = false;
+	private static boolean debug = true;
 	public static int DEBUG = android.util.Log.DEBUG;
 
 	public static void i(String tag, String msg) {

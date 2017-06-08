@@ -443,6 +443,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/select_white_background"
+                        android:visibility="gone"
                         android:gravity="center"
                         android:paddingBottom="12dp"
                         android:paddingTop="12dp">

@@ -17,6 +17,7 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -61,6 +62,15 @@ public class ProductListAdapter extends MyBaseAdapter<ServiceProduct> implements
 
         ServiceProduct product = list.get(position);
 
+        Picasso.with(context)
+                .load(product.getImg())
+                .resize(DisplayUtil.dip2px(context, 80), DisplayUtil.dip2px(context, 80))
+                .centerCrop()
+                .placeholder(R.mipmap.img_error)
+                .error(R.mipmap.img_error)
+                .into(vh.imgViProduct);
+
+
         if (isMultiMode) {
             vh.chkSelect.setVisibility(View.VISIBLE);
             if (action.equals(Const.ACTION_ATTENT_PRODUCT_MANAGE))
@@ -79,12 +89,6 @@ public class ProductListAdapter extends MyBaseAdapter<ServiceProduct> implements
             vh.txtSection.setVisibility(View.GONE);
         }
 
-
-        Picasso.with(context)
-                .load(product.getImg())
-                .placeholder(R.mipmap.img_error)
-                .error(R.mipmap.img_error)
-                .into(vh.imgViProduct);
 
         String name = product.getName();
         if (TextUtils.isEmpty(product.getAlias())) {
