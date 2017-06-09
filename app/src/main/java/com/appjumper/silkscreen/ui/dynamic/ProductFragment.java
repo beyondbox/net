@@ -233,7 +233,7 @@ public class ProductFragment extends BaseFragment {
 
                 ptrLayt.refreshComplete();
                 adapter.loadMoreComplete();
-                if (totalSize == dataList.size())
+                if (totalSize <= dataList.size())
                     adapter.loadMoreEnd();
 
                 adapter.setEmptyView(R.layout.layout_empty_view_common);

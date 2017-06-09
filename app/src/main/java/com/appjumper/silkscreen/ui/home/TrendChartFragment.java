@@ -135,7 +135,7 @@ public class TrendChartFragment extends BaseFragment {
         String str = temp + "";
         str = str.substring(0, str.length() - 2);
         str = str + "00";
-        max = Integer.parseInt(str) + 100;
+        max = Integer.parseInt(str) + 200;
 
 
         List<Float> datas = new ArrayList<>();
