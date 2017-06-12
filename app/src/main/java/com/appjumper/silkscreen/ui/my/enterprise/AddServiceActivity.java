@@ -7,11 +7,8 @@ import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.my.PersonalAuthenticationActivity;
-import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.manager.ActivityTaskManager;
 
@@ -38,10 +35,10 @@ public class AddServiceActivity extends BaseActivity {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.rl_order://丝网订做
-                goToProductSelect(Const.SERVICE_TYPE_ORDER, Const.REQUEST_CODE_RELEASE_ORDER);
+                goToProductSelect(Const.SERVICE_TYPE_ORDER, ProductSelectActivity.MOTION_RELEASE_SERVICE);
                 break;
             case R.id.rl_processing://丝网加工
-                goToProductSelect(Const.SERVICE_TYPE_PROCESS, Const.REQUEST_CODE_RELEASE_PROCESS);
+                goToProductSelect(Const.SERVICE_TYPE_PROCESS, ProductSelectActivity.MOTION_RELEASE_SERVICE);
                 break;
             case R.id.rl_spot://丝网现货
                 if (!getUser().getAuth_status().equals("2")) {
@@ -54,7 +51,7 @@ public class AddServiceActivity extends BaseActivity {
                     start_Activity(context, EnterpriseAuthenticationActivity.class);
                     return;
                 }
-                goToProductSelect(Const.SERVICE_TYPE_STOCK, Const.REQUEST_CODE_RELEASE_STOCK);
+                goToProductSelect(Const.SERVICE_TYPE_STOCK, ProductSelectActivity.MOTION_RELEASE_SERVICE);
                 break;
             case R.id.rl_logistics://物流路线
                 start_Activity(this, EnterpriseReleaseActivity.class);
@@ -69,51 +66,10 @@ public class AddServiceActivity extends BaseActivity {
     /**
      * 跳转到产品选择界面
      */
-    private void goToProductSelect(int serviceType, int requestCode) {
+    private void goToProductSelect(int serviceType, int motion) {
         Intent intent = new Intent(context, ProductSelectActivity.class);
         intent.putExtra(Const.KEY_SERVICE_TYPE, serviceType);
-        startActivityForResult(intent, requestCode);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null)
-            return;
-
-        ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
-        Intent intent = null;
-        switch (requestCode) {
-            case Const.REQUEST_CODE_RELEASE_ORDER:
-                if (product.getId().equals("104"))
-                    intent = new Intent(context, ReleaseHuLanActivity.class);
-                else
-                    intent = new Intent(context, SpecificationActivity.class);
-                intent.putExtra("service", product);
-                intent.putExtra("type", Const.SERVICE_TYPE_ORDER + "");
-                break;
-            case Const.REQUEST_CODE_RELEASE_PROCESS:
-                if (product.getId().equals("104"))
-                    intent = new Intent(context, ReleaseHuLanActivity.class);
-                else
-                    intent = new Intent(context, SpecificationActivity.class);
-                intent.putExtra("service", product);
-                intent.putExtra("type", Const.SERVICE_TYPE_PROCESS + "");
-                break;
-            case Const.REQUEST_CODE_RELEASE_STOCK:
-                if (product.getId().equals("104"))
-                    intent = new Intent(context, InquiryHuLanActivity.class);
-                else
-                    intent = new Intent(context, SpecificationStockActivity.class);
-                intent.putExtra(Const.KEY_ACTION, Const.REQUEST_CODE_RELEASE_STOCK);
-                intent.putExtra("service", product);
-                intent.putExtra("type", Const.SERVICE_TYPE_STOCK + "");
-                break;
-            default:
-                break;
-        }
-
+        intent.putExtra(Const.KEY_MOTION, motion);
         startActivity(intent);
     }
 

@@ -6,6 +6,7 @@ import android.widget.ImageView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,4 +38,10 @@ public class InquiryCompleteActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void finish() {
+        super.finish();
+        if (ProductSelectActivity.instance != null)
+            ProductSelectActivity.instance.finish();
+    }
 }

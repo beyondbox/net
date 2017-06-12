@@ -7,10 +7,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
-import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 
 import butterknife.Bind;
@@ -49,6 +46,8 @@ public class AddServiceCompleteActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txtConfirm:
+                if (ProductSelectActivity.instance != null)
+                    ProductSelectActivity.instance.finish();
                 finish();
                 break;
             case R.id.txtAdd:
@@ -65,76 +64,14 @@ public class AddServiceCompleteActivity extends BaseActivity {
      */
     private void continueAdd() {
         switch (serviceType) {
-            case Const.SERVICE_TYPE_ORDER://丝网订做
-                goToProductSelect(Const.SERVICE_TYPE_ORDER, Const.REQUEST_CODE_RELEASE_ORDER);
-                break;
-            case Const.SERVICE_TYPE_PROCESS://丝网加工
-                goToProductSelect(Const.SERVICE_TYPE_PROCESS, Const.REQUEST_CODE_RELEASE_PROCESS);
-                break;
-            case Const.SERVICE_TYPE_STOCK://丝网现货
-                goToProductSelect(Const.SERVICE_TYPE_STOCK, Const.REQUEST_CODE_RELEASE_STOCK);
-                break;
             case Const.SERVICE_TYPE_LOGISTICS://物流路线
                 start_Activity(this, EnterpriseReleaseActivity.class);
                 finish();
                 break;
             default:
+                finish();
                 break;
         }
-    }
-
-
-
-    /**
-     * 跳转到产品选择界面
-     */
-    private void goToProductSelect(int serviceType, int requestCode) {
-        Intent intent = new Intent(context, ProductSelectActivity.class);
-        intent.putExtra(Const.KEY_SERVICE_TYPE, serviceType);
-        startActivityForResult(intent, requestCode);
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data == null)
-            return;
-
-        ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
-        Intent intent = null;
-        switch (requestCode) {
-            case Const.REQUEST_CODE_RELEASE_ORDER:
-                if (product.getId().equals("104"))
-                    intent = new Intent(context, ReleaseHuLanActivity.class);
-                else
-                    intent = new Intent(context, SpecificationActivity.class);
-                intent.putExtra("service", product);
-                intent.putExtra("type", Const.SERVICE_TYPE_ORDER + "");
-                break;
-            case Const.REQUEST_CODE_RELEASE_PROCESS:
-                if (product.getId().equals("104"))
-                    intent = new Intent(context, ReleaseHuLanActivity.class);
-                else
-                    intent = new Intent(context, SpecificationActivity.class);
-                intent.putExtra("service", product);
-                intent.putExtra("type", Const.SERVICE_TYPE_PROCESS + "");
-                break;
-            case Const.REQUEST_CODE_RELEASE_STOCK:
-                if (product.getId().equals("104"))
-                    intent = new Intent(context, InquiryHuLanActivity.class);
-                else
-                    intent = new Intent(context, SpecificationStockActivity.class);
-                intent.putExtra(Const.KEY_ACTION, Const.REQUEST_CODE_RELEASE_STOCK);
-                intent.putExtra("service", product);
-                intent.putExtra("type", Const.SERVICE_TYPE_STOCK + "");
-                break;
-            default:
-                break;
-        }
-
-        startActivity(intent);
-        finish();
     }
 
 }

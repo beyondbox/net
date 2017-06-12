@@ -21,7 +21,11 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+
+
 
             <ImageView
                 android:id="@+id/txtMsg"
@@ -33,34 +37,43 @@
                 android:padding="10dp"
                 android:src="@mipmap/message" />
 
-            <ImageView
-                android:id="@+id/imageView"
+
+            <RelativeLayout
+                android:id="@+id/rl_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="24dp"
-                android:layout_marginRight="5dp"
                 android:layout_toLeftOf="@id/txtMsg"
-                android:src="@drawable/icon_search_box05" />
-
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/imageView"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
-                android:src="@mipmap/icon_search_icon04" />
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/shape_home_search"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="12dp"
-                android:layout_toEndOf="@+id/imageView2"
-                android:text="请输入产品名称"
-                android:textColor="#A6A9AD"
-                android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:src="@mipmap/search_icon_04"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="6dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/while_color"
+                        android:text="请输入搜索内容"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
         </RelativeLayout>
     </LinearLayout>
 

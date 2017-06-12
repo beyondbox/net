@@ -16,6 +16,7 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -74,6 +75,8 @@ public class ProductSearchAdapter extends MyBaseAdapter<ServiceProduct> {
 
         Picasso.with(context)
                 .load(product.getImg())
+                .resize(DisplayUtil.dip2px(context, 80), DisplayUtil.dip2px(context, 80))
+                .centerCrop()
                 .placeholder(R.mipmap.img_error)
                 .error(R.mipmap.img_error)
                 .into(vh.imgViProduct);

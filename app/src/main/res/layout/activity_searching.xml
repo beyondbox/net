@@ -32,7 +32,7 @@
                 android:background="@drawable/icon_search_box05"
                 android:drawableLeft="@mipmap/icon_search_icon04"
                 android:drawablePadding="6dp"
-                android:hint="请输入产品名称"
+                android:hint="请输入搜索内容"
                 android:imeOptions="actionSearch"
                 android:paddingLeft="18dp"
                 android:singleLine="true"

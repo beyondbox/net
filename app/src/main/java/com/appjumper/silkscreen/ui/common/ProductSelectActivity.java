@@ -21,6 +21,11 @@ import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.adapter.ProductListAdapter;
+import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
+import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.SPUtil;
 import com.appjumper.silkscreen.view.IndexSideBar;
@@ -48,6 +53,8 @@ import butterknife.OnClick;
 
 public class ProductSelectActivity extends BaseActivity {
 
+    public static ProductSelectActivity instance = null;
+
     @Bind(R.id.txtHint)
     TextView txtHint;
     @Bind(R.id.lvData)
@@ -59,6 +66,16 @@ public class ProductSelectActivity extends BaseActivity {
     @Bind(R.id.txtNoSelect)
     TextView txtNoSelect;
 
+    /**
+     * 添加服务
+     */
+    public static final int MOTION_RELEASE_SERVICE = 3001;
+    /**
+     * 发布询价
+     */
+    public static final int MOTION_RELEASE_INQUIRY = 3002;
+
+
     private List<ServiceProduct> productList;
     private ProductListAdapter productAdapter;
 
@@ -68,6 +85,9 @@ public class ProductSelectActivity extends BaseActivity {
     private boolean isFilterMode = false; //筛选模式
     private int serviceType; //产品类型
     private String action = "";
+
+    private int motion = 0; //标记是添加服务还是发布询价
+
 
     private Handler hintHandler = new Handler() {
         @Override
@@ -98,12 +118,14 @@ public class ProductSelectActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_select);
         ButterKnife.bind(this);
+        instance = this;
         initProgressDialog();
 
         Intent intent = getIntent();
         isMultiMode = intent.getBooleanExtra(Const.KEY_IS_MULTI_MODE, false);
         isFilterMode = intent.getBooleanExtra(Const.KEY_IS_FILTER_MODE, false);
         serviceType = intent.getIntExtra(Const.KEY_SERVICE_TYPE, 0);
+        motion = intent.getIntExtra(Const.KEY_MOTION, 0);
         if (intent.hasExtra(Const.KEY_ACTION))
             action = intent.getStringExtra(Const.KEY_ACTION);
 
@@ -159,10 +181,14 @@ public class ProductSelectActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!isMultiMode) {
-                    Intent data = new Intent();
-                    data.putExtra(Const.KEY_OBJECT, productList.get(position));
-                    setResult(0, data);
-                    finish();
+                    if (motion == 0) {
+                        Intent data = new Intent();
+                        data.putExtra(Const.KEY_OBJECT, productList.get(position));
+                        setResult(0, data);
+                        finish();
+                    } else {
+                        handleSpecialNeeds(productList.get(position));
+                    }
                 }
             }
         });
@@ -211,6 +237,51 @@ public class ProductSelectActivity extends BaseActivity {
         }
 
     }
+
+
+
+    /**
+     * 处理添加服务和发布询价的跳转
+     * 添加服务或者发布询价时要求不关闭当前列表界面，so....
+     */
+    private void handleSpecialNeeds(ServiceProduct product) {
+        Intent intent = null;
+
+        switch (motion) {
+            case MOTION_RELEASE_SERVICE: //添加服务
+                if (serviceType == Const.SERVICE_TYPE_STOCK) {
+                    if (product.getId().equals("104"))
+                        intent = new Intent(context, InquiryHuLanActivity.class);
+                    else
+                        intent = new Intent(context, SpecificationStockActivity.class);
+                    intent.putExtra(Const.KEY_ACTION, Const.REQUEST_CODE_RELEASE_STOCK);
+                } else {
+                    if (product.getId().equals("104"))
+                        intent = new Intent(context, ReleaseHuLanActivity.class);
+                    else
+                        intent = new Intent(context, SpecificationActivity.class);
+                }
+                intent.putExtra("service", product);
+                intent.putExtra("type", serviceType + "");
+                break;
+
+            case MOTION_RELEASE_INQUIRY: //发布询价
+                if (product.getId().equals("104"))
+                    intent = new Intent(context, InquiryHuLanActivity.class);
+                else
+                    intent = new Intent(context, InquirySpecificationActivity.class);
+                intent.putExtra("identity", "3");
+                intent.putExtra("service", product);
+                intent.putExtra("type", serviceType + "");
+                break;
+            default:
+                break;
+        }
+
+        startActivity(intent);
+
+    }
+
 
 
 
@@ -313,8 +384,12 @@ public class ProductSelectActivity extends BaseActivity {
 
             productAdapter.notifyDataSetChanged();
         } else {
-            setResult(0, data);
-            finish();
+            if (motion == 0) {
+                setResult(0, data);
+                finish();
+            } else {
+                handleSpecialNeeds((ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT));
+            }
         }
 
     }
@@ -367,6 +442,14 @@ public class ProductSelectActivity extends BaseActivity {
         }
     }
 
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 
 
 }

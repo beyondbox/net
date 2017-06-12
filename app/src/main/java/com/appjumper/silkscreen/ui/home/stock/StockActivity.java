@@ -42,7 +42,6 @@ import com.appjumper.silkscreen.ui.my.adapter.ChoiceRecyclerAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ProductionListViewAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthenticationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
-import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyGridView;
@@ -147,7 +146,11 @@ public class StockActivity extends BaseActivity {
                         start_Activity(context, EnterpriseAuthenticationActivity.class);
                         return;
                     }
-                    goToProductSelect(Const.SERVICE_TYPE_STOCK, Const.REQUEST_CODE_RELEASE_STOCK, false);
+
+                    Intent intent = new Intent(context, ProductSelectActivity.class);
+                    intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
+                    intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                    startActivity(intent);
                 }
             }
         });
@@ -726,7 +729,10 @@ public class StockActivity extends BaseActivity {
                 }
                 break;
             case R.id.txtProductSelect: //选择产品
-                goToProductSelect(Const.SERVICE_TYPE_STOCK, Const.REQUEST_CODE_INQUIRY_STOCK, true);
+                Intent intent = new Intent(context, ProductSelectActivity.class);
+                intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
+                intent.putExtra(Const.KEY_IS_FILTER_MODE, true);
+                startActivityForResult(intent, Const.REQUEST_CODE_INQUIRY_STOCK);
                 break;
             case R.id.txtSpecSelect: //规格筛选
                 if (product_id == null || product_id.equals("") || product_id.length() < 1) {
@@ -747,41 +753,20 @@ public class StockActivity extends BaseActivity {
         if (data == null)
             return;
 
-        ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
         switch (requestCode) {
             case Const.REQUEST_CODE_INQUIRY_STOCK:
+                ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
                 product_id = product.getId();
                 spec = product.getProduct_spec();
                 txtProductSelect.setText(product.getName());
                 new Thread(productSpecValuetRun).start();
                 refresh();
                 break;
-            case Const.REQUEST_CODE_RELEASE_STOCK:
-                Intent intent = null;
-                if (product.getId().equals("104"))
-                    intent = new Intent(context, InquiryHuLanActivity.class);
-                else
-                    intent = new Intent(context, SpecificationStockActivity.class);
-                intent.putExtra(Const.KEY_ACTION, Const.REQUEST_CODE_RELEASE_STOCK);
-                intent.putExtra("service", product);
-                intent.putExtra("type", Const.SERVICE_TYPE_STOCK + "");
-                startActivity(intent);
-                break;
             default:
                 break;
         }
     }
 
-
-    /**
-     * 跳转到产品选择界面
-     */
-    private void goToProductSelect(int serviceType, int requestCode, boolean isFilterMode) {
-        Intent intent = new Intent(context, ProductSelectActivity.class);
-        intent.putExtra(Const.KEY_SERVICE_TYPE, serviceType);
-        intent.putExtra(Const.KEY_IS_FILTER_MODE, isFilterMode);
-        startActivityForResult(intent, requestCode);
-    }
 
 
     @Override

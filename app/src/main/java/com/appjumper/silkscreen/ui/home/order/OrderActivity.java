@@ -38,9 +38,7 @@ import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.my.adapter.ChoiceRecyclerAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ProductionListViewAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
-import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.MyViewGroup;
@@ -129,7 +127,10 @@ public class OrderActivity extends BaseActivity {
                     if (getUser().getEnterprise() == null) {
                         start_Activity(OrderActivity.this, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
                     } else {
-                        goToProductSelect(Const.SERVICE_TYPE_ORDER, Const.REQUEST_CODE_RELEASE_ORDER, false);
+                        Intent intent = new Intent(context, ProductSelectActivity.class);
+                        intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_ORDER);
+                        intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                        startActivity(intent);
                     }
                 }
             }
@@ -626,7 +627,10 @@ public class OrderActivity extends BaseActivity {
                 }
                 break;
             case R.id.txtProductSelect: //选择产品
-                goToProductSelect(Const.SERVICE_TYPE_ORDER, Const.REQUEST_CODE_INQUIRY_ORDER, true);
+                Intent intent = new Intent(context, ProductSelectActivity.class);
+                intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_ORDER);
+                intent.putExtra(Const.KEY_IS_FILTER_MODE, true);
+                startActivityForResult(intent, Const.REQUEST_CODE_INQUIRY_ORDER);
                 break;
             case R.id.txtSpecSelect: //规格筛选
                 if (product_id == null || product_id.equals("") || product_id.length() < 1) {
@@ -647,39 +651,18 @@ public class OrderActivity extends BaseActivity {
         if (data == null)
             return;
 
-        ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
         switch (requestCode) {
             case Const.REQUEST_CODE_INQUIRY_ORDER:
+                ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
                 product_id = product.getId();
                 spec = product.getProduct_spec();
                 txtProductSelect.setText(product.getName());
                 initSpec();
                 refresh();
                 break;
-            case Const.REQUEST_CODE_RELEASE_ORDER:
-                Intent intent = null;
-                if (product.getId().equals("104"))
-                    intent = new Intent(context, ReleaseHuLanActivity.class);
-                else
-                    intent = new Intent(context, SpecificationActivity.class);
-                intent.putExtra("service", product);
-                intent.putExtra("type", Const.SERVICE_TYPE_ORDER + "");
-                startActivity(intent);
-                break;
             default:
                 break;
         }
-    }
-
-
-    /**
-     * 跳转到产品选择界面
-     */
-    private void goToProductSelect(int serviceType, int requestCode, boolean isFilterMode) {
-        Intent intent = new Intent(context, ProductSelectActivity.class);
-        intent.putExtra(Const.KEY_SERVICE_TYPE, serviceType);
-        intent.putExtra(Const.KEY_IS_FILTER_MODE, isFilterMode);
-        startActivityForResult(intent, requestCode);
     }
 
 

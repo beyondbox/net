@@ -63,6 +63,8 @@ public class SpecificationActivity extends BasePhotoGridActivity {
     private ImageResponse imgResponse;
     private String json;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -455,9 +457,6 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                 break;
         }
     }
-
-
-
 
 
 

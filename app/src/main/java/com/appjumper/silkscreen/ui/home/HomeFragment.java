@@ -590,7 +590,7 @@ public class HomeFragment extends BaseFragment {
     };
 
 
-    @OnClick({R.id.tv_machine, R.id.tv_logistics, R.id.imageView, R.id.tv_orders, R.id.tv_stocks, R.id.tv_equipment,
+    @OnClick({R.id.tv_machine, R.id.tv_logistics, R.id.rl_search, R.id.tv_orders, R.id.tv_stocks, R.id.tv_equipment,
             R.id.tv_workshop, R.id.tv_recruit, R.id.rl_tender, R.id.rl_exhibition, R.id.rl_news, R.id.imageView3,
             R.id.l_integral, R.id.img_back_top, R.id.txtMsg, R.id.imgViAdd})
     public void onClick(View v) {
@@ -620,7 +620,7 @@ public class HomeFragment extends BaseFragment {
             case R.id.tv_logistics://物流
                 start_Activity(getActivity(), LogisticsActivity.class);
                 break;
-            case R.id.imageView://搜索
+            case R.id.rl_search://搜索
                 start_Activity(getActivity(), SearchingActivity.class);
                 break;
             case R.id.tv_orders://订做

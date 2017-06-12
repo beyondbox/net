@@ -26,6 +26,7 @@ import com.appjumper.silkscreen.bean.EnterpriseDetailsResponse;
 import com.appjumper.silkscreen.bean.LineList;
 import com.appjumper.silkscreen.bean.NewPublic;
 import com.appjumper.silkscreen.bean.Product;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
@@ -344,6 +345,7 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                     if (base.isSuccess()) {
                         ivCollect.setImageResource(R.mipmap.icon_collect_selected);
                         showSuccessTips("收藏成功");
+                        CommonApi.addLiveness(getUserID(), 21);
                     } else {
                         showErrorToast(base.getError_desc());
                     }
