@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.bumptech.glide.Glide;
@@ -39,7 +38,7 @@ public class ImageDetailFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final View v = inflater.inflate(R.layout.fragment_gallery_item, container, false);
 		mImageView = (ImageView) v.findViewById(R.id.image);
-		mAttacher = new PhotoViewAttacher(mImageView);
+		/*mAttacher = new PhotoViewAttacher(mImageView);
 		
 		mAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
 			
@@ -47,7 +46,7 @@ public class ImageDetailFragment extends Fragment {
 			public void onPhotoTap(View arg0, float arg1, float arg2) {
 				getActivity().finish();
 			}
-		});
+		});*/
 		
 		progressBar = (ProgressBar) v.findViewById(R.id.loading);
 		return v;
