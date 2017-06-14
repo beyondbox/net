@@ -88,6 +88,13 @@ public class LogisticsDetailsActivity extends BaseActivity {
     @Bind(R.id.iv_logo)//公司logo
             ImageView iv_logo;
 
+
+    @Bind(R.id.user_auth_status)//个人认证
+            ImageView user_auth_status;
+
+    @Bind(R.id.tv_auth_status)//个人认证（企业上的）
+            ImageView tv_auth_status;
+
     @Bind(R.id.tv_enterprise_auth_status)//企
             ImageView tv_enterprise_auth_status;
 
@@ -160,7 +167,7 @@ public class LogisticsDetailsActivity extends BaseActivity {
         if (data.getEnterprise() != null) {//企业
             eid = data.getEnterprise().getEnterprise_id();
             Enterprise enterprise = data.getEnterprise();
-            mobile = enterprise.getEnterprise_mobile();
+            mobile = enterprise.getEnterprise_tel();
             rl_company.setVisibility(View.VISIBLE);
             rl_user.setVisibility(View.GONE);
             if (enterprise != null) {
@@ -168,6 +175,11 @@ public class LogisticsDetailsActivity extends BaseActivity {
             }
             tv_company_name.setText(enterprise.getEnterprise_name());
             tv_address.setText(enterprise.getEnterprise_address());
+            if (enterprise.getUser_auth_status() != null && enterprise.getUser_auth_status().equals("2")) {
+                tv_auth_status.setVisibility(View.VISIBLE);
+            } else {
+                tv_auth_status.setVisibility(View.GONE);
+            }
             if (enterprise.getEnterprise_auth_status() != null && enterprise.getEnterprise_auth_status().equals("2")) {
                 tv_enterprise_auth_status.setVisibility(View.VISIBLE);
             } else {
@@ -187,6 +199,11 @@ public class LogisticsDetailsActivity extends BaseActivity {
                 tv_name.setText(user.getUser_nicename());
                 tv_mobile.setText(user.getMobile());
                 Picasso.with(this).load(user.getAvatar().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head).into(iv_img);
+                if (user.getAuth_status() != null && user.getAuth_status().equals("2")) {
+                    user_auth_status.setVisibility(View.VISIBLE);
+                } else {
+                    user_auth_status.setVisibility(View.GONE);
+                }
             }
         }
         LogisticsStandingListviewAdapter adapter = new LogisticsStandingListviewAdapter(this, data.getRecommend());

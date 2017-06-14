@@ -2,6 +2,8 @@ package com.appjumper.silkscreen.ui.home.logistics;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,21 +13,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.CommonApi;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.LineDetails;
 import com.appjumper.silkscreen.bean.LineDetailsResponse;
 import com.appjumper.silkscreen.bean.User;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.TruckListviewAdapter;
 import com.appjumper.silkscreen.util.CircleTransform;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.appjumper.silkscreen.view.scrollView.PullToRefreshBase;
 import com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView;
 import com.squareup.picasso.Picasso;
@@ -78,6 +81,10 @@ public class TruckDetailsActivity extends BaseActivity {
     TextView tvCompanyName;
     @Bind(R.id.tv_address)//公司地址
     TextView tv_address;
+    @Bind(R.id.user_auth_status)//个人认证
+            ImageView user_auth_status;
+    @Bind(R.id.tv_auth_status)//个人认证（企业上的）
+            ImageView tv_auth_status;
     @Bind(R.id.tv_enterprise_auth_status)//企
             ImageView tv_enterprise_auth_status;
     @Bind(R.id.tv_enterprise_productivity_auth_status)//力
@@ -92,7 +99,11 @@ public class TruckDetailsActivity extends BaseActivity {
 
     @Bind(R.id.tv_mobile)//个人手机号
             TextView tv_mobile;
+
     private String id;
+    private String eid;//企业id
+    private String mobile;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,10 +149,17 @@ public class TruckDetailsActivity extends BaseActivity {
         tvNumber.setText(data.getNumber() + data.getProductspec());
         Enterprise enterprise = data.getEnterprise();
         if (enterprise != null) {
+            eid = data.getEnterprise().getEnterprise_id();
+            mobile = enterprise.getEnterprise_tel();
             rlCompany.setVisibility(View.VISIBLE);
             Picasso.with(this).load(enterprise.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(ivLogo);
             tvCompanyName.setText(enterprise.getEnterprise_name());
             tv_address.setText(enterprise.getEnterprise_address());
+            if (enterprise.getUser_auth_status() != null && enterprise.getUser_auth_status().equals("2")) {
+                tv_auth_status.setVisibility(View.VISIBLE);
+            } else {
+                tv_auth_status.setVisibility(View.GONE);
+            }
             if (enterprise.getEnterprise_auth_status() != null && enterprise.getEnterprise_auth_status().equals("2")) {
                 tv_enterprise_auth_status.setVisibility(View.VISIBLE);
             } else {
@@ -155,6 +173,7 @@ public class TruckDetailsActivity extends BaseActivity {
             rlUser.setVisibility(View.GONE);
         } else {
             User user = data.getUser();
+            mobile = user.getMobile();
             rlCompany.setVisibility(View.GONE);
             rlUser.setVisibility(View.VISIBLE);
             if(user!=null){
@@ -164,6 +183,11 @@ public class TruckDetailsActivity extends BaseActivity {
                     Picasso.with(this).load(user.getAvatar().getSmall()).transform(new CircleTransform()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head).into(iv_img);
                 }
 
+                if (user.getAuth_status() != null && user.getAuth_status().equals("2")) {
+                    user_auth_status.setVisibility(View.VISIBLE);
+                } else {
+                    user_auth_status.setVisibility(View.GONE);
+                }
             }
         }
         TruckListviewAdapter adapter = new TruckListviewAdapter(this, data.getRecommend());
@@ -236,13 +260,24 @@ public class TruckDetailsActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.tv_contact, R.id.rl_company})
+    @OnClick({R.id.tv_contact, R.id.rl_company, R.id.rl_user})
     public void onClick(View v) {
+        SureOrCancelDialog followDialog = new SureOrCancelDialog(this, "拨打电话？", new SureOrCancelDialog.SureButtonClick() {
+            @Override
+            public void onSureButtonClick() {
+                Intent dialIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mobile));//跳转到拨号界面，同时传递电话号码
+                startActivity(dialIntent);
+            }
+        });
         switch (v.getId()) {
             case R.id.tv_contact://马上联系
+                followDialog.show();
                 break;
             case R.id.rl_company:
-                start_Activity(TruckDetailsActivity.this, CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"));
+                start_Activity(TruckDetailsActivity.this, CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", eid));
+                break;
+            case R.id.rl_user:
+                followDialog.show();
                 break;
             default:
                 break;

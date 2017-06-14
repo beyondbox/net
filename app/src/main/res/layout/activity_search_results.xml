@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/view_background_gray_color"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <!-- title -->
     <LinearLayout
         android:id="@+id/title_layout"
@@ -54,10 +55,12 @@
         </LinearLayout>
     </LinearLayout>
 
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/title_layout"
         android:background="@color/white"
         app:tabBackground="@color/white"
         app:tabIndicatorColor="@color/theme_color"
@@ -67,13 +70,46 @@
 
     </android.support.design.widget.TabLayout>
 
-    <View style="@style/LineStyle" />
+    <View
+        android:id="@+id/divider"
+        style="@style/LineStyle"
+        android:layout_below="@id/tabLayt"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/pagerResult"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/divider">
 
     </android.support.v4.view.ViewPager>
 
-</LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_layout"
+        android:background="@color/view_background_gray_color"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@mipmap/empty_no_result"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/text_gray_light_color"
+            android:textSize="15sp"
+            android:text="无相关结果，换个词试试吧 : )"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

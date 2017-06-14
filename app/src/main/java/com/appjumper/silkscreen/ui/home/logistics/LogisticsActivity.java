@@ -647,7 +647,19 @@ public class LogisticsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        refresh();
+        switch (rg.getCheckedRadioButtonId()) {
+            case R.id.rb0:
+                refresh();
+                break;
+            case R.id.rb1:
+                refresh();
+                break;
+            case R.id.rb2:
+                onRefresh();
+                break;
+            default:
+                break;
+        }
     }
 
     @OnClick({R.id.tv_start, R.id.tv_end, R.id.right,R.id.iv_dzqh})

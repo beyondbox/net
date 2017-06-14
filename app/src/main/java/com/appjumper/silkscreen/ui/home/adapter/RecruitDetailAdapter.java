@@ -92,12 +92,12 @@ public class RecruitDetailAdapter extends BaseAdapter {
         viewHolder.tvExperience.setText(item.getExperience() + "年  " + item.getEducation());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
         viewHolder.tvEnterpriseName.setText(item.getEnterprise_name());
-        if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("1")) {
+        if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2")) {
             viewHolder.tv_enterprise_auth_status.setVisibility(View.VISIBLE);
         } else {
             viewHolder.tv_enterprise_auth_status.setVisibility(View.GONE);
         }
-        if (item.getEnterprise_productivity_auth_status() != null && item.getEnterprise_productivity_auth_status().equals("1")) {
+        if (item.getEnterprise_productivity_auth_status() != null && item.getEnterprise_productivity_auth_status().equals("2")) {
             viewHolder.tv_enterprise_productivity_auth_status.setVisibility(View.VISIBLE);
         } else {
             viewHolder.tv_enterprise_productivity_auth_status.setVisibility(View.GONE);

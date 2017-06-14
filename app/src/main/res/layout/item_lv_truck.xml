@@ -37,10 +37,17 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:maxWidth="128dp"
+                    android:maxWidth="140dp"
                     android:textColor="@color/text_gray_color"
                     android:textSize="14sp"
                     android:text="深圳市阿普匠科技有限公司"
+                    />
+                <ImageView
+                    android:id="@+id/img_auth_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_certification_green"
+                    android:layout_marginLeft="3dp"
                     />
                 <ImageView
                     android:id="@+id/img_enterprise_auth_status"
@@ -66,7 +73,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="2017-05-27 16:56:39"
+                        android:text="05.27 16:56"
                         android:textColor="@color/text_gray_color"
                         android:textSize="11sp" />
 

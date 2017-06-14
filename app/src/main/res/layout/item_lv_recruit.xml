@@ -79,22 +79,33 @@
                     android:id="@+id/tv_enterprise_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:maxWidth="190dp"
                     android:text="冠航丝网机械有限公司"
                     android:textColor="@color/text_gray_color"
                     android:textSize="14sp" />
 
                 <ImageView
+                    android:id="@+id/img_auth_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_certification_green"
+                    android:layout_marginLeft="5dp"
+                    />
+
+                <ImageView
                    android:id="@+id/tv_enterprise_auth_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="9dp"
+                    android:layout_marginLeft="5dp"
                     android:src="@mipmap/icon_certification" />
 
                 <ImageView
                     android:id="@+id/tv_enterprise_productivity_auth_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="9dp"
+                    android:layout_marginLeft="5dp"
                     android:src="@mipmap/icon_certification_yellow" />
             </LinearLayout>
 
@@ -103,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="11.01 19:02"
+                android:text="11-01 19:02"
                 android:textColor="@color/light_gray_color"
                 android:textSize="12sp" />
         </RelativeLayout>

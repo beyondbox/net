@@ -48,9 +48,9 @@ public class Enterprise implements Serializable{
     private List<Product> service_jiagong;
     private List<LineList> line;
     private List<NewPublic> newpublic;
-    private String auth_status; //个人认证
+    private String auth_status;
 
-    private String user_auth_status;
+    private String user_auth_status; //个人认证
 
 
     public String getUrl() {

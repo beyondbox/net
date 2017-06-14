@@ -92,12 +92,17 @@ public class RecruitListViewAdapter extends BaseAdapter {
         viewHolder.tvExperience.setText(item.getExperience() + "年  " + item.getEducation());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
         viewHolder.tvEnterpriseName.setText(item.getEnterprise_name());
-        if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("1")) {
+        if (item.getAuth_status() != null && item.getAuth_status().equals("2")) {
+            viewHolder.img_auth_status.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.img_auth_status.setVisibility(View.GONE);
+        }
+        if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2")) {
             viewHolder.tv_enterprise_auth_status.setVisibility(View.VISIBLE);
         } else {
             viewHolder.tv_enterprise_auth_status.setVisibility(View.GONE);
         }
-        if (item.getEnterprise_productivity_auth_status() != null && item.getEnterprise_productivity_auth_status().equals("1")) {
+        if (item.getEnterprise_productivity_auth_status() != null && item.getEnterprise_productivity_auth_status().equals("2")) {
             viewHolder.tv_enterprise_productivity_auth_status.setVisibility(View.VISIBLE);
         } else {
             viewHolder.tv_enterprise_productivity_auth_status.setVisibility(View.GONE);
@@ -116,6 +121,8 @@ public class RecruitListViewAdapter extends BaseAdapter {
                 TextView tv_address;
         @Bind(R.id.tv_enterprise_name)//公司名称
                 TextView tvEnterpriseName;
+        @Bind(R.id.img_auth_status)//个人认证
+        ImageView img_auth_status;
         @Bind(R.id.tv_enterprise_auth_status)//企
                 ImageView tv_enterprise_auth_status;
         @Bind(R.id.tv_enterprise_productivity_auth_status)//力

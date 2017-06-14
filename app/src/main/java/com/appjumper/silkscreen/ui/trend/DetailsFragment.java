@@ -150,6 +150,9 @@ public class DetailsFragment extends BaseFragment {
         }
         //max += 200;
 
+        if (max == 0)
+            max = Float.valueOf(data.getAvg());
+
         int temp = (int) max;
         String str = temp + "";
         str = str.substring(0, str.length() - 2);

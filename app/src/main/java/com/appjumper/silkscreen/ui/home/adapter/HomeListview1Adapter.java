@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Enterprise;
-import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.squareup.picasso.Picasso;
 
@@ -90,13 +89,13 @@ public class HomeListview1Adapter extends BaseAdapter {
       Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.iv_enterprise_logo);
     }
     viewHolder.tv_company_name.setText(item.getEnterprise_name());
-    if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("1")) {
+    if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2")) {
       viewHolder.tv_enterprise_auth_status.setVisibility(View.VISIBLE);
     } else {
       viewHolder.tv_enterprise_auth_status.setVisibility(View.GONE);
     }
 
-    if (item.getEnterprise_productivity_auth_status() != null && item.getEnterprise_productivity_auth_status().equals("1")) {
+    if (item.getEnterprise_productivity_auth_status() != null && item.getEnterprise_productivity_auth_status().equals("2")) {
       viewHolder.tv_enterprise_productivity_auth_status.setVisibility(View.VISIBLE);
     } else {
       viewHolder.tv_enterprise_productivity_auth_status.setVisibility(View.GONE);

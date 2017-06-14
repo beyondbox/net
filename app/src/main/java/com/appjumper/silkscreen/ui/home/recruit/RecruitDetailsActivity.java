@@ -84,6 +84,10 @@ public class RecruitDetailsActivity extends BaseActivity {
             TextView tvCompanyName;
     @Bind(R.id.tv_address)//公司地址
             TextView tv_address;
+    @Bind(R.id.user_auth_status)//个人认证
+            ImageView user_auth_status;
+    @Bind(R.id.tv_auth_status)//个人认证（企业上的）
+            ImageView tv_auth_status;
     @Bind(R.id.tv_enterprise_auth_status)//企
             ImageView tv_enterprise_auth_status;
     @Bind(R.id.tv_enterprise_productivity_auth_status)//力
@@ -139,11 +143,16 @@ public class RecruitDetailsActivity extends BaseActivity {
         if (data.getEnterprise() != null) {
             enterprise = data.getEnterprise();
             rlCompany.setVisibility(View.VISIBLE);
-            mobile = enterprise.getEnterprise_mobile();
+            mobile = enterprise.getEnterprise_tel();
             url = enterprise.getEnterprise_website();
             Picasso.with(this).load(enterprise.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(ivLogo);
             tv_address.setText(enterprise.getEnterprise_address());
             tvCompanyName.setText(enterprise.getEnterprise_name());
+            if (enterprise.getUser_auth_status() != null && enterprise.getUser_auth_status().equals("2")) {
+                tv_auth_status.setVisibility(View.VISIBLE);
+            } else {
+                tv_auth_status.setVisibility(View.GONE);
+            }
             if (enterprise.getEnterprise_auth_status() != null && enterprise.getEnterprise_auth_status().equals("2")) {
                 tv_enterprise_auth_status.setVisibility(View.VISIBLE);
             } else {
@@ -165,6 +174,12 @@ public class RecruitDetailsActivity extends BaseActivity {
                 mobile = user.getMobile();
                 if (user.getAvatar() != null && !user.getAvatar().getSmall().equals("")) {
                     Picasso.with(this).load(user.getAvatar().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head).into(iv_img);
+                }
+
+                if (user.getAuth_status() != null && user.getAuth_status().equals("2")) {
+                    user_auth_status.setVisibility(View.VISIBLE);
+                } else {
+                    user_auth_status.setVisibility(View.GONE);
                 }
             }
 

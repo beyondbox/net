@@ -33,7 +33,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -143,7 +142,7 @@ public class DynamicFragment extends BaseFragment {
 
 
 
-    private void initViewPager() {
+    /*private void initViewPager() {
         fragList = new ArrayList<>();
         fragList.add(new ProductFragment());
         fragList.add(new LogisticsFragment());
@@ -158,12 +157,12 @@ public class DynamicFragment extends BaseFragment {
 
         tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayt.setupWithViewPager(viewPager);
-    }
+    }*/
 
 
     private void initViewPager2() {
         pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
-        viewPager.setOffscreenPageLimit(5);
+        viewPager.setOffscreenPageLimit(titleAllArr.length - 1);
         viewPager.setAdapter(pagerAdapter);
         tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayt.setupWithViewPager(viewPager);

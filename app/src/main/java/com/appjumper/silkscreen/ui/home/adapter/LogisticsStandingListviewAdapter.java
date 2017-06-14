@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.LineList;
-import com.appjumper.silkscreen.util.CircleTransform;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.squareup.picasso.Picasso;
 
@@ -87,6 +86,12 @@ public class LogisticsStandingListviewAdapter extends BaseAdapter {
 
     private void fillValue(int position, ViewHolder viewHolder) {
         LineList item = list.get(position);
+        if (item.getAuth_status() != null && item.getAuth_status().equals("2")) {
+            viewHolder.img_auth_status.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.img_auth_status.setVisibility(View.GONE);
+        }
+
         if (item.getType().equals("2")) {
             if (item.getAvatar() != null && !item.getAvatar().getSmall().equals("")) {
                 Picasso.with(mContext).load(item.getAvatar().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.img_logo);
@@ -99,6 +104,7 @@ public class LogisticsStandingListviewAdapter extends BaseAdapter {
                 Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.img_logo);
             }
             viewHolder.tv_name.setText(item.getEnterprise_name());
+
             if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2")) {
                 viewHolder.img_enterprise_auth_status.setVisibility(View.VISIBLE);
             } else {
@@ -112,7 +118,7 @@ public class LogisticsStandingListviewAdapter extends BaseAdapter {
             }
         }
 
-        viewHolder.tv_update_time.setText(item.getUpdate_time());
+        viewHolder.tv_update_time.setText(item.getUpdate_time().replaceAll("-", "\\.").substring(0, 16));
         viewHolder.tv_form_to.setText("线路：" + item.getFrom() + "-" + item.getTo());
         viewHolder.tv_passby.setText("途径：" + item.getPassby_name());
     }
@@ -123,6 +129,9 @@ public class LogisticsStandingListviewAdapter extends BaseAdapter {
 
         @Bind(R.id.tv_name)
         TextView tv_name;
+
+        @Bind(R.id.img_auth_status)
+        ImageView img_auth_status;
 
         @Bind(R.id.img_enterprise_auth_status)
         ImageView img_enterprise_auth_status;

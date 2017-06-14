@@ -85,6 +85,11 @@ public class TruckListviewAdapter extends BaseAdapter {
 
     private void fillValue(int position, ViewHolder viewHolder) {
         LineList item = list.get(position);
+        if (item.getAuth_status() != null && item.getAuth_status().equals("2")) {
+            viewHolder.img_auth_status.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.img_auth_status.setVisibility(View.GONE);
+        }
 
         if (item.getEnterprise_name().equals("")) {
             if (item.getAvatar() != null && !item.getAvatar().getSmall().equals("")) {
@@ -116,7 +121,7 @@ public class TruckListviewAdapter extends BaseAdapter {
 //        }
 //        viewHolder.tvName.setText(item.getUser_nicename());
 
-        viewHolder.tvDate.setText(item.getCreate_time());
+        viewHolder.tvDate.setText(item.getCreate_time().replaceAll("-", "\\.").substring(5, 16));
         viewHolder.tvPathway.setText( item.getFrom() + "-" + item.getTo());
 
         viewHolder.tvDetail.setText("数量：" + item.getNumber()+"  重量："+item.getWeight()+"  装货时间："+item.getDate().substring(5));
@@ -127,6 +132,9 @@ public class TruckListviewAdapter extends BaseAdapter {
                 ImageView ivLogo;
         @Bind(R.id.tv_name)//车主或企业
                 TextView tvName;
+
+        @Bind(R.id.img_auth_status)
+        ImageView img_auth_status;
 
         @Bind(R.id.img_enterprise_auth_status)
         ImageView img_enterprise_auth_status;

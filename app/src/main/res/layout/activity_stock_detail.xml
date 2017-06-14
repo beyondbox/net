@@ -150,11 +150,22 @@
                     android:scaleType="centerCrop"
                     android:src="@mipmap/ic_launcher" />
 
+                <ImageView
+                    android:id="@+id/imgViArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_arrows_right" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/iv_logo"
+                    android:layout_toLeftOf="@id/imgViArrow"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -201,20 +212,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
                         android:text="河北省衡水市安平县红旗街东头"
                         android:textColor="@color/black_color"
                         android:textSize="13sp" />
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_arrows_right" />
             </RelativeLayout>
 
             <View style="@style/LineStyle" />

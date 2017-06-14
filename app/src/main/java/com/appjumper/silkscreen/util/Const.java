@@ -127,6 +127,7 @@ public class Const {
     public static final String KEY_IS_MULTI_MODE = "isMultiMode";
     public static final String KEY_IS_FILTER_MODE = "isFilterMode";
     public static final String KEY_ERROR_CODE = "error_code";
+    public static final String KEY_ERROR_DESC = "error_desc";
     public static final String KEY_ACTION = "action";
     public static final String KEY_OBJECT = "object";
     public static final String KEY_TOTAL = "total";

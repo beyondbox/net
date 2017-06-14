@@ -356,11 +356,22 @@
                     android:layout_margin="12dp"
                     android:src="@mipmap/ic_launcher" />
 
+                <ImageView
+                    android:id="@+id/imgViArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="12dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/icon_arrows_right" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/iv_logo"
+                    android:layout_toLeftOf="@id/imgViArrow"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -373,22 +384,33 @@
                             android:id="@+id/tv_company_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="深圳市阿普匠科技有限公司"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:maxWidth="170dp"
+                            android:text="深圳市阿普匠科技有限公司有限公司"
                             android:textColor="@color/black_color"
                             android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/tv_auth_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/icon_certification_green" />
+
 
                         <ImageView
                             android:id="@+id/tv_enterprise_auth_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="9dp"
+                            android:layout_marginLeft="5dp"
                             android:src="@mipmap/icon_certification" />
 
                         <ImageView
                             android:id="@+id/tv_enterprise_productivity_auth_status"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="9dp"
+                            android:layout_marginLeft="5dp"
                             android:src="@mipmap/icon_certification_yellow" />
                     </LinearLayout>
 
@@ -397,20 +419,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
+                        android:maxLines="2"
+                        android:ellipsize="end"
                         android:text="河北省衡水市安平县红旗街东头"
                         android:textColor="@color/black_color"
                         android:textSize="13sp" />
 
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_arrows_right" />
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -446,8 +463,18 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="汪洋"
+                            android:maxLines="1"
+                            android:ellipsize="end"
+                            android:maxWidth="200dp"
                             android:textColor="@color/black_color"
                             android:textSize="14sp" />
+
+                        <ImageView
+                            android:id="@+id/user_auth_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:src="@mipmap/icon_certification_green" />
 
                     </LinearLayout>
 

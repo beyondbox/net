@@ -69,6 +69,10 @@ public class EquipmentDetailsActivity extends BaseActivity {
             TextView tvCompanyName;
     @Bind(R.id.tv_address)//公司地址
             TextView tv_address;
+    @Bind(R.id.user_auth_status)//个人认证
+            ImageView user_auth_status;
+    @Bind(R.id.tv_auth_status)//个人认证（企业上的）
+            ImageView tv_auth_status;
     @Bind(R.id.tv_enterprise_auth_status)//企
             ImageView tv_enterprise_auth_status;
     @Bind(R.id.tv_enterprise_productivity_auth_status)//力
@@ -123,12 +127,17 @@ public class EquipmentDetailsActivity extends BaseActivity {
             Picasso.with(this).load(data.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(ivLogo);
             tvCompanyName.setText(data.getEnterprise_name());
             tv_address.setText(data.getEnterprise_address());
-            if (data.getEnterprise_auth_status() != null && data.getEnterprise_auth_status().equals("1")) {
+            if (data.getAuth_status() != null && data.getAuth_status().equals("2")) {
+                tv_auth_status.setVisibility(View.VISIBLE);
+            } else {
+                tv_auth_status.setVisibility(View.GONE);
+            }
+            if (data.getEnterprise_auth_status() != null && data.getEnterprise_auth_status().equals("2")) {
                 tv_enterprise_auth_status.setVisibility(View.VISIBLE);
             } else {
                 tv_enterprise_auth_status.setVisibility(View.GONE);
             }
-            if (data.getEnterprise_productivity_auth_status() != null && data.getEnterprise_productivity_auth_status().equals("1")) {
+            if (data.getEnterprise_productivity_auth_status() != null && data.getEnterprise_productivity_auth_status().equals("2")) {
                 tv_enterprise_productivity_auth_status.setVisibility(View.VISIBLE);
             } else {
                 tv_enterprise_productivity_auth_status.setVisibility(View.GONE);
@@ -143,6 +152,11 @@ public class EquipmentDetailsActivity extends BaseActivity {
                 Picasso.with(this).load(data.getAvatar().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head).into(iv_img);
             }
 
+            if (data.getAuth_status() != null && data.getAuth_status().equals("2")) {
+                user_auth_status.setVisibility(View.VISIBLE);
+            } else {
+                user_auth_status.setVisibility(View.GONE);
+            }
         }
     }
 
