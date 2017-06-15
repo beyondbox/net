@@ -132,27 +132,27 @@ public class HomeListview2Adapter extends BaseAdapter {
         break;
       case "4"://物流
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_circuit);
-        if (item.getImg_list() != null)
+        if (item.getImg() != null)
           Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "5"://设备
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_facility);
-        if (item.getImg_list() != null)
+        if (item.getImg() != null)
           Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "6"://找车
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_car);
-        if (item.getImg_list() != null)
+        if (item.getImg() != null)
           Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "7"://招聘
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_recruit);
-        if (item.getImg_list() != null)
+        if (item.getImg() != null)
           Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
       case "8"://厂房
         viewHolder.iv_type.setImageResource(R.mipmap.icon_home_plant_information);
-        if (item.getImg_list() != null)
+        if (item.getImg() != null)
           Picasso.with(mContext).load(item.getImg().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_enterprise_logo);
         break;
     }

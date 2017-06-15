@@ -107,6 +107,7 @@ public class BaseActivity extends FragmentActivity {
         if(mlocationClient!=null){
             mlocationClient.stopLocation();
             mlocationClient.onDestroy();
+            mlocationClient = null;
         }
 
         ButterKnife.unbind(this);
@@ -254,7 +255,7 @@ public class BaseActivity extends FragmentActivity {
 
     public void initProgressDialog(Context mContext, boolean cancel,
                                    String message) {
-        progress = new MProgressDialog(mContext, cancel);
+        progress = new MProgressDialog(mContext, cancel, message);
 //        progress.setMessage(message);
     }
 

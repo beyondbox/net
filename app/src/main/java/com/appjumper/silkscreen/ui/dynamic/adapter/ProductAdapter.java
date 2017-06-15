@@ -48,12 +48,12 @@ public class ProductAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
         List<Spec> spec = item.getService_spec();
         String str="";
         for(int i=0;i<spec.size();i++){
-            if(i<4){
+            //if(i<4){
                 str+=spec.get(i).getName()+spec.get(i).getValue();
                 if(i!=(spec.size()-1)){
                     str+=", ";
                 }
-            }
+            //}
         }
 
         helper.setText(R.id.txtSubTitle, str);

@@ -83,6 +83,8 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
 
     @Bind(R.id.editSms)
     EditText editText;//企业简介
+    @Bind(R.id.next_btn)
+    TextView next_btn;
 
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -115,16 +117,19 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         initBack();
         initView();
         initLocation();
-        initProgressDialog(false, "正在创建企业...");
         type = getIntent().getStringExtra("type");
         if (type.equals("1")) {
+            initProgressDialog(false, "正在提交...");
+            initTitle("编辑企业");
+            next_btn.setText("完成");
+
             enterprise = (Enterprise) getIntent().getSerializableExtra("enterprise");
             startdata=enterprise.getEnterprise_reg_date();
             et_enterprise_name.setText(enterprise.getEnterprise_name());
             tv_enterprise_create_time.setText(startdata);
             et_create_money.setText(enterprise.getEnterprise_reg_money());
             et_number_employees.setText(enterprise.getEnterprise_staff_num());
-            logoUrl = enterprise.getEnterprise_logo().getSmall();
+            logoUrl = enterprise.getEnterprise_logo().getOrigin();
             imgsUrl = enterprise.getEnterprise_imgs();
 
             et_enterprise_contacts.setText(enterprise.getEnterprise_contacts());
@@ -134,6 +139,10 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
 
             Picasso.with(this).load(logoUrl).placeholder(R.mipmap.icon_logo_image61).transform(new PicassoRoundTransform()).resize(60, 60)
                     .centerCrop().into(iv_logo);
+        } else {
+            initProgressDialog(false, "正在创建企业...");
+            initTitle("创建企业");
+            next_btn.setText("创建企业");
         }
     }
 
@@ -412,6 +421,9 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
                 return;
             }
 
+            if (isDestroyed())
+                return;
+
             switch (msg.what) {
                 case 3://上传logo回调
                     imgResponse = (ImageResponse) msg.obj;
@@ -444,12 +456,17 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
                     progress.dismiss();
                     BaseResponse userResponse = (BaseResponse) msg.obj;
                     if (userResponse.isSuccess()) {
+                        if (type.equals("1")) {
+                            showErrorToast("修改成功");
+                            setResult(Const.RESULT_CODE_NEED_REFRESH);
+                        } else {
+                            showErrorToast("创建成功");
+                        }
+
                         activity.finish();
-                        showErrorToast("创建成功");
                     } else {
                         showErrorToast(userResponse.getError_desc());
                     }
-
                     break;
                 case NETWORK_FAIL:
                     progress.dismiss();
@@ -479,7 +496,12 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         return str;
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (progress != null)
+            progress.dismiss();
+    }
 
 
 
@@ -501,9 +523,8 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
 
 
     /**
-     * 以下是上传企业logo调用部分
+     * 以下是编辑企业logo调用部分
      */
-
 
 
     private void init() {

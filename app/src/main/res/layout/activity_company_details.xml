@@ -301,6 +301,7 @@
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
                 android:layout_marginBottom="18dp"
                 android:layout_marginTop="6dp">
 
@@ -313,98 +314,120 @@
                 android:layout_height="12dp"
                 android:background="@color/view_background_gray_color" />
 
-            <View style="@style/LineStyle" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="12dp"
-                android:text="公司服务"
-                android:textColor="@color/gray_color"
-                android:textSize="14sp" />
 
-            <View style="@style/LineStyle" />
 
-            <RadioGroup
-                android:id="@+id/rg_tab"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:orientation="horizontal"
-                android:weightSum="4">
 
-                <RadioButton
-                    android:id="@+id/rd_process"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_company_radiobutton"
-                    android:button="@null"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:text="加工"
-                    android:textColor="@color/black_color"
-                    android:textSize="14sp" />
 
-                <RadioButton
-                    android:id="@+id/rd_order"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_company_radiobutton"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:text="订做"
-                    android:textColor="@color/black_color"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/rd_stock"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_company_radiobutton"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:text="现货"
-                    android:textColor="@color/black_color"
-                    android:textSize="14sp" />
-
-                <RadioButton
-                    android:id="@+id/rd_logistics"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="@drawable/selector_company_radiobutton"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:paddingBottom="12dp"
-                    android:paddingTop="12dp"
-                    android:text="物流"
-                    android:textColor="@color/black_color"
-                    android:textSize="14sp" />
-            </RadioGroup>
-
-            <com.appjumper.silkscreen.view.MyListView
-                android:id="@+id/list_view"
+            <LinearLayout
+                android:id="@+id/llService"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:divider="@color/while_color"
-                android:dividerHeight="0dp">
+                android:visibility="gone"
+                android:orientation="vertical">
 
-            </com.appjumper.silkscreen.view.MyListView>
+                <View style="@style/LineStyle" />
 
-            <View style="@style/LineStyle" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="公司服务"
+                    android:textColor="@color/gray_color"
+                    android:textSize="14sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:background="@color/view_background_gray_color" />
+                <View style="@style/LineStyle" />
+
+                <RadioGroup
+                    android:id="@+id/rg_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:orientation="horizontal"
+                    android:weightSum="4">
+
+                    <RadioButton
+                        android:id="@+id/rd_process"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_company_radiobutton"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp"
+                        android:text="加工"
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
+
+                    <RadioButton
+                        android:id="@+id/rd_order"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_company_radiobutton"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp"
+                        android:text="订做"
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
+
+                    <RadioButton
+                        android:id="@+id/rd_stock"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_company_radiobutton"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp"
+                        android:text="现货"
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
+
+                    <RadioButton
+                        android:id="@+id/rd_logistics"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/selector_company_radiobutton"
+                        android:button="@null"
+                        android:gravity="center"
+                        android:paddingBottom="12dp"
+                        android:paddingTop="12dp"
+                        android:text="物流"
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
+                </RadioGroup>
+
+                <com.appjumper.silkscreen.view.MyListView
+                    android:id="@+id/list_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/while_color"
+                    android:dividerHeight="0dp">
+
+                </com.appjumper.silkscreen.view.MyListView>
+
+                <View style="@style/LineStyle" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:background="@color/view_background_gray_color" />
+
+            </LinearLayout>
+
+
+
+
+
+
+
+
 
             <View style="@style/LineStyle" />
 

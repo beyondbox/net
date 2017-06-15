@@ -11,7 +11,7 @@ import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.util.DisplayUtil;
 
 /**
- * RecyclerView, Grid布局的Item间隔
+ * RecyclerView, Grid布局的Item间隔  (没用着，有错误)
  * Created by Botx on 2017/4/5.
  */
 

@@ -2,18 +2,17 @@ package com.appjumper.silkscreen.ui.home;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -46,6 +45,7 @@ import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.MyLogisticsDetailsActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ViewOrderActivity;
 import com.appjumper.silkscreen.util.CircleTransform;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.ShareUtil;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.MyRecyclerView;
@@ -78,13 +78,24 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
     @Bind(R.id.layout)
     LinearLayout layout;
 
+    @Bind(R.id.llService)
+    LinearLayout llService;
+    @Bind(R.id.rg_tab)
+    RadioGroup rgTab;
+    @Bind(R.id.rd_process)
+    RadioButton rd_process;
+    @Bind(R.id.rd_order)
+    RadioButton rd_order;
+    @Bind(R.id.rd_stock)
+    RadioButton rd_stock;
+    @Bind(R.id.rd_logistics)
+    RadioButton rd_logistics;
+
+
     private int height;
 
     @Bind(R.id.recycler_view)
     MyRecyclerView myRecyclerView;
-
-    @Bind(R.id.rg_tab)
-    RadioGroup rgTab;
 
     @Bind(R.id.list_view)//公司服务
             MyListView listView;
@@ -153,6 +164,7 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
     @Bind(R.id.tv_enterprise_address)//地址
             TextView tv_enterprise_address;
 
+
     private String from;//from 1代表从我的见面跳转，2从其他界面跳转
     private String id;
     private String uid = "";
@@ -184,10 +196,16 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
         }
 
         initProgressDialog();
+        refresh();
+    }
+
+
+    private void refresh() {
         progress.show();
         progress.setMessage("正在加载...");
         new Thread(new CompanyDetailRun()).start();
     }
+
 
     private void initView(Enterprise enterprise) {
         if (getUser() != null) {
@@ -370,9 +388,6 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         myRecyclerView.setLayoutManager(linearLayoutManager);
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.view_padding);
-        int margin = getResources().getDimensionPixelSize(R.dimen.header_footer_top_bottom_padding);
-        myRecyclerView.addItemDecoration(new SpacesItemDecoration(spacingInPixels, margin, margin, img_list));
         GalleryAdapter adapter = new GalleryAdapter(this, img_list);
         myRecyclerView.setAdapter(adapter);
         adapter.setOnItemClickLitener(new GalleryAdapter.OnItemClickLitener() {
@@ -390,57 +405,22 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
         });
     }
 
-    /**
-     * 设置外间距
-     */
-    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
-        private final List<Avatar> img_list;
-        private int space;
-        private int left;
-        private int right;
-
-        public SpacesItemDecoration(int space, int left, int right, List<Avatar> img_list) {
-            this.space = space;
-            this.left = left;
-            this.right = right;
-            this.img_list = img_list;
-
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view,
-                                   RecyclerView parent, RecyclerView.State state) {
-            if (parent.getChildPosition(view) == 0) {
-                outRect.left = left;
-                outRect.right = space;
-            } else if (parent.getChildPosition(view) == (img_list.size() - 1)) {
-                outRect.right = right;
-            } else {
-                outRect.right = space;
-            }
-        }
-    }
 
     /**
      * 切换adapter
      */
     private void initAdapter() {
         final List<Product> list = data.getService_jiagong();
-        CompanyProcessListViewAdapter adapter = new CompanyProcessListViewAdapter(CompanyDetailsActivity.this, list);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                start_Activity(CompanyDetailsActivity.this, ViewOrderActivity.class, new BasicNameValuePair("title", list.get(i).getProduct_name() + list.get(i).getService_type_name()), new BasicNameValuePair("id", list.get(i).getId()));
-            }
-        });
-        listView.setAdapter(adapter);
+        final List<Product> list2 = data.getService_dingzuo();
+        final List<Product> list3 = data.getService_xianhuo();
+        final List<LineList> list4 = data.getLine();
+
         rgTab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 BaseAdapter adapter = null;
                 switch (checkedId) {
                     case R.id.rd_process://加工
-                        final List<Product> list = data.getService_jiagong();
                         adapter = new CompanyProcessListViewAdapter(CompanyDetailsActivity.this, list);
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -463,7 +443,6 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                         });
                         break;
                     case R.id.rd_order://订做
-                        final List<Product> list2 = data.getService_dingzuo();
                         adapter = new CompanyProcessListViewAdapter(CompanyDetailsActivity.this, list2);
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -486,7 +465,6 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                         });
                         break;
                     case R.id.rd_stock://现货
-                        final List<Product> list3 = data.getService_xianhuo();
                         adapter = new CompanyProcessListViewAdapter(CompanyDetailsActivity.this, list3);
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -509,7 +487,6 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                         });
                         break;
                     case R.id.rd_logistics://物流
-                        final List<LineList> list4 = data.getLine();
                         adapter = new MyLogisticsListviewAdapter(CompanyDetailsActivity.this, list4);
                         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
@@ -538,7 +515,57 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                 listView.setAdapter(adapter);
             }
         });
+
+
+        if (list.size() == 0 && list2.size() == 0 && list3.size() == 0 && list4.size() == 0) {
+            llService.setVisibility(View.GONE);
+        } else {
+            llService.setVisibility(View.VISIBLE);
+            boolean hasFirst = false;
+
+            if (list.size() > 0) {
+                hasFirst = true;
+                rd_process.setVisibility(View.VISIBLE);
+                rgTab.check(R.id.rd_process);
+            } else {
+                rd_process.setVisibility(View.GONE);
+            }
+
+            if (list2.size() > 0) {
+                rd_order.setVisibility(View.VISIBLE);
+                if (!hasFirst) {
+                    hasFirst = true;
+                    rgTab.check(R.id.rd_order);
+                }
+            } else {
+                rd_order.setVisibility(View.GONE);
+            }
+
+            if (list3.size() > 0) {
+                rd_stock.setVisibility(View.VISIBLE);
+                if (!hasFirst) {
+                    hasFirst = true;
+                    rgTab.check(R.id.rd_stock);
+                }
+            } else {
+                rd_stock.setVisibility(View.GONE);
+            }
+
+            if (list4.size() > 0) {
+                rd_logistics.setVisibility(View.VISIBLE);
+                if (!hasFirst) {
+                    hasFirst = true;
+                    rgTab.check(R.id.rd_logistics);
+                }
+            } else {
+                rd_logistics.setVisibility(View.GONE);
+            }
+        }
+
     }
+
+
+
 
     @OnClick({R.id.rl_url, R.id.rl_phone, R.id.rl_location, R.id.tv_inquiry, R.id.iv_collect, R.id.tv_edit,R.id.iv_share})
     public void onClick(View v) {
@@ -579,7 +606,7 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                 bundle.putSerializable("enterprise", data);
                 intent.putExtra("type", "1");
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivityForResult(intent, 0);
                 break;
             case R.id.iv_share:
                 ShareUtil.intShare2(this, v, data.getEnterprise_intro(), data.getEnterprise_name(), data.getUrl(),data.getEnterprise_logo().getSmall());
@@ -639,4 +666,16 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
 //        lvReleaseHistory.setAdapter(new HomeListview2Adapter(this, newPublic));
 
     }
+
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Const.RESULT_CODE_NEED_REFRESH)
+            refresh();
+    }
+
+
 }

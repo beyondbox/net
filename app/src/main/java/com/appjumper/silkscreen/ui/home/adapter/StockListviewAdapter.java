@@ -20,6 +20,7 @@
 package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,14 +117,16 @@ public class StockListviewAdapter extends BaseAdapter {
       viewHolder.tv_aliasname.setText("");
     }
     viewHolder.tv_name.setText(item.getProduct_name());
+    viewHolder.tv_service_size.setText("现货存量：暂无");
+
     List<Spec> spec = item.getService_spec();
     for(int i=0;i<spec.size();i++){
       if(spec.get(i).getFieldname().equals("cunliang")){
-        viewHolder.tv_service_size.setText("现货存量："+spec.get(i).getValue()+spec.get(i).getUnit());
-      }else{
-        viewHolder.tv_service_size.setText("现货存量：暂无");
+        if (!TextUtils.isEmpty(spec.get(i).getValue()))
+          viewHolder.tv_service_size.setText("现货存量："+spec.get(i).getValue()+spec.get(i).getUnit());
       }
     }
+
     viewHolder.tv_company_name.setText(item.getEnterprise_name());
   }
 

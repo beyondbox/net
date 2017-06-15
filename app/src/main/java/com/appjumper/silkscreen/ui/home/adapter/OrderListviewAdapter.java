@@ -128,12 +128,12 @@ public class OrderListviewAdapter extends BaseAdapter {
     List<Spec> spec = item.getService_spec();
     String str="";
     for(int i=0;i<spec.size();i++){
-      if(i<4){
+      //if(i<4){
         str+=spec.get(i).getName()+spec.get(i).getValue();
         if(i!=(spec.size()-1)){
           str+=", ";
         }
-      }
+     // }
     }
     viewHolder.tv_service.setText(str);
   }
