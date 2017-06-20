@@ -34,6 +34,7 @@ import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.PropertyAdapter;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
+import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.ShareUtil;
@@ -217,6 +218,8 @@ public class ProcessingDetailsActivity extends BaseActivity {
                     Intent intent = null;
                     if (product.getProduct_id().equals("104"))
                         intent = new Intent(context, InquiryHuLanActivity.class);
+                    else if (product.getProduct_id().equals("27"))
+                        intent = new Intent(context, InquiryDaoPianActivity.class);
                     else
                         intent = new Intent(context, InquirySpecificationActivity.class);
                     intent.putExtra("type", product.getType());

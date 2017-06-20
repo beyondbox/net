@@ -42,6 +42,7 @@ import com.appjumper.silkscreen.ui.my.adapter.ChoiceRecyclerAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ProductionListViewAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthenticationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
+import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyGridView;
@@ -711,6 +712,8 @@ public class StockActivity extends BaseActivity {
                     Intent intent = null;
                     if (listData.get(0).getProduct_id().equals("104"))
                         intent = new Intent(context, InquiryHuLanActivity.class);
+                    else if (listData.get(0).getProduct_id().equals("27"))
+                        intent = new Intent(context, InquiryDaoPianActivity.class);
                     else
                         intent = new Intent(context, InquirySpecificationActivity.class);
                     intent.putExtra("type", type);

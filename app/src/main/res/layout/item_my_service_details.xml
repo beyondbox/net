@@ -56,7 +56,7 @@
 
 
 
-    <View
+    <!--<View
         style="@style/LineStyle"
-        android:layout_marginLeft="22dp" />
+        android:layout_marginLeft="22dp" />-->
 </LinearLayout>

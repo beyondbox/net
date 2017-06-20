@@ -25,11 +25,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Spec;
+import com.appjumper.silkscreen.ui.common.adapter.SpecImageAdapter;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -69,16 +72,23 @@ public class ViewOrderListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
-        if (convertView != null) {
-            viewHolder = (ViewHolder) convertView.getTag();
+        View view = null;
+
+        Spec spec = service_spec.get(position);
+        if (spec.getValue().matches("[hH][tT]{2}[pP]://[\\s\\S]+\\.[jJ][pP][gG]")) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_lv_spec_image, null);
+            TextView txtName = (TextView) view.findViewById(R.id.txtName);
+            txtName.setText(spec.getName() + ":");
+
+            ListView lvImage = (ListView) view.findViewById(R.id.lvImage);
+            lvImage.setAdapter(new SpecImageAdapter(mContext, Arrays.asList(spec.getValue().split(","))));
         } else {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_my_service_details, null);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_my_service_details, null);
+            ViewHolder viewHolder = new ViewHolder(view);
+            fillValue(position, viewHolder);
         }
-        fillValue(position, viewHolder);
-        return convertView;
+
+        return view;
     }
 
     private void fillValue(int position, ViewHolder viewHolder) {
@@ -111,5 +121,6 @@ public class ViewOrderListViewAdapter extends BaseAdapter {
             ButterKnife.bind(this, view);
         }
     }
+
 
 }

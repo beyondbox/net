@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.ui.dynamic.adapter;
 
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,6 +49,12 @@ public class ProductAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
         List<Spec> spec = item.getService_spec();
         String str="";
         for(int i=0;i<spec.size();i++){
+            if (TextUtils.isEmpty(spec.get(i).getValue()))
+                continue;
+
+            if (spec.get(i).getValue().matches("[hH][tT]{2}[pP]://[\\s\\S]+\\.[jJ][pP][gG]"))
+                continue;
+
             //if(i<4){
                 str+=spec.get(i).getName()+spec.get(i).getValue();
                 if(i!=(spec.size()-1)){

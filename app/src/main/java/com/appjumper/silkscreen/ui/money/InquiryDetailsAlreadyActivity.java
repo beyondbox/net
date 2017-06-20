@@ -26,7 +26,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.GalleryAdapter;
 import com.appjumper.silkscreen.ui.money.adapter.InquiryListViewAdapter;
-import com.appjumper.silkscreen.ui.money.adapter.InquirySpecificationAdapter;
+import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
@@ -400,7 +400,7 @@ public class InquiryDetailsAlreadyActivity extends BaseActivity {
      * @param service_spec
      */
     private void initSpecification(List<Spec> service_spec) {
-        final ArrayList<HashMap<String, Object>> mList = new ArrayList<>();
+        /*final ArrayList<HashMap<String, Object>> mList = new ArrayList<>();
         List<String> item3 = new ArrayList<>();
         List<String> item1 = new ArrayList<>();
         for (int i = 0; i < service_spec.size(); i++) {
@@ -425,7 +425,10 @@ public class InquiryDetailsAlreadyActivity extends BaseActivity {
             mList.add(selectProMap);
         }
         InquirySpecificationAdapter adapter = new InquirySpecificationAdapter(this, mList);
-        listView.setAdapter(adapter);
+        listView.setAdapter(adapter);*/
+
+        listView.setDividerHeight(0);
+        listView.setAdapter(new ViewOrderListViewAdapter(this, service_spec));
     }
 
     /**

@@ -24,7 +24,10 @@ import com.appjumper.silkscreen.ui.common.adapter.ProductListAdapter;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
+import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianStockActivity;
 import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.SPUtil;
@@ -252,12 +255,16 @@ public class ProductSelectActivity extends BaseActivity {
                 if (serviceType == Const.SERVICE_TYPE_STOCK) {
                     if (product.getId().equals("104"))
                         intent = new Intent(context, InquiryHuLanActivity.class);
+                    else if (product.getId().equals("27"))
+                        intent = new Intent(context, ReleaseDaoPianStockActivity.class);
                     else
                         intent = new Intent(context, SpecificationStockActivity.class);
                     intent.putExtra(Const.KEY_ACTION, Const.REQUEST_CODE_RELEASE_STOCK);
                 } else {
                     if (product.getId().equals("104"))
                         intent = new Intent(context, ReleaseHuLanActivity.class);
+                    else if (product.getId().equals("27"))
+                        intent = new Intent(context, ReleaseDaoPianActivity.class);
                     else
                         intent = new Intent(context, SpecificationActivity.class);
                 }
@@ -268,6 +275,8 @@ public class ProductSelectActivity extends BaseActivity {
             case MOTION_RELEASE_INQUIRY: //发布询价
                 if (product.getId().equals("104"))
                     intent = new Intent(context, InquiryHuLanActivity.class);
+                else if (product.getId().equals("27"))
+                    intent = new Intent(context, InquiryDaoPianActivity.class);
                 else
                     intent = new Intent(context, InquirySpecificationActivity.class);
                 intent.putExtra("identity", "3");

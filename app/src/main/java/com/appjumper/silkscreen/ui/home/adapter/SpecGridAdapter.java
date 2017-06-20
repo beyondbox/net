@@ -4,12 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.Spec;
+import com.appjumper.silkscreen.ui.common.adapter.SpecImageAdapter;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -28,25 +31,25 @@ public class SpecGridAdapter extends MyBaseAdapter<Spec> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder vh = null;
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_grid_spec, null);
-            vh = new ViewHolder();
-            ButterKnife.bind(vh, convertView);
-            convertView.setTag(vh);
-        } else {
-            vh = (ViewHolder) convertView.getTag();
-        }
+        View view = null;
 
         Spec spec = list.get(position);
-        vh.txtName.setText(spec.getName());
+        if (spec.getValue().matches("[hH][tT]{2}[pP]://[\\s\\S]+\\.[jJ][pP][gG]")) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_lv_spec_image, null);
+            TextView txtName = (TextView) view.findViewById(R.id.txtName);
+            txtName.setText(spec.getName());
 
-        if (spec.getFieldinput().equals("radio"))
+            ListView lvImage = (ListView) view.findViewById(R.id.lvImage);
+            lvImage.setAdapter(new SpecImageAdapter(context, Arrays.asList(spec.getValue().split(","))));
+        } else {
+            view = LayoutInflater.from(context).inflate(R.layout.item_grid_spec, null);
+            ViewHolder vh = new ViewHolder();
+            ButterKnife.bind(vh, view);
+            vh.txtName.setText(spec.getName());
             vh.txtValue.setText(spec.getValue());
-        else
-            vh.txtValue.setText(spec.getValue() + spec.getUnit());
+        }
 
-        return convertView;
+        return view;
     }
 
     class ViewHolder {

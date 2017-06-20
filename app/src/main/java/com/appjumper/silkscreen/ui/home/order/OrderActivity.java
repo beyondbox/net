@@ -38,6 +38,7 @@ import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.my.adapter.ChoiceRecyclerAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ProductionListViewAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
+import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
@@ -609,6 +610,8 @@ public class OrderActivity extends BaseActivity {
                     Intent intent = null;
                     if (product.getProduct_id().equals("104"))
                         intent = new Intent(context, InquiryHuLanActivity.class);
+                    else if (product.getProduct_id().equals("27"))
+                        intent = new Intent(context, InquiryDaoPianActivity.class);
                     else
                         intent = new Intent(context, InquirySpecificationActivity.class);
                     intent.putExtra("type", type);

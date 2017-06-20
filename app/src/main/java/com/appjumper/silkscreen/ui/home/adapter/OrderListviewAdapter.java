@@ -20,6 +20,7 @@
 package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,9 +126,16 @@ public class OrderListviewAdapter extends BaseAdapter {
 
     viewHolder.tv_name.setText(item.getProduct_name());
     viewHolder.tv_company_name.setText(item.getEnterprise_name());
+
     List<Spec> spec = item.getService_spec();
     String str="";
     for(int i=0;i<spec.size();i++){
+      if (TextUtils.isEmpty(spec.get(i).getValue()))
+        continue;
+
+      if (spec.get(i).getValue().matches("[hH][tT]{2}[pP]://[\\s\\S]+\\.[jJ][pP][gG]"))
+        continue;
+
       //if(i<4){
         str+=spec.get(i).getName()+spec.get(i).getValue();
         if(i!=(spec.size()-1)){
@@ -135,6 +143,7 @@ public class OrderListviewAdapter extends BaseAdapter {
         }
      // }
     }
+
     viewHolder.tv_service.setText(str);
   }
 

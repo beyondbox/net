@@ -163,7 +163,7 @@
                     android:inputType="textMultiLine"
                     android:lineSpacingExtra="3dp"
                     android:maxLength="1000"
-                    android:minLines="6"
+                    android:minLines="7"
                     android:hint=""
                     android:textColor="@color/text_black_color"
                     android:textColorHint="@color/light_gray_color"

@@ -226,10 +226,19 @@
         <activity android:name=".ui.dynamic.DynamicManageActivity" />
         <!--本地产品搜索-->
         <activity android:name=".ui.common.ProductSearchActivity" />
-        <!--护栏网发布-->
+
+
+        <!--发布护栏网-->
         <activity android:name=".ui.spec.ReleaseHuLanActivity" />
-        <!--护栏网询价-->
+        <!--发布刀片刺绳-->
+        <activity android:name=".ui.spec.ReleaseDaoPianActivity" />
+        <!--发布刀片刺绳现货-->
+        <activity android:name=".ui.spec.ReleaseDaoPianStockActivity" />
+        <!--询价护栏网-->
         <activity android:name=".ui.spec.InquiryHuLanActivity" />
+        <!--询价刀片刺绳-->
+        <activity android:name=".ui.spec.InquiryDaoPianActivity" />
+
 
 
         <!-- 【必须】 信鸽receiver广播接收 -->
