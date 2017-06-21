@@ -99,7 +99,6 @@ public class SearchResultsActivity extends BaseActivity {
 
 
         initViewPager();
-        initProgressDialog();
         getModules();
 
         initLocation();
@@ -146,6 +145,7 @@ public class SearchResultsActivity extends BaseActivity {
             @Override
             public void onStart() {
                 super.onStart();
+                initProgressDialog();
                 progress.show();
             }
 

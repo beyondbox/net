@@ -504,4 +504,5 @@ public class ProcessingDetailsActivity extends BaseActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         getWindow().setAttributes(lp);
     }
+
 }

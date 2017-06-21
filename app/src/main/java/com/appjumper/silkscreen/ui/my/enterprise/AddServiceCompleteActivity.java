@@ -37,6 +37,11 @@ public class AddServiceCompleteActivity extends BaseActivity {
 
         Intent intent = getIntent();
         serviceType = Integer.parseInt(intent.getStringExtra(Const.KEY_SERVICE_TYPE));
+
+        if (serviceType == Const.SERVICE_TYPE_STOCK) {
+            txtMessage.setText("服务添加完成，请等待后台审核");
+        }
+
         if (intent.hasExtra(Const.KEY_MESSAGE)) {
             txtMessage.setText(intent.getStringExtra(Const.KEY_MESSAGE));
         }

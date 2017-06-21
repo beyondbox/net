@@ -3,9 +3,8 @@ package com.appjumper.silkscreen.net;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.util.Log;
 
-
+import com.appjumper.silkscreen.util.LogHelper;
 import com.appjumper.silkscreen.util.MD5Tool;
 
 import java.io.BufferedInputStream;
@@ -181,7 +180,7 @@ public class HttpUtil {
      */
     public static String postMsg(String data, String serverUrl)
             throws IOException {
-        Log.e("log", "请求参数------------------" + data + "url------------" + serverUrl);
+        LogHelper.e("log", "请求参数------------------" + data + "url------------" + serverUrl);
         String callback = "";
         URL url = null;
         OutputStream outputStream = null;
@@ -211,7 +210,7 @@ public class HttpUtil {
             buffer.append(line);
         }
         callback = buffer.toString();
-        Log.e("log", "返回数据------------------" + callback);
+        LogHelper.e("log", "返回数据------------------" + callback);
         if (outputStream != null) {
             outputStream.close();
             outputStream = null;
@@ -232,7 +231,7 @@ public class HttpUtil {
      * 发出get请求
      */
     public static String getMsg(String serverUrl) throws IOException {
-        Log.e("log", "url------------" + serverUrl);
+        LogHelper.e("log", "url------------" + serverUrl);
         String callback = "";
         URL url = null;
         InputStream inputStream = null;
@@ -248,7 +247,7 @@ public class HttpUtil {
 
         int responseCode = httpUrlConnection.getResponseCode();
         if (responseCode != 200) {
-            Log.e("log", "返回码------------------" + responseCode);
+            LogHelper.e("log", "返回码------------------" + responseCode);
             return callback;
         }
         inputStream = httpUrlConnection.getInputStream();
@@ -260,7 +259,7 @@ public class HttpUtil {
             buffer.append(line);
         }
         callback = buffer.toString();
-        Log.e("log", "返回数据------------------" + callback);
+        LogHelper.e("log", "返回数据------------------" + callback);
         if (inputStream != null) {
             inputStream.close();
             inputStream = null;
@@ -359,14 +358,14 @@ public class HttpUtil {
         reader.close();
         bs.close();
         String callback = resultbuffer.toString();
-        Log.e("log", "返回数据--" + callback);
+        LogHelper.e("log", "返回数据--" + callback);
         return callback;
     }
 
     /* 上传 单个文件至服务器的方法 */
     public static String uploadFile(String actionUrl, File tempPhotoFile)
             throws Exception {
-        Log.e("log", actionUrl + "-----" + tempPhotoFile);
+        LogHelper.e("log", actionUrl + "-----" + tempPhotoFile);
         String end = "\r\n";
         String twoHyphens = "--";
         String boundary = UUID.randomUUID().toString();
@@ -438,7 +437,7 @@ public class HttpUtil {
         reader.close();
         bs.close();
         String callback = resultbuffer.toString();
-        Log.e("log", callback + "返回-----");
+        LogHelper.e("log", callback + "返回-----");
         return callback;
     }
 
@@ -525,7 +524,7 @@ public class HttpUtil {
         reader.close();
         bs.close();
         String callback = resultbuffer.toString();
-        Log.e("Log", "返回数据-----" + callback);
+        LogHelper.e("Log", "返回数据-----" + callback);
         return callback;
     }
 

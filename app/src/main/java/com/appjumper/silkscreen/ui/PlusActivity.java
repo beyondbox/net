@@ -33,13 +33,13 @@ public class PlusActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_plus);
+        setContentView(R.layout.activity_plus2);
         ButterKnife.bind(context);
     }
 
 
-    @OnClick({R.id.imgViClose, R.id.txtInquiryOrder, R.id.txtInquiryStock, R.id.llReleaseProcess, R.id.llReleaseOrder, R.id.llReleaseStock,
-    R.id.llReleaseStation, R.id.llReleaseTruck, R.id.llReleaseFindTruck, R.id.llReleaseWorkshop, R.id.llReleasePost, R.id.llReleaseDevice})
+    @OnClick({R.id.imgViClose, R.id.llReleaseProcess, R.id.llReleaseOrder, R.id.llReleaseStock, R.id.llReleaseStation,
+            R.id.llReleaseTruck, R.id.llReleaseFindTruck, R.id.llReleaseWorkshop, R.id.llReleasePost, R.id.llReleaseDevice/*, R.id.txtInquiryOrder, R.id.txtInquiryStock*/})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgViClose:

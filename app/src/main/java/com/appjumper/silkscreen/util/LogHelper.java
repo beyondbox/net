@@ -1,18 +1,16 @@
 package com.appjumper.silkscreen.util;
 
-import android.util.Log;
-
 /**
  * Created by Botx on 2017/3/16.
  */
 public class LogHelper {
-	private static boolean debug = true;
+	private static boolean debug = false;
 	public static int DEBUG = android.util.Log.DEBUG;
 
 	public static void i(String tag, String msg) {
 		if (debug) {
 
-			if(msg.length() > 4000) {
+			/*if(msg.length() > 4000) {
 				for(int i=0; i < msg.length(); i+=4000){
 					if(i+4000 < msg.length())
 						Log.i(tag+i, msg.substring(i, i+4000));
@@ -20,10 +18,10 @@ public class LogHelper {
 						Log.i(tag+i, msg.substring(i, msg.length()));
 				}
 			} else
-				Log.i(tag, msg);
-		}
+				Log.i(tag, msg);*/
 
-			//android.util.Log.i(tag, msg);
+			android.util.Log.i(tag, msg);
+		}
 	}
 
 	public static void e(String tag, String msg) {

@@ -35,7 +35,7 @@ public class SpecGridAdapter extends MyBaseAdapter<Spec> {
 
         Spec spec = list.get(position);
         if (spec.getValue().matches("[hH][tT]{2}[pP]://[\\s\\S]+\\.[jJ][pP][gG]")) {
-            view = LayoutInflater.from(context).inflate(R.layout.item_lv_spec_image, null);
+            view = LayoutInflater.from(context).inflate(R.layout.item_lv_spec_image_stock, null);
             TextView txtName = (TextView) view.findViewById(R.id.txtName);
             txtName.setText(spec.getName());
 

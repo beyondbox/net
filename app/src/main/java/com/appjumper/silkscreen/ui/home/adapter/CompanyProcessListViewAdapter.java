@@ -36,6 +36,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static com.appjumper.silkscreen.R.id.view;
+
 
 /**
  * 公司详情加工
@@ -81,7 +83,7 @@ public class CompanyProcessListViewAdapter extends BaseAdapter {
             holder.tvName = (TextView) convertView.findViewById(R.id.tv_name);//服务名字
             holder.tvDiameter = (TextView) convertView.findViewById(R.id.tv_diameter);//丝径
             holder.tvMesh = (TextView) convertView.findViewById(R.id.tv_mesh);//网孔
-            holder.view = convertView.findViewById(R.id.view);//线
+            holder.view = convertView.findViewById(view);//线
             holder.ll_service = (LinearLayout) convertView.findViewById(R.id.ll_service);//规格布局
             convertView.setTag(holder);
         } else {
@@ -116,11 +118,13 @@ public class CompanyProcessListViewAdapter extends BaseAdapter {
                 holder.tvMesh.setText("");
             }
         }
+
         if (position == (list.size()-1)) {
             holder.view.setVisibility(View.GONE);
         }else{
             holder.view.setVisibility(View.VISIBLE);
         }
+
         return convertView;
     }
 

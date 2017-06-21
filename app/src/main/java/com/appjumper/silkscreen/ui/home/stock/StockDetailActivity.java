@@ -241,7 +241,7 @@ public class StockDetailActivity extends BaseActivity {
         gridView.setNumColumns(1);
         gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
         gridView.setHorizontalSpacing(DisplayUtil.dip2px(context, 20));
-        gridView.setVerticalSpacing(DisplayUtil.dip2px(context, 10));
+        gridView.setVerticalSpacing(DisplayUtil.dip2px(context, 12));
 
         gridView.setAdapter(new SpecGridAdapter(context, specList));
 

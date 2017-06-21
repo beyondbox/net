@@ -54,8 +54,9 @@ import butterknife.OnClick;
  * 物流路线发布
  */
 public class EnterpriseReleaseActivity extends BaseActivity {
-    private String start_id;
-    private String end_id;
+    private String start_id = "214";
+    private String end_id = "";
+
     @Bind(R.id.tv_start)//货运起点
             TextView tv_start;
     @Bind(R.id.tv_end)//货运终点

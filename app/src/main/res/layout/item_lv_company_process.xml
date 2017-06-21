@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/select_white_background"
     android:orientation="horizontal">
 
@@ -16,16 +16,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/iv_logo"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@id/imgViArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:src="@mipmap/icon_arrows_right" />
+
             <LinearLayout
                 android:id="@+id/ll_service"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/imgViArrow"
                 android:layout_marginTop="12dp"
                 android:orientation="vertical">
 
@@ -33,6 +45,8 @@
                     android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:text="石笼网加工"
                     android:textColor="@color/black_color"
                     android:textSize="15sp" />
@@ -41,7 +55,9 @@
                     android:id="@+id/tv_diameter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="5dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:text="丝径：120-300丝"
                     android:textColor="@color/gray_color"
                     android:textSize="13sp" />
@@ -50,25 +66,21 @@
                     android:id="@+id/tv_mesh"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="5dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:text="网孔：4-9cm"
                     android:textColor="@color/gray_color"
                     android:textSize="13sp" />
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="12dp"
-                android:src="@mipmap/icon_arrows_right" />
         </RelativeLayout>
 
         <View
             android:id="@+id/view"
             style="@style/LineStyle"
             android:layout_marginTop="12dp" />
+
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

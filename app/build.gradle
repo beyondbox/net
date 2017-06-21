@@ -10,8 +10,8 @@ android {
         applicationId "com.appjumper.silkscreen"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 19
-        versionName "2.0.3"
+        versionCode 20
+        versionName "2.0.4"
     }
     productFlavors {
         xiaomi {}

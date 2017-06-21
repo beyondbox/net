@@ -59,6 +59,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:hint="请选择货运起点"
+                                android:text="安平"
                                 android:paddingBottom="12dp"
                                 android:paddingTop="12dp"
                                 android:singleLine="true"
