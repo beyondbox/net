@@ -18,13 +18,11 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.DPChild;
 import com.appjumper.silkscreen.bean.DPGroup;
@@ -36,7 +34,6 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
-import com.appjumper.silkscreen.ui.my.adapter.SpecStockListAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.ui.spec.adapter.ReleaseDaoPianAdapter;
 import com.appjumper.silkscreen.util.Const;
@@ -66,11 +63,6 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
 
     @Bind(R.id.et_remark)//描述
             EditText et_remark;
-    @Bind(R.id.lvSpec)
-    ListView lvSpec;
-
-    @Bind(R.id.txtSpecNumber)
-    TextView txtSpecNumber;
 
     private ServiceProduct service;
     private List<Spec> list;
@@ -78,9 +70,6 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
     private String productType;
     private ImageResponse imgResponse;
     private String json;
-
-    private List<String> specList;
-    private SpecStockListAdapter specAdapter;
 
     private Map<DPGroup, List<DPChild>> guigeMap;
     private List<DPGroup> groupList;
@@ -101,7 +90,7 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setContentView(R.layout.activity_specifiaction_stock);
+        setContentView(R.layout.activity_release_daopian_stock);
         initBack();
         initView();
         ButterKnife.bind(this);
@@ -117,43 +106,12 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
             @Override
             public void run() {
                 initViewSpecification(llSpecification);
-                initListView();
                 et_remark.setHint(service.getRemark());
             }
         }, 50);
 
     }
 
-
-    private void initListView() {
-        specList = new ArrayList<>();
-
-        specAdapter = new SpecStockListAdapter(context, specList);
-        specAdapter.setOnCreateItemViewListener(new SpecStockListAdapter.OnCreateItemViewListener() {
-            @Override
-            public View onCreateView() {
-                View itemView = LayoutInflater.from(context).inflate(R.layout.item_recycler_line_spec_stock, null);
-                LinearLayout specLayout = (LinearLayout) itemView.findViewById(R.id.ll_specification);
-                initViewSpecification(specLayout);
-                return itemView;
-            }
-        });
-        specAdapter.setOnWhichClickListener(new MyBaseAdapter.OnWhichClickListener() {
-            @Override
-            public void onWhichClick(View view, int position, int tag) {
-                switch (tag) {
-                    case SpecStockListAdapter.TAG_CLOSE:
-                        specList.remove(position);
-                        specAdapter.notifyDataSetChanged();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-
-        lvSpec.setAdapter(specAdapter);
-    }
 
 
     /**
@@ -366,7 +324,7 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
 
 
 
-    @OnClick({R.id.tv_confirm, R.id.txtAddSpec})
+    @OnClick({R.id.tv_confirm})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_confirm://确定
@@ -446,11 +404,6 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
 
                 break;
 
-            case R.id.txtAddSpec: //添加规格
-                specList.add("1");
-                specAdapter.notifyDataSetChanged();
-                txtSpecNumber.setText("规格1");
-                break;
             default:
                 break;
         }

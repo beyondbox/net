@@ -20,7 +20,7 @@ import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.dynamic.adapter.FindCarAdapter;
-import com.appjumper.silkscreen.ui.home.logistics.LogisticsDetailsActivity;
+import com.appjumper.silkscreen.ui.home.logistics.TruckDetailsActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -104,8 +104,7 @@ public class FindCarFragment extends BaseFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                start_Activity(context, LogisticsDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()),
-                        new BasicNameValuePair("type", "3"));
+                start_Activity(context, TruckDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()));
             }
         });
 

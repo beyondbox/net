@@ -39,7 +39,7 @@ public class PlusActivity extends BaseActivity {
 
 
     @OnClick({R.id.imgViClose, R.id.llReleaseProcess, R.id.llReleaseOrder, R.id.llReleaseStock, R.id.llReleaseStation,
-            R.id.llReleaseTruck, R.id.llReleaseFindTruck, R.id.llReleaseWorkshop, R.id.llReleasePost, R.id.llReleaseDevice/*, R.id.txtInquiryOrder, R.id.txtInquiryStock*/})
+            R.id.llReleaseTruck, R.id.llReleaseFindTruck, R.id.llReleaseWorkshop, R.id.llReleasePost, R.id.llReleaseDevice, R.id.txtInquiryOrder, R.id.txtInquiryStock})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgViClose:

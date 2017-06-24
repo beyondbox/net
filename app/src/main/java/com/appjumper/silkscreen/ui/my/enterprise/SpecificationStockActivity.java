@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,7 +24,6 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.bean.ServiceProduct;
@@ -33,7 +33,6 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
-import com.appjumper.silkscreen.ui.my.adapter.SpecStockListAdapter;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 
@@ -54,26 +53,32 @@ import butterknife.OnClick;
  * Created by Administrator on 2016-11-22.
  */
 public class SpecificationStockActivity extends BasePhotoGridActivity {
-    @Bind(R.id.ll_specification)//规格布局
+
+    @Bind(R.id.llSpecLayout) //规格总布局
+    LinearLayout llSpecLayout;
+
+    @Bind(R.id.ll_specification)//多规格布局
             LinearLayout llSpecification;
 
     @Bind(R.id.et_remark)//描述
             EditText et_remark;
+
     @Bind(R.id.lvSpec)
     ListView lvSpec;
 
-    @Bind(R.id.txtSpecNumber)
-    TextView txtSpecNumber;
+    @Bind(R.id.divider)
+    View divider;
 
     private ServiceProduct service;
     private List<Spec> list;
     private String type;
     private String productType;
     private ImageResponse imgResponse;
-    private String json;
 
-    private List<String> specList;
-    private SpecStockListAdapter specAdapter;
+    private List<String> specJsonList = new ArrayList<>();
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +96,15 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
         initTitle(service.getName());
         initProgressDialog(false, "正在添加服务...");
 
+        if (list.size() == 0) {
+            llSpecLayout.setVisibility(View.GONE);
+            divider.setVisibility(View.VISIBLE);
+        }
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                initViewSpecification(llSpecification);
-                initListView();
+                addSpecView();
                 et_remark.setHint(service.getRemark());
             }
         }, 50);
@@ -103,50 +112,38 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
     }
 
 
-    private void initListView() {
-        specList = new ArrayList<>();
-
-        specAdapter = new SpecStockListAdapter(context, specList);
-        specAdapter.setOnCreateItemViewListener(new SpecStockListAdapter.OnCreateItemViewListener() {
-            @Override
-            public View onCreateView() {
-                View itemView = LayoutInflater.from(context).inflate(R.layout.item_recycler_line_spec_stock, null);
-                LinearLayout specLayout = (LinearLayout) itemView.findViewById(R.id.ll_specification);
-                initViewSpecification(specLayout);
-                return itemView;
-            }
-        });
-        specAdapter.setOnWhichClickListener(new MyBaseAdapter.OnWhichClickListener() {
-            @Override
-            public void onWhichClick(View view, int position, int tag) {
-                switch (tag) {
-                    case SpecStockListAdapter.TAG_CLOSE:
-                        specList.remove(position);
-                        specAdapter.notifyDataSetChanged();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-
-        lvSpec.setAdapter(specAdapter);
-    }
-
 
     /**
-     * 初始化规格
+     * 添加一个规格视图
      */
-    private void initViewSpecification(LinearLayout parentLayout) {
+    private void addSpecView() {
+        final View specView = LayoutInflater.from(context).inflate(R.layout.item_recycler_line_spec_stock, null);
+        ImageView imgViClose = (ImageView) specView.findViewById(R.id.imgViClose);
+        LinearLayout parentLayout = (LinearLayout) specView.findViewById(R.id.ll_specification);
+
+        if (llSpecification.getChildCount() > 0) {
+            imgViClose.setVisibility(View.VISIBLE);
+        }
+
         for (int i = 0; i < list.size(); i++) {
             String fildType = list.get(i).getFieldinput();
-
             if (fildType.equals("radio")) {
                 initChoiceData(parentLayout, i);
             } else if(fildType.equals("text")) {
                 initInputValue(parentLayout, i);
             }
         }
+
+        imgViClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llSpecification.removeView(specView);
+                refreshSpecName();
+            }
+        });
+
+
+        llSpecification.addView(specView);
     }
 
 
@@ -236,69 +233,100 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
 
 
 
+    /**
+     * 刷新规格名称
+     */
+    private void refreshSpecName() {
+        int count = llSpecification.getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            LinearLayout linearLayout = (LinearLayout) llSpecification.getChildAt(i);
+            TextView txtSpecName = (TextView) linearLayout.findViewById(R.id.txtSpecName);
+
+            if (i == 0 && count == 1)
+                txtSpecName.setText("规格");
+            else
+                txtSpecName.setText("规格" + (i + 1));
+        }
+    }
+
+
+
     @OnClick({R.id.tv_confirm, R.id.txtAddSpec})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_confirm://确定
-                JSONArray jsonArray = new JSONArray();
-                List<Map<String,String>> listval = new ArrayList<>();
-                JSONObject jsonObject = new JSONObject();
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getFieldinput().equals("radio")) {
-                        View choiceView = llSpecification.findViewWithTag("choice" + i);
-                        GridView gridChoice = (GridView) choiceView.findViewById(R.id.gridChoice);
-                        String [] valueArr = list.get(i).getUnit().split(",");
+                specJsonList.clear();
+                int specCount = llSpecification.getChildCount();
 
-                        String checkedResult = "";
-                        for (int j = 0; j < valueArr.length; j++) {
-                            LinearLayout linearLayout = (LinearLayout) gridChoice.getChildAt(j);
-                            if (((CheckBox)linearLayout.getChildAt(0)).isChecked()) {
-                                checkedResult += valueArr[j] + ",";
+                for (int k = 0; k < specCount; k++) {
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject jsonObject = new JSONObject();
+                    LinearLayout parentLayout = (LinearLayout) llSpecification.getChildAt(k);
+                    String specName = "";
+                    if (specCount > 1) {
+                        TextView txtSpecName = (TextView) parentLayout.findViewById(R.id.txtSpecName);
+                        specName = txtSpecName.getText().toString().trim();
+                    }
+
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getFieldinput().equals("radio")) {
+                            View choiceView = parentLayout.findViewWithTag("choice" + i);
+                            GridView gridChoice = (GridView) choiceView.findViewById(R.id.gridChoice);
+                            String [] valueArr = list.get(i).getUnit().split(",");
+
+                            String checkedResult = "";
+                            for (int j = 0; j < valueArr.length; j++) {
+                                LinearLayout linearLayout = (LinearLayout) gridChoice.getChildAt(j);
+                                if (((CheckBox)linearLayout.getChildAt(0)).isChecked()) {
+                                    checkedResult += valueArr[j] + ",";
+                                }
                             }
-                        }
 
-                        if (list.get(i).getRequire().equals("1")) {
-                            if (TextUtils.isEmpty(checkedResult)) {
-                                showErrorToast("请选择" + list.get(i).getName());
-                                return;
-                            }
-                        }
-
-                        if (!TextUtils.isEmpty(checkedResult))
-                            checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
-                        jsonObject.put(list.get(i).getFieldname(), checkedResult);
-
-                    } else if (list.get(i).getFieldinput().equals("text")) {
-                        View editView = llSpecification.findViewWithTag("edit" + i);
-                        EditText etValue = (EditText) editView.findViewWithTag(i + "value");
-                        String value = etValue.getText().toString().trim();
-
-                        if(list.get(i).getRequire().equals("1")) {
-                            if (TextUtils.isEmpty(value)) {
-                                showErrorToast("请输入" + list.get(i).getName());
-                                return;
-                            }
-                        }
-
-                        String minValue = list.get(i).getMin_value();
-                        String maxValue = list.get(i).getMax_value();
-                        if (!TextUtils.isEmpty(minValue) || !TextUtils.isEmpty(maxValue)) {
-                            if (!TextUtils.isEmpty(value)) {
-                                if (Float.valueOf(value) < Float.valueOf(minValue) || Float.valueOf(value) > Float.valueOf(maxValue)) {
-                                    showErrorToast(list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
+                            if (list.get(i).getRequire().equals("1")) {
+                                if (TextUtils.isEmpty(checkedResult)) {
+                                    showErrorToast(specName + "请选择" + list.get(i).getName());
                                     return;
                                 }
                             }
+
+                            if (!TextUtils.isEmpty(checkedResult))
+                                checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
+                            jsonObject.put(list.get(i).getFieldname(), checkedResult);
+
+                        } else if (list.get(i).getFieldinput().equals("text")) {
+                            View editView = parentLayout.findViewWithTag("edit" + i);
+                            EditText etValue = (EditText) editView.findViewWithTag(i + "value");
+                            String value = etValue.getText().toString().trim();
+
+                            if(list.get(i).getRequire().equals("1")) {
+                                if (TextUtils.isEmpty(value)) {
+                                    showErrorToast(specName + "请输入" + list.get(i).getName());
+                                    return;
+                                }
+                            }
+
+                            String minValue = list.get(i).getMin_value();
+                            String maxValue = list.get(i).getMax_value();
+                            if (!TextUtils.isEmpty(minValue) || !TextUtils.isEmpty(maxValue)) {
+                                if (!TextUtils.isEmpty(value)) {
+                                    if (Float.valueOf(value) < Float.valueOf(minValue) || Float.valueOf(value) > Float.valueOf(maxValue)) {
+                                        showErrorToast(specName + list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
+                                        return;
+                                    }
+                                }
+                            }
+
+                            jsonObject.put(list.get(i).getFieldname(), value);
+
                         }
-
-
-                        jsonObject.put(list.get(i).getFieldname(), value);
-
                     }
+
+                    jsonArray.add(jsonObject);
+                    specJsonList.add(jsonArray.toJSONString());
+                    Log.e("Log",jsonArray.toJSONString()+"-----");
                 }
-                jsonArray.add(jsonObject);
-                json = jsonArray.toJSONString();
-                Log.e("Log",jsonArray.toJSONString()+"-----");
+
 
                 if (selectedPicture.size() == 0) {
                     showErrorToast("请上传产品图片");
@@ -310,9 +338,8 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                 break;
 
             case R.id.txtAddSpec: //添加规格
-                specList.add("1");
-                specAdapter.notifyDataSetChanged();
-                txtSpecNumber.setText("规格1");
+                addSpecView();
+                refreshSpecName();
                 break;
             default:
                 break;
@@ -433,8 +460,16 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                 //data.put("product_type",productType);
                 data.put("product_id", service.getId());
                 data.put("imgs", imags(imgResponse.getData()));
-                data.put("spec", json);
                 data.put("remark", et_remark.getText().toString());
+
+                if (specJsonList.size() > 0) {
+                    for (int i = 0; i < specJsonList.size(); i++) {
+                        data.put("spec" + (i + 1), specJsonList.get(i));
+                    }
+                } else {
+                    data.put("spec1", "[{}]");
+                }
+
                 //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEADD));
                 response = JsonParser.getBaseResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
@@ -449,6 +484,9 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
             }
         }
     };
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

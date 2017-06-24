@@ -4,9 +4,28 @@
     android:layout_height="match_parent"
     android:background="@color/while_color">
 
-    <include
+    <LinearLayout
         android:id="@+id/llTitle"
-        layout="@layout/layout_header_with_text"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#0074CF"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/view"
+            style="@style/transparent"
+            android:layout_height="25dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="发布信息"
+            android:textSize="18sp"
+            android:textColor="@color/while_color"/>
+
+    </LinearLayout>
+
 
     <ImageView
         android:id="@+id/imgViClose"
@@ -339,7 +358,93 @@
                 android:layout_marginTop="20dp"
                 android:text="一键询价"
                 android:textSize="18sp"
-                android:textColor="@color/text_black_color"/>
+                android:textColor="#282828"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_plus_inquiry_bg"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:id="@+id/txtInquiryOrder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/selector_btn_blue_plus"
+                        android:paddingTop="7dp"
+                        android:paddingBottom="7dp"
+                        android:gravity="center"
+                        android:text="订做询价"
+                        android:textSize="14sp"
+                        android:textColor="@color/while_color"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingExtra="6dp"
+                        android:textColor="@color/text_black_color"
+                        android:textSize="13sp"
+                        android:text="想订做丝网？这里有众多丝网生产厂家可以直接给你报价"/>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_plus_inquiry_bg"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="8dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:id="@+id/txtInquiryStock"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/selector_btn_blue_plus"
+                        android:paddingTop="7dp"
+                        android:paddingBottom="7dp"
+                        android:gravity="center"
+                        android:text="现货询价"
+                        android:textSize="14sp"
+                        android:textColor="@color/while_color"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingExtra="6dp"
+                        android:textColor="@color/text_black_color"
+                        android:textSize="13sp"
+                        android:text="大量丝网现货供应，先来询问一下不同规格产品的价格吧"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
 
 
         </LinearLayout>

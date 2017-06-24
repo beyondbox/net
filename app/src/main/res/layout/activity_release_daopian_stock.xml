@@ -80,7 +80,10 @@
 
             <View style="@style/LineStyle" />
 
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/view_background_gray_color" />
 
 
 
@@ -97,42 +100,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <View style="@style/LineStyle" />
+
+                <TextView
+                    android:id="@+id/txtSpecNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"
+                    android:text="规格"
+                    android:textColor="@color/black_color"
+                    android:textSize="14sp" />
+
+                <View
+                    style="@style/LineStyle" />
+
+
                 <LinearLayout
                     android:id="@+id/ll_specification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:orientation="vertical">
 
-                <com.appjumper.silkscreen.view.MyListView
-                    android:id="@+id/lvSpec"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    android:listSelector="#00000000"
-                    android:divider="@null">
-
-                </com.appjumper.silkscreen.view.MyListView>
-
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"
-                    android:background="@color/view_background_gray_color">
-
-                    <TextView
-                        android:id="@+id/txtAddSpec"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:paddingTop="7dp"
-                        android:paddingBottom="7dp"
-                        android:paddingLeft="12dp"
-                        android:paddingRight="12dp"
-                        android:textSize="13sp"
-                        android:text="继续添加现货"
-                        android:textColor="@color/theme_color"/>
-                </RelativeLayout>
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -149,11 +140,10 @@
 
 
 
+
             <View
-                android:id="@+id/divider"
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
-                android:visibility="gone"
                 android:background="@color/view_background_gray_color" />
 
             <View style="@style/LineStyle" />

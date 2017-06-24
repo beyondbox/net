@@ -39,8 +39,8 @@ public class SpecStockListAdapter extends MyBaseAdapter<String> {
         }
 
         if (view != null) {
-            TextView txtSpecNumber = (TextView) view.findViewById(R.id.txtSpecNumber);
-            txtSpecNumber.setText("规格" + (position + 2));
+            TextView txtSpecName = (TextView) view.findViewById(R.id.txtSpecName);
+            txtSpecName.setText("规格" + (position + 2));
 
             ImageView imgViClose = (ImageView) view.findViewById(R.id.imgViClose);
             if (onWhichClickListener != null) {

@@ -178,8 +178,9 @@ public class DetailsFragment extends BaseFragment {
             tv_avg.setText(data.getAvg() + "元/吨");
         }
         tv_avg_diff.setText(data.getAvg_diff());
+
         if (data.getCount() != null && !data.getCount().equals("")) {
-            if (Integer.parseInt(data.getCount()) > 8) {
+            if (Integer.parseInt(data.getCount()) > 0) {
                 l_count.setVisibility(View.VISIBLE);
                 rl_company.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -189,7 +190,6 @@ public class DetailsFragment extends BaseFragment {
                                 new BasicNameValuePair("avg_diff", data.getAvg_diff()));
                     }
                 });
-
             } else {
                 l_count.setVisibility(View.GONE);
             }
