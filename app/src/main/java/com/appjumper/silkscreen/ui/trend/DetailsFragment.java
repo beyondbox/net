@@ -185,9 +185,11 @@ public class DetailsFragment extends BaseFragment {
                 rl_company.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        start_Activity(getActivity(), TrendMoreActivity.class, new BasicNameValuePair("product_id", type), new BasicNameValuePair("title", data.getOffer_list().get(0).getMaterial_name())
+                        /*start_Activity(getActivity(), TrendMoreActivity.class, new BasicNameValuePair("product_id", type), new BasicNameValuePair("title", data.getOffer_list().get(0).getMaterial_name())
                                 , new BasicNameValuePair("count", data.getCount()), new BasicNameValuePair("avg", data.getAvg()), new BasicNameValuePair("unit", data.getOffer_list().get(0).getOffer_unit()),
-                                new BasicNameValuePair("avg_diff", data.getAvg_diff()));
+                                new BasicNameValuePair("avg_diff", data.getAvg_diff()));*/
+
+                        start_Activity(context, PriceMoreActivity.class, new BasicNameValuePair("id", type), new BasicNameValuePair("title", data.getOffer_list().get(0).getMaterial_name()));
                     }
                 });
             } else {
