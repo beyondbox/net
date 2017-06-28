@@ -105,6 +105,8 @@ public class JobFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 start_Activity(context, RecruitDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()));
+                dataList.get(position).setIs_read(true);
+                adapter.notifyDataSetChanged();
             }
         });
 

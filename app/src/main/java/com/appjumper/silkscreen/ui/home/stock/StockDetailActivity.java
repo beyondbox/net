@@ -11,7 +11,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -38,14 +37,11 @@ import com.appjumper.silkscreen.ui.home.adapter.PropertyAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SpecGridAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SpecSelectGridAdapter;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
-import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
 import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.AppTool;
-import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.ShareUtil;
-import com.appjumper.silkscreen.view.MyGridView;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.SelectPicPopupWindow;
@@ -116,6 +112,12 @@ public class StockDetailActivity extends BaseActivity {
     private String eid;
     private Product product;
 
+    private List<List<Spec>> multiSpecList = new ArrayList<>(); //多规格数据集合
+
+
+
+
+
     private void initView(Product data) {
         product = data;
         eid = data.getEnterprise_id();
@@ -145,9 +147,11 @@ public class StockDetailActivity extends BaseActivity {
         }
         tv_address.setText(data.getEnterprise_address());
         initViewPager(data.getImg_list());
-        //initSpecification(data.getService_spec());
-        setSpec(data.getService_spec());
+
+        parseMultiSpec();
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,47 +169,51 @@ public class StockDetailActivity extends BaseActivity {
         refresh();
     }
 
-    private void initSpecification(List<Spec> service_spec) {
-//        final ArrayList<HashMap<String, Object>> mList = new ArrayList<>();
-//        List<String> item3 = new ArrayList<>();
-//        List<String> item1 = new ArrayList<>();
-//        for (int i = 0; i < service_spec.size(); i++) {
-//            item1.add(service_spec.get(i).getName());
-//            if (service_spec.get(i).getFieldinput().equals("radio")) {
-//                item3.add(service_spec.get(i).getValue());
-//            } else {
-//                item3.add(service_spec.get(i).getValue() + service_spec.get(i).getUnit());
-//            }
-//        }
-//        List<String> types = new ArrayList<>();
-//        types.add("规格");
-//        List<List<String>> items = new ArrayList<>();
-//        items.add(item1);
-//        List<List<String>> values = new ArrayList<>();
-//        values.add(item3);
-//        for (int j = 0; j < types.size(); j++) {
-//            HashMap<String, Object> selectProMap = new HashMap<>();
-//            selectProMap.put("type", types.get(j));
-//            selectProMap.put("label", items.get(j));
-//            selectProMap.put("value", values.get(j));
-//            mList.add(selectProMap);
-//        }
-//        SpecificationAdapter adapter = new SpecificationAdapter(this, mList);
-        listView.setAdapter(new ViewOrderListViewAdapter(this,service_spec));
-//        listView.setAdapter(adapter);
-    }
 
 
     /**
-     * 渲染规格数据
+     * 解析多规格数据
      */
-    private void setSpec(List<Spec> specList) {
+    private void parseMultiSpec() {
+        int count = Integer.valueOf(product.getSpec_num());
+        List<Spec> list = product.getService_spec();
+
+        for (int i = 1; i < count + 1; i++) {
+            List<Spec> temp = new ArrayList<>();
+            for (Spec spec : list) {
+                if (spec.getSpec_num().equals(i + ""))
+                    temp.add(spec);
+            }
+
+            multiSpecList.add(temp);
+        }
+
+        for (int i = 0; i < multiSpecList.size(); i++) {
+            setOneSpec(multiSpecList.get(i), i);
+        }
+    }
+
+
+
+    /**
+     * 渲染单规格数据
+     */
+    private void setOneSpec(List<Spec> specList, int i) {
         if (specList.size() == 0)
             return;
 
-        View headerView = LayoutInflater.from(context).inflate(R.layout.layout_header_spec, null);
+        View specView = LayoutInflater.from(context).inflate(R.layout.layout_spec_detail, null);
+
+        //规格编号
+        TextView txtSpecName = (TextView) specView.findViewById(R.id.txtSpecName);
+        if (multiSpecList.size() == 1 && i == 0)
+            txtSpecName.setText("规格");
+        else
+            txtSpecName.setText("规格" + (i + 1));
+
+
         //设置右上角存量显示
-        TextView txtCunLiang = (TextView) headerView.findViewById(R.id.txtCunLiang);
+        TextView txtCunLiang = (TextView) specView.findViewById(R.id.txtCunLiang);
         for (Spec spec : specList) {
             if (spec.getFieldname().equals("cunliang")) {
                 if (!TextUtils.isEmpty(spec.getValue())) {
@@ -218,35 +226,28 @@ public class StockDetailActivity extends BaseActivity {
 
         //过滤空字段
         List<Spec> tempList = new ArrayList<>();
-        for (int i = 0; i < specList.size(); i++) {
-            Spec spec = specList.get(i);
+        for (int j = 0; j < specList.size(); j++) {
+            Spec spec = specList.get(j);
             if (!TextUtils.isEmpty(spec.getValue().trim())) {
                 tempList.add(spec);
             }
         }
 
-        lLaytSpec.addView(headerView);
-        lLaytSpec.addView(getGridView(tempList));
+        //渲染具体规格
+        GridView gridView = (GridView) specView.findViewById(R.id.gridView);
+        //刀片刺绳显示1列，其余产品为2列
+        if (product.getProduct_id().equals("27"))
+            gridView.setNumColumns(1);
+        else
+            gridView.setNumColumns(2);
+        gridView.setAdapter(new SpecGridAdapter(context, tempList));
+
+
+        lLaytSpec.addView(specView);
     }
 
-    /**
-     * 生成规格数据的GridView
-     */
-    private GridView getGridView(List<Spec> specList) {
-        MyGridView gridView = new MyGridView(context);
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        gridView.setLayoutParams(params);
-        int padding = DisplayUtil.dip2px(context, 12);
-        gridView.setPadding(padding, padding, padding, padding);
-        gridView.setNumColumns(1);
-        gridView.setStretchMode(GridView.STRETCH_COLUMN_WIDTH);
-        gridView.setHorizontalSpacing(DisplayUtil.dip2px(context, 20));
-        gridView.setVerticalSpacing(DisplayUtil.dip2px(context, 12));
 
-        gridView.setAdapter(new SpecGridAdapter(context, specList));
 
-        return gridView;
-    }
 
     private void refresh() {
         mPullRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ObservableScrollView>() {
@@ -371,9 +372,16 @@ public class StockDetailActivity extends BaseActivity {
             ProductDetailsResponse response = null;
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "service");
+                data.put("a", "details");
+
+
                 data.put("id", id);
                 data.put("uid", getUserID());
-                response = JsonParser.getProductDetailsResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEDETAILS));
+
+                //response = JsonParser.getProductDetailsResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEDETAILS));
+                response = JsonParser.getProductDetailsResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();
             }

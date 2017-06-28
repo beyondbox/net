@@ -36,7 +36,8 @@ public class DeviceAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHolde
     @Override
     protected void convert(BaseViewHolder helper, EquipmentList item) {
         helper.setText(R.id.txtTime, item.getCreate_time().replaceAll("-", "\\.").substring(0, 16))
-                .setText(R.id.txtTitle, item.getItems().get(0).getName());
+                .setText(R.id.txtTitle, item.getItems().get(0).getName())
+                .setVisible(R.id.unRead, !item.is_read());
 
         TextView txtName = helper.getView(R.id.txtName);
 

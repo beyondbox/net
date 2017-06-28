@@ -44,7 +44,8 @@ public class ProductAdapter extends BaseQuickAdapter<Product, BaseViewHolder> {
                 .setText(R.id.txtTime, item.getCreate_time().replaceAll("-", "\\.").substring(0, 16))
                 .setVisible(R.id.imgViCertiGreen, item.getAuth_status().equals("2"))
                 .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
-                .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"));
+                .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"))
+                .setVisible(R.id.unRead, !item.is_read());
 
         List<Spec> spec = item.getService_spec();
         String str="";

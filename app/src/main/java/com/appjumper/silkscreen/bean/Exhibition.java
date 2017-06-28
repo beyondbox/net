@@ -14,6 +14,7 @@ public class Exhibition implements Serializable{
     private Avatar img;
     private String distance;
     private String url;
+    private boolean is_read = true;
 
     public String getUrl() {
         return url;
@@ -69,5 +70,13 @@ public class Exhibition implements Serializable{
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+
+    public boolean is_read() {
+        return is_read;
+    }
+
+    public void setIs_read(boolean is_read) {
+        this.is_read = is_read;
     }
 }

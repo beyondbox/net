@@ -114,6 +114,9 @@ public class TenderActivity extends BaseActivity {
                 } else if (type.equals("2")) {
                     start_Activity(TenderActivity.this, GidDetailsActivity.class,new BasicNameValuePair("id",list.get(i).getId()));
                 }
+
+                list.get(i).setIs_read(true);
+                adapter.notifyDataSetChanged();
             }
         });
         listView.setOnLoadMoreListener(new PagedListView.OnLoadMoreListener() {
@@ -143,6 +146,7 @@ public class TenderActivity extends BaseActivity {
             TenderListResponse response = null;
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
+                data.put("uid", getUserID());
                 data.put("pagesize", pagesize);
                 data.put("page", "1");
                 response = JsonParser.getTenderListResponse(HttpUtil.getMsg(url + "?" + HttpUtil.getData(data)));
@@ -165,6 +169,7 @@ public class TenderActivity extends BaseActivity {
             TenderListResponse response = null;
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
+                data.put("uid", getUserID());
                 data.put("pagesize", pagesize);
                 data.put("page", "" + pageNumber);
                 response = JsonParser.getTenderListResponse(HttpUtil.getMsg(url + "?" + HttpUtil.getData(data)));

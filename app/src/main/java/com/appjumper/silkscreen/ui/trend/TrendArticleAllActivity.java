@@ -122,6 +122,7 @@ public class TrendArticleAllActivity extends BaseActivity {
         params.put("page", page);
         params.put("pagesize", pageSize);
         params.put("type", type);
+        params.put("uid", getUserID());
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
@@ -171,4 +172,11 @@ public class TrendArticleAllActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        page = 1;
+        getArticle();
+    }
 }

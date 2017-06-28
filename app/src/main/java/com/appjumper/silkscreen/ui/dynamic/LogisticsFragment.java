@@ -106,6 +106,9 @@ public class LogisticsFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 start_Activity(context, LogisticsDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()),
                         new BasicNameValuePair("type", dataList.get(position).getType()));
+
+                dataList.get(position).setIs_read(true);
+                adapter.notifyDataSetChanged();
             }
         });
 

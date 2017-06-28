@@ -1,7 +1,6 @@
 package com.appjumper.silkscreen.bean;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by yc on 2016/12/2.
@@ -21,6 +20,7 @@ public class Tender implements Serializable {
     private String type;
     private String name;
     private String mobile;
+    private boolean is_read = true;
 
     public String getMobile() {
         return mobile;
@@ -125,5 +125,13 @@ public class Tender implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean is_read() {
+        return is_read;
+    }
+
+    public void setIs_read(boolean is_read) {
+        this.is_read = is_read;
     }
 }

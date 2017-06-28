@@ -47,6 +47,7 @@ public class EquipmentList {
     private Enterprise enterprise;
     private User user;
     private String auth_status;
+    private boolean is_read = true;
 
     public String getAddress() {
         return address;
@@ -367,5 +368,13 @@ public class EquipmentList {
 
     public void setAuth_status(String auth_status) {
         this.auth_status = auth_status;
+    }
+
+    public boolean is_read() {
+        return is_read;
+    }
+
+    public void setIs_read(boolean is_read) {
+        this.is_read = is_read;
     }
 }

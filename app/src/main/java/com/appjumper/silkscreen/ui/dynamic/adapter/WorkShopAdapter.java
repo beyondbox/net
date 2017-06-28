@@ -38,7 +38,8 @@ public class WorkShopAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHol
         helper.setText(R.id.txtTime, item.getCreate_time().replaceAll("-", "\\.").substring(0, 16))
                 .setText(R.id.txtTitle, item.getTitle() + "/" + item.getPosition())
                 .setText(R.id.txtPrice, item.getPrice() + "元/年")
-                .setText(R.id.txtLocation, item.getArea() + "m²,  " + item.getPosition() + "  " + item.getDistance() + "km");
+                .setText(R.id.txtLocation, item.getArea() + "m²,  " + item.getPosition() + "  " + item.getDistance() + "km")
+                .setVisible(R.id.unRead, !item.is_read());
 
         TextView txtName = helper.getView(R.id.txtName);
 

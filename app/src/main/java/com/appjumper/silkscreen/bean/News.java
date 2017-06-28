@@ -12,6 +12,7 @@ public class News {
     private String update_time;
     private String create_time;
     private String url;
+    private boolean is_read = true;
 
     public String getUrl() {
         return url;
@@ -67,5 +68,13 @@ public class News {
 
     public void setCreate_time(String create_time) {
         this.create_time = create_time;
+    }
+
+    public boolean is_read() {
+        return is_read;
+    }
+
+    public void setIs_read(boolean is_read) {
+        this.is_read = is_read;
     }
 }

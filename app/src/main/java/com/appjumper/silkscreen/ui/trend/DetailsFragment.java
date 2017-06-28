@@ -285,6 +285,7 @@ public class DetailsFragment extends BaseFragment {
     private void getArticle() {
         RequestParams params = MyHttpClient.getApiParam("tender", "analysis_list");
         params.put("type", type);
+        params.put("uid", getUserID());
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

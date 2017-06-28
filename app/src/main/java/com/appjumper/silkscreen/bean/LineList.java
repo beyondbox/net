@@ -39,6 +39,7 @@ public class LineList implements Serializable{
     private String from_distance;
     private String distance;
     private String auth_status;
+    private boolean is_read = true;
 
     private String product_name;
     private String productspec;
@@ -313,5 +314,13 @@ public class LineList implements Serializable{
 
     public void setProductspec(String productspec) {
         this.productspec = productspec;
+    }
+
+    public boolean is_read() {
+        return is_read;
+    }
+
+    public void setIs_read(boolean is_read) {
+        this.is_read = is_read;
     }
 }

@@ -471,6 +471,11 @@ public class OrderActivity extends BaseActivity {
         public void run() {
             ProductResponse response = null;
             try {
+                fieldmap.put("g", "api");
+                fieldmap.put("m", "service");
+                fieldmap.put("a", "service_list");
+
+
                 fieldmap.put("page", "1");
                 fieldmap.put("pagesize", pagesize);
                 fieldmap.put("type", type);
@@ -479,7 +484,9 @@ public class OrderActivity extends BaseActivity {
                 fieldmap.put("lng", longitude + "");
                 fieldmap.put("product_id", product_id);
                 fieldmap.put("auth", auth);
-                response = JsonParser.getProductResponse(HttpUtil.postMsg(HttpUtil.getData(fieldmap), Url.SERVICELIST));
+
+                //response = JsonParser.getProductResponse(HttpUtil.postMsg(HttpUtil.getData(fieldmap), Url.SERVICELIST));
+                response = JsonParser.getProductResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(fieldmap)));
             } catch (Exception e) {
                 e.printStackTrace();
             }

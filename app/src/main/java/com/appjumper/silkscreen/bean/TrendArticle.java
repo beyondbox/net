@@ -16,6 +16,7 @@ public class TrendArticle {
     private String up;
     private String down;
     private String com_name;
+    private boolean is_read = true;
 
 
     public String getId() {
@@ -88,5 +89,13 @@ public class TrendArticle {
 
     public void setCom_name(String com_name) {
         this.com_name = com_name;
+    }
+
+    public boolean is_read() {
+        return is_read;
+    }
+
+    public void setIs_read(boolean is_read) {
+        this.is_read = is_read;
     }
 }

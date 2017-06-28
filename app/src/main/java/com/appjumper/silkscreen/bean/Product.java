@@ -43,6 +43,8 @@ public class Product implements Serializable{
     private String auth_status;
 
     private String img_require;
+    private boolean is_read = true;
+    private String spec_num;
 
     @SerializedName("initial")
     private String section;
@@ -316,5 +318,21 @@ public class Product implements Serializable{
 
     public void setAuth_status(String auth_status) {
         this.auth_status = auth_status;
+    }
+
+    public boolean is_read() {
+        return is_read;
+    }
+
+    public void setIs_read(boolean is_read) {
+        this.is_read = is_read;
+    }
+
+    public String getSpec_num() {
+        return spec_num;
+    }
+
+    public void setSpec_num(String spec_num) {
+        this.spec_num = spec_num;
     }
 }

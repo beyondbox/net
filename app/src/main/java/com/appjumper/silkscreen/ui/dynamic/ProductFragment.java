@@ -112,6 +112,9 @@ public class ProductFragment extends BaseFragment {
                             new BasicNameValuePair("title", dataList.get(position).getProduct_name() + dataList.get(position).getService_type_name()),
                             new BasicNameValuePair("id", dataList.get(position).getId()));
                 }
+
+                dataList.get(position).setIs_read(true);
+                adapter.notifyDataSetChanged();
             }
         });
 

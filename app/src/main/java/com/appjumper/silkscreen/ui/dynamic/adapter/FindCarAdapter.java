@@ -28,7 +28,8 @@ public class FindCarAdapter extends BaseQuickAdapter<LineList, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, LineList item) {
         helper.setText(R.id.txtTime, item.getCreate_time().replaceAll("-", "\\.").substring(0, 16))
                 .setText(R.id.txtTitle, item.getFrom() + " - " + item.getTo())
-                .setText(R.id.txtSubTitle, "数量: " + item.getNumber()+"  重量: "+item.getWeight()+"  装货时间: " + item.getDate().replaceAll("-", "\\.").substring(5, 16));
+                .setText(R.id.txtSubTitle, "数量: " + item.getNumber()+"  重量: "+item.getWeight()+"  装货时间: " + item.getDate().replaceAll("-", "\\.").substring(5, 16))
+                .setVisible(R.id.unRead, !item.is_read());
 
         TextView txtName = helper.getView(R.id.txtName);
 

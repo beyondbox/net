@@ -25,6 +25,15 @@
         android:textSize="14sp"
         android:textColor="#ff6000"/>
 
+    <View
+        android:id="@+id/unRead"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:visibility="gone"
+        android:background="@drawable/shape_red_dot"
+        android:layout_toRightOf="@id/imgViHead"
+        android:layout_marginLeft="4dp"/>
+
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"

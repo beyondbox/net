@@ -30,7 +30,8 @@ public class JobAdapter extends BaseQuickAdapter<RecruitList, BaseViewHolder> {
                 .setText(R.id.txtTitle, item.getName())
                 .setText(R.id.txtSubTitle, item.getExperience() + "年经验，学历" + item.getEducation() + "，性别" + item.getGender() + "，" + item.getRemark())
                 .setText(R.id.txtPrice, item.getSalary() + "元")
-                .setText(R.id.txtLocation, item.getPlace());
+                .setText(R.id.txtLocation, item.getPlace())
+                .setVisible(R.id.unRead, !item.is_read());
 
         TextView txtName = helper.getView(R.id.txtName);
 

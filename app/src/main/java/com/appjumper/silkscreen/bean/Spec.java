@@ -24,6 +24,7 @@ public class Spec implements Serializable{
     private String unit_default;
     private String min_value;
     private String max_value;
+    private String spec_num;
 
 
 
@@ -156,4 +157,11 @@ public class Spec implements Serializable{
         this.max_value = max_value;
     }
 
+    public String getSpec_num() {
+        return spec_num;
+    }
+
+    public void setSpec_num(String spec_num) {
+        this.spec_num = spec_num;
+    }
 }

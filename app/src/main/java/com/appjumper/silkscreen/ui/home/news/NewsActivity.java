@@ -80,6 +80,10 @@ public class NewsActivity extends BaseActivity {
                 if (checkLogined()) {
                     getDetail(list.get(i-1).getId());
                     start_Activity(NewsActivity.this, WebViewActivity.class,new BasicNameValuePair("url",list.get(i-1).getUrl()),new BasicNameValuePair("title","详情"));
+
+                    list.get(i - 1).setIs_read(true);
+                    adapter.notifyDataSetChanged();
+
                     CommonApi.addLiveness(getUserID(), 9);
                 }
             }
@@ -111,6 +115,7 @@ public class NewsActivity extends BaseActivity {
             NewsListResponse response = null;
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
+                data.put("uid", getUserID());
                 data.put("pagesize", pagesize);
                 data.put("page", "1");
                 response = JsonParser.getNewsListResponse(HttpUtil.getMsg(Url.NEWSLIST + "?" + HttpUtil.getData(data)));
@@ -133,6 +138,7 @@ public class NewsActivity extends BaseActivity {
             NewsListResponse response = null;
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
+                data.put("uid", getUserID());
                 data.put("pagesize", pagesize);
                 data.put("page", "" + pageNumber);
                 response = JsonParser.getNewsListResponse(HttpUtil.getMsg(Url.NEWSLIST + "?" + HttpUtil.getData(data)));

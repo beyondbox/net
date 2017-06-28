@@ -22,7 +22,7 @@ import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.common.adapter.PagerFragDynamicAdapter;
+import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -62,7 +62,7 @@ public class DynamicFragment extends BaseFragment {
     @Bind(R.id.llEmpty)
     LinearLayout llEmpty;
 
-    private PagerFragDynamicAdapter pagerAdapter;
+    private ViewPagerFragAdapter pagerAdapter;
     private List<Fragment> fragList = new ArrayList<>();
     private List<String> titleList = new ArrayList<>();
     private List<QBadgeView> badgeList = new ArrayList<>();
@@ -161,7 +161,7 @@ public class DynamicFragment extends BaseFragment {
 
 
     private void initViewPager2() {
-        pagerAdapter = new PagerFragDynamicAdapter(context.getSupportFragmentManager(), fragList, titleList);
+        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
         viewPager.setOffscreenPageLimit(titleAllArr.length - 1);
         viewPager.setAdapter(pagerAdapter);
         tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);

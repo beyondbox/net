@@ -17,6 +17,7 @@
             android:background="@color/theme_color" />
 
         <TextView
+            android:id="@+id/txtSpecName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="9dp"
@@ -38,5 +39,28 @@
     <View
         style="@style/LineStyle"
         android:layout_marginLeft="12dp" />
+
+
+    <com.appjumper.silkscreen.view.MyGridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:numColumns="1"
+        android:horizontalSpacing="15dp"
+        android:verticalSpacing="12dp"/>
+
+
+    <View
+        style="@style/LineStyle"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:background="@color/view_background_gray_color"/>
+
+    <View
+        style="@style/LineStyle"/>
+
 
 </LinearLayout>

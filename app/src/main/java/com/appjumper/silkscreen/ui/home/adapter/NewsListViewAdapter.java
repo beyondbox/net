@@ -20,6 +20,7 @@
 package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import q.rorbin.badgeview.QBadgeView;
 
 
 /**
@@ -77,6 +79,8 @@ public class NewsListViewAdapter extends BaseAdapter {
         } else {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_lv_news, null);
             viewHolder = new ViewHolder(convertView);
+            viewHolder.badgeView = new QBadgeView(mContext);
+            viewHolder.badgeView.bindTarget(viewHolder.tv_title).setBadgeGravity(Gravity.START | Gravity.TOP).setGravityOffset(0, true).setBadgePadding(3, true);
             convertView.setTag(viewHolder);
         }
         fillValue(position, viewHolder);
@@ -85,6 +89,12 @@ public class NewsListViewAdapter extends BaseAdapter {
 
     private void fillValue(int position, ViewHolder viewHolder) {
         News item = list.get(position);
+
+        if (item.is_read())
+            viewHolder.badgeView.setBadgeNumber(0);
+        else
+            viewHolder.badgeView.setBadgeNumber(-1);
+
         if(item.getImg()!=null){
             Glide.with(mContext).load(item.getImg().getOrigin()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_img);
         }
@@ -102,6 +112,8 @@ public class NewsListViewAdapter extends BaseAdapter {
 
         @Bind(R.id.tv_create_time)
         TextView tv_create_time;
+
+        QBadgeView badgeView;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -20,6 +20,7 @@
 package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import q.rorbin.badgeview.QBadgeView;
 
 
 /**
@@ -77,6 +79,8 @@ public class TenderListViewAdapter extends BaseAdapter {
         } else {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_lv_tender, null);
             viewHolder = new ViewHolder(convertView);
+            viewHolder.badgeView = new QBadgeView(mContext);
+            viewHolder.badgeView.bindTarget(viewHolder.tv_title).setBadgeGravity(Gravity.START | Gravity.TOP ).setGravityOffset(0, true).setBadgePadding(3, true);
             convertView.setTag(viewHolder);
         }
         fillValue(position, viewHolder);
@@ -84,8 +88,13 @@ public class TenderListViewAdapter extends BaseAdapter {
     }
 
     private void fillValue(int position, ViewHolder viewHolder) {
-
         Tender item = list.get(position);
+
+        if (item.is_read())
+            viewHolder.badgeView.setBadgeNumber(0);
+        else
+            viewHolder.badgeView.setBadgeNumber(-1);
+
         if(type.equals("2")){
             viewHolder.tv_title.setText(item.getTitle());
             viewHolder.tv_name.setText(item.getName());
@@ -108,6 +117,8 @@ public class TenderListViewAdapter extends BaseAdapter {
 
         @Bind(R.id.tv_create_time)
         TextView tv_create_time;//发布时间
+
+        QBadgeView badgeView;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

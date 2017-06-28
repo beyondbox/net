@@ -27,7 +27,8 @@ public class LogisticsAdapter extends BaseQuickAdapter<LineList, BaseViewHolder>
     protected void convert(BaseViewHolder helper, LineList item) {
         helper.setText(R.id.txtTime, item.getUpdate_time().replaceAll("-", "\\.").substring(0, 16))
                 .setText(R.id.txtTitle, "线路: " + item.getFrom() + " - " + item.getTo())
-                .setText(R.id.txtSubTitle, "途径: " + item.getPassby_name());
+                .setText(R.id.txtSubTitle, "途径: " + item.getPassby_name())
+                .setVisible(R.id.unRead, !item.is_read());
 
         TextView txtName = helper.getView(R.id.txtName);
 

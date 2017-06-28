@@ -20,6 +20,7 @@
 package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import q.rorbin.badgeview.QBadgeView;
 
 
 /**
@@ -76,6 +78,8 @@ public class ExhibitionListViewAdapter extends BaseAdapter {
         } else {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_lv_exhibition, null);
             viewHolder = new ViewHolder(convertView);
+            viewHolder.badgeView = new QBadgeView(mContext);
+            viewHolder.badgeView.bindTarget(viewHolder.tv_title).setBadgeGravity(Gravity.START | Gravity.TOP ).setGravityOffset(5, 12, true).setBadgePadding(3, true);
             convertView.setTag(viewHolder);
         }
         fillValue(position, viewHolder);
@@ -84,6 +88,12 @@ public class ExhibitionListViewAdapter extends BaseAdapter {
 
     private void fillValue(int position, ViewHolder viewHolder) {
         Exhibition item = list.get(position);
+
+        if (item.is_read())
+            viewHolder.badgeView.setBadgeNumber(0);
+        else
+            viewHolder.badgeView.setBadgeNumber(-1);
+
         viewHolder.tv_title.setText(item.getTitle());
         viewHolder.tv_time.setText(item.getTime());
         viewHolder.tv_distance.setText(item.getLocation()+"|"+item.getDistance()+"km");
@@ -104,6 +114,9 @@ public class ExhibitionListViewAdapter extends BaseAdapter {
 
         @Bind(R.id.tv_distance)
         TextView tv_distance;
+
+        QBadgeView badgeView;
+
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }

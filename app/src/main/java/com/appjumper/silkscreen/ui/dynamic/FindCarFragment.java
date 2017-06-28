@@ -105,6 +105,8 @@ public class FindCarFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 start_Activity(context, TruckDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()));
+                dataList.get(position).setIs_read(true);
+                adapter.notifyDataSetChanged();
             }
         });
 
