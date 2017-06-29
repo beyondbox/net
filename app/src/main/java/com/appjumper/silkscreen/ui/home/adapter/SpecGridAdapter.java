@@ -15,9 +15,6 @@ import com.appjumper.silkscreen.ui.common.adapter.SpecImageAdapter;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * 产品规格adapter
  * Created by Botx on 2017/4/13.
@@ -43,20 +40,13 @@ public class SpecGridAdapter extends MyBaseAdapter<Spec> {
             lvImage.setAdapter(new SpecImageAdapter(context, Arrays.asList(spec.getValue().split(","))));
         } else {
             view = LayoutInflater.from(context).inflate(R.layout.item_grid_spec, null);
-            ViewHolder vh = new ViewHolder();
-            ButterKnife.bind(vh, view);
-            vh.txtName.setText(spec.getName());
-            vh.txtValue.setText(spec.getValue());
+            TextView txtName = (TextView) view.findViewById(R.id.txtName);
+            TextView txtValue = (TextView) view.findViewById(R.id.txtValue);
+            txtName.setText(spec.getName());
+            txtValue.setText(spec.getValue());
         }
 
         return view;
     }
 
-    class ViewHolder {
-        @Bind(R.id.txtName)
-        TextView txtName;
-
-        @Bind(R.id.txtValue)
-        TextView txtValue;
-    }
 }

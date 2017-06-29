@@ -312,6 +312,12 @@ public class OrderActivity extends BaseActivity {
     }
 
     private void initSpec() {
+        if (spec.size() > 0)
+            txtSpecSelect.setTextColor(getResources().getColor(R.color.black_color));
+        else
+            txtSpecSelect.setTextColor(getResources().getColor(R.color.light_gray_color));
+
+
         if (l_screening2.getChildCount() > 0) {
             l_screening2.removeAllViews();
         }
@@ -647,7 +653,9 @@ public class OrderActivity extends BaseActivity {
                     showErrorToast("请先选择产品");
                     return;
                 }
-                drawerLayt.openDrawer(Gravity.RIGHT);
+
+                if (spec.size() > 0)
+                    drawerLayt.openDrawer(Gravity.RIGHT);
                 break;
             default:
                 break;

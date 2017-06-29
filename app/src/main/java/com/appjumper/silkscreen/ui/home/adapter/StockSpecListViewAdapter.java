@@ -17,14 +17,13 @@
  *
  */
 
-package com.appjumper.silkscreen.ui.my.adapter;
+package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,17 +39,15 @@ import butterknife.ButterKnife;
 
 
 /**
- * Created by yc on 2015/6/29.
- * 查看订做／加工／现货 详情 规格
+ * Created by botx on 2017/6/29.
+ * 现货详情 规格
  */
-public class ViewOrderListViewAdapter extends BaseAdapter {
+public class StockSpecListViewAdapter extends BaseAdapter {
 
     private final List<Spec> service_spec;
-    private LayoutInflater mInflater;
     private Context mContext;
 
-    public ViewOrderListViewAdapter(Context context, List<Spec> service_spec) {
-        this.mInflater = LayoutInflater.from(context);
+    public StockSpecListViewAdapter(Context context, List<Spec> service_spec) {
         this.mContext = context;
         this.service_spec = service_spec;
     }
@@ -76,14 +73,14 @@ public class ViewOrderListViewAdapter extends BaseAdapter {
 
         Spec spec = service_spec.get(position);
         if (spec.getValue().matches("[hH][tT]{2}[pP]://[\\s\\S]+\\.[jJ][pP][gG]")) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_lv_spec_image, null);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_lv_spec_image_stock, null);
             TextView txtName = (TextView) view.findViewById(R.id.txtName);
             txtName.setText(spec.getName() + ":");
 
             ListView lvImage = (ListView) view.findViewById(R.id.lvImage);
             lvImage.setAdapter(new SpecImageAdapter(mContext, Arrays.asList(spec.getValue().split(","))));
         } else {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_my_service_details, null);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_lv_stock_spec, null);
             ViewHolder viewHolder = new ViewHolder(view);
             fillValue(position, viewHolder);
         }
@@ -91,27 +88,14 @@ public class ViewOrderListViewAdapter extends BaseAdapter {
         return view;
     }
 
+
     private void fillValue(int position, ViewHolder viewHolder) {
-        if (position  == 0) {
-            viewHolder.ll_gg.setVisibility(View.VISIBLE);
-            viewHolder.ll_ggval.setVisibility(View.VISIBLE);
-        } else {
-            viewHolder.ll_gg.setVisibility(View.GONE);
-            viewHolder.ll_ggval.setVisibility(View.VISIBLE);
-        }
-        viewHolder.tv_gg.setText(service_spec.get(position).getName()+": ");
-        if(service_spec.get(position).getFieldinput().equals("radio")){
-            viewHolder.tv_vul.setText(service_spec.get(position).getValue());
-        }else{
-            viewHolder.tv_vul.setText(service_spec.get(position).getValue()+" "+service_spec.get(position).getUnit());
-        }
+        viewHolder.tv_gg.setText(service_spec.get(position).getName()+":");
+        viewHolder.tv_vul.setText(service_spec.get(position).getValue());
     }
 
+
     static class ViewHolder {
-        @Bind(R.id.ll_gg)//规格
-                LinearLayout ll_gg;
-        @Bind(R.id.ll_ggval)//规格内容
-                LinearLayout ll_ggval;
         @Bind(R.id.tv_gg)//规格
                 TextView tv_gg;
         @Bind(R.id.tv_vul)//规格内容

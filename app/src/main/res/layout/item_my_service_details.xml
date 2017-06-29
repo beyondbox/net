@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:layout_marginLeft="22dp"
         android:layout_marginBottom="9dp"
         android:layout_marginTop="9dp"
@@ -42,6 +43,7 @@
             android:id="@+id/tv_gg"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
             android:text="规格"
             android:textColor="@color/black_color"
             android:textSize="13sp" />

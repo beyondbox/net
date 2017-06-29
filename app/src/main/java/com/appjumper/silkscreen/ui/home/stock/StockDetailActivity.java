@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -36,12 +37,15 @@ import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.PropertyAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SpecGridAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SpecSelectGridAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.StockSpecListViewAdapter;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.AppTool;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.ShareUtil;
+import com.appjumper.silkscreen.view.MyGridView;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.SelectPicPopupWindow;
@@ -56,7 +60,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -113,6 +116,8 @@ public class StockDetailActivity extends BaseActivity {
     private Product product;
 
     private List<List<Spec>> multiSpecList = new ArrayList<>(); //多规格数据集合
+    private int selectedIndex = 0; //选择的规格下标
+    private PopupWindow popup; //选择规格对话框
 
 
 
@@ -191,6 +196,9 @@ public class StockDetailActivity extends BaseActivity {
         for (int i = 0; i < multiSpecList.size(); i++) {
             setOneSpec(multiSpecList.get(i), i);
         }
+
+        if (multiSpecList.size() > 1)
+            initSepcSelectPopup();
     }
 
 
@@ -234,65 +242,78 @@ public class StockDetailActivity extends BaseActivity {
         }
 
         //渲染具体规格
-        GridView gridView = (GridView) specView.findViewById(R.id.gridView);
-        //刀片刺绳显示1列，其余产品为2列
+        LinearLayout llSpec = (LinearLayout) specView.findViewById(R.id.llSpec);
+        //刀片刺绳用listview，其余产品用gridview
         if (product.getProduct_id().equals("27"))
-            gridView.setNumColumns(1);
+            llSpec.addView(getListView(tempList));
         else
-            gridView.setNumColumns(2);
-        gridView.setAdapter(new SpecGridAdapter(context, tempList));
+            llSpec.addView(getGridView(tempList));
 
 
         lLaytSpec.addView(specView);
     }
 
 
+    /**
+     * 生成规格数据的GridView
+     */
+    private GridView getGridView(List<Spec> specList) {
+        MyGridView gridView = new MyGridView(context);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        gridView.setLayoutParams(params);
+        int padding = DisplayUtil.dip2px(context, 12);
+        int paddingLeft = DisplayUtil.dip2px(context, 14);
+        gridView.setPadding(paddingLeft, padding, padding, padding);
+        gridView.setNumColumns(2);
+        gridView.setHorizontalSpacing(DisplayUtil.dip2px(context, 10));
+        gridView.setVerticalSpacing(DisplayUtil.dip2px(context, 12));
 
+        gridView.setAdapter(new SpecGridAdapter(context, specList));
 
-    private void refresh() {
-        mPullRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ObservableScrollView>() {
-
-            @Override
-            public void onPullDownToRefresh(PullToRefreshBase<ObservableScrollView> refreshView) {
-                mPullRefreshScrollView.onRefreshComplete();
-            }
-
-            @Override
-            public void onPullUpToRefresh(PullToRefreshBase<ObservableScrollView> refreshView) {
-                mPullRefreshScrollView.onRefreshComplete();
-            }
-        });
-    }
-
-    @OnClick({R.id.tv_inquiry, R.id.rl_company, R.id.iv_share})
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tv_inquiry://询价
-                if (checkLogined()) {
-                    //showSepcSelectPopup();
-                    goToInquiry();
-                }
-                break;
-            case R.id.rl_company:
-                start_Activity(context, CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", eid));
-                break;
-            case R.id.iv_share:
-                ShareUtil.intShare2(this, v, product.getRemark(), product.getProduct_name()+product.getService_type_name(), product.getUrl(),product.getImg_list().get(0).getSmall());
-                break;
-            default:
-                break;
-        }
+        return gridView;
     }
 
 
     /**
-     * 弹出选择规格对话框
+     * 生成规格数据的ListView
      */
-    private void showSepcSelectPopup() {
-        View contentView = LayoutInflater.from(context).inflate(R.layout.layout_stock_spec_select, null);
-        final PopupWindow popup = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    private ListView getListView(List<Spec> specList) {
+        MyListView listView = new MyListView(context);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        listView.setLayoutParams(params);
+        int padding = DisplayUtil.dip2px(context, 12);
+        int paddingLeft = DisplayUtil.dip2px(context, 17);
+        listView.setPadding(paddingLeft, padding, padding, padding);
+        listView.setDividerHeight(0);
 
+        listView.setAdapter(new StockSpecListViewAdapter(context, specList));
+
+        return listView;
+    }
+
+
+    /**
+     * 初始化规格选择对话框
+     */
+    private void initSepcSelectPopup() {
+        View contentView = LayoutInflater.from(context).inflate(R.layout.layout_stock_spec_select, null);
+        popup = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        ImageView imgViProduct = (ImageView) contentView.findViewById(R.id.imgViProduct);
+        TextView txtName = (TextView) contentView.findViewById(R.id.txtName);
         ImageView imgViClose = (ImageView) contentView.findViewById(R.id.imgViClose);
+        final GridView gridView = (GridView) contentView.findViewById(R.id.gridSpec);
+        final TextView txtSpecDesc = (TextView) contentView.findViewById(R.id.txtSpecDesc);
+
+        txtName.setText(product.getProduct_name());
+        txtSpecDesc.setText(getSpecDesc(multiSpecList.get(0)));
+        selectedIndex = 0;
+        Picasso.with(context)
+                .load(product.getImg_list().get(0).getSmall())
+                .placeholder(R.mipmap.img_error)
+                .error(R.mipmap.img_error)
+                .into(imgViProduct);
+
         imgViClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -300,14 +321,20 @@ public class StockDetailActivity extends BaseActivity {
             }
         });
 
-        GridView gridView = (GridView) contentView.findViewById(R.id.gridSpec);
-        String [] arr = {"规格1", "规格2", "规格3", "规格4"};
-        final SpecSelectGridAdapter adapter = new SpecSelectGridAdapter(context, Arrays.asList(arr));
+        List<String> menuList = new ArrayList<>();
+        for (int i = 0; i < multiSpecList.size(); i++) {
+            menuList.add("规格" + (i + 1));
+        }
+
+        final SpecSelectGridAdapter adapter = new SpecSelectGridAdapter(context, menuList);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedIndex = position;
                 adapter.changeSelected(position);
+                gridView.smoothScrollToPosition(position);
+                txtSpecDesc.setText(getSpecDesc(multiSpecList.get(position)));
             }
         });
 
@@ -330,10 +357,48 @@ public class StockDetailActivity extends BaseActivity {
         popup.setBackgroundDrawable(new ColorDrawable(0x00000000));
         popup.setOutsideTouchable(true);
         popup.setFocusable(true);
-
-        popup.showAtLocation(tv_inquiry, Gravity.BOTTOM, 0, 0);
-        AppTool.setBackgroundAlpha(context, 0.5f);
     }
+
+
+    private void refresh() {
+        mPullRefreshScrollView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<ObservableScrollView>() {
+
+            @Override
+            public void onPullDownToRefresh(PullToRefreshBase<ObservableScrollView> refreshView) {
+                mPullRefreshScrollView.onRefreshComplete();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<ObservableScrollView> refreshView) {
+                mPullRefreshScrollView.onRefreshComplete();
+            }
+        });
+    }
+
+    @OnClick({R.id.tv_inquiry, R.id.rl_company, R.id.iv_share})
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tv_inquiry://询价
+                if (checkLogined()) {
+                    if (multiSpecList.size() > 1) {
+                        popup.showAtLocation(tv_inquiry, Gravity.BOTTOM, 0, 0);
+                        AppTool.setBackgroundAlpha(context, 0.5f);
+                    } else {
+                        goToInquiry();
+                    }
+                }
+                break;
+            case R.id.rl_company:
+                start_Activity(context, CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", eid));
+                break;
+            case R.id.iv_share:
+                ShareUtil.intShare2(this, v, product.getRemark(), product.getProduct_name()+product.getService_type_name(), product.getUrl(),product.getImg_list().get(0).getSmall());
+                break;
+            default:
+                break;
+        }
+    }
+
 
 
     /**
@@ -363,6 +428,29 @@ public class StockDetailActivity extends BaseActivity {
         startActivity(intent);
         overridePendingTransition(R.anim.push_left_in,
                 R.anim.push_left_out);
+    }
+
+
+    /**
+     * 生成规格描述
+     * @return
+     */
+    private String getSpecDesc(List<Spec> specList) {
+        String str = "";
+
+        for (int i = 0; i < specList.size(); i++) {
+            Spec spec = specList.get(i);
+            if (TextUtils.isEmpty(spec.getValue()))
+                continue;
+            if (spec.getValue().matches("[hH][tT]{2}[pP]://[\\s\\S]+\\.[jJ][pP][gG]"))
+                continue;
+
+            str += spec.getName() + spec.getValue();
+            if (i != specList.size() - 1)
+                str += ", ";
+        }
+
+        return str;
     }
 
 

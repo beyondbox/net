@@ -115,7 +115,7 @@ public class AppTool {
     }
 
     /**
-     * 设置界面的透明度
+     * 设置背景界面的透明度
      * @param activity
      * @param bgAlpha
      */

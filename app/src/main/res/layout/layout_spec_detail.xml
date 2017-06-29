@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
@@ -41,14 +41,23 @@
         android:layout_marginLeft="12dp" />
 
 
-    <com.appjumper.silkscreen.view.MyGridView
-        android:id="@+id/gridView"
+    <LinearLayout
+        android:id="@+id/llSpec"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <!--<com.appjumper.silkscreen.view.MyGridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
         android:padding="12dp"
         android:numColumns="1"
         android:horizontalSpacing="15dp"
-        android:verticalSpacing="12dp"/>
+        android:verticalSpacing="12dp"/>-->
 
 
     <View

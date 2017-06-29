@@ -315,6 +315,12 @@ public class StockActivity extends BaseActivity {
 
 
     private void initSpec(final List<Spec> data) {
+        if (data.size() > 0)
+            txtSpecSelect.setTextColor(getResources().getColor(R.color.black_color));
+        else
+            txtSpecSelect.setTextColor(getResources().getColor(R.color.light_gray_color));
+
+
         if (l_screening2.getChildCount() > 0) {
             l_screening2.removeAllViews();
         }
@@ -749,7 +755,9 @@ public class StockActivity extends BaseActivity {
                     showErrorToast("请先选择产品");
                     return;
                 }
-                drawerLayt.openDrawer(Gravity.RIGHT);
+
+                if (txtSpecSelect.getCurrentTextColor() == getResources().getColor(R.color.black_color))
+                    drawerLayt.openDrawer(Gravity.RIGHT);
                 break;
             default:
                 break;
