@@ -5,19 +5,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.AuthInfoResponse;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.ImageResponse;
-import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
@@ -128,9 +127,14 @@ public class ProductivityAuthenticationActivity extends BaseActivity{
             if(activity == null){
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             if(progress!=null){
                 activity.progress.dismiss();
             }
+
             switch (msg.what) {
                 case 4://获取企业认证
                     AuthInfoResponse authinforesponse = (AuthInfoResponse) msg.obj;
@@ -142,7 +146,7 @@ public class ProductivityAuthenticationActivity extends BaseActivity{
                         }else{
                             tv_consult.setTextColor(activity.getResources().getColor(R.color.red_color));
                         }
-                        WebSettings mWebSettings = web_view.getSettings();
+                        /*WebSettings mWebSettings = web_view.getSettings();
                         mWebSettings.setJavaScriptEnabled(true);
                         mWebSettings.setBuiltInZoomControls(true);
                         mWebSettings.setLightTouchEnabled(true);
@@ -154,7 +158,7 @@ public class ProductivityAuthenticationActivity extends BaseActivity{
                                 view.loadUrl(url);
                                 return true;
                             }
-                        });
+                        });*/
                     }
                     break;
                 case NETWORK_SUCCESS_PAGER_RIGHT://生产力认证

@@ -588,7 +588,8 @@ public class ReleaseDaoPianActivity extends BasePhotoGridActivity {
                 data.put("type", type);
                 //data.put("product_type", productType);
                 data.put("product_id", service.getId());
-                data.put("spec", json);
+                data.put("spec1", json);
+                data.put("spec_num", "1");
                 data.put("remark", et_remark.getText().toString());
                 data.put("imgs", imags(imgResponse.getData()));
 

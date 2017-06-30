@@ -432,7 +432,8 @@ public class InquiryHuLanActivity extends BasePhotoGridActivity {
                 //data.put("product_type",productType);
                 data.put("product_id", "104");
                 data.put("imgs", imags(imgResponse.getData()));
-                data.put("spec", new JSONArray().put(new JSONObject(map)).toString());
+                data.put("spec1", new JSONArray().put(new JSONObject(map)).toString());
+                data.put("spec_num", "1");
                 LogHelper.e("SpecJson", new JSONArray().put(new JSONObject(map)).toString());
                 Thread.interrupted();
                 data.put("remark", et_remark.getText().toString());

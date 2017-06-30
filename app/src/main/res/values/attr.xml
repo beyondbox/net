@@ -6,4 +6,8 @@
         <attr name="border_color" format="color" />
     </declare-styleable>
 
+
+    <item type="id" name="tag_1"/>
+    <item type="id" name="tag_2"/>
+
 </resources>

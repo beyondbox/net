@@ -38,10 +38,9 @@ import com.appjumper.silkscreen.ui.home.adapter.PropertyAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SpecGridAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SpecSelectGridAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StockSpecListViewAdapter;
-import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
-import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
-import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
+import com.appjumper.silkscreen.ui.inquiry.InquiryStockActivity;
 import com.appjumper.silkscreen.util.AppTool;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.ShareUtil;
@@ -76,6 +75,8 @@ import butterknife.OnClick;
  */
 
 public class StockDetailActivity extends BaseActivity {
+
+    public static StockDetailActivity instance = null;
 
     @Bind(R.id.pull_refresh_scrollview)
     PullToRefreshScrollView mPullRefreshScrollView;
@@ -163,6 +164,7 @@ public class StockDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_detail);
         ButterKnife.bind(this);
+        instance = this;
         initBack();
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -182,6 +184,9 @@ public class StockDetailActivity extends BaseActivity {
     private void parseMultiSpec() {
         int count = Integer.valueOf(product.getSpec_num());
         List<Spec> list = product.getService_spec();
+
+        if (list.size() == 0)
+            return;
 
         for (int i = 1; i < count + 1; i++) {
             List<Spec> temp = new ArrayList<>();
@@ -405,29 +410,22 @@ public class StockDetailActivity extends BaseActivity {
      * 跳转到询价界面
      */
     private void goToInquiry() {
-        Intent intent = null;
-        if (product.getProduct_id().equals("104"))
-            intent = new Intent(context, InquiryHuLanActivity.class);
-        else if (product.getProduct_id().equals("27"))
-            intent = new Intent(context, InquiryDaoPianActivity.class);
-        else
-            intent = new Intent(context, InquirySpecificationActivity.class);
-        intent.putExtra("type", product.getType());
-        intent.putExtra("identity", "4");
-        intent.putExtra("eid", product.getEnterprise_id());
-        intent.putExtra("productType", product.getProduct_type());
-        Bundle bundle = new Bundle();
         ServiceProduct serviceProduct = new ServiceProduct();
         serviceProduct.setName(product.getProduct_name());
         serviceProduct.setId(product.getProduct_id());
-        serviceProduct.setProduct_spec(product.getService_spec());
         serviceProduct.setRemark(product.getRemark());
-        serviceProduct.setImg_require(product.getImg_require());
-        bundle.putSerializable("service", serviceProduct);
-        intent.putExtras(bundle);
+
+        if (multiSpecList.size() > 0)
+            serviceProduct.setProduct_spec(multiSpecList.get(selectedIndex));
+        else
+            serviceProduct.setProduct_spec(new ArrayList<Spec>());
+
+        Intent intent = new Intent(context, InquiryStockActivity.class);
+        intent.putExtra("type", product.getType());
+        intent.putExtra("eid", product.getEnterprise_id());
+        intent.putExtra(Const.KEY_OBJECT, serviceProduct);
+
         startActivity(intent);
-        overridePendingTransition(R.anim.push_left_in,
-                R.anim.push_left_out);
     }
 
 
@@ -574,6 +572,14 @@ public class StockDetailActivity extends BaseActivity {
         }
 
     };
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
+
 
 
 

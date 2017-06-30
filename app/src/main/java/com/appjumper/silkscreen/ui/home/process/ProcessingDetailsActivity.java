@@ -67,6 +67,7 @@ import butterknife.OnClick;
  */
 public class ProcessingDetailsActivity extends BaseActivity {
 
+    public static ProcessingDetailsActivity instance  = null;
 
     @Bind(R.id.pull_refresh_scrollview)
     PullToRefreshScrollView mPullRefreshScrollView;
@@ -138,6 +139,7 @@ public class ProcessingDetailsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_processing_details);
         ButterKnife.bind(this);
+        instance = this;
         initBack();
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
@@ -505,4 +507,10 @@ public class ProcessingDetailsActivity extends BaseActivity {
         getWindow().setAttributes(lp);
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 }

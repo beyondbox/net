@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -69,12 +70,10 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
     private String type;
     private String productType;
     private ImageResponse imgResponse;
-    private String json;
 
-    private Map<DPGroup, List<DPChild>> guigeMap;
-    private List<DPGroup> groupList;
     private List<List<DPChild>> childList;
     private ReleaseDaoPianAdapter adapter;
+    private List<String> specJsonList = new ArrayList<>();
 
     private List<DPChild> childList0;
     private List<DPChild> childList1;
@@ -89,23 +88,26 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_release_daopian_stock);
-        initBack();
-        initView();
         ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
         productType = intent.getStringExtra("productType");
         service = (ServiceProduct)intent.getSerializableExtra("service");
         list = service.getProduct_spec();
+
         initTitle(service.getName());
+        initBack();
+        initView();
+        initChildList();
         initProgressDialog(false, "正在添加服务...");
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                initViewSpecification(llSpecification);
+                addSpecView();
                 et_remark.setHint(service.getRemark());
             }
         }, 50);
@@ -115,19 +117,94 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
 
 
     /**
-     * 初始化规格
+     * 初始化特定规格
      */
-    private void initViewSpecification(LinearLayout parentLayout) {
+    private void initChildList() {
+        childList = new ArrayList<>();
+
+        childList0 = new ArrayList<>();
+        childList1 = new ArrayList<>();
+        childList2 = new ArrayList<>();
+        childList3 = new ArrayList<>();
+        childList4 = new ArrayList<>();
+
+        childList0.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang1.jpg", "形状"));
+        childList0.add(new DPChild("banhou", "0.5±0.05", "板厚(mm)"));
+        childList0.add(new DPChild("sijing", "2.5±0.1", "丝径(mm)"));
+        childList0.add(new DPChild("daochang", "12±1", "刀长(mm)"));
+        childList0.add(new DPChild("daokuan", "15±1", "刀宽(mm)"));
+        childList0.add(new DPChild("daojian", "26±1", "刀间(mm)"));
+
+        childList1.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang2.jpg", "形状"));
+        childList1.add(new DPChild("banhou", "0.5±0.05", "板厚(mm)"));
+        childList1.add(new DPChild("sijing", "2.5±0.1", "丝径(mm)"));
+        childList1.add(new DPChild("daochang", "22±1", "刀长(mm)"));
+        childList1.add(new DPChild("daokuan", "15±1", "刀宽(mm)"));
+        childList1.add(new DPChild("daojian", "34±1", "刀间(mm)"));
+
+        childList2.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang3.jpg", "形状"));
+        childList2.add(new DPChild("banhou", "0.5±0.05", "板厚(mm)"));
+        childList2.add(new DPChild("sijing", "2.5", "丝径(mm)"));
+        childList2.add(new DPChild("daochang", "28", "刀长(mm)"));
+        childList2.add(new DPChild("daokuan", "15", "刀宽(mm)"));
+        childList2.add(new DPChild("daojian", "45±1", "刀间(mm)"));
+
+        childList3.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang4.jpg", "形状"));
+        childList3.add(new DPChild("banhou", "0.6±0.05", "板厚(mm)"));
+        childList3.add(new DPChild("sijing", "2.5±0.1", "丝径(mm)"));
+        childList3.add(new DPChild("daochang", "60±2", "刀长(mm)"));
+        childList3.add(new DPChild("daokuan", "32±1", "刀宽(mm)"));
+        childList3.add(new DPChild("daojian", "100±2", "刀间(mm)"));
+
+        childList4.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang5.jpg", "形状"));
+        childList4.add(new DPChild("banhou", "0.5±0.05", "板厚(mm)"));
+        childList4.add(new DPChild("sijing", "2.5±0.1", "丝径(mm)"));
+        childList4.add(new DPChild("daochang", "65±2", "刀长(mm)"));
+        childList4.add(new DPChild("daokuan", "21±1", "刀宽(mm)"));
+        childList4.add(new DPChild("daojian", "100±2", "刀间(mm)"));
+
+        childList.add(childList0);
+        childList.add(childList1);
+        childList.add(childList2);
+        childList.add(childList3);
+        childList.add(childList4);
+    }
+
+
+
+    /**
+     * 添加一个规格视图
+     */
+    private void addSpecView() {
+        final View specView = LayoutInflater.from(context).inflate(R.layout.item_recycler_line_spec_stock, null);
+        ImageView imgViClose = (ImageView) specView.findViewById(R.id.imgViClose);
+        LinearLayout parentLayout = (LinearLayout) specView.findViewById(R.id.ll_specification);
+
+        if (llSpecification.getChildCount() > 0) {
+            imgViClose.setVisibility(View.VISIBLE);
+        }
+
         for (int i = 0; i < list.size(); i++) {
             String fildType = list.get(i).getFieldinput();
-
             if (fildType.equals("radio")) {
                 initChoiceData(parentLayout, i);
             } else if(fildType.equals("text")) {
                 initInputValue(parentLayout, i);
             }
         }
+
+        imgViClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                llSpecification.removeView(specView);
+                refreshSpecName();
+            }
+        });
+
+
+        llSpecification.addView(specView);
     }
+
 
 
 
@@ -230,15 +307,8 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
      * 渲染特定规格布局
      */
     private void initGuiGeLayout(LinearLayout parentLayout, int position) {
-        guigeMap = new HashMap<>();
-        groupList =  new ArrayList<>();
-        childList = new ArrayList<>();
-
-        childList0 = new ArrayList<>();
-        childList1 = new ArrayList<>();
-        childList2 = new ArrayList<>();
-        childList3 = new ArrayList<>();
-        childList4 = new ArrayList<>();
+        Map<DPGroup, List<DPChild>> guigeMap = new HashMap<>();
+        List<DPGroup> groupList =  new ArrayList<>();
 
         Spec spec = list.get(position);
         String [] guigeArr = spec.getUnit().split(",");
@@ -251,48 +321,6 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
             groupList.add(group);
         }
 
-
-        childList0.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang1.jpg", "形状"));
-        childList0.add(new DPChild("banhou", "0.5±0.05", "板厚(mm)"));
-        childList0.add(new DPChild("sijing", "2.5±0.1", "丝径(mm)"));
-        childList0.add(new DPChild("daochang", "12±1", "刀长(mm)"));
-        childList0.add(new DPChild("daokuan", "15±1", "刀宽(mm)"));
-        childList0.add(new DPChild("daojian", "26±1", "刀间(mm)"));
-
-        childList1.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang2.jpg", "形状"));
-        childList1.add(new DPChild("banhou", "0.5±0.05", "板厚(mm)"));
-        childList1.add(new DPChild("sijing", "2.5±0.1", "丝径(mm)"));
-        childList1.add(new DPChild("daochang", "22±1", "刀长(mm)"));
-        childList1.add(new DPChild("daokuan", "15±1", "刀宽(mm)"));
-        childList1.add(new DPChild("daojian", "34±1", "刀间(mm)"));
-
-        childList2.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang3.jpg", "形状"));
-        childList2.add(new DPChild("banhou", "0.5±0.05", "板厚(mm)"));
-        childList2.add(new DPChild("sijing", "2.5", "丝径(mm)"));
-        childList2.add(new DPChild("daochang", "28", "刀长(mm)"));
-        childList2.add(new DPChild("daokuan", "15", "刀宽(mm)"));
-        childList2.add(new DPChild("daojian", "45±1", "刀间(mm)"));
-
-        childList3.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang4.jpg", "形状"));
-        childList3.add(new DPChild("banhou", "0.6±0.05", "板厚(mm)"));
-        childList3.add(new DPChild("sijing", "2.5±0.1", "丝径(mm)"));
-        childList3.add(new DPChild("daochang", "60±2", "刀长(mm)"));
-        childList3.add(new DPChild("daokuan", "32±1", "刀宽(mm)"));
-        childList3.add(new DPChild("daojian", "100±2", "刀间(mm)"));
-
-        childList4.add(new DPChild("xingzhuang", "http://115.28.148.207/data/upload/2016-12-21/xingzhuang5.jpg", "形状"));
-        childList4.add(new DPChild("banhou", "0.5±0.05", "板厚(mm)"));
-        childList4.add(new DPChild("sijing", "2.5±0.1", "丝径(mm)"));
-        childList4.add(new DPChild("daochang", "65±2", "刀长(mm)"));
-        childList4.add(new DPChild("daokuan", "21±1", "刀宽(mm)"));
-        childList4.add(new DPChild("daojian", "100±2", "刀间(mm)"));
-
-        childList.add(childList0);
-        childList.add(childList1);
-        childList.add(childList2);
-        childList.add(childList3);
-        childList.add(childList4);
-
         for (int i = 0; i < groupList.size(); i++) {
             guigeMap.put(groupList.get(i), childList.get(i));
         }
@@ -303,6 +331,7 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
         adapter = new ReleaseDaoPianAdapter(this, guigeMap, groupList);
         adapter.setChoiceMode(ReleaseDaoPianAdapter.CHOICE_MODE_SINGLE);
         exListView.setAdapter(adapter);
+        exListView.expandGroup(0, true);
 
         exListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
@@ -316,84 +345,118 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
             }
         });
 
-        exListView.expandGroup(0, true);
+
         parentLayout.addView(exListView);
+        parentLayout.setTag(R.id.tag_1, guigeMap);
+        parentLayout.setTag(R.id.tag_2, groupList);
     }
 
 
 
+    /**
+     * 刷新规格名称
+     */
+    private void refreshSpecName() {
+        int count = llSpecification.getChildCount();
+
+        for (int i = 0; i < count; i++) {
+            LinearLayout linearLayout = (LinearLayout) llSpecification.getChildAt(i);
+            TextView txtSpecName = (TextView) linearLayout.findViewById(R.id.txtSpecName);
+
+            if (i == 0 && count == 1)
+                txtSpecName.setText("规格");
+            else
+                txtSpecName.setText("规格" + (i + 1));
+        }
+    }
 
 
-    @OnClick({R.id.tv_confirm})
+
+    @OnClick({R.id.tv_confirm, R.id.txtAddSpec})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_confirm://确定
-                JSONArray jsonArray = new JSONArray();
-                List<Map<String,String>> listval = new ArrayList<>();
-                JSONObject jsonObject = new JSONObject();
+            case R.id.tv_confirm: //确定
+                specJsonList.clear();
+                int specCount = llSpecification.getChildCount();
 
-                getSelectedGuiGe(jsonObject);
+                for (int k = 0; k < specCount; k++) {
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject jsonObject = new JSONObject();
+                    LinearLayout parentLayout = (LinearLayout) llSpecification.getChildAt(k);
+                    String specName = "";
+                    if (specCount > 1) {
+                        TextView txtSpecName = (TextView) parentLayout.findViewById(R.id.txtSpecName);
+                        specName = txtSpecName.getText().toString().trim();
+                    }
 
-                for (int i = 0; i < list.size(); i++) {
-                    if (list.get(i).getFieldinput().equals("radio")) {
 
-                        if (Arrays.asList(nameArr).contains(list.get(i).getFieldname()))
-                            continue;
+                    LinearLayout llSpec = (LinearLayout) parentLayout.findViewById(R.id.ll_specification);
+                    getSelectedGuiGe(llSpec, jsonObject);
 
-                        View choiceView = llSpecification.findViewWithTag("choice" + i);
-                        GridView gridChoice = (GridView) choiceView.findViewById(R.id.gridChoice);
-                        String [] valueArr = list.get(i).getUnit().split(",");
+                    for (int i = 0; i < list.size(); i++) {
+                        if (list.get(i).getFieldinput().equals("radio")) {
 
-                        String checkedResult = "";
-                        for (int j = 0; j < valueArr.length; j++) {
-                            LinearLayout linearLayout = (LinearLayout) gridChoice.getChildAt(j);
-                            if (((CheckBox)linearLayout.getChildAt(0)).isChecked()) {
-                                checkedResult += valueArr[j] + ",";
+                            if (Arrays.asList(nameArr).contains(list.get(i).getFieldname()))
+                                continue;
+
+                            View choiceView = parentLayout.findViewWithTag("choice" + i);
+                            GridView gridChoice = (GridView) choiceView.findViewById(R.id.gridChoice);
+                            String [] valueArr = list.get(i).getUnit().split(",");
+
+                            String checkedResult = "";
+                            for (int j = 0; j < valueArr.length; j++) {
+                                LinearLayout linearLayout = (LinearLayout) gridChoice.getChildAt(j);
+                                if (((CheckBox)linearLayout.getChildAt(0)).isChecked()) {
+                                    checkedResult += valueArr[j] + ",";
+                                }
                             }
-                        }
 
-                        if (list.get(i).getRequire().equals("1")) {
-                            if (TextUtils.isEmpty(checkedResult)) {
-                                showErrorToast("请选择" + list.get(i).getName());
-                                return;
-                            }
-                        }
-
-                        if (!TextUtils.isEmpty(checkedResult))
-                            checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
-                        jsonObject.put(list.get(i).getFieldname(), checkedResult);
-
-                    } else if (list.get(i).getFieldinput().equals("text")) {
-                        View editView = llSpecification.findViewWithTag("edit" + i);
-                        EditText etValue = (EditText) editView.findViewWithTag(i + "value");
-                        String value = etValue.getText().toString().trim();
-
-                        if(list.get(i).getRequire().equals("1")) {
-                            if (TextUtils.isEmpty(value)) {
-                                showErrorToast("请输入" + list.get(i).getName());
-                                return;
-                            }
-                        }
-
-                        String minValue = list.get(i).getMin_value();
-                        String maxValue = list.get(i).getMax_value();
-                        if (!TextUtils.isEmpty(minValue) || !TextUtils.isEmpty(maxValue)) {
-                            if (!TextUtils.isEmpty(value)) {
-                                if (Float.valueOf(value) < Float.valueOf(minValue) || Float.valueOf(value) > Float.valueOf(maxValue)) {
-                                    showErrorToast(list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
+                            if (list.get(i).getRequire().equals("1")) {
+                                if (TextUtils.isEmpty(checkedResult)) {
+                                    showErrorToast(specName + "请选择" + list.get(i).getName());
                                     return;
                                 }
                             }
+
+                            if (!TextUtils.isEmpty(checkedResult))
+                                checkedResult = checkedResult.substring(0, checkedResult.length() - 1);
+                            jsonObject.put(list.get(i).getFieldname(), checkedResult);
+
+                        } else if (list.get(i).getFieldinput().equals("text")) {
+                            View editView = parentLayout.findViewWithTag("edit" + i);
+                            EditText etValue = (EditText) editView.findViewWithTag(i + "value");
+                            String value = etValue.getText().toString().trim();
+
+                            if(list.get(i).getRequire().equals("1")) {
+                                if (TextUtils.isEmpty(value)) {
+                                    showErrorToast(specName + "请输入" + list.get(i).getName());
+                                    return;
+                                }
+                            }
+
+                            String minValue = list.get(i).getMin_value();
+                            String maxValue = list.get(i).getMax_value();
+                            if (!TextUtils.isEmpty(minValue) || !TextUtils.isEmpty(maxValue)) {
+                                if (!TextUtils.isEmpty(value)) {
+                                    if (Float.valueOf(value) < Float.valueOf(minValue) || Float.valueOf(value) > Float.valueOf(maxValue)) {
+                                        showErrorToast(specName + list.get(i).getName() + "的范围为" + list.get(i).getMin_value() + "-" + list.get(i).getMax_value());
+                                        return;
+                                    }
+                                }
+                            }
+
+
+                            jsonObject.put(list.get(i).getFieldname(), value);
+
                         }
-
-
-                        jsonObject.put(list.get(i).getFieldname(), value);
-
                     }
+
+                    jsonArray.add(jsonObject);
+                    specJsonList.add(jsonArray.toJSONString());
+                    Log.e("Log",jsonArray.toJSONString()+"-----");
                 }
-                jsonArray.add(jsonObject);
-                json = jsonArray.toJSONString();
-                Log.e("Log",jsonArray.toJSONString()+"-----");
+
+
 
                 if (selectedPicture.size() == 0) {
                     showErrorToast("请上传产品图片");
@@ -401,9 +464,12 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
                 }
                 progress.show();
                 new Thread(new UpdateStringRun(thumbPictures)).start();
-
                 break;
 
+            case R.id.txtAddSpec: //添加规格
+                addSpecView();
+                refreshSpecName();
+                break;
             default:
                 break;
         }
@@ -414,7 +480,10 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
     /**
      * 取出所选的特定规格
      */
-    private void getSelectedGuiGe(JSONObject jsonObj) {
+    private void getSelectedGuiGe(LinearLayout llSpec, JSONObject jsonObj) {
+        Map<DPGroup, List<DPChild>> guigeMap = (Map<DPGroup, List<DPChild>>) llSpec.getTag(R.id.tag_1);
+        List<DPGroup> groupList = (List<DPGroup>) llSpec.getTag(R.id.tag_2);
+
         List<Integer> positionList = new ArrayList<>();
         for (int i = 0; i < groupList.size(); i++) {
             DPGroup group = groupList.get(i);
@@ -565,8 +634,13 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
                 //data.put("product_type",productType);
                 data.put("product_id", service.getId());
                 data.put("imgs", imags(imgResponse.getData()));
-                data.put("spec", json);
                 data.put("remark", et_remark.getText().toString());
+
+                for (int i = 0; i < specJsonList.size(); i++) {
+                    data.put("spec" + (i + 1), specJsonList.get(i));
+                }
+                data.put("spec_num", specJsonList.size() + "");
+
                 //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEADD));
                 response = JsonParser.getBaseResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {

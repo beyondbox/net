@@ -33,6 +33,7 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
+import com.appjumper.silkscreen.ui.home.process.ProcessingDetailsActivity;
 import com.appjumper.silkscreen.ui.my.UserEditActivity;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
 import com.appjumper.silkscreen.util.Const;
@@ -475,6 +476,11 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                         start_Activity(context, InquiryCompleteActivity.class);
                         CommonApi.addLiveness(getUserID(), 5);
                         finish();
+
+                        if (identity.equals("4")) {
+                            if (ProcessingDetailsActivity.instance != null)
+                                ProcessingDetailsActivity.instance.finish();
+                        }
                         /*if (identity.equals("3")||identity.equals("4")) {
                             ActivityTaskManager.getInstance().removeActivity(ChoiceActivity.class);
                         }*/

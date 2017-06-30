@@ -466,8 +466,10 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                     for (int i = 0; i < specJsonList.size(); i++) {
                         data.put("spec" + (i + 1), specJsonList.get(i));
                     }
+                    data.put("spec_num", specJsonList.size() + "");
                 } else {
                     data.put("spec1", "[{}]");
+                    data.put("spec_num", "1");
                 }
 
                 //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEADD));
