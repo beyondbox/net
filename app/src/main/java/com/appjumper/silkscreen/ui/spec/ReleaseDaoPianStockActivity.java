@@ -88,7 +88,7 @@ public class ReleaseDaoPianStockActivity extends BasePhotoGridActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_release_daopian_stock);
+        setContentView(R.layout.activity_specifiaction_stock);
         ButterKnife.bind(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 

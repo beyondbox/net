@@ -29,6 +29,7 @@ import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianActivity;
 import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianStockActivity;
 import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseHuLanStockActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.SPUtil;
 import com.appjumper.silkscreen.view.IndexSideBar;
@@ -254,12 +255,11 @@ public class ProductSelectActivity extends BaseActivity {
             case MOTION_RELEASE_SERVICE: //添加服务
                 if (serviceType == Const.SERVICE_TYPE_STOCK) {
                     if (product.getId().equals("104"))
-                        intent = new Intent(context, InquiryHuLanActivity.class);
+                        intent = new Intent(context, ReleaseHuLanStockActivity.class);
                     else if (product.getId().equals("27"))
                         intent = new Intent(context, ReleaseDaoPianStockActivity.class);
                     else
                         intent = new Intent(context, SpecificationStockActivity.class);
-                    intent.putExtra(Const.KEY_ACTION, Const.REQUEST_CODE_RELEASE_STOCK);
                 } else {
                     if (product.getId().equals("104"))
                         intent = new Intent(context, ReleaseHuLanActivity.class);

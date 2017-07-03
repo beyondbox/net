@@ -123,30 +123,42 @@ public class TrendChartFragment extends BaseFragment {
         v_avg_list.setData(dataXy);
 
         float max = 0;
+        float min = 99999;
         for (int i = 0; i < l_y.size(); i++) {
             float val = l_y.get(i);
-            if (max < val) {
+            if (max < val)
                 max = val;
-            }
+
+            if (min > val)
+                min = val;
         }
-        //max += 200;
 
         if (max == 0)
             max = Float.valueOf(data.getAvg());
 
-        int temp = (int) max;
-        String str = temp + "";
-        str = str.substring(0, str.length() - 2);
-        str = str + "00";
-        max = Integer.parseInt(str) + 200;
+        int offset = 100;
 
+        String strMax = (int) max + "";
+        strMax = strMax.substring(0, strMax.length() - 2);
+        strMax = strMax + "00";
+        max = Integer.parseInt(strMax) + offset;
+
+        if (min != 0) {
+            String strMin = (int) min + "";
+            strMin = strMin.substring(0, strMin.length() - 2);
+            strMin = strMin + "00";
+            min = Integer.parseInt(strMin) - offset;
+        }
+
+        int dif = (int) (max - min);
+        int difAvg = dif / 5;
 
         List<Float> datas = new ArrayList<>();
-        datas.add((float) 0);
-        datas.add(max / 5 * 1);
-        datas.add(max / 5 * 2);
-        datas.add(max / 5 * 3);
-        datas.add(max / 5 * 4);
+        datas.add(min);
+        datas.add(min + (difAvg * 1));
+        datas.add(min + (difAvg * 2));
+        datas.add(min + (difAvg * 3));
+        datas.add(min + (difAvg * 4));
         datas.add(max);
         v_avg_list.setDateY(datas);
 

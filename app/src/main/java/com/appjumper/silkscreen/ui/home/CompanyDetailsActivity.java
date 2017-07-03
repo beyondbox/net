@@ -39,11 +39,13 @@ import com.appjumper.silkscreen.ui.home.logistics.LogisticsDetailsActivity;
 import com.appjumper.silkscreen.ui.home.logistics.TruckDetailsActivity;
 import com.appjumper.silkscreen.ui.home.process.ProcessingDetailsActivity;
 import com.appjumper.silkscreen.ui.home.recruit.RecruitDetailsActivity;
+import com.appjumper.silkscreen.ui.home.stock.StockDetailActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopDetailsActivity;
 import com.appjumper.silkscreen.ui.my.adapter.MyLogisticsListviewAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.MyLogisticsDetailsActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ViewOrderActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.ViewOrderStockActivity;
 import com.appjumper.silkscreen.util.CircleTransform;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.ShareUtil;
@@ -428,7 +430,7 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                                 if (getUser() != null) {
                                     if (getUser().getEnterprise() != null) {
                                         if (data.getEnterprise_id().equals(getUser().getEnterprise().getEnterprise_id())) {
-                                            start_Activity(CompanyDetailsActivity.this, ViewOrderActivity.class, new BasicNameValuePair("title", list.get(i).getProduct_name() + list.get(i).getService_type_name()), new BasicNameValuePair("id", list.get(i).getId()));
+                                            startForResult_Activity(CompanyDetailsActivity.this, ViewOrderActivity.class, 0, new BasicNameValuePair("title", list.get(i).getProduct_name() + list.get(i).getService_type_name()), new BasicNameValuePair("id", list.get(i).getId()));
                                         } else {
                                             start_Activity(CompanyDetailsActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", list.get(i).getProduct_name() + list.get(i).getService_type_name()), new BasicNameValuePair("id", list.get(i).getId()));
                                         }
@@ -450,7 +452,7 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                                 if (getUser() != null) {
                                     if (getUser().getEnterprise() != null) {
                                         if (data.getEnterprise_id().equals(getUser().getEnterprise().getEnterprise_id())) {
-                                            start_Activity(CompanyDetailsActivity.this, ViewOrderActivity.class, new BasicNameValuePair("title", list2.get(i).getProduct_name() + list2.get(i).getService_type_name()), new BasicNameValuePair("id", list2.get(i).getId()));
+                                            startForResult_Activity(CompanyDetailsActivity.this, ViewOrderActivity.class, 0, new BasicNameValuePair("title", list2.get(i).getProduct_name() + list2.get(i).getService_type_name()), new BasicNameValuePair("id", list2.get(i).getId()));
                                         } else {
                                             start_Activity(CompanyDetailsActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", list2.get(i).getProduct_name() + list2.get(i).getService_type_name()), new BasicNameValuePair("id", list2.get(i).getId()));
                                         }
@@ -472,16 +474,16 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                                 if (getUser() != null) {
                                     if (getUser().getEnterprise() != null) {
                                         if (data.getEnterprise_id().equals(getUser().getEnterprise().getEnterprise_id())) {
-                                            start_Activity(CompanyDetailsActivity.this, ViewOrderActivity.class, new BasicNameValuePair("title", list3.get(i).getProduct_name() + list3.get(i).getService_type_name()), new BasicNameValuePair("id", list3.get(i).getId()));
+                                            startForResult_Activity(CompanyDetailsActivity.this, ViewOrderStockActivity.class, 0, new BasicNameValuePair("title", list3.get(i).getProduct_name() + list3.get(i).getService_type_name()), new BasicNameValuePair("id", list3.get(i).getId()));
                                         } else {
-                                            start_Activity(CompanyDetailsActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", list3.get(i).getProduct_name() + list3.get(i).getService_type_name()), new BasicNameValuePair("id", list3.get(i).getId()));
+                                            start_Activity(CompanyDetailsActivity.this, StockDetailActivity.class, new BasicNameValuePair("title", list3.get(i).getProduct_name() + list3.get(i).getService_type_name()), new BasicNameValuePair("id", list3.get(i).getId()));
                                         }
                                     } else {
-                                        start_Activity(CompanyDetailsActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", list3.get(i).getProduct_name() + list3.get(i).getService_type_name()), new BasicNameValuePair("id", list3.get(i).getId()));
+                                        start_Activity(CompanyDetailsActivity.this, StockDetailActivity.class, new BasicNameValuePair("title", list3.get(i).getProduct_name() + list3.get(i).getService_type_name()), new BasicNameValuePair("id", list3.get(i).getId()));
                                     }
 
                                 } else {
-                                    start_Activity(CompanyDetailsActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", list3.get(i).getProduct_name() + list3.get(i).getService_type_name()), new BasicNameValuePair("id", list3.get(i).getId()));
+                                    start_Activity(CompanyDetailsActivity.this, StockDetailActivity.class, new BasicNameValuePair("title", list3.get(i).getProduct_name() + list3.get(i).getService_type_name()), new BasicNameValuePair("id", list3.get(i).getId()));
                                 }
                             }
                         });
@@ -638,7 +640,7 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                             start_Activity(CompanyDetailsActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", item.getTitle() + item.getSubtitle()), new BasicNameValuePair("id", item.getInfo_id()));
                             break;
                         case "3"://现货
-                            start_Activity(CompanyDetailsActivity.this, ProcessingDetailsActivity.class, new BasicNameValuePair("title", item.getTitle() + item.getSubtitle()), new BasicNameValuePair("id", item.getInfo_id()));
+                            start_Activity(CompanyDetailsActivity.this, StockDetailActivity.class, new BasicNameValuePair("title", item.getTitle() + item.getSubtitle()), new BasicNameValuePair("id", item.getInfo_id()));
                             break;
                         case "4"://物流
                             start_Activity(CompanyDetailsActivity.this, LogisticsDetailsActivity.class, new BasicNameValuePair("id", item.getInfo_id()), new BasicNameValuePair("type", "1"));

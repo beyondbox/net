@@ -148,8 +148,10 @@
         <activity android:name=".ui.my.enterprise.SpecificationActivity" />
         <!--多选规格-->
         <activity android:name=".ui.my.enterprise.MultipleChoiceActivity" />
-        <!--查看订做-->
+        <!--查看订做和加工-->
         <activity android:name=".ui.my.enterprise.ViewOrderActivity" />
+        <!--查看现货-->
+        <activity android:name=".ui.my.enterprise.ViewOrderStockActivity" />
         <!--所有固定信息选择-->
         <activity android:name=".ui.common.InformationSelectActivity" />
         <!--个人资料-->
@@ -220,10 +222,6 @@
         <activity android:name=".ui.trend.TrendArticleAllActivity" />
         <!--行情分析文章详情-->
         <activity android:name=".ui.trend.ArticleDetailActivity" />
-        <!--发布刺绳-->
-        <activity android:name=".ui.spec.ReleaseCiShengActivity" />
-        <!--询价刺绳-->
-        <activity android:name=".ui.spec.InquiryCiShengActivity" />
         <!--动态管理-->
         <activity android:name=".ui.dynamic.DynamicManageActivity" />
         <!--本地产品搜索-->
@@ -234,6 +232,8 @@
 
         <!--发布护栏网-->
         <activity android:name=".ui.spec.ReleaseHuLanActivity" />
+        <!--发布护栏网现货-->
+        <activity android:name=".ui.spec.ReleaseHuLanStockActivity" />
         <!--发布刀片刺绳-->
         <activity android:name=".ui.spec.ReleaseDaoPianActivity" />
         <!--发布刀片刺绳现货-->

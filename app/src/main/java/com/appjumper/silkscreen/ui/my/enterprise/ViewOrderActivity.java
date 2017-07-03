@@ -21,6 +21,7 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
@@ -41,7 +42,7 @@ import butterknife.OnClick;
 
 /**
  * Created by yc on 2016/11/7.
- * 查看订做／加工／现货 详情
+ * 查看订做／加工 详情
  */
 public class ViewOrderActivity extends BaseActivity {
 
@@ -227,6 +228,7 @@ public class ViewOrderActivity extends BaseActivity {
                     BaseResponse baseresponse = (BaseResponse) msg.obj;
                     if(baseresponse.isSuccess()){
                         showErrorToast("删除成功");
+                        setResult(Const.RESULT_CODE_NEED_REFRESH);
                         finish();
                     }else{
                         showErrorToast(baseresponse.getError_desc());
@@ -256,4 +258,11 @@ public class ViewOrderActivity extends BaseActivity {
             }
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (progress != null)
+            progress.dismiss();
+    }
 }
