@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
@@ -36,6 +37,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.appjumper.silkscreen.R.id.viewPager;
 
 /**
  * 搜索结果
@@ -157,8 +160,30 @@ public class SearchResultsActivity extends BaseActivity {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
+
+                        /*
+                         * 释放掉之前创建的fragment
+                         */
+                        if (fragList.size() > 0) {
+                            FragmentTransaction ftr = getSupportFragmentManager().beginTransaction();
+                            for (int i = 0; i < fragList.size(); i++) {
+                                Fragment fragment = fragList.get(i);
+                                resultAdapter.destroyItem(pagerResult, i, fragment);
+                                ftr.remove(fragment);
+                            }
+                            ftr.commit();
+                        }
+
                         titleList.clear();
                         fragList.clear();
+
+                        /*
+                         * 重新设定适配器，实现数据彻底刷新
+                         */
+                        resultAdapter = null;
+                        resultAdapter = new ViewPagerFragAdapter(getSupportFragmentManager(), fragList, titleList);
+                        pagerResult.setAdapter(resultAdapter);
+
 
                         if (dataObj.getBoolean("dingzuo")) {
                             titleList.add("订做");

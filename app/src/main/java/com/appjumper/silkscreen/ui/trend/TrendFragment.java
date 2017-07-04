@@ -1,11 +1,16 @@
 package com.appjumper.silkscreen.ui.trend;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +18,7 @@ import android.widget.RadioGroup;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
+import com.appjumper.silkscreen.util.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +33,20 @@ import butterknife.ButterKnife;
 public class TrendFragment extends BaseFragment {
     @Bind(R.id.rg_tab)
     RadioGroup rgTab;
-    List<Fragment> mTab = new ArrayList<>();
+
     @Bind(R.id.id_view_pager)
     public ViewPager idViewPager;
 
+    List<Fragment> mTab = new ArrayList<>();
 
+
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerBroadcastReceiver();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +81,7 @@ public class TrendFragment extends BaseFragment {
                 idViewPager.setCurrentItem(currIndex, false);
             }
         });
+
         mTab.add(new MaterialFragment());
         mTab.add(new FuturesFragment());
         mTab.add(new MarketFragment());
@@ -107,6 +123,28 @@ public class TrendFragment extends BaseFragment {
 
     }
 
+
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_CHART_DETAIL);
+        getActivity().registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!isDataInited)
+                return;
+
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_CHART_DETAIL)) {
+                rgTab.check(R.id.rd_material);
+            }
+        }
+    };
+
+
+
     public void selectpage(int position) {
         int currIndex = R.id.rd_material;
         switch (position) {
@@ -123,7 +161,7 @@ public class TrendFragment extends BaseFragment {
         rgTab.check(currIndex);
     }
 
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -138,5 +176,12 @@ public class TrendFragment extends BaseFragment {
         public int getCount() {
             return mTab.size();
         }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(myReceiver);
     }
 }

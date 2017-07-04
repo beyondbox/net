@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,24 +144,6 @@ public class DynamicFragment extends BaseFragment {
 
 
 
-    /*private void initViewPager() {
-        fragList = new ArrayList<>();
-        fragList.add(new ProductFragment());
-        fragList.add(new LogisticsFragment());
-        fragList.add(new FindCarFragment());
-        fragList.add(new DeviceFragment());
-        fragList.add(new WorkShopFragment());
-        fragList.add(new JobFragment());
-
-        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, Arrays.asList(titleAllArr));
-        viewPager.setOffscreenPageLimit(titleAllArr.length - 1);
-        viewPager.setAdapter(pagerAdapter);
-
-        tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayt.setupWithViewPager(viewPager);
-    }*/
-
-
     private void initViewPager2() {
         pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
         viewPager.setOffscreenPageLimit(titleAllArr.length - 1);
@@ -186,12 +170,33 @@ public class DynamicFragment extends BaseFragment {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
+
+                        /*
+                         * 释放掉之前创建的fragment
+                         */
+                        if (fragList.size() > 0) {
+                            FragmentTransaction ftr = context.getSupportFragmentManager().beginTransaction();
+                            for (int i = 0; i < fragList.size(); i++) {
+                                Fragment fragment = fragList.get(i);
+                                pagerAdapter.destroyItem(viewPager, i, fragment);
+                                ftr.remove(fragment);
+                            }
+                            ftr.commit();
+                        }
+
                         titleList.clear();
                         fragList.clear();
                         if (badgeList.size() > 0) {
                             ((ViewGroup)tabLayt.getChildAt(0)).removeAllViews();
                             badgeList.clear();
                         }
+
+                        /*
+                         * 重新设定适配器，实现数据彻底刷新
+                         */
+                        pagerAdapter = null;
+                        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
+                        viewPager.setAdapter(pagerAdapter);
 
 
                         if (Integer.parseInt((String)dataObj.getJSONArray("productNum").get(0)) > 0) {
@@ -289,9 +294,17 @@ public class DynamicFragment extends BaseFragment {
                             int number = dataObj.getJSONArray(unReadKeyArr[position]).optInt(0);
                             QBadgeView badgeView = new QBadgeView(context);
                             badgeView.bindTarget(((ViewGroup)tabLayt.getChildAt(0)).getChildAt(i))
-                                    .setBadgeTextSize(7, true)
-                                    .setGravityOffset(6, 6, true)
+                                    .setBadgeTextSize(8, true)
+                                    .setBadgePadding(3, true)
+                                    .setGravityOffset(10, 8, true)
                                     .setBadgeNumber(number);
+
+                            /*badgeView.bindTarget(((ViewGroup)tabLayt.getChildAt(0)).getChildAt(i))
+                                    .setBadgeTextSize(9, true)
+                                    .setBadgeGravity(Gravity.CENTER | Gravity.END)
+                                    .setBadgePadding(3, true)
+                                    //.setGravityOffset(1, 0, true)
+                                    .setBadgeNumber(number);*/
 
                             badgeList.add(badgeView);
                         }

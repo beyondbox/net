@@ -1,6 +1,7 @@
 package com.appjumper.silkscreen.ui.trend;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -102,9 +103,9 @@ public class DetailsFragment extends BaseFragment {
         initArticleView();
 
         type = getArguments().getString("type");
-        refresh();
         mPullRefreshScrollView.scrollTo(0, 0);
         listView.setFocusable(false);
+        refresh();
     }
 
 
@@ -118,7 +119,7 @@ public class DetailsFragment extends BaseFragment {
         articleAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                start_Activity(context, TrendArticleAllActivity.class, new BasicNameValuePair("type", type));
+                startForResult_Activity(context, TrendArticleAllActivity.class, 6, new BasicNameValuePair("type", type));
             }
         });
     }
@@ -224,8 +225,15 @@ public class DetailsFragment extends BaseFragment {
 
 
     private void refresh() {
-        new Thread(run).start();
         getArticle();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new Thread(run).start();
+            }
+        }, 400);
+
 
         mPullRefreshScrollView.setOnRefreshListener(new com.appjumper.silkscreen.view.scrollView.PullToRefreshBase.OnRefreshListener2<ObservableScrollView>() {
 
@@ -346,4 +354,11 @@ public class DetailsFragment extends BaseFragment {
         });
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 6)
+            getArticle();
+    }
 }

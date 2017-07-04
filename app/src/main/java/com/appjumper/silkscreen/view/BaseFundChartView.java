@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.util.DisplayUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -145,7 +146,9 @@ public class BaseFundChartView extends View {
         gridY = getHeight() - 50;
         //XY间隔。
         if(dateX!=null&&dateX.size()>0){
-            xSpace = (getWidth() - gridX)/dateX.size();
+            //xSpace = (getWidth() - gridX)/dateX.size();
+            int offset = DisplayUtil.dip2px(getContext(), 20);
+            xSpace = (getWidth() - gridX - offset)  /  (dateX.size() - 1);
         }
 
         if(dateY!=null&&dateY.size()>0){
@@ -279,8 +282,11 @@ public class BaseFundChartView extends View {
                 }
                 jianBianPath.lineTo(lastx,gridY - 20 - 10);
                 canvas.drawPath(curvePath, chartLinePaint);
+
                 //Shader mShader = new LinearGradient(0,30 + 10,0,gridY - 20 - 10,new int[] {getResources().getColor(R.color.theme_color),getResources().getColor(R.color.theme_pressed_color),Color.TRANSPARENT},null,Shader.TileMode.REPEAT);
-                Shader mShader = new LinearGradient(0,30 + 10,0,gridY - 20 - 10,new int[] {0xBFFAAC7D, 0xBFFAAC7D, 0xBFF8EBE3},null,Shader.TileMode.REPEAT);
+                //Shader mShader = new LinearGradient(0,30 + 10,0,gridY - 20 - 10,new int[] {0xBFFAAC7D, 0xBFFAAC7D, 0xBFF8EBE3},null,Shader.TileMode.REPEAT);
+                Shader mShader = new LinearGradient(0,30 + 10,0,gridY - 20 - 10,new int[] {0xBFFAAC7D, 0xBFF9D6C2, 0x00ffffff},null,Shader.TileMode.REPEAT);
+
 //新建一个线性渐变，前两个参数是渐变开始的点坐标，第三四个参数是渐变结束的点的坐标。连接这2个点就拉出一条渐变线了，玩过PS的都懂。然后那个数组是渐变的颜色。下一个参数是渐变颜色的分布，如果为空，每个颜色就是均匀分布的。最后是模式，这里设置的是循环渐变
 
                 chartJianbianPaint.setShader(mShader);
