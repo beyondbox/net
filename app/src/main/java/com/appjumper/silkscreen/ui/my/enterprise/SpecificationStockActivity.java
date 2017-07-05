@@ -63,9 +63,6 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
     @Bind(R.id.et_remark)//描述
             EditText et_remark;
 
-    @Bind(R.id.lvSpec)
-    ListView lvSpec;
-
     @Bind(R.id.divider)
     View divider;
 

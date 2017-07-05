@@ -7,6 +7,8 @@
     <com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView
         android:id="@+id/listview"
         style="@style/ListViewDividerStyle"
-        android:dividerHeight="0dp"></com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView>
+        android:dividerHeight="0dp">
+
+    </com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView>
 
 </LinearLayout>

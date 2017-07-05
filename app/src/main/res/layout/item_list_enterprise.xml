@@ -6,8 +6,8 @@
 
     <com.appjumper.silkscreen.view.BorderRectImageView
         android:id="@+id/imageView"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/icon_logo_image61"/>
 
@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imageView"
         android:layout_marginLeft="10dp"
-        android:maxLines="2"
+        android:maxLines="1"
         android:ellipsize="end"
         android:text="安平县优加网络科技有限公司"
         android:textSize="14sp"
@@ -43,22 +43,22 @@
 
         <ImageView
             android:id="@+id/imgViCertiGreen"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginRight="5dp"
             android:src="@mipmap/icon_certification_green"/>
 
         <ImageView
             android:id="@+id/imgViCertiBlue"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginRight="5dp"
             android:src="@mipmap/icon_certification"/>
 
         <ImageView
             android:id="@+id/imgViCertiYellow"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:layout_marginRight="5dp"
             android:src="@mipmap/icon_certification_yellow"/>
     </LinearLayout>
