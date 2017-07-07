@@ -39,21 +39,19 @@ import butterknife.OnClick;
 
 public class TrendChartFragment extends BaseFragment {
 
-    @Bind(R.id.l_avg_list)
-    LinearLayout l_avg_list;
-    @Bind(R.id.tv_avg)
-    TextView tv_avg;
-    @Bind(R.id.tv_avg_diff)
-    TextView tv_avg_diff;
+    private LinearLayout l_avg_list;
+    private TextView tv_avg;
+    private TextView tv_avg_diff;
 
     private String type;
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trend_chart, container, false);
-        ButterKnife.bind(this, view);
+        l_avg_list = (LinearLayout) view.findViewById(R.id.l_avg_list);
+        tv_avg = (TextView) view.findViewById(R.id.tv_avg);
+        tv_avg_diff = (TextView) view.findViewById(R.id.tv_avg_diff);
         return view;
     }
 
@@ -105,7 +103,7 @@ public class TrendChartFragment extends BaseFragment {
 
 
     private void setChart(PriceDetails data) {
-        BaseFundChartView v_avg_list = new BaseFundChartView(getContext());
+        BaseFundChartView v_avg_list = new BaseFundChartView(context);
 
         List<String> l_x = new ArrayList<>();
         for (int i = -6; i <= 0; i++) {

@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -57,6 +58,7 @@ import com.appjumper.silkscreen.ui.money.OfferDetailsActivity;
 import com.appjumper.silkscreen.ui.my.MyPointActivity;
 import com.appjumper.silkscreen.ui.trend.AttentionManageActivity;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.LogHelper;
 import com.appjumper.silkscreen.util.db.DBManager;
 import com.appjumper.silkscreen.view.ItemSpaceDecorationLine;
 import com.appjumper.silkscreen.view.MyListView;
@@ -83,6 +85,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import q.rorbin.badgeview.QBadgeView;
+
+import static com.appjumper.silkscreen.R.id.viewPager;
+import static com.loopj.android.http.AsyncHttpClient.log;
 
 
 /**
@@ -463,6 +468,7 @@ public class HomeFragment extends BaseFragment {
         }
     };
 
+
     /**
      * 初始化走势图
      */
@@ -470,9 +476,6 @@ public class HomeFragment extends BaseFragment {
         scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         materList = new ArrayList<>();
         trendFragList = new ArrayList<>();
-        trendChartAdapter = new TrendChartAdapter(context.getSupportFragmentManager(), materList, trendFragList);
-        pagerTrend.setOffscreenPageLimit(5);
-        pagerTrend.setAdapter(trendChartAdapter);
 
         tabLaytTrend.setupWithViewPager(pagerTrend);
         tabLaytTrend.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -510,15 +513,37 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
+
     /**
      * 设置走势图数据
      */
     private void setTrendChartData() {
+        if (future != null) {
+            future.cancel(true);
+            future = null;
+            currTrendItem = 0;
+        }
+
+        if (trendFragList.size() > 0) {
+            FragmentTransaction ftr = context.getSupportFragmentManager().beginTransaction();
+            for (int i = 0; i < trendFragList.size(); i++) {
+                Fragment fragment = trendFragList.get(i);
+                trendChartAdapter.destroyItem(pagerTrend, i, fragment);
+                ftr.remove(fragment);
+            }
+            ftr.commit();
+        }
+
         materList.clear();
         trendFragList.clear();
         DBManager dbHelper = new DBManager(context);
         materList.addAll(dbHelper.query());
         dbHelper.closeDB();
+
+        trendChartAdapter = null;
+        trendChartAdapter = new TrendChartAdapter(context.getSupportFragmentManager(), materList, trendFragList);
+        pagerTrend.setOffscreenPageLimit(materList.size() - 1);
+        pagerTrend.setAdapter(trendChartAdapter);
 
         for (int i = 0; i < materList.size(); i++) {
             Bundle mBundle = new Bundle();
@@ -529,13 +554,9 @@ public class HomeFragment extends BaseFragment {
         }
 
         trendChartAdapter.notifyDataSetChanged();
-        if (future != null) {
-            future.cancel(true);
-            currTrendItem = 0;
-            pagerTrend.setCurrentItem(currTrendItem, true);
-        }
         startTrendPlay();
     }
+
 
     /**
      * 开始走势图轮播

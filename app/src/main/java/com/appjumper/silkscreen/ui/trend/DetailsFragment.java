@@ -125,7 +125,7 @@ public class DetailsFragment extends BaseFragment {
     }
 
     private void initView(final PriceDetails data) {
-        BaseFundChartView v_avg_list = new BaseFundChartView(getContext());
+        BaseFundChartView v_avg_list = new BaseFundChartView(context);
 
         List<String> l_x = new ArrayList<>();
         for (int i = -6; i <= 0; i++) {
@@ -191,6 +191,7 @@ public class DetailsFragment extends BaseFragment {
         datas.add(max);
         v_avg_list.setDateY(datas);*/
 
+        l_avg_list.removeAllViews();
         l_avg_list.addView(v_avg_list);
 
         listView.setAdapter(new DetailsListViewAdapter(context, data.getOffer_list()));
