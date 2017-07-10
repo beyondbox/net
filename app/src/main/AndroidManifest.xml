@@ -186,8 +186,6 @@
         <activity android:name=".ui.my.PersonalAuthenticationActivity" />
         <!--单选-->
         <activity android:name=".ui.inquiry.SingleChoiceActivity" />
-        <!--动态更多-->
-        <activity android:name=".ui.trend.TrendMoreActivity" />
         <!--询价更多-->
         <activity android:name=".ui.money.OfferMoreActivity" />
         <!--高德地图-->

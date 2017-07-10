@@ -19,6 +19,7 @@ public class HomeData {
     private List<Enterprise> recommend_jiagong; //加工推荐企业
 
     private List<HotInquiry> offerView; //热门询价
+    private String share_app; //app分享链接
 
 
 
@@ -102,5 +103,13 @@ public class HomeData {
 
     public void setOfferView(List<HotInquiry> offerView) {
         this.offerView = offerView;
+    }
+
+    public String getShare_app() {
+        return share_app;
+    }
+
+    public void setShare_app(String share_app) {
+        this.share_app = share_app;
     }
 }

@@ -33,6 +33,7 @@ public  class ShareUtil {
 
     public static  void intShare(Activity context, View view, final String subTitle, final String title, final String url){
         contexts = context;
+        imgs = "";
         init(context,view,subTitle,title,url);
     }
 

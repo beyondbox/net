@@ -352,7 +352,6 @@
                         android:layout_weight="1"
                         android:background="@drawable/selector_company_radiobutton"
                         android:button="@null"
-                        android:checked="true"
                         android:gravity="center"
                         android:paddingBottom="12dp"
                         android:paddingTop="12dp"

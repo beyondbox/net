@@ -53,7 +53,7 @@ public class HotInquiryAdapter extends BaseQuickAdapter<HotInquiry, BaseViewHold
         }
 
         helper.setText(R.id.txtName, item.getProductname() + type)
-                .setText(R.id.txtCount, "今日报价" + item.getShuliang() + "次");
+                .setText(R.id.txtCount, "报价" + item.getShuliang() + "次");
     }
 
 

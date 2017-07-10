@@ -12,6 +12,7 @@ public class PriceDetails {
     private String count;//报价公司数
     private List<OfferList> offer_list;//报价公司
     private List<Float> avg_list;//图标每日均价 共7天
+    private String space_money = "50"; //纵坐标取整数的倍数
 
     public String getAvg() {
         return avg;
@@ -51,5 +52,13 @@ public class PriceDetails {
 
     public void setAvg_list(List<Float> avg_list) {
         this.avg_list = avg_list;
+    }
+
+    public String getSpace_money() {
+        return space_money;
+    }
+
+    public void setSpace_money(String space_money) {
+        this.space_money = space_money;
     }
 }

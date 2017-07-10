@@ -7,6 +7,13 @@ package com.appjumper.silkscreen.util;
 
 public class Const {
 
+    //app分享链接
+    public static String SHARE_APP_URL = "https://siwangjia.kuaizhan.com/";
+
+
+
+
+
     /**
      * 选择物流地点
      */

@@ -105,8 +105,39 @@ public class TrendChartFragment extends BaseFragment {
     private void setChart(PriceDetails data) {
         BaseFundChartView v_avg_list = new BaseFundChartView(context);
 
+        //取横坐标日期的起始位置
+        int start = -6;
+        int end = 0;
+
+        /*
+         * 根据今日报价是否为0做出不同的判断
+         */
+        List<Float> l_y = data.getAvg_list();
+        if (l_y.get(l_y.size() - 1) == 0) {
+            start = -7;
+            end = -1;
+            tv_avg.setText("尚未出价");
+            tv_avg_diff.setText("0");
+            l_y.remove(l_y.size() - 1);
+        } else {
+            l_y.remove(0);
+            if (data.getOffer_list() != null && data.getOffer_list().size() > 0) {
+                tv_avg.setText(data.getAvg() + data.getOffer_list().get(0).getOffer_unit());
+            } else {
+                tv_avg.setText(data.getAvg() + "元/吨");
+            }
+            tv_avg_diff.setText(data.getAvg_diff());
+        }
+
+        List<List<Float>> dataXy = new ArrayList<>();
+        dataXy.add(l_y);
+        v_avg_list.setData(dataXy);
+
+        /*
+         * 计算横坐标日期
+         */
         List<String> l_x = new ArrayList<>();
-        for (int i = -6; i <= 0; i++) {
+        for (int i = start; i <= end; i++) {
             Calendar c = Calendar.getInstance();
             c.add(Calendar.DAY_OF_MONTH, i);
             java.text.SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
@@ -115,11 +146,10 @@ public class TrendChartFragment extends BaseFragment {
         }
         v_avg_list.setDateX(l_x);
 
-        List<Float> l_y = data.getAvg_list();
-        List<List<Float>> dataXy = new ArrayList<>();
-        dataXy.add(l_y);
-        v_avg_list.setData(dataXy);
 
+        /*
+         * 计算纵坐标的最小值和最大值
+         */
         float max = 0;
         float min = 99999;
         for (int i = 0; i < l_y.size(); i++) {
@@ -134,20 +164,46 @@ public class TrendChartFragment extends BaseFragment {
         if (max == 0)
             max = Float.valueOf(data.getAvg());
 
-        int offset = 100;
+        int offset = Integer.valueOf(data.getSpace_money());
 
-        String strMax = (int) max + "";
-        strMax = strMax.substring(0, strMax.length() - 2);
-        strMax = strMax + "00";
-        max = Integer.parseInt(strMax) + offset;
-
-        if (min != 0) {
-            String strMin = (int) min + "";
-            strMin = strMin.substring(0, strMin.length() - 2);
-            strMin = strMin + "00";
-            min = Integer.parseInt(strMin) - offset;
+        if (((int)max) % offset == 0) {
+            max += offset;
+        } else {
+            String strMax = (int) max + "";
+            strMax = strMax.substring(0, strMax.length() - 1);
+            strMax = strMax + "0";
+            int maxInt = Integer.valueOf(strMax);
+            while (true) {
+                maxInt += 10;
+                if (maxInt % offset == 0)
+                    break;
+            }
+            max = maxInt;
         }
 
+
+        if (((int)min) % offset == 0) {
+            min -= offset;
+        } else {
+            String strMin = (int) min + "";
+            strMin = strMin.substring(0, strMin.length() - 1);
+            strMin = strMin + "0";
+            int minInt = Integer.valueOf(strMin);
+            while (true) {
+                if (minInt % offset == 0)
+                    break;
+                minInt -= 10;
+            }
+            min = minInt;
+        }
+
+        if (min < 0)
+            min = 0;
+
+
+        /*
+         * 纵坐标分成5份，计算每份的值
+         */
         int dif = (int) (max - min);
         int difAvg = dif / 5;
 
@@ -161,13 +217,6 @@ public class TrendChartFragment extends BaseFragment {
         v_avg_list.setDateY(datas);
 
         l_avg_list.addView(v_avg_list);
-
-        if (data.getOffer_list() != null && data.getOffer_list().size() > 0) {
-            tv_avg.setText(data.getAvg() + data.getOffer_list().get(0).getOffer_unit());
-        } else {
-            tv_avg.setText(data.getAvg() + "元/吨");
-        }
-        tv_avg_diff.setText(data.getAvg_diff());
     }
 
 

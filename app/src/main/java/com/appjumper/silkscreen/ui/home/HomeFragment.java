@@ -438,6 +438,7 @@ public class HomeFragment extends BaseFragment {
                         data = detailsResponse.getData();
                         initView();
                         getMyApplication().getMyUserManager().storeHomeInfo(detailsResponse);
+                        Const.SHARE_APP_URL = data.getShare_app();
                     } else {
                         showErrorToast(detailsResponse.getError_desc());
                     }
@@ -531,7 +532,7 @@ public class HomeFragment extends BaseFragment {
                 trendChartAdapter.destroyItem(pagerTrend, i, fragment);
                 ftr.remove(fragment);
             }
-            ftr.commit();
+            ftr.commitAllowingStateLoss();
         }
 
         materList.clear();
