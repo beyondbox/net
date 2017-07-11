@@ -10,16 +10,29 @@ android {
         applicationId "com.appjumper.silkscreen"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 21
-        versionName "2.0.5"
-    }
-    productFlavors {
-        xiaomi {}
+        versionCode 22
+        versionName "2.0.6"
     }
 
-    productFlavors.all {
-        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    //配置多版本的apk
+    productFlavors{
+        Beta{
+            applicationId "com.appjumper.silkscreen2"
+            manifestPlaceholders = [appName:"丝网+测试版", UMENG_CHANNEL_VALUE:name]
+        }
+        Releases{
+            manifestPlaceholders = [appName:"丝网+", UMENG_CHANNEL_VALUE:name]
+        }
     }
+
+    /*productFlavors {
+        xiaomi {}
+    }*/
+
+    /*productFlavors.all {
+        flavor -> flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }*/
+
     signingConfigs {
         release {
             keyAlias 'SilkScreen'
@@ -31,6 +44,7 @@ android {
     repositories {
         maven { url "https://jitpack.io" }
     }
+
     buildTypes {
         /*debug {
             signingConfig signingConfigs.release
@@ -51,6 +65,7 @@ android {
             }*/
         }
     }
+
     sourceSets {
         main {
             jniLibs.srcDirs = ["libs"]

@@ -312,7 +312,8 @@ public class DetailsFragment extends BaseFragment {
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
                 data.put("g", "api");
-                data.put("m", "price");
+                //data.put("m", "price");
+                data.put("m", "home");
                 data.put("a", "details");
                 data.put("product_id", type);
 

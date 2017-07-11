@@ -32,11 +32,14 @@ import com.appjumper.silkscreen.bean.HotInquiry;
 import com.appjumper.silkscreen.bean.MaterProduct;
 import com.appjumper.silkscreen.bean.Notice;
 import com.appjumper.silkscreen.bean.ScoreResponse;
+import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.bean.UnRead;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
@@ -53,9 +56,12 @@ import com.appjumper.silkscreen.ui.home.search.SearchingActivity;
 import com.appjumper.silkscreen.ui.home.stock.StockActivity;
 import com.appjumper.silkscreen.ui.home.tender.TenderActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopActivity;
+import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.money.OfferDetailsActivity;
 import com.appjumper.silkscreen.ui.my.MyPointActivity;
+import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
+import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.ui.trend.AttentionManageActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.LogHelper;
@@ -68,8 +74,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -257,8 +269,11 @@ public class HomeFragment extends BaseFragment {
         hotInquiryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (checkLogined())
-                    start_Activity(context, OfferDetailsActivity.class, new BasicNameValuePair("id", hotInquiryList.get(position).getId()));
+                if (checkLogined()) {
+                    //start_Activity(context, OfferDetailsActivity.class, new BasicNameValuePair("id", hotInquiryList.get(position).getId()));
+                    HotInquiry hotInquiry = hotInquiryList.get(position);
+                    getProductSpec(hotInquiry.getType(), hotInquiry.getProduct_id());
+                }
             }
         });
 
@@ -610,6 +625,66 @@ public class HomeFragment extends BaseFragment {
             }
         }
     };
+
+
+    /**
+     * 获取产品规格，跳转到询价界面
+     */
+    private void getProductSpec(final String serviceType, String productId) {
+        RequestParams params = MyHttpClient.getApiParam("collection", "hotProduct");
+        params.put("uid", getUserID());
+        params.put("service_type", serviceType);
+        params.put("product_id", productId);
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                initProgressDialog();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONArray jsonArr = jsonObj.getJSONArray("data");
+                        ServiceProduct product = GsonUtil.getEntity(jsonArr.getJSONObject(0).toString(), ServiceProduct.class);
+
+                        Intent intent = null;
+                        if (product.getId().equals("104"))
+                            intent = new Intent(context, InquiryHuLanActivity.class);
+                        else if (product.getId().equals("27"))
+                            intent = new Intent(context, InquiryDaoPianActivity.class);
+                        else
+                            intent = new Intent(context, InquirySpecificationActivity.class);
+                        intent.putExtra("identity", "3");
+                        intent.putExtra("service", product);
+                        intent.putExtra("type", serviceType);
+                        startActivity(intent);
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
 
 
     @OnClick({R.id.tv_machine, R.id.tv_logistics, R.id.rl_search, R.id.tv_orders, R.id.tv_stocks, R.id.tv_equipment,

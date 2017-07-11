@@ -39,6 +39,13 @@ import butterknife.OnClick;
 
 public class TrendChartFragment extends BaseFragment {
 
+    /*@Bind(R.id.l_avg_list)
+    LinearLayout l_avg_list;
+    @Bind(R.id.tv_avg)
+    TextView tv_avg;
+    @Bind(R.id.tv_avg_diff)
+    TextView tv_avg_diff;*/
+
     private LinearLayout l_avg_list;
     private TextView tv_avg;
     private TextView tv_avg_diff;
@@ -49,6 +56,7 @@ public class TrendChartFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_trend_chart, container, false);
+        ButterKnife.bind(this, view);
         l_avg_list = (LinearLayout) view.findViewById(R.id.l_avg_list);
         tv_avg = (TextView) view.findViewById(R.id.tv_avg);
         tv_avg_diff = (TextView) view.findViewById(R.id.tv_avg_diff);
@@ -68,8 +76,14 @@ public class TrendChartFragment extends BaseFragment {
             PriceDetailsResponse response = null;
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                //data.put("m", "price");
+                data.put("m", "home");
+                data.put("a", "details");
                 data.put("product_id", type);
-                response = JsonParser.getPriceDetailsResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.PRICEDETAILS));
+
+                //response = JsonParser.getPriceDetailsResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.PRICEDETAILS));
+                response = JsonParser.getPriceDetailsResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
