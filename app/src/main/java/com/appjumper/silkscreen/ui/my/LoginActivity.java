@@ -123,8 +123,8 @@ public class LoginActivity extends BaseActivity{
                     UserResponse userResponse = (UserResponse) msg.obj;
                     if(userResponse.isSuccess()){
                         User user = userResponse.getData();
-                        XGPushManager.registerPush(activity, "*");
-                        XGPushManager.registerPush(activity,user.getMobile());
+                        //XGPushManager.registerPush(activity, "*");
+                        XGPushManager.registerPush(getApplicationContext(), user.getMobile());
                         getMyApplication().getMyUserManager()
                                 .storeUserInfo(user);
                         CommonApi.addLiveness(getUserID(), 1);

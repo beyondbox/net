@@ -23,8 +23,8 @@ public class WelcomeActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
-		Context context = getApplicationContext();
-		XGPushManager.registerPush(context);
+		//Context context = getApplicationContext();
+		//XGPushManager.registerPush(context);
 
 		new Thread(new HomeDataRun()).start();
 	}

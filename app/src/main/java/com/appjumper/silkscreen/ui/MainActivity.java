@@ -45,6 +45,7 @@ import com.appjumper.silkscreen.util.morewindow.MoreWindow;
 import com.appjumper.silkscreen.view.SureOrCancelVersionDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.Header;
@@ -105,6 +106,12 @@ public class MainActivity extends FragmentActivity {
         checkNewVersion();
 
         initUnread();
+
+        //注册推送
+        if (getUser() == null)
+            XGPushManager.registerPush(getApplicationContext());
+        else
+            XGPushManager.registerPush(getApplicationContext(), getUser().getMobile());
     }
 
 

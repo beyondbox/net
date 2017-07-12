@@ -5,8 +5,11 @@ import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -48,6 +51,8 @@ public class ArticleDetailFragment extends BaseFragment {
     TextView txtContent;
     @Bind(R.id.llPraise)
     LinearLayout llPraise;
+    @Bind(R.id.webView)
+    WebView webView;
 
     @Bind(R.id.back)
     ImageView back;
@@ -87,9 +92,19 @@ public class ArticleDetailFragment extends BaseFragment {
         id = bundle.getInt("id");
 
         initProgressDialog();
+        setWebView();
+
         progress.show();
         getData();
     }
+
+
+    private void setWebView() {
+        WebSettings settings = webView.getSettings();
+        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        settings.setLoadWithOverviewMode(true);
+    }
+
 
 
     /**
@@ -109,6 +124,9 @@ public class ArticleDetailFragment extends BaseFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if (isDetached())
+                    return;
+
                 String jsonStr = new String(responseBody);
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
@@ -133,6 +151,8 @@ public class ArticleDetailFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
+                if (isDetached())
+                    return;
                 progress.dismiss();
             }
         });
@@ -151,7 +171,8 @@ public class ArticleDetailFragment extends BaseFragment {
 
         txtTitle.setText(article.getTitle());
         txtDate.setText(article.getCreate_time());
-        txtContent.setText(Html.fromHtml(article.getContent()));
+        //txtContent.setText(Html.fromHtml(article.getContent()));
+        webView.loadDataWithBaseURL(null, article.getContent(), "text/html", "utf-8", null);
         txtUpNum.setText("(" + article.getUp() + ")");
         txtDownNum.setText("(" + article.getDown() + ")");
 
