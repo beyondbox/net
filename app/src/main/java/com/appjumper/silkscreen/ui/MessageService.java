@@ -27,7 +27,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class MessageService extends XGPushBaseReceiver {
 
-	private int notifyId = 0;
+	private static int notifyId = 0;
 
 	@Override
 	public void onDeleteTagResult(Context arg0, int arg1, String arg2) {
@@ -42,7 +42,7 @@ public class MessageService extends XGPushBaseReceiver {
 		}
 		if (message.getActionType() == XGPushClickedResult.NOTIFACTION_CLICKED_TYPE) {
 			// 获取自定义key-value
-			String customContent = message.getCustomContent();
+			/*String customContent = message.getCustomContent();
 			if (customContent != null && customContent.length() != 0) {
 				try {
 					JSONObject obj = new JSONObject(customContent);
@@ -54,7 +54,9 @@ public class MessageService extends XGPushBaseReceiver {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-			}
+			}*/
+
+
 			// APP自主处理的过程。。。
 //			context.startActivity(new Intent(context, MessageActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 
@@ -83,29 +85,33 @@ public class MessageService extends XGPushBaseReceiver {
 		String text = "收到消息:" + message.toString();
 		LogHelper.e("Notification", text);
 
-		Intent intent = new Intent(context, MessageActivity.class);
-		makeNotify(context, intent, message.getTitle(), message.getContent());
+		Intent intent = null;
 
-
-
-		// 获取自定义key-value
+		// 获取自定义的key-value
 		String customContent = message.getCustomContent();
 		if (customContent != null && customContent.length() != 0) {
 			try {
-				JSONObject obj = new JSONObject(customContent);
-				// key1为前台配置的key
-				if (!obj.isNull("status")) {
-					final String value = obj.getString("status");
-					final String title = obj.getString("title");
-
+				JSONObject jsonObj = new JSONObject(customContent);
+				if (!jsonObj.isNull("type")) {
+					int type = jsonObj.optInt("type");
+					switch (type) {
+						case 1: //有新的询价
+							intent = new Intent(context, MessageActivity.class);
+							break;
+						case 2: //有新的报价
+							intent = new Intent(context, MessageActivity.class);
+							intent.putExtra("id", jsonObj.optInt("id") + "");
+							break;
+						default:
+							break;
+					}
 				}
-				// ...
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
 
-
+		makeNotify(context, intent, message.getTitle(), message.getContent());
 	}
 
 
@@ -119,6 +125,8 @@ public class MessageService extends XGPushBaseReceiver {
 	private void makeNotify(Context context, Intent intent, String title, String content) {
 		NotificationManager nm = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 
+		if (intent == null)
+			intent = new Intent(context, MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
@@ -128,7 +136,8 @@ public class MessageService extends XGPushBaseReceiver {
 				.setTicker(title)
 				.setSmallIcon(R.mipmap.ic_launcher)
 				.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher))
-				.setContentIntent(pendingIntent);
+				.setContentIntent(pendingIntent)
+				.setDefaults(Notification.DEFAULT_ALL);
 		Notification notification = builder.build();
 
 		notification.flags = Notification.FLAG_AUTO_CANCEL;

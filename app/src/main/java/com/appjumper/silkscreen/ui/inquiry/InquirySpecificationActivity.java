@@ -57,6 +57,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.R.attr.data;
 import static com.appjumper.silkscreen.R.id.et_remark;
 
 /**
@@ -274,6 +275,8 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                     return;
                 }
 
+                map.clear();
+
                 for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).getFieldinput().equals("radio")) {
                         View choiceView = llSpecification.findViewWithTag("choice" + i);
@@ -414,6 +417,10 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
         @SuppressWarnings("unchecked")
         public void run() {
             try {
+                map.put("g", "api");
+                map.put("m", "inquiry");
+                map.put("a", "add");
+
                 map.put("uid", getUserID());
                 map.put("remark", etRemark.getText().toString().trim());
                 map.put("expiry_date", expiry_datatime + "");
@@ -425,8 +432,8 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                 if (imgResponse != null)
                     map.put("imgs", imags(imgResponse.getData()));
 
-                response = JsonParser.getBaseResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(map), Url.INQUIRY_ADD));
+                //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(map), Url.INQUIRY_ADD));
+                response = JsonParser.getBaseResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(map)));
             } catch (Exception e) {
                 progress.dismiss();
                 e.printStackTrace();

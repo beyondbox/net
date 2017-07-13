@@ -505,8 +505,11 @@ public class StockDetailActivity extends BaseActivity {
                         Product data = response.getData();
                         initView(data);
 
-                        if (!getUserID().equals(data.getUser_id()))
+                        if (!getUserID().equals(data.getUser_id())) {
                             CommonApi.addLiveness(data.getUser_id(), 20);
+                        } else {
+                            tv_inquiry.setVisibility(View.GONE);
+                        }
                     } else {
                         showErrorToast(response.getError_desc());
                     }

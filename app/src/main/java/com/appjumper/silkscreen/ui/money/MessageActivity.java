@@ -1,9 +1,11 @@
 package com.appjumper.silkscreen.ui.money;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +22,7 @@ import com.appjumper.silkscreen.bean.MyofferResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.money.adapter.InquiryAdapter;
 import com.appjumper.silkscreen.ui.money.adapter.OfferAdapter;
 import com.appjumper.silkscreen.view.MyAlertDialog;
@@ -36,6 +39,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.appjumper.silkscreen.R.id.map;
 
 /**
  * 消息
@@ -77,6 +82,7 @@ public class MessageActivity extends BaseActivity {
     private InquiryAdapter inquiryAdapter;
     private List<MyInquiry> inquiryList;
     private OfferAdapter offerAdapter;
+    private String inquiryId = ""; //询价id
 
     private MyAlertDialog invalidDialog;
 
@@ -105,11 +111,16 @@ public class MessageActivity extends BaseActivity {
 
         initListener();
 
-        if (getUser() != null) {
-            refresh();
-
-            if (!getMyApplication().getMyUserManager().getInvalidInquiryOption())
-                invalidDialog.show();
+        Intent intent = getIntent();
+        if (intent.hasExtra("id")) {
+            inquiryId = intent.getStringExtra("id");
+            rg.check(R.id.rd1);
+        } else {
+            if (getUser() != null) {
+                refresh();
+                if (!getMyApplication().getMyUserManager().getInvalidInquiryOption())
+                    invalidDialog.show();
+            }
         }
 
     }
@@ -221,10 +232,14 @@ public class MessageActivity extends BaseActivity {
                 MyofferResponse response = null;
                 try {
                     HashMap<String, String> data = new HashMap<String, String>();
+                    data.put("g", "api");
+                    data.put("m", "inquiry");
+                    data.put("a", "my_offer");
+
                     data.put("pagesize", pagesize);
                     data.put("page", "1");
                     data.put("uid", getUserID());
-                    response = JsonParser.getMyofferResponse(HttpUtil.getMsg(Url.MYOFFER + "?" + HttpUtil.getData(data)));
+                    response = JsonParser.getMyofferResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -238,10 +253,14 @@ public class MessageActivity extends BaseActivity {
                 MyInquiryResponse response = null;
                 try {
                     HashMap<String, String> data = new HashMap<String, String>();
+                    data.put("g", "api");
+                    data.put("m", "inquiry");
+                    data.put("a", "my_inquiry");
+
                     data.put("pagesize", pagesize);
                     data.put("page", "1");
                     data.put("uid", getUserID());
-                    response = JsonParser.getMyInquiryResponse(HttpUtil.getMsg(Url.MYINQUIRY + "?" + HttpUtil.getData(data)));
+                    response = JsonParser.getMyInquiryResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -315,6 +334,17 @@ public class MessageActivity extends BaseActivity {
                         listView.setAdapter(inquiryAdapter);
                         pageNumber = 2;
                         pullToRefreshView.setEmptyView(inquiryList.isEmpty() ? myEmptyLayout : null);
+
+                        //跳转到对应的询价详情（点击通知栏推送过来的）
+                        if (!TextUtils.isEmpty(inquiryId)) {
+                            for (MyInquiry myInquiry : inquiryList) {
+                                if (myInquiry.getId().equals(inquiryId)) {
+                                    start_Activity(context, InquiryDetailsAlreadyActivity.class, new BasicNameValuePair("id", inquiryId), new BasicNameValuePair("title", myInquiry.getProduct_name()));
+                                    break;
+                                }
+                            }
+                            inquiryId = "";
+                        }
                     } else {
                         listView.onFinishLoading(false);
                         showErrorToast(response.getError_desc());
@@ -440,6 +470,13 @@ public class MessageActivity extends BaseActivity {
         filterOfferList.addAll(list);
     }
 
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (MainActivity.instance == null)
+            startActivity(new Intent(context, MainActivity.class));
+    }
 
 
     @Override

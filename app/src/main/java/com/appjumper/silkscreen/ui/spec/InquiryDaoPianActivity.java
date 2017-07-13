@@ -405,6 +405,7 @@ public class InquiryDaoPianActivity extends BasePhotoGridActivity {
                     return;
                 }
 
+                map.clear();
                 getSelectedGuiGe();
 
                 for (int i = 0; i < list.size(); i++) {

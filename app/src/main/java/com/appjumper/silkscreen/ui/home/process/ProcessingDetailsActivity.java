@@ -96,6 +96,9 @@ public class ProcessingDetailsActivity extends BaseActivity {
     @Bind(R.id.tv_address)//地址
             TextView tv_address;
 
+    @Bind(R.id.tv_inquiry)
+    TextView tv_inquiry;
+
     private CycleView2Pager cycleViewPager;
     private String id;
     private List<Avatar> imglist;
@@ -299,8 +302,12 @@ public class ProcessingDetailsActivity extends BaseActivity {
                         Product data = response.getData();
                         initView(data);
 
-                        if (!getUserID().equals(data.getUser_id()))
+                        if (!getUserID().equals(data.getUser_id())) {
                             CommonApi.addLiveness(data.getUser_id(), 20);
+                        } else {
+                            tv_inquiry.setVisibility(View.GONE);
+                        }
+
                     } else {
                         showErrorToast(response.getError_desc());
                     }

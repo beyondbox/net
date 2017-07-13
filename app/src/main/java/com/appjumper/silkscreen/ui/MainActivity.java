@@ -67,6 +67,9 @@ import q.rorbin.badgeview.QBadgeView;
  * 首页
  */
 public class MainActivity extends FragmentActivity {
+
+    public static MainActivity instance = null;
+
     List<Fragment> mTab = new ArrayList<>();
 
     @Bind(R.id.rg_tab)
@@ -97,6 +100,7 @@ public class MainActivity extends FragmentActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        instance = this;
 
         //安卓6.0以后需要手动请求写入权限，才能在存储设备上创建文件夹
         //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
@@ -509,5 +513,11 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 }
 

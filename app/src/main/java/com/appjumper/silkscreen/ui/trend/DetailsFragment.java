@@ -278,13 +278,14 @@ public class DetailsFragment extends BaseFragment {
 
     private void refresh() {
         getArticle();
+        new Thread(run).start();
 
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 new Thread(run).start();
             }
-        }, 400);
+        }, 400);*/
 
 
         mPullRefreshScrollView.setOnRefreshListener(new com.appjumper.silkscreen.view.scrollView.PullToRefreshBase.OnRefreshListener2<ObservableScrollView>() {

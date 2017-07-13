@@ -166,10 +166,15 @@ public class OfferDetailsActivity extends BaseActivity {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "inquiry");
+                data.put("a", "details");
+
                 data.put("uid", getUserID());
                 data.put("id", id);
-                response = JsonParser.getMyInquiryDetailsResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.INQUIRY_DETAILS));
+
+                //response = JsonParser.getMyInquiryDetailsResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.INQUIRY_DETAILS));
+                response = JsonParser.getMyInquiryDetailsResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 progress.dismiss();
                 e.printStackTrace();
@@ -189,11 +194,16 @@ public class OfferDetailsActivity extends BaseActivity {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "inquiry");
+                data.put("a", "offer");
+
                 data.put("uid", getUserID());
                 data.put("money", money);
                 data.put("inquiry_id", inquiry_id);
-                response = JsonParser.getBaseResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.OFFER));
+
+                //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.OFFER));
+                response = JsonParser.getBaseResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 progress.dismiss();
                 e.printStackTrace();
@@ -242,8 +252,9 @@ public class OfferDetailsActivity extends BaseActivity {
                 case NETWORK_SUCCESS_DATA_RIGHT://立即报价
                     BaseResponse base = (BaseResponse) msg.obj;
                     if (base.isSuccess()) {
-                        showSuccessTips("提交成功");
+                        showSuccessTips("报价成功");
                         CommonApi.addLiveness(getUserID(), 4);
+                        finish();
                     } else {
                         showErrorToast(base.getError_desc());
                     }
