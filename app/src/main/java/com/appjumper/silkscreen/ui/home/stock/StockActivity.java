@@ -305,6 +305,7 @@ public class StockActivity extends BaseActivity {
         View contentView = LayoutInflater.from(this).inflate(R.layout.layout_processing_listview, null);
         pullToRefreshView = (PullToRefreshPagedListView) contentView.findViewById(R.id.listview);
         listView = pullToRefreshView.getRefreshableView();
+        listView.onFinishLoading(false);
         mEmptyLayout = LayoutInflater.from(this).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
 

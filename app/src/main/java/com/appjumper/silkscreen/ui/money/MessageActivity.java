@@ -102,6 +102,7 @@ public class MessageActivity extends BaseActivity {
         mEmptyLayout = LayoutInflater.from(context).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
         listView = pullToRefreshView.getRefreshableView();
+        listView.onFinishLoading(false);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -125,6 +126,12 @@ public class MessageActivity extends BaseActivity {
 
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+    }
 
     private void refresh() {
         pullToRefreshView.setRefreshing();

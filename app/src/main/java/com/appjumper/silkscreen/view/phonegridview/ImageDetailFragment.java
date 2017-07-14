@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 
 import com.appjumper.silkscreen.R;
 import com.bumptech.glide.Glide;
-
+import com.squareup.picasso.Picasso;
 
 
 public class ImageDetailFragment extends Fragment {
@@ -61,7 +61,7 @@ public class ImageDetailFragment extends Fragment {
 		}else if(mImageUrl.equals("3")){
 			Glide.with(getActivity()).load(R.mipmap.icon_contrary_02).into(mImageView);
 		}else{
-			Glide.with(getActivity()).load(mImageUrl).into(mImageView/*, new Callback() {
+			Picasso.with(getActivity()).load(mImageUrl).resize(2048, 2048).centerInside().into(mImageView/*, new Callback() {
 			@Override
 			public void onSuccess() {
 				progressBar.setVisibility(View.GONE);

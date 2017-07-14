@@ -154,6 +154,19 @@ public class ProcessingDetailsActivity extends BaseActivity {
         refresh();
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        id = intent.getStringExtra("id");
+        initTitle(intent.getStringExtra("title"));
+        initProgressDialog();
+        progress.show();
+        new Thread(run).start();
+    }
+
+
     private void initSpecification(List<Spec> service_spec) {
 //        final ArrayList<HashMap<String, Object>> mList = new ArrayList<>();
 //        List<String> item3 = new ArrayList<>();
@@ -303,6 +316,7 @@ public class ProcessingDetailsActivity extends BaseActivity {
                         initView(data);
 
                         if (!getUserID().equals(data.getUser_id())) {
+                            tv_inquiry.setVisibility(View.VISIBLE);
                             CommonApi.addLiveness(data.getUser_id(), 20);
                         } else {
                             tv_inquiry.setVisibility(View.GONE);

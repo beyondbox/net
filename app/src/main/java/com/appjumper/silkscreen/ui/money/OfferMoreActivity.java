@@ -58,6 +58,7 @@ public class OfferMoreActivity extends BaseActivity {
         initTitle("报价公司" + "（" + count + "家）");
         id = getIntent().getStringExtra("id");
         listView = pullToRefreshView.getRefreshableView();
+        listView.onFinishLoading(false);
         mEmptyLayout = LayoutInflater.from(this).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
 

@@ -9,8 +9,8 @@ public class Url {
 
 
     //服务器地址
-    //public static final String IP = "http://115.28.148.207";  //正式
-    public static final String IP = "http://192.168.1.125"; //测试
+    public static final String IP = "http://115.28.148.207";  //正式
+    //public static final String IP = "http://192.168.1.125"; //测试
     public static final String HTTP_URL = IP + "/api/";
 
     public static final String HOST = IP + "/index.php"; //组合参数的访问方式

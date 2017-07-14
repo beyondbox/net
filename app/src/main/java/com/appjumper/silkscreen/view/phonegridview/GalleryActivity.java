@@ -34,8 +34,8 @@ public class GalleryActivity extends FragmentActivity {
 
 
 		mPager = (HackyViewPager) findViewById(R.id.pager);
-		ImagePagerAdapter mAdapter = new ImagePagerAdapter(
-				getSupportFragmentManager(), urls);
+		ImagePagerAdapter mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), urls);
+		mPager.setOffscreenPageLimit(4);
 		mPager.setAdapter(mAdapter);
 		indicator = (TextView) findViewById(R.id.indicator);
 

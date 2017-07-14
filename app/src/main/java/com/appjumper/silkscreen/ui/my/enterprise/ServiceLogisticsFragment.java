@@ -64,6 +64,7 @@ public class ServiceLogisticsFragment extends BaseFragment {
     protected void initData() {
         type = getArguments().getString("type");
         listView = pullToRefreshView.getRefreshableView();
+        listView.onFinishLoading(false);
         mEmptyLayout = LayoutInflater.from(context).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
         initListener();

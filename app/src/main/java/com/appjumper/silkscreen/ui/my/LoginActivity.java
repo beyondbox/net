@@ -122,13 +122,17 @@ public class LoginActivity extends BaseActivity{
                     progress.dismiss();
                     UserResponse userResponse = (UserResponse) msg.obj;
                     if(userResponse.isSuccess()){
-                        User user = userResponse.getData();
-                        //XGPushManager.registerPush(activity, "*");
-                        XGPushManager.registerPush(getApplicationContext(), user.getMobile());
-                        getMyApplication().getMyUserManager()
-                                .storeUserInfo(user);
-                        CommonApi.addLiveness(getUserID(), 1);
+                        final User user = userResponse.getData();
+                        XGPushManager.registerPush(getApplicationContext(), "*");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                XGPushManager.registerPush(getApplicationContext(), user.getMobile());
+                            }
+                        }, 1000);
 
+                        getMyApplication().getMyUserManager().storeUserInfo(user);
+                        CommonApi.addLiveness(getUserID(), 1);
                         sendBroadcast(new Intent(Const.ACTION_LOGIN_SUCCESS));
 
                         finish();

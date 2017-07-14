@@ -62,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/rl_title"
+            android:layout_above="@id/tv_inquiry"
             app:dddividerColor="@color/view_background_gray_color"
             app:ddmaskColor="#20000000"
             app:ddmenuBackgroundColor="@color/while_color"

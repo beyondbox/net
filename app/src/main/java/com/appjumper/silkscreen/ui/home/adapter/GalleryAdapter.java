@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class GalleryAdapter extends
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
 
-        Glide.with(mContext).load(list.get(i).getSmall()).error(R.mipmap.img_error).into(viewHolder.mImg);
+        Picasso.with(mContext).load(list.get(i).getSmall()).error(R.mipmap.img_error).into(viewHolder.mImg);
         if (i == 0) {
             viewHolder.mImg.setPadding(12, 0, 6, 0);
         } else if (i == (list.size() - 1)) {

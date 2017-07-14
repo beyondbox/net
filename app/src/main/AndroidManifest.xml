@@ -49,9 +49,9 @@
         <!--搜索结果 -->
         <activity android:name=".ui.home.search.SearchResultActivity" />
         <!--加工详情 -->
-        <activity android:name=".ui.home.process.ProcessingDetailsActivity" />
+        <activity android:name=".ui.home.process.ProcessingDetailsActivity" android:launchMode="singleTask"/>
         <!--公司详情 -->
-        <activity android:name=".ui.home.CompanyDetailsActivity" />
+        <activity android:name=".ui.home.CompanyDetailsActivity" android:launchMode="singleTask"/>
         <!--加载网页 -->
         <activity android:name=".ui.common.WebViewActivity" />
         <!--订做 -->
@@ -209,7 +209,7 @@
         <!--询价完成-->
         <activity android:name=".ui.inquiry.InquiryCompleteActivity" />
         <!--现货产品详情-->
-        <activity android:name=".ui.home.stock.StockDetailActivity" />
+        <activity android:name=".ui.home.stock.StockDetailActivity" android:launchMode="singleTask"/>
         <!--现货产品询价-->
         <activity android:name=".ui.inquiry.InquiryStockActivity" />
         <!--发布现货产品-->

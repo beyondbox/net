@@ -37,6 +37,7 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.util.Applibrary;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.manager.ActivityTaskManager;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
@@ -137,8 +138,10 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
             et_enterprise_address.setText(enterprise.getEnterprise_address());
             editText.setText(enterprise.getEnterprise_intro());
 
-            Picasso.with(this).load(logoUrl).placeholder(R.mipmap.icon_logo_image61).transform(new PicassoRoundTransform()).resize(60, 60)
-                    .centerCrop().into(iv_logo);
+            /*Picasso.with(this).load(logoUrl).placeholder(R.mipmap.icon_logo_image61).transform(new PicassoRoundTransform()).resize(60, 60)
+                    .centerCrop().into(iv_logo);*/
+
+            Picasso.with(this).load(logoUrl).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(iv_logo);
         } else {
             initProgressDialog(false, "正在创建企业...");
             initTitle("创建企业");
@@ -278,9 +281,15 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         logoUrl = "";
         Log.e("Log", logoPath);
         // 加载图片
-        Picasso.with(this).load(new File(logoPath)).placeholder(R.mipmap.icon_logo_image61).transform(new PicassoRoundTransform()).resize(60, 60)
-                .centerCrop().into(iv_logo);
-
+        /*Picasso.with(this).load(new File(logoPath)).placeholder(R.mipmap.icon_logo_image61).transform(new PicassoRoundTransform()).resize(60, 60)
+                .centerCrop().into(iv_logo);*/
+        Picasso.with(this)
+                .load(new File(logoPath))
+                .resize(DisplayUtil.dip2px(context, 70), DisplayUtil.dip2px(context, 70))
+                .centerCrop()
+                .placeholder(R.mipmap.icon_logo_image61)
+                .error(R.mipmap.icon_logo_image61)
+                .into(iv_logo);
     }
 
     //上传logo

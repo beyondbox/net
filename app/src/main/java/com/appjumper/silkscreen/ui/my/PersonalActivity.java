@@ -19,6 +19,7 @@ import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
 import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.squareup.picasso.Picasso;
 
@@ -106,8 +107,13 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
             tv_sex.setText("保密");
         }
         if(user.getAvatar()!=null){
-            Picasso.with(this).load(user.getAvatar().getSmall()).placeholder(R.mipmap.img_error_head).transform(new PicassoRoundTransform()).resize(65, 65)
-                    .centerCrop().into(iv_img);
+            Picasso.with(this)
+                    .load(user.getAvatar().getOrigin())
+                    .placeholder(R.mipmap.img_error_head)
+                    .transform(new PicassoRoundTransform())
+                    .resize(DisplayUtil.dip2px(context, 65), DisplayUtil.dip2px(context, 65))
+                    .centerCrop()
+                    .into(iv_img);
         }
     }
 
@@ -196,7 +202,7 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
                         User user = usersResponse.getData();
                         getMyApplication().getMyUserManager()
                                 .storeUserInfo(user);
-                        Picasso.with(PersonalActivity.this).load(user.getAvatar().getSmall()).placeholder(R.mipmap.img_error_head).transform(new PicassoRoundTransform()).into(iv_img);
+                        Picasso.with(PersonalActivity.this).load(user.getAvatar().getOrigin()).placeholder(R.mipmap.img_error_head).transform(new PicassoRoundTransform()).into(iv_img);
                     } else {
                         activity.showErrorToast(imgResponse.getError_desc());
                     }

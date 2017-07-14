@@ -22,7 +22,7 @@ public class ViewFactory {
 	public static ImageView getImageView(Context context, String url) {
 		ImageView imageView = (ImageView)LayoutInflater.from(context).inflate(
 				R.layout.view_banner, null);
-		Glide.with(context).load(url).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(imageView);
+		Picasso.with(context).load(url).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(imageView);
 		return imageView;
 	}
 }

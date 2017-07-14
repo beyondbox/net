@@ -33,7 +33,7 @@
         android:layout_below="@+id/txtTitle"
         android:padding="12dp"
         android:lineSpacingExtra="6dp"
-        android:text="    生产力认证，是丝网+推出的确保平台信息真实性的一种方式，如果企业申请生产力认证，我们会派专人到企业实地考察，确保企业所提交的信息是真实的，才会提供生产力认证。"
+        android:text="        生产力认证，是丝网+推出的确保平台信息真实性的一种方式，如果企业申请生产力认证，我们会派专人到企业实地考察，确保企业所提交的信息是真实的，才会提供生产力认证。"
         android:textSize="15sp"
         android:textColor="@color/text_gray_color"/>
 

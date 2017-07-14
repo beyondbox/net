@@ -73,6 +73,7 @@ public class MoneyFragment extends BaseFragment {
         mEmptyLayout = LayoutInflater.from(getContext()).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
         listView = pullToRefreshView.getRefreshableView();
+        listView.onFinishLoading(false);
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {

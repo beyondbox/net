@@ -154,6 +154,8 @@ public class StockDetailActivity extends BaseActivity {
         tv_address.setText(data.getEnterprise_address());
         initViewPager(data.getImg_list());
 
+        lLaytSpec.removeAllViews();
+        multiSpecList.clear();
         parseMultiSpec();
     }
 
@@ -176,6 +178,17 @@ public class StockDetailActivity extends BaseActivity {
         refresh();
     }
 
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        id = intent.getStringExtra("id");
+        initTitle(intent.getStringExtra("title"));
+        initProgressDialog();
+        progress.show();
+        new Thread(run).start();
+    }
 
 
     /**
@@ -506,6 +519,7 @@ public class StockDetailActivity extends BaseActivity {
                         initView(data);
 
                         if (!getUserID().equals(data.getUser_id())) {
+                            tv_inquiry.setVisibility(View.VISIBLE);
                             CommonApi.addLiveness(data.getUser_id(), 20);
                         } else {
                             tv_inquiry.setVisibility(View.GONE);

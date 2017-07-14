@@ -204,7 +204,8 @@ public class InquiryDetailsNoneActivity extends BaseActivity {
                     BaseResponse base = (BaseResponse) msg.obj;
                     if (base.isSuccess()) {
                         showErrorToast("取消成功");
-                        refresh();
+                        //refresh();
+                        finish();
                     } else {
                         showErrorToast(base.getError_desc());
                     }

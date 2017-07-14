@@ -92,7 +92,7 @@ public class MessageService extends XGPushBaseReceiver {
 		if (customContent != null && customContent.length() != 0) {
 			try {
 				JSONObject jsonObj = new JSONObject(customContent);
-				if (!jsonObj.isNull("type")) {
+				if (jsonObj.has("type")) {
 					int type = jsonObj.optInt("type");
 					switch (type) {
 						case 1: //有新的询价
@@ -128,7 +128,7 @@ public class MessageService extends XGPushBaseReceiver {
 		if (intent == null)
 			intent = new Intent(context, MainActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		Notification.Builder builder = new Notification.Builder(context);
 		builder.setContentTitle(title)
