@@ -150,6 +150,7 @@ public class LogisticsDetailsActivity extends BaseActivity {
         listView.setFocusable(false);
     }
 
+
     //初始化信息
     private void initView(final LineDetails data) {
 

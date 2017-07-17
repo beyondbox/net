@@ -63,6 +63,10 @@ public class ProductFragment extends BaseFragment {
     private LocalBroadcastManager broadcastManager;
 
 
+    private int nextPage = 1;
+    private int currPage = 1;
+
+
 
 
     @Override
@@ -212,12 +216,18 @@ public class ProductFragment extends BaseFragment {
                         dataList.addAll(list);
                         adapter.notifyDataSetChanged();
 
-                        if (dataList.size() < totalSize) {
+                        /*if (dataList.size() < totalSize) {
                             if (list.size() > 0)
                                 adapter.setEnableLoadMore(true);
                             else
                                 adapter.setEnableLoadMore(false);
-                        }
+                        }*/
+
+
+                        currPage = dataObj.optInt("currentpage");
+                        nextPage = dataObj.optInt("nextpage");
+                        if (currPage < nextPage)
+                            adapter.setEnableLoadMore(true);
 
                     }
                 } catch (JSONException e) {
@@ -241,7 +251,10 @@ public class ProductFragment extends BaseFragment {
 
                 ptrLayt.refreshComplete();
                 adapter.loadMoreComplete();
-                if (totalSize <= dataList.size())
+                /*if (totalSize <= dataList.size())
+                    adapter.loadMoreEnd();*/
+
+                if (currPage == nextPage)
                     adapter.loadMoreEnd();
 
                 adapter.setEmptyView(R.layout.layout_empty_view_common);

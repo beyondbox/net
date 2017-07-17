@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -123,6 +124,7 @@ public class TruckDetailsActivity extends BaseActivity {
         listView.setFocusable(false);
     }
 
+
     private void refresh() {
         mPullRefreshScrollView.setRefreshing();
         new Thread(detailsRun).start();
@@ -138,7 +140,7 @@ public class TruckDetailsActivity extends BaseActivity {
     }
 
     //初始化信息
-    private void initView(LineDetails data) {
+    private void initView(final LineDetails data) {
         tv_start.setText(data.getFrom());
         tv_end.setText(data.getTo());
         tv_passby.setText("距离起点" + data.getFrom_distance() + "km，运货里程" + data.getDistance() + "km");
@@ -192,6 +194,12 @@ public class TruckDetailsActivity extends BaseActivity {
         }
         TruckListviewAdapter adapter = new TruckListviewAdapter(this, data.getRecommend());
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                start_Activity(context, TruckDetailsActivity.class, new BasicNameValuePair("id", data.getRecommend().get(position).getId()));
+            }
+        });
     }
 
     //详情
