@@ -161,6 +161,12 @@ public class DynamicFragment extends BaseFragment {
         RequestParams params = MyHttpClient.getApiParam("service", "collectionNum");
         params.put("uid", getUserID());
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                initProgressDialog();
+                progress.show();
+            }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -252,6 +258,12 @@ public class DynamicFragment extends BaseFragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
             }
         });
     }
