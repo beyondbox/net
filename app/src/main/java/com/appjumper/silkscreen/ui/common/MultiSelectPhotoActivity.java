@@ -61,6 +61,10 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
     private File file;
     private Random random;
 
+    private File cameraFile;
+    private String cameraPath = Environment.getExternalStorageDirectory().getPath() + "/" + "picture";
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +78,8 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
         Log.e("log",nextsize+"随机数");
         file = new File(Applibrary.IMAGE_CACHE_DIR, System.currentTimeMillis() + nextsize + ".jpg");
         imageUri= Uri.fromFile(file);
+
+        cameraFile = new File(cameraPath, System.currentTimeMillis() + random.nextInt(30) + ".jpg");
     }
 
     /**
@@ -100,11 +106,11 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
         intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, file);
+            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, cameraFile);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         } else {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
         }
 
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
@@ -250,7 +256,7 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
             intent.putExtra("outputY", aspectY * 100);
             intent.putExtra("return-data", false);
             intent.putExtra("noFaceDetection", true);
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());// 返回格式
+            intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());// 返回格式
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(intent, REQUESTCODE_CUTTING);
         }
@@ -264,10 +270,10 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
                 case REQUEST_TAKE_PHOTO: // 拍照
                     if(mCropTaskPhoto){
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, file);//通过FileProvider创建一个content类型的Uri
+                            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, cameraFile);//通过FileProvider创建一个content类型的Uri
                             startPhotoZoom(uri);
                         } else {
-                            startPhotoZoom(imageUri);
+                            startPhotoZoom(Uri.fromFile(cameraFile));
                         }
 
                     }else{

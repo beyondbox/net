@@ -29,6 +29,7 @@ import android.view.View;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
+import com.appjumper.silkscreen.util.Applibrary;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,8 +51,8 @@ public class BitmapUtil {
 	public static final int DIRECTION_RIGHT = 1;
 	public static final int DIRECTION_UP = 2;
 	public static final int DIRECTION_DOWN = 3;
-	public static final String SAVEPATH = Environment
-			.getExternalStorageDirectory().getPath() + "/" + "picture";
+	//public static final String SAVEPATH = Environment.getExternalStorageDirectory().getPath() + "/" + "picture";
+	public static final String SAVEPATH = Applibrary.IMAGE_CACHE_DIR;
 
 
 	/**
@@ -164,7 +165,7 @@ public class BitmapUtil {
 	
 
 	public static String saveMyBitmapWithCompress(String sourcePath,Bitmap mBitmap,int compress) {
-		String newFileName = System.currentTimeMillis() + new Random().nextInt(512) + ".png";
+		String newFileName = System.currentTimeMillis() + new Random().nextInt(512) + ".jpg";
 		File file = new File(SAVEPATH);
 		if (!file.exists()) {
 			file.mkdirs();

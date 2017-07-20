@@ -274,7 +274,9 @@ public class BasePhotoGridActivity extends BaseActivity implements PhotoPopupWin
 		// 删除临时的100K左右的图片
 		for (String thumbnailPath : thumbPictures) {
 			File thumbnailPhoto = new File(thumbnailPath);
-			thumbnailPhoto.deleteOnExit();
+			//thumbnailPhoto.deleteOnExit();
+			if (thumbnailPhoto.exists())
+				thumbnailPhoto.delete();
 		}
 		thumbPictures.clear();
 		thumbPictures.add("" + PICTURE_UPDATE_ICON);

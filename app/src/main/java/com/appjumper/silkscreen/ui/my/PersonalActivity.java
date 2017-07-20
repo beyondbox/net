@@ -198,7 +198,8 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
                     if (usersResponse.isSuccess()) {
                         // 删除临时的100K左右的图片
                         File thumbnailPhoto = new File(imgPath);
-                        thumbnailPhoto.deleteOnExit();
+                        if (thumbnailPhoto.exists())
+                            thumbnailPhoto.delete();
                         User user = usersResponse.getData();
                         getMyApplication().getMyUserManager()
                                 .storeUserInfo(user);

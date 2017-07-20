@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -107,6 +108,11 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
     private String finalLogo = ""; //最终确定的logo路径
 
     private String imgsUrl = "";
+
+    private File cameraFile;
+    private String cameraPath = Environment.getExternalStorageDirectory().getPath() + "/" + "picture";
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -272,11 +278,19 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
 
 
     protected void requestImage(String[] path) {
-        if (!logoPath.equals("")) {
+        /*if (!logoPath.equals("")) {
             // 删除临时的100K左右的图片
             File thumbnailPhoto = new File(logoPath);
             thumbnailPhoto.deleteOnExit();
+        }*/
+        if (!TextUtils.isEmpty(logoPath)) {
+            // 删除临时的100K左右的图片(企业logo)
+            File thumbnailPhoto = new File(logoPath);
+            if (thumbnailPhoto.exists())
+                thumbnailPhoto.delete();
         }
+
+
         logoPath = path[0];
         logoUrl = "";
         Log.e("Log", logoPath);
@@ -510,6 +524,13 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         super.onDestroy();
         if (progress != null)
             progress.dismiss();
+
+        if (!TextUtils.isEmpty(logoPath)) {
+            // 删除临时的100K左右的图片(企业logo)
+            File thumbnailPhoto = new File(logoPath);
+            if (thumbnailPhoto.exists())
+                thumbnailPhoto.delete();
+        }
     }
 
 
@@ -541,6 +562,8 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         Log.e("log",nextsize+"随机数");
         file = new File(Applibrary.IMAGE_CACHE_DIR, System.currentTimeMillis() + nextsize + ".jpg");
         imageUri= Uri.fromFile(file);
+
+        cameraFile = new File(cameraPath, System.currentTimeMillis() + random.nextInt(30) + ".jpg");
     }
 
 
@@ -624,11 +647,11 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, file);
+            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, cameraFile);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
         } else {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(cameraFile));
         }
 
         startActivityForResult(intent, REQUEST_TAKE_PHOTO);
@@ -653,7 +676,7 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
             intent.putExtra("outputY", aspectY * 100);
             intent.putExtra("return-data", false);
             intent.putExtra("noFaceDetection", true);
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());// 返回格式
+            intent.putExtra("outputFormat", Bitmap.CompressFormat.PNG.toString());// 返回格式
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(intent, REQUESTCODE_CUTTING);
         }
@@ -677,10 +700,10 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
             switch (requestCode) {
                 case REQUEST_TAKE_PHOTO: // 拍照
                         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, file);//通过FileProvider创建一个content类型的Uri
+                            Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, cameraFile);//通过FileProvider创建一个content类型的Uri
                             startPhotoZoom(uri);
                         } else {
-                            startPhotoZoom(imageUri);
+                            startPhotoZoom(Uri.fromFile(cameraFile));
                         }
                     break;
                 case REQUEST_CODE_PICK_IMAGE: //单选
