@@ -33,7 +33,7 @@ public class BorderRectImageView extends ImageView {
 		//path.addRect(0, 0, getWidth(), getHeight(), Direction.CW);
 		path.addRoundRect(new RectF(0, 0, getWidth(), getHeight()), 8.0f, 8.0f, Direction.CW);
 		canvas.clipPath(path);
-		
+
 		super.onDraw(canvas);
 		
 		Paint paint = new Paint();

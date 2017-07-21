@@ -29,6 +29,7 @@ import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.util.AppToast;
 import com.appjumper.silkscreen.util.MProgressDialog;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -98,6 +99,19 @@ public class BaseActivity extends FragmentActivity {
         //强制竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         context = this;
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 
