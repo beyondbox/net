@@ -18,6 +18,7 @@
         android:id="@+id/txtCancelAttent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_below="@id/imgViCom"
         android:layout_marginTop="10dp"
         android:background="@drawable/selector_cancel_attent"
@@ -94,8 +95,9 @@
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/txtCancelAttent"
         android:layout_alignLeft="@id/txtTitle"
+        android:layout_below="@id/txtSubTitle"
+        android:layout_marginTop="12dp"
         android:text="入驻时间：2016-9-25"
         android:textSize="11sp"
         android:textColor="#858585"/>
@@ -105,14 +107,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/txtCancelAttent"
+        android:layout_alignBottom="@id/txtDate"
         android:textSize="12sp"
         android:textColor="#858585"
         android:text="55KM"/>
 
     <View
         style="@style/LineStyle"
-        android:layout_below="@id/txtCancelAttent"
+        android:layout_below="@id/txtDate"
         android:layout_marginTop="15dp"/>
 
 </RelativeLayout>

@@ -28,6 +28,7 @@ import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.MapviewActivity;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
@@ -54,9 +55,14 @@ import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,6 +178,7 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
     private String uid = "";
     private Enterprise data;
     private String enterprise_id;
+    private boolean isCollected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,21 +226,26 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                 } else {
                     if (enterprise.getCollection().equals("1")) {
                         ivCollect.setImageResource(R.mipmap.icon_collect_selected);
+                        isCollected = true;
                     } else {
                         ivCollect.setImageResource(R.mipmap.icon_collect);
+                        isCollected = false;
                     }
                 }
 
             } else {
                 if (enterprise.getCollection().equals("1")) {
                     ivCollect.setImageResource(R.mipmap.icon_collect_selected);
+                    isCollected = true;
                 } else {
                     ivCollect.setImageResource(R.mipmap.icon_collect);
+                    isCollected = false;
                 }
             }
 
         } else {
             ivCollect.setImageResource(R.mipmap.icon_collect);
+            isCollected = false;
         }
         data = enterprise;
         enterprise_id = enterprise.getEnterprise_id();
@@ -364,7 +376,8 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                     BaseResponse base = (BaseResponse) msg.obj;
                     if (base.isSuccess()) {
                         ivCollect.setImageResource(R.mipmap.icon_collect_selected);
-                        showSuccessTips("收藏成功");
+                        showSuccessTips("您已关注成功");
+                        isCollected = true;
                         CommonApi.addLiveness(getUserID(), 21);
                     } else {
                         showErrorToast(base.getError_desc());
@@ -592,7 +605,7 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
             case R.id.tv_inquiry://询价
                 break;
             case R.id.iv_collect://收藏
-                if (getUser() == null) {
+                /*if (getUser() == null) {
                     showErrorToast("请您先登录");
                     return;
                 }
@@ -600,7 +613,13 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                     showErrorToast("您已收藏过该企业");
                     return;
                 }
-                new Thread(run).start();
+                new Thread(run).start();*/
+                if (checkLogined()) {
+                    if (isCollected)
+                        cancelAttention();
+                    else
+                        new Thread(run).start();
+                }
                 break;
             case R.id.tv_edit://编辑
                 Intent intent = new Intent(this, EnterpriseCreateActivity.class);
@@ -670,6 +689,40 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
     }
 
 
+    /**
+     * 取消关注
+     */
+    private void cancelAttention() {
+        RequestParams params = MyHttpClient.getApiParam("collection", "delete");
+        params.put("uid", getUserID());
+        params.put("enterprise_id", enterprise_id);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        ivCollect.setImageResource(R.mipmap.icon_collect);
+                        showErrorToast("您已取消关注");
+                        isCollected = false;
+                        setResult(Const.RESULT_CODE_NEED_REFRESH);
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+        });
+    }
 
 
     @Override

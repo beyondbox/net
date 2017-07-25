@@ -1,6 +1,7 @@
 package com.appjumper.silkscreen.ui.dynamic;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -66,7 +67,7 @@ public class AttentCompanyFragment extends BaseFragment {
     protected void initData() {
         activity = (DynamicManageActivity) getActivity();
         initRecyclerView();
-        initCancelDialog();
+        //initCancelDialog();
         initProgressDialog();
 
         getMyAttention();
@@ -87,7 +88,7 @@ public class AttentCompanyFragment extends BaseFragment {
         companyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                start_Activity(context, CompanyDetailsActivity.class, new BasicNameValuePair("id", companyList.get(position).getEnterprise_id()), new BasicNameValuePair("from", "2"));
+                startForResult_Activity(context, CompanyDetailsActivity.class, 0, new BasicNameValuePair("id", companyList.get(position).getEnterprise_id()), new BasicNameValuePair("from", "2"));
             }
         });
 
@@ -147,6 +148,7 @@ public class AttentCompanyFragment extends BaseFragment {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
+                        companyList.clear();
                         companyList.addAll(GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), Enterprise.class));
                         companyAdapter.notifyDataSetChanged();
                     }
@@ -201,6 +203,16 @@ public class AttentCompanyFragment extends BaseFragment {
                 showFailTips(getResources().getString(R.string.requst_fail));
             }
         });
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Const.RESULT_CODE_NEED_REFRESH) {
+            getMyAttention();
+            activity.getAttentNum();
+        }
     }
 
 }

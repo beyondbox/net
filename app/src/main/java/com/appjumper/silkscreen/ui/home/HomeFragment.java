@@ -462,10 +462,10 @@ public class HomeFragment extends BaseFragment {
                     //progress.dismiss();
                     ScoreResponse baseResponse = (ScoreResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
-                        showErrorToast("签到成功");
+                        showErrorToast("签到成功+" + baseResponse.getData().getScore());
                         l_integral.setVisibility(View.VISIBLE);
                         imageView3.setVisibility(View.GONE);
-                        tv_integral.setText(baseResponse.getData().getScore());
+                        tv_integral.setText(baseResponse.getData().getIntegral());
                         User user = getUser();
                         user.setScore(baseResponse.getData().getIntegral());
                         getMyApplication().getMyUserManager().storeUserInfo(user);

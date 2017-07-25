@@ -16,8 +16,12 @@ import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.WebViewActivity;
+import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.tencent.android.tpush.XGPushManager;
+
+import org.apache.http.message.BasicNameValuePair;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -26,6 +30,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.appjumper.silkscreen.R.id.tv_company_name;
 
 /**
  * Created by yc on 2016/11/7.

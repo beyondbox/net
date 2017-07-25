@@ -69,4 +69,15 @@ public class WebViewActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mWebView != null) {
+            mWebView.destroy();
+            mWebView = null;
+        }
+    }
+
+
 }

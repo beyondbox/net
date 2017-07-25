@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,11 +24,14 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.tencent.android.tpush.XGPushManager;
 
 import org.apache.http.Header;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +43,7 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
@@ -57,6 +63,9 @@ public class RegistereActivity extends BaseActivity{
     @Bind(R.id.t_obtain_code)
     TextView t_obtain_code;
 
+    @Bind(R.id.btn_register)
+    Button btn_register;
+
     private final int DELAYTIME = 60;
     private int CURRENTDELAYTIME;
     private TimerTask task;
@@ -74,7 +83,7 @@ public class RegistereActivity extends BaseActivity{
         initBack();
     }
 
-    @OnClick({R.id.btn_register,R.id.t_obtain_code})
+    @OnClick({R.id.btn_register, R.id.t_obtain_code, R.id.txtDeal})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_register://注册
@@ -101,10 +110,12 @@ public class RegistereActivity extends BaseActivity{
                     showErrorToast("请输入正确的手机号");
                     return;
                 }
-                initProgressDialog();
-                progress.show();
-                progress.setMessage("发送中...");
-                new Thread(codeRun).start();
+                checkMobile();
+                break;
+            case R.id.txtDeal:
+                start_Activity(context, WebViewActivity.class, new BasicNameValuePair("url", "http://115.28.148.207/data/User_agreement.htm"), new BasicNameValuePair("title", "丝网+用户协议"));
+                break;
+            default:
                 break;
         }
     }
@@ -222,12 +233,55 @@ public class RegistereActivity extends BaseActivity{
         }
     }
 
+
+    /**
+     * 检查手机号是否可用
+     */
+    private void checkMobile() {
+        RequestParams params = MyHttpClient.getApiParam("user", "register_mobile");
+        params.put("mobile", et_name.getText().toString().trim());
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                initProgressDialog(false, null);
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        new Thread(codeRun).start();
+                    } else {
+                        progress.dismiss();
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progress.dismiss();
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+        });
+    }
+
+
+
     private void cancelTime() {
         task.cancel();
         t_obtain_code.setClickable(true);
         t_obtain_code.setTextColor(getResources().getColor(R.color.theme_color));
         t_obtain_code.setText("获取验证码");
     }
+
     private void startTime() {
         CURRENTDELAYTIME = DELAYTIME;
         task = new TimerTask() {
@@ -237,6 +291,15 @@ public class RegistereActivity extends BaseActivity{
             }
         };
         timer.schedule(task, 0, 1000);
+    }
+
+
+    @OnCheckedChanged(R.id.chkDeal)
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked)
+            btn_register.setEnabled(true);
+        else
+            btn_register.setEnabled(false);
     }
 
 
