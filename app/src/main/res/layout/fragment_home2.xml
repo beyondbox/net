@@ -277,7 +277,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/while_color"
-                    android:paddingBottom="5dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -300,8 +299,8 @@
                         android:id="@+id/tv_orders"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:background="@drawable/select_white_background"
-                        android:layout_marginTop="5dp"
                         android:paddingTop="5dp"
                         android:paddingLeft="12dp"
                         android:paddingRight="12dp"
@@ -316,7 +315,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="6dp"
                             android:layout_marginRight="10dp"
                             android:orientation="vertical">
 
@@ -345,10 +344,14 @@
                     </LinearLayout>
 
 
+                    <View style="@style/LineStyle" android:layout_marginLeft="18dp"/>
+
+
                     <LinearLayout
                         android:id="@+id/tv_stocks"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:background="@drawable/select_white_background"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
@@ -364,7 +367,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="6dp"
                             android:layout_marginRight="10dp"
                             android:orientation="vertical">
 
@@ -392,11 +395,14 @@
                             android:src="@mipmap/arrow_right_bold"/>
                     </LinearLayout>
 
+                    <View style="@style/LineStyle" android:layout_marginLeft="18dp"/>
+
 
                     <LinearLayout
                         android:id="@+id/tv_machine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:background="@drawable/select_white_background"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
@@ -412,7 +418,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginLeft="6dp"
                             android:layout_marginRight="10dp"
                             android:orientation="vertical">
 

@@ -177,7 +177,7 @@ public class MyFragment extends BaseFragment {
 
     @OnClick({R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rl_enterprise,
             R.id.rl_feedback, R.id.ll_view, R.id.ll_service, R.id.rl_point, R.id.ll_company,
-            R.id.rl_collect, R.id.rl_personal_certificate, R.id.tv_help})
+            R.id.rl_collect, R.id.rl_personal_certificate, R.id.tv_help, R.id.rl_my_release})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_help://帮助
@@ -232,6 +232,10 @@ public class MyFragment extends BaseFragment {
                 if (checkLogined()) {
                     start_Activity(getActivity(), EnterpriseCollectionActivity.class);
                 }
+                break;
+            case R.id.rl_my_release: //我的发布
+                if (checkLogined())
+                    start_Activity(context, MyReleaseActivity.class);
                 break;
             default:
                 break;

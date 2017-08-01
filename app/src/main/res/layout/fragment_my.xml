@@ -286,6 +286,60 @@
 
             <View style="@style/LineStyle" />
 
+
+
+
+
+
+
+
+
+            <View
+                style="@style/LineStyle"
+                android:layout_marginTop="12dp" />
+
+            <RelativeLayout
+                android:id="@+id/rl_my_release"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/select_white_background"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:drawableLeft="@mipmap/my_release"
+                    android:drawablePadding="12dp"
+                    android:gravity="center_vertical"
+                    android:text="我的发布"
+                    android:textColor="@color/black_color"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/icon_my_arrows_right" />
+
+            </RelativeLayout>
+
+            <View style="@style/LineStyle" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <View
                 style="@style/LineStyle"
                 android:layout_marginTop="12dp" />

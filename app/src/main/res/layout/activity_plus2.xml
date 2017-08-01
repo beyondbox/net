@@ -103,7 +103,7 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
-                        <ImageView
+                        <com.appjumper.silkscreen.view.CircleImageView
                             android:id="@+id/imageView5"
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
@@ -131,7 +131,7 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
-                        <ImageView
+                        <com.appjumper.silkscreen.view.CircleImageView
                             android:layout_width="match_parent"
                             android:layout_height="60dp"
                             android:src="@mipmap/p_stock"/>

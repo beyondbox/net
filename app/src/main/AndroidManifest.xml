@@ -228,6 +228,8 @@
         <activity android:name=".ui.common.ProductSearchActivity" />
         <!--原材料价格-更多-->
         <activity android:name=".ui.trend.PriceMoreActivity" />
+        <!--我的发布-->
+        <activity android:name=".ui.my.MyReleaseActivity" />
 
 
         <!--发布护栏网-->

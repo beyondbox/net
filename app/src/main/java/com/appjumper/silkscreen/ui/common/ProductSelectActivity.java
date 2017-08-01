@@ -97,6 +97,9 @@ public class ProductSelectActivity extends BaseActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            if (isDestroyed())
+                return;
+
             switch (msg.what) {
                 case IndexSideBar.WHAT_HIDE_HINT:
                     txtHint.setVisibility(View.GONE);
