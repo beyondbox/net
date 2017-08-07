@@ -12,7 +12,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="centerCrop"
-        android:src="@mipmap/icon_home_banner_bg"/>
+        android:src="@mipmap/img_error"/>
 
     <TextView
         android:id="@+id/txtTitle"
@@ -70,6 +70,7 @@
         android:layout_alignLeft="@id/txtTitle">
 
         <TextView
+            android:id="@+id/txtEdit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -77,11 +78,30 @@
             android:paddingTop="2dp"
             android:paddingBottom="2dp"
             android:gravity="center"
+            android:visibility="invisible"
             android:text="编辑"
             android:textSize="11sp"
             android:textColor="@color/text_gray_color"/>
 
+
+
         <TextView
+            android:id="@+id/txtShare"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/selector_my_release_menu"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:gravity="center"
+            android:visibility="invisible"
+            android:text="分享"
+            android:textSize="11sp"
+            android:textColor="@color/text_gray_color"/>
+
+        <TextView
+            android:id="@+id/txtRefresh"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -95,19 +115,7 @@
             android:textColor="@color/text_gray_color"/>
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/selector_my_release_menu"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
-            android:gravity="center"
-            android:text="分享"
-            android:textSize="11sp"
-            android:textColor="@color/text_gray_color"/>
-
-        <TextView
+            android:id="@+id/txtDelete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

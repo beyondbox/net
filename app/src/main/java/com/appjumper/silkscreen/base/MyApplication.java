@@ -6,7 +6,6 @@ import com.appjumper.silkscreen.util.manager.MyUserManager;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
-import im.fir.sdk.FIR;
 
 
 /**
@@ -33,7 +32,6 @@ public class MyApplication extends Application{
         super.onCreate();
         appContext = this;
         UMShareAPI.get(this);
-        FIR.init(this);
         // 初始化配置信息
         //Configure.init(this);
         checkInit();

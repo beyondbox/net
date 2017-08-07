@@ -75,7 +75,7 @@ public class AddServiceActivity extends BaseActivity {
                     start_Activity(context, PersonalAuthenticationActivity.class);
                 } else if (!getUser().getEnterprise().getEnterprise_auth_status().equals("2")) {
                     //Toast.makeText(context, "您的企业尚未通过认证", Toast.LENGTH_SHORT).show();
-                    start_Activity(context, EnterpriseAuthenticationActivity.class);
+                    start_Activity(context, EnterpriseAuthFirstepActivity.class);
                 }
                 break;
             case R.id.rl_logistics://物流路线

@@ -73,7 +73,7 @@
             android:id="@+id/tv_avg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="258/吨"
+            android:text=""
             android:textColor="@color/orange_color"
             android:textSize="12sp" />
 
@@ -89,8 +89,8 @@
             android:id="@+id/tv_avg_diff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="-25"
-            android:textColor="@color/green_color"
+            android:text="0"
+            android:textColor="@color/red_color"
             android:textSize="12sp" />
     </LinearLayout>
 

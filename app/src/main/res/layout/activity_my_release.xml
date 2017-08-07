@@ -8,19 +8,49 @@
     <include layout="@layout/layout_header_with_text"/>
 
 
+
     <com.chanven.lib.cptr.PtrClassicFrameLayout
         android:id="@+id/ptrLayt"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerData"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical">
+            android:layout_height="match_parent">
 
-        </android.support.v7.widget.RecyclerView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/txtHint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="刷新能让您的信息顺序更靠前！(每次刷新扣除10积分)"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_gray_light_color"/>
+
+                <com.appjumper.silkscreen.view.NoScrollRecyclerView
+                    android:id="@+id/recyclerData"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false">
+
+                </com.appjumper.silkscreen.view.NoScrollRecyclerView>
+
+            </LinearLayout>
+        </ScrollView>
+
+
 
     </com.chanven.lib.cptr.PtrClassicFrameLayout>
+
+
 
 </LinearLayout>

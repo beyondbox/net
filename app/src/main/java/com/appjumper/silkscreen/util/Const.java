@@ -126,6 +126,12 @@ public class Const {
     public static final int SERVICE_TYPE_LOGISTICS = 4; //物流线路
 
 
+    public static final int AUTH_NOT_YET = 0; //未认证
+    public static final int AUTH_ING = 1; //认证中
+    public static final int AUTH_SUCCESS = 2; //认证通过
+    public static final int AUTH_FAIL = 3; //认证失败
+
+
     public static final String KEY_MOBILE = "mobile";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_TITLE = "title";
@@ -141,6 +147,9 @@ public class Const {
     public static final String KEY_PRODUCT_LIST = "productList";
     public static final String KEY_HAS_CHANGED = "hasChanged";
     public static final String KEY_MOTION = "motion";
+    public static final String KEY_REGISTER_ID = "registerID";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_PID = "pid";
 
 
 

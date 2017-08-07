@@ -26,6 +26,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:lineSpacingExtra="3dp"
             android:text="您确定要取消关注吗？"
             android:textColor="@color/white"
             android:textSize="15sp" />

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
+import com.appjumper.silkscreen.ui.my.MyReleaseActivity;
 import com.appjumper.silkscreen.util.Const;
 
 import butterknife.Bind;
@@ -33,7 +34,7 @@ public class AddServiceCompleteActivity extends BaseActivity {
         setContentView(R.layout.activity_add_service_complete);
         ButterKnife.bind(this);
 
-        initTitle("添加成功");
+        initTitle("发布成功");
 
         Intent intent = getIntent();
         serviceType = Integer.parseInt(intent.getStringExtra(Const.KEY_SERVICE_TYPE));
@@ -47,12 +48,18 @@ public class AddServiceCompleteActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.txtConfirm, R.id.txtAdd})
+    @OnClick({R.id.txtManage, R.id.txtAdd})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.txtConfirm:
+            /*case R.id.txtConfirm:
                 if (ProductSelectActivity.instance != null)
                     ProductSelectActivity.instance.finish();
+                finish();
+                break;*/
+            case R.id.txtManage:
+                if (ProductSelectActivity.instance != null)
+                    ProductSelectActivity.instance.finish();
+                start_Activity(context, MyReleaseActivity.class);
                 finish();
                 break;
             case R.id.txtAdd:

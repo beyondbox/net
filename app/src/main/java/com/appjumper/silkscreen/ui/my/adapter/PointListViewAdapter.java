@@ -84,13 +84,19 @@ public class PointListViewAdapter extends BaseAdapter {
 
     private void fillValue(int position, ViewHolder viewHolder) {
         IntegralList item = list.get(position);
-        viewHolder.tvDate.setText(item.getCreate_time());
+        viewHolder.tvDate.setText(stampToDate((Long.parseLong(item.getCreate_time())*1000)+""));
         switch (item.getType()){
             case "1"://签到
                 viewHolder.tvTitle.setText("签到");
                 viewHolder.tvPoint.setText("+"+item.getIntegral());
-                viewHolder.tvDate.setText(stampToDate((Long.parseLong(item.getCreate_time())*1000)+""));
+                viewHolder.tvPoint.setTextColor(mContext.getResources().getColor(R.color.green_color));
+                break;
+            case "2": //消除
+                viewHolder.tvTitle.setText("消除");
+                viewHolder.tvPoint.setText("-"+item.getIntegral());
                 viewHolder.tvPoint.setTextColor(mContext.getResources().getColor(R.color.orange_color));
+                break;
+            default:
                 break;
         }
 

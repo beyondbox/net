@@ -90,7 +90,8 @@
         <com.appjumper.silkscreen.view.ObservableScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:descendantFocusability="afterDescendants">
 
             <LinearLayout
                 android:id="@+id/l_homeview"
@@ -127,7 +128,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="10dp"
-                        android:paddingBottom="10dp">
+                        android:paddingBottom="10dp"
+                        android:paddingRight="5dp">
 
                     </android.support.v7.widget.RecyclerView>
 

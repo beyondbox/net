@@ -9,9 +9,9 @@
         android:id="@+id/txtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp"
-        android:text="暂无内容 ~ "
+        android:paddingBottom="150dp"
+        android:paddingTop="150dp"
+        android:text="暂无内容 ~"
         android:textColor="@color/text_gray_light_color"
         android:textSize="14sp" />
 

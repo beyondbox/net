@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.view;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,11 +11,23 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 
+import static android.R.string.cancel;
+
 
 public class SureOrCancelDialog extends Dialog {
 
+    private String cancelStr;
+    private String sureStr;
+
     public SureOrCancelDialog(Context context, String message, SureButtonClick sureButtonClick) {
         super(context, R.style.loading_dialog);
+        initView(context, message, sureButtonClick);
+    }
+
+    public SureOrCancelDialog(Context context, String message, String sureStr, String cancelStr, SureButtonClick sureButtonClick) {
+        super(context, R.style.loading_dialog);
+        this.sureStr = sureStr;
+        this.cancelStr = cancelStr;
         initView(context, message, sureButtonClick);
     }
 
@@ -48,6 +61,11 @@ public class SureOrCancelDialog extends Dialog {
                 }
             }
         });
+
+        if (!TextUtils.isEmpty(sureStr))
+            sure_tv.setText(sureStr);
+        if (!TextUtils.isEmpty(cancelStr))
+            cancel_tv.setText(cancelStr);
 
         setContentView(v, new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,

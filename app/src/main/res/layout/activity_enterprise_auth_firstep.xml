@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/while_color"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="企业名称"
+                android:textSize="14sp"
+                android:textColor="@color/text_gray_color"/>
+
+            <TextView
+                android:id="@+id/txtCompanyName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:gravity="right"
+                android:text=""
+                android:textSize="14sp"
+                android:textColor="@color/black_color"/>
+
+        </LinearLayout>
+
+        <View style="@style/LineStyle"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="注 册 号"
+                android:textSize="14sp"
+                android:textColor="@color/text_gray_color"/>
+
+            <EditText
+                android:id="@+id/txtRegistrID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:gravity="right"
+                android:hint="请填写营业执照注册号"
+                android:maxLines="1"
+                android:maxLength="18"
+                android:inputType="number"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:textColorHint="@color/light_gray_color"
+                android:textSize="14sp"
+                android:textColor="@color/black_color"/>
+
+        </LinearLayout>
+
+        <View style="@style/LineStyle"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="法人代表"
+                android:textSize="14sp"
+                android:textColor="@color/text_gray_color"/>
+
+            <EditText
+                android:id="@+id/txtPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:gravity="right"
+                android:hint="请填写法人代表姓名"
+                android:maxLines="1"
+                android:textColorHint="@color/light_gray_color"
+                android:textSize="14sp"
+                android:textColor="@color/black_color"/>
+
+        </LinearLayout>
+
+        <View style="@style/LineStyle"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="身份证号"
+                android:textSize="14sp"
+                android:textColor="@color/text_gray_color"/>
+
+            <EditText
+                android:id="@+id/txtID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@null"
+                android:gravity="right"
+                android:hint="请填写法人代表身份证号"
+                android:maxLines="1"
+                android:maxLength="18"
+                android:inputType="number"
+                android:digits="0123456789X"
+                android:textColorHint="@color/light_gray_color"
+                android:textSize="14sp"
+                android:textColor="@color/black_color"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/hint"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="什么是企业认证？"
+            android:textSize="14sp"
+            android:textColor="@color/black_color"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:layout_marginTop="10dp"
+        android:lineSpacingExtra="3dp"
+        android:textSize="13sp"
+        android:textColor="@color/text_gray_light_color"
+        android:text="企业认证是证明信息是真实的企业发布，拥有认证标识提高企业信任度。使用此认证需要同时验证营业执照信息和营业执照的法人身份。"/>
+
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/txtConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_btn_blue"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="6dp"
+        android:text="下一步"
+        android:textSize="15sp"
+        android:textColor="@color/white"/>
+
+
+</LinearLayout>

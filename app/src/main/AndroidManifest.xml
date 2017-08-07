@@ -230,6 +230,10 @@
         <activity android:name=".ui.trend.PriceMoreActivity" />
         <!--我的发布-->
         <activity android:name=".ui.my.MyReleaseActivity" />
+        <!--认证管理-->
+        <activity android:name=".ui.my.enterprise.CertifyManageActivity" />
+        <!--企业认证第一步-->
+        <activity android:name=".ui.my.enterprise.EnterpriseAuthFirstepActivity" />
 
 
         <!--发布护栏网-->
@@ -380,7 +384,6 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}"></meta-data>
-        <meta-data android:value="39f9e7c23b788001c55cad56d8862e29" android:name="BUG_HD_SDK_GENERAL_KEY" />
     </application>
 
     <uses-permission android:name="android.permission.CALL_PHONE" />

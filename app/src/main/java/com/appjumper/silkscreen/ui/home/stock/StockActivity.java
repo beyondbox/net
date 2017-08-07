@@ -40,6 +40,7 @@ import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.my.PersonalAuthenticationActivity;
 import com.appjumper.silkscreen.ui.my.adapter.ChoiceRecyclerAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ProductionListViewAdapter;
+import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthFirstepActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthenticationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
@@ -144,7 +145,7 @@ public class StockActivity extends BaseActivity {
                     }
                     if (!getUser().getEnterprise().getEnterprise_auth_status().equals("2")) {
                         Toast.makeText(context, "您的企业尚未通过认证", Toast.LENGTH_SHORT).show();
-                        start_Activity(context, EnterpriseAuthenticationActivity.class);
+                        start_Activity(context, EnterpriseAuthFirstepActivity.class);
                         return;
                     }
 

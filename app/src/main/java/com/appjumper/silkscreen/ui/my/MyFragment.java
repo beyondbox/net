@@ -23,6 +23,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.AuthenticationAdministrationActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ServiceAdministrationActivity;
 import com.appjumper.silkscreen.util.Const;
@@ -212,7 +213,8 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.ll_view://查看公司认证
                 if (checkLogined()) {
-                    start_Activity(getActivity(), AuthenticationAdministrationActivity.class);
+                    //start_Activity(getActivity(), AuthenticationAdministrationActivity.class);
+                    start_Activity(context, CertifyManageActivity.class);
                 }
                 break;
             case R.id.ll_service://服务管理

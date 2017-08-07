@@ -165,10 +165,16 @@ public class MyPointActivity extends BaseActivity {
             IntegralListResponse response = null;
             try {
                 Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "user");
+                data.put("a", "integral_list");
+
                 data.put("pagesize", pagesize);
                 data.put("page", "1");
                 data.put("uid", getUserID());
-                response = JsonParser.getIntegralListResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.INTEGRALLIST));
+
+                //response = JsonParser.getIntegralListResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.INTEGRALLIST));
+                response = JsonParser.getIntegralListResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();
             }

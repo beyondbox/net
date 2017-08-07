@@ -18,6 +18,7 @@ import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.bumptech.glide.Glide;
 
@@ -67,12 +68,22 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
     private String enterprise_auth_status="";
     private AuthInfo authinfo;
 
+    private String registerID;
+    private String personName;
+    private String pID;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enterprise_authentication);
         initBack();
         ButterKnife.bind(this);
+
+        Intent intent = getIntent();
+        registerID = intent.getStringExtra(Const.KEY_REGISTER_ID);
+        personName = intent.getStringExtra(Const.KEY_NAME);
+        pID = intent.getStringExtra(Const.KEY_PID);
+
         new Thread(new CompanyAuthInfoRun()).start();
     }
 
@@ -210,6 +221,9 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
             try {
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("uid",getUserID());
+                data.put("enterprise_registration_mark", registerID);
+                data.put("enterprise_corporate_representative", personName);
+                data.put("enterprise_corporateID", pID);
                 data.put("enterprise_legal_img",iv_id_card_one_url);
                 data.put("enterprise_legal_img_back",iv_id_card_two_url);
                 data.put("enterprise_licence_img",iv_business_license_url);

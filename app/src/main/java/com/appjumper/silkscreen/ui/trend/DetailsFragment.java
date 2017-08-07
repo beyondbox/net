@@ -141,6 +141,7 @@ public class DetailsFragment extends BaseFragment {
             end = -1;
             tv_avg.setText("尚未出价");
             tv_avg_diff.setText("0");
+            tv_avg_diff.setTextColor(context.getResources().getColor(R.color.red_color));
             l_y.remove(l_y.size() - 1);
         } else {
             l_y.remove(0);
@@ -149,7 +150,18 @@ public class DetailsFragment extends BaseFragment {
             } else {
                 tv_avg.setText(data.getAvg() + "元/吨");
             }
-            tv_avg_diff.setText(data.getAvg_diff());
+
+            int diff = Integer.valueOf(data.getAvg_diff());
+            if (diff < 0) {
+                tv_avg_diff.setText(data.getAvg_diff());
+                tv_avg_diff.setTextColor(context.getResources().getColor(R.color.green_color));
+            } else if (diff == 0) {
+                tv_avg_diff.setText(data.getAvg_diff());
+                tv_avg_diff.setTextColor(context.getResources().getColor(R.color.red_color));
+            } else if (diff > 0) {
+                tv_avg_diff.setText("+" + data.getAvg_diff());
+                tv_avg_diff.setTextColor(context.getResources().getColor(R.color.red_color));
+            }
         }
 
         List<List<Float>> dataXy = new ArrayList<>();
