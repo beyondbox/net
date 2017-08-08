@@ -124,7 +124,6 @@ public class RecruitDetailsActivity extends BaseActivity {
     }
 
     private void initView(final RecruitDetail data) {
-        eid = data.getEnterprise().getEnterprise_id();
         tvTitle.setText(data.getName());
         tvRemark.setText(data.getResponsibilities());
         tvSalary.setText("￥" + data.getSalary()+"元/月");
@@ -142,6 +141,7 @@ public class RecruitDetailsActivity extends BaseActivity {
         });
         if (data.getEnterprise() != null) {
             enterprise = data.getEnterprise();
+            eid = enterprise.getEnterprise_id();
             rlCompany.setVisibility(View.VISIBLE);
             mobile = enterprise.getEnterprise_tel();
             url = enterprise.getEnterprise_website();

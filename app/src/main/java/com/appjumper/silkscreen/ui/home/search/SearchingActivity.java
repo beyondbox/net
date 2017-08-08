@@ -55,9 +55,9 @@ public class SearchingActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searching);
-        ButterKnife.bind(this);
+        ButterKnife.bind(context);
+
         list = new ArrayList<>();
-        new Thread(new KeyworksRun()).start();
         initHistory();
         etSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -83,6 +83,8 @@ public class SearchingActivity extends BaseActivity {
                 return false;
             }
         });
+
+        new Thread(new KeyworksRun()).start();
     }
 
     //热门搜索
@@ -129,7 +131,8 @@ public class SearchingActivity extends BaseActivity {
                     break;
             }
         }
-    };
+    }
+
     private void initGridView(final List<KeyWorks> keyworks) {
         HotGridViewAdapter adapter = new HotGridViewAdapter(SearchingActivity.this, keyworks);
         gridView.setAdapter(adapter);

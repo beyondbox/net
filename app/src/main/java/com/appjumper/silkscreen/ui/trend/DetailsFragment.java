@@ -151,7 +151,7 @@ public class DetailsFragment extends BaseFragment {
                 tv_avg.setText(data.getAvg() + "元/吨");
             }
 
-            int diff = Integer.valueOf(data.getAvg_diff());
+            float diff = Float.valueOf(data.getAvg_diff());
             if (diff < 0) {
                 tv_avg_diff.setText(data.getAvg_diff());
                 tv_avg_diff.setTextColor(context.getResources().getColor(R.color.green_color));

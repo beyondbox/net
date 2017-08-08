@@ -192,6 +192,7 @@
                         android:layout_height="100dp"
                         android:layout_marginLeft="12dp"
                         android:layout_weight="1"
+                        android:scaleType="centerInside"
                         android:src="@mipmap/icon_uploading_01" />
                 </LinearLayout>
 
@@ -213,6 +214,7 @@
                         android:layout_height="100dp"
                         android:layout_marginLeft="12dp"
                         android:layout_weight="1"
+                        android:scaleType="centerInside"
                         android:src="@mipmap/icon_uploading_02" />
                 </LinearLayout>
 

@@ -137,13 +137,13 @@ public class TruckReleaseActivity extends BaseActivity {
                 data.put("from", start_id);
                 data.put("to", end_id);
                 data.put("name", selectedProduct.getId());
+                data.put("productName", selectedProduct.getName());
                 data.put("number", etGoodsNumber.getText().toString().trim());
                 data.put("weight", etGoodsWeight.getText().toString().trim());
                 data.put("remark", etRemark.getText().toString().trim());
                 data.put("expiry_date", expiry_datatime + "");
                 data.put("date", startdata);
-                response = JsonParser.getBaseResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.TRUCK_RELEASE));
+                response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.TRUCK_RELEASE));
             } catch (Exception e) {
                 progress.dismiss();
                 e.printStackTrace();
