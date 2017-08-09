@@ -106,7 +106,8 @@ public class SearchingActivity extends BaseActivity {
                 handler.sendEmptyMessage(NETWORK_FAIL);
             }
         }
-    };
+    }
+
     private MyHandler handler = new MyHandler();
     private  class MyHandler extends Handler {
         @Override
