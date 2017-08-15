@@ -41,6 +41,7 @@ public class MyRelease {
     private String update_time;
     private String renovate_time;
     private String expiry_date;
+    private String renovate_count;
     private List<Avatar> img_list;
 
     public String getId() {
@@ -161,5 +162,13 @@ public class MyRelease {
 
     public void setExpiry_date(String expiry_date) {
         this.expiry_date = expiry_date;
+    }
+
+    public String getRenovate_count() {
+        return renovate_count;
+    }
+
+    public void setRenovate_count(String renovate_count) {
+        this.renovate_count = renovate_count;
     }
 }

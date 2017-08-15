@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -182,6 +183,13 @@ public class HomeFragment extends BaseFragment {
 
 
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerBroadcastReceiver();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
@@ -195,7 +203,6 @@ public class HomeFragment extends BaseFragment {
     protected void initData() {
         initUnread();
 
-        registerBroadcastReceiver();
         initTrendChart();
         setRecyclerView();
         setRefreshLayout();
@@ -383,6 +390,8 @@ public class HomeFragment extends BaseFragment {
             }
         });*/
 
+        recyclerHotInquiry.requestFocus();
+        recyclerHotInquiry.requestFocusFromTouch();
     }
 
 
@@ -395,9 +404,14 @@ public class HomeFragment extends BaseFragment {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "home");
+                data.put("a", "data");
+
                 data.put("uid", getUserID());
-                response = JsonParser.getHomeDataResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.HOMEDATA));
+
+                //response = JsonParser.getHomeDataResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.HOMEDATA));
+                response = JsonParser.getHomeDataResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -605,7 +619,7 @@ public class HomeFragment extends BaseFragment {
         filter.addAction(Const.ACTION_ATTENTION_MATER_REFRESH);
         filter.addAction(Const.ACTION_UNREAD_REFRESH);
         filter.addAction(Const.ACTION_LOGIN_SUCCESS);
-        context.registerReceiver(myReceiver, filter);
+        getActivity().registerReceiver(myReceiver, filter);
     }
 
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.MyRelease;
 import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.bean.RecruitList;
@@ -163,7 +164,26 @@ public class MyReleaseActivity extends BaseActivity {
                 MyRelease item = dataList.get(position);
                 switch (view.getId()) {
                     case R.id.txtRefresh: //刷新排名
-                        refresh(item.getInfo_id(), item.getType(), item.getId());
+                        int count = Integer.valueOf(item.getRenovate_count());
+                        if (count < 5) {
+                            Enterprise enterprise = getUser().getEnterprise();
+                            if (count == 3) {
+                                if (enterprise != null && enterprise.getEnterprise_productivity_auth_status().equals("2"))
+                                    showRefreshDialog(item, 2);
+                                else
+                                    certifyDialog.show();
+                            } else {
+                                int leftCount;
+                                if (enterprise != null && enterprise.getEnterprise_productivity_auth_status().equals("2"))
+                                    leftCount = 5 - count;
+                                else
+                                    leftCount = 3 - count;
+
+                                showRefreshDialog(item, leftCount);
+                            }
+                        } else {
+                            showErrorToast("该信息今日刷新5次，已达上限！");
+                        }
                         break;
                     case R.id.txtDelete: //删除
                         deleteIndex = position;
@@ -225,7 +245,7 @@ public class MyReleaseActivity extends BaseActivity {
      * 初始化认证对话框
      */
     private void initCertifyDialog() {
-        certifyDialog = new SureOrCancelDialog(context, "该信息本日刷新3次，已达上限。请完成企业认证获取更多刷新机会", "去认证", "取消",
+        certifyDialog = new SureOrCancelDialog(context, "刷新次数达到上限", "该信息今日刷新3次，已达上限。请完成企业认证获取更多刷新机会", "去认证", "取消",
                 new SureOrCancelDialog.SureButtonClick() {
                     @Override
                     public void onSureButtonClick() {
@@ -246,6 +266,25 @@ public class MyReleaseActivity extends BaseActivity {
                 });
     }
 
+
+    /**
+     * 弹出刷新提示框
+     */
+    private void showRefreshDialog(final MyRelease item, int leftCount) {
+        SureOrCancelDialog refreshDialog = new SureOrCancelDialog(context,
+                "提示",
+                "本次刷新将消耗10积分，该信息今日已刷新" + item.getRenovate_count() + "次，剩余" + leftCount + "次刷新机会",
+                "确定",
+                "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        refresh(item.getInfo_id(), item.getType(), item.getId());
+                    }
+                });
+
+        refreshDialog.show();
+    }
 
 
     /**
@@ -338,18 +377,8 @@ public class MyReleaseActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        showErrorToast("刷新成功，已扣除10积分");
+                        showErrorToast("刷新成功");
                         ptrLayt.autoRefresh();
-                    } else if (state == 303) {
-                        User user = getUser();
-                        if (user.getEnterprise() != null) {
-                            if (!user.getEnterprise().getEnterprise_productivity_auth_status().equals("2"))
-                                certifyDialog.show();
-                            else
-                                showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
-                        } else {
-                            certifyDialog.show();
-                        }
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }

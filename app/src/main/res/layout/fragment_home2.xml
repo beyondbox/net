@@ -82,9 +82,7 @@
         android:id="@+id/pull_refresh_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
-        android:descendantFocusability="beforeDescendants"
+        android:descendantFocusability="afterDescendants"
         android:layout_below="@id/title_layout">
 
         <com.appjumper.silkscreen.view.ObservableScrollView
@@ -127,6 +125,8 @@
                         android:id="@+id/recyclerHotInquiry"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusableInTouchMode="true"
+                        android:focusable="true"
                         android:paddingTop="10dp"
                         android:paddingBottom="10dp"
                         android:paddingRight="5dp">

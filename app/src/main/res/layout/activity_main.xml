@@ -87,12 +87,13 @@
     </LinearLayout>
 
 
-    <android.support.v4.view.ViewPager
+    <com.appjumper.silkscreen.view.NoScrollViewPager
         android:id="@+id/id_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/l_tab"
         />
+
     <ImageView
         android:id="@+id/img_release"
         android:layout_width="wrap_content"
