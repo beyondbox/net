@@ -170,6 +170,9 @@ public class ServiceFragment extends BaseFragment {
 
         @Override
         public void handleMessage(Message msg) {
+            if (isDetached())
+                return;
+
             pullToRefreshView.onRefreshComplete();
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT:

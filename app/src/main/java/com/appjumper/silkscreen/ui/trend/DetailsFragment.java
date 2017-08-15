@@ -359,7 +359,9 @@ public class DetailsFragment extends BaseFragment {
             if (isDetached())
                 return;
 
-            mPullRefreshScrollView.onRefreshComplete();
+            if (mPullRefreshScrollView != null)
+                mPullRefreshScrollView.onRefreshComplete();
+
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT:
                     PriceDetailsResponse response = (PriceDetailsResponse) msg.obj;

@@ -260,7 +260,8 @@ public class EquipmentActivity extends BaseActivity {
                 response = JsonParser.getEquipmentCategoryResponse(HttpUtil.getMsg(
                         Url.EQUIPMENT_CATEGORY));
             } catch (Exception e) {
-                progress.dismiss();
+                if (progress != null)
+                    progress.dismiss();
                 e.printStackTrace();
             }
             if (response != null) {

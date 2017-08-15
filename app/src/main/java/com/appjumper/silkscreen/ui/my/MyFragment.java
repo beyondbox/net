@@ -169,8 +169,6 @@ public class MyFragment extends BaseFragment {
         super.onResume();
         if (getUser() != null) {
             new Thread(new UserInfoRun()).start();
-        } else {
-            initView();
         }
     }
 
