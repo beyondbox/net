@@ -17,7 +17,7 @@ import java.util.Set;
 public class MyUserManager {
     private User instanceUser;
 
-    private static MyApplication mContext;
+    private MyApplication mContext;
     private List<MaterProduct> product;
     private HomeDataResponse instanceHome=null;
 

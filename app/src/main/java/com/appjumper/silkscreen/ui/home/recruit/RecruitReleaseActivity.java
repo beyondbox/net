@@ -16,12 +16,19 @@ import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.AddressSelectCityActivity;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
 import com.appjumper.silkscreen.ui.home.equipment.SelectActivity;
+import com.appjumper.silkscreen.util.Const;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -30,6 +37,9 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.R.attr.data;
+import static com.appjumper.silkscreen.R.id.tv_end;
 
 /**
  * Created by Administrator on 2016-11-18.
@@ -55,9 +65,8 @@ public class RecruitReleaseActivity extends BaseActivity {
     @Bind(R.id.et_responsibilities)
     EditText etResponsibilities;
 
-    private long expiry_datatime = 3600;
-
-    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天", "3天"};//信息时长
+    private long expiry_datatime = 3600 * 72;
+    private String[] expiry = {"3天", "5天", "10天", "30天"};//信息时长
 
     private String[] experiences = {"不限", "本科", "大专", "高中"};//学历
     private String[] genders = {"不限","男", "女"};//性别
@@ -108,7 +117,7 @@ public class RecruitReleaseActivity extends BaseActivity {
                     return;
                 }
                 hideKeyboard();
-                initProgressDialog();
+                initProgressDialog(false, "");
                 progress.show();
                 progress.setMessage("正在发布...");
                 new Thread(submitRun).start();
@@ -253,23 +262,17 @@ public class RecruitReleaseActivity extends BaseActivity {
             case 12://信息时长
                 int expiry_date = Integer.parseInt(data.getStringExtra("val"));
                 switch (expiry_date) {
-                    case 0://一小时
-                        expiry_datatime = 3600 * 1;
-                        break;
-                    case 1://5小时
-                        expiry_datatime = 3600 * 5;
-                        break;
-                    case 2://12小时
-                        expiry_datatime = 3600 * 12;
-                        break;
-                    case 3://一天
-                        expiry_datatime = 3600 * 24;
-                        break;
-                    case 4://两天
-                        expiry_datatime = 3600 * 48;
-                        break;
-                    case 5://三天
+                    case 0://3天
                         expiry_datatime = 3600 * 72;
+                        break;
+                    case 1://5天
+                        expiry_datatime = 3600 * 120;
+                        break;
+                    case 2://10天
+                        expiry_datatime = 3600 * 240;
+                        break;
+                    case 3://30天
+                        expiry_datatime = 3600 * 720;
                         break;
                 }
                 tvInfoLength.setText(expiry[expiry_date]);
@@ -292,11 +295,60 @@ public class RecruitReleaseActivity extends BaseActivity {
                 tvJobForm.setText(forms[selectForm]);
                 break;
             case 13:
-                tvJobPosition.setText(data.getStringExtra("name"));
+                jobCheck(data.getStringExtra("name"));
             default:
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+    /**
+     * 检查是否已发布过该职位的招聘
+     */
+    private void jobCheck(final String name) {
+        initProgressDialog(false, "");
+
+        RequestParams params = MyHttpClient.getApiParam("service", "oneCheck");
+        params.put("uid", getUserID());
+        params.put("type", 5);
+        params.put("product_id", name);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        tvJobPosition.setText(name);
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showErrorToast(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
     }
 
 }

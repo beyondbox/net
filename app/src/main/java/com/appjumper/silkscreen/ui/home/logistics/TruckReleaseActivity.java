@@ -74,9 +74,9 @@ public class TruckReleaseActivity extends BaseActivity {
 
     private ServiceProduct selectedProduct; //选择的货物
 
-    private long expiry_datatime = 3600;
+    private long expiry_datatime = 3600 * 6;
 
-    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天", "3天"};
+    private String[] expiry = {"6小时", "12小时", "1天", "2天", "3天"};
 
     private String startdata = "";
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -308,22 +308,19 @@ public class TruckReleaseActivity extends BaseActivity {
             case 3://信息时长
                 int expiry_date = Integer.parseInt(data.getStringExtra("val"));
                 switch (expiry_date) {
-                    case 0://一小时
-                        expiry_datatime = 3600 * 1;
+                    case 0://6小时
+                        expiry_datatime = 3600 * 6;
                         break;
-                    case 1://5小时
-                        expiry_datatime = 3600 * 5;
-                        break;
-                    case 2://12小时
+                    case 1://12小时
                         expiry_datatime = 3600 * 12;
                         break;
-                    case 3://一天
+                    case 2://一天
                         expiry_datatime = 3600 * 24;
                         break;
-                    case 4://两天
+                    case 3://两天
                         expiry_datatime = 3600 * 48;
                         break;
-                    case 5://三天
+                    case 4://三天
                         expiry_datatime = 3600 * 72;
                         break;
                 }

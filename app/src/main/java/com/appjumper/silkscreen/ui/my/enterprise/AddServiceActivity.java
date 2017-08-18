@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.User;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.my.PersonalAuthenticationActivity;
 import com.appjumper.silkscreen.util.Const;
@@ -61,25 +62,23 @@ public class AddServiceActivity extends BaseActivity {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.rl_order: //丝网订做
-                goToProductSelect(Const.SERVICE_TYPE_ORDER, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_ORDER);
                 break;
             case R.id.rl_processing: //丝网加工
-                goToProductSelect(Const.SERVICE_TYPE_PROCESS, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_PROCESS);
                 break;
             case R.id.rl_spot1: //丝网现货,通过认证
-                goToProductSelect(Const.SERVICE_TYPE_STOCK, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_STOCK);
                 break;
             case R.id.rl_spot2: //丝网现货，未通过认证
                 if (!getUser().getAuth_status().equals("2")) {
-                    //Toast.makeText(context, "您尚未通过实名认证", Toast.LENGTH_SHORT).show();
                     start_Activity(context, PersonalAuthenticationActivity.class);
                 } else if (!getUser().getEnterprise().getEnterprise_auth_status().equals("2")) {
-                    //Toast.makeText(context, "您的企业尚未通过认证", Toast.LENGTH_SHORT).show();
                     start_Activity(context, EnterpriseAuthFirstepActivity.class);
                 }
                 break;
             case R.id.rl_logistics://物流路线
-                start_Activity(this, EnterpriseReleaseActivity.class);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
                 break;
             default:
                 break;

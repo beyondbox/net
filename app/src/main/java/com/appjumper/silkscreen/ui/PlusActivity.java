@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentReleaseActivity;
 import com.appjumper.silkscreen.ui.home.logistics.PersonalReleaseActivity;
@@ -52,7 +53,8 @@ public class PlusActivity extends BaseActivity {
                     start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
                     return;
                 }
-                goToProductSelect(Const.SERVICE_TYPE_PROCESS, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                //goToProductSelect(Const.SERVICE_TYPE_PROCESS, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_PROCESS);
                 break;
 
             case R.id.llReleaseOrder: //接受丝网订做
@@ -60,7 +62,8 @@ public class PlusActivity extends BaseActivity {
                     start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
                     return;
                 }
-                goToProductSelect(Const.SERVICE_TYPE_ORDER, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                //goToProductSelect(Const.SERVICE_TYPE_ORDER, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_ORDER);
                 break;
 
             case R.id.llReleaseStock: //现货库存供应
@@ -78,7 +81,8 @@ public class PlusActivity extends BaseActivity {
                     start_Activity(context, EnterpriseAuthFirstepActivity.class);
                     return;
                 }
-                goToProductSelect(Const.SERVICE_TYPE_STOCK, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                //goToProductSelect(Const.SERVICE_TYPE_STOCK, ProductSelectActivity.MOTION_RELEASE_SERVICE);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_STOCK);
                 break;
 
             case R.id.llReleaseStation: //货站线路发布
@@ -86,27 +90,33 @@ public class PlusActivity extends BaseActivity {
                     start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
                     return;
                 }
-                start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "1"));
+                //start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "1"));
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
                 break;
 
             case R.id.llReleaseTruck: //个人车辆拉货
-                start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "2"));
+                //start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "2"));
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS_PER);
                 break;
 
             case R.id.llReleaseFindTruck: //货物运输需求
-                start_Activity(context, TruckReleaseActivity.class);
+                //start_Activity(context, TruckReleaseActivity.class);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS_CAR);
                 break;
 
             case R.id.llReleaseWorkshop: //厂房出租
-                start_Activity(context, WorkshopReleaseActivity.class);
+                //start_Activity(context, WorkshopReleaseActivity.class);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_WORKSHOP);
                 break;
 
             case R.id.llReleasePost: //招聘
-                start_Activity(context, RecruitReleaseActivity.class);
+                //start_Activity(context, RecruitReleaseActivity.class);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_JOB);
                 break;
 
             case R.id.llReleaseDevice: //机器出售
-                start_Activity(context, EquipmentReleaseActivity.class);
+                //start_Activity(context, EquipmentReleaseActivity.class);
+                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_DEVICE);
                 break;
 
             case R.id.txtInquiryOrder: //订做询价

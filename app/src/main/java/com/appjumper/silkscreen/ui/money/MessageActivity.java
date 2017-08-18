@@ -329,7 +329,9 @@ public class MessageActivity extends BaseActivity {
             if (isDestroyed())
                 return;
 
-            pullToRefreshView.onRefreshComplete();
+            if (pullToRefreshView != null)
+                pullToRefreshView.onRefreshComplete();
+
             myEmptyLayout = LayoutInflater.from(context).inflate(R.layout.pull_listitem_empty_padding, null);
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT:

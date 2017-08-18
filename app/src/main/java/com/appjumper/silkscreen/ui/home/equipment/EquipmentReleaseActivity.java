@@ -57,9 +57,8 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
     @Bind(R.id.tv_info_length)//信息时长
             TextView tvInfoLength;
 
-    private long expiry_datatime = 3600;
-
-    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天", "3天"};//信息时长
+    private long expiry_datatime = 3600 * 72;
+    private String[] expiry = {"3天", "5天", "10天", "30天"};//信息时长
 
     private String[] degrees = {"全新", "二手"};//新旧程度
     private ImageResponse imgResponse;
@@ -297,23 +296,17 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
             case 12://信息时长
                 int expiry_date = Integer.parseInt(data.getStringExtra("val"));
                 switch (expiry_date) {
-                    case 0://一小时
-                        expiry_datatime = 3600 * 1;
-                        break;
-                    case 1://5小时
-                        expiry_datatime = 3600 * 5;
-                        break;
-                    case 2://12小时
-                        expiry_datatime = 3600 * 12;
-                        break;
-                    case 3://一天
-                        expiry_datatime = 3600 * 24;
-                        break;
-                    case 4://两天
-                        expiry_datatime = 3600 * 48;
-                        break;
-                    case 5://三天
+                    case 0://3天
                         expiry_datatime = 3600 * 72;
+                        break;
+                    case 1://5天
+                        expiry_datatime = 3600 * 120;
+                        break;
+                    case 2://10天
+                        expiry_datatime = 3600 * 240;
+                        break;
+                    case 3://30天
+                        expiry_datatime = 3600 * 720;
                         break;
                 }
                 tvInfoLength.setText(expiry[expiry_date]);

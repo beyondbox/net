@@ -27,6 +27,7 @@ import com.appjumper.silkscreen.bean.ProductTypeResponse;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.bean.ServiceProductResponse;
 import com.appjumper.silkscreen.bean.Spec;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
@@ -129,10 +130,7 @@ public class ProcessingActivity extends BaseActivity {
                     if (getUser().getEnterprise() == null) {
                         start_Activity(ProcessingActivity.this, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
                     } else {
-                        Intent intent = new Intent(context, ProductSelectActivity.class);
-                        intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_PROCESS);
-                        intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_SERVICE);
-                        startActivity(intent);
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_PROCESS);
                     }
 
                 }

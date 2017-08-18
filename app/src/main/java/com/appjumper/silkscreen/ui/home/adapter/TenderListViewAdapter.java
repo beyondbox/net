@@ -90,10 +90,14 @@ public class TenderListViewAdapter extends BaseAdapter {
     private void fillValue(int position, ViewHolder viewHolder) {
         Tender item = list.get(position);
 
-        if (item.is_read())
+        if (position < 3) {
+            if (item.is_read())
+                viewHolder.badgeView.setBadgeNumber(0);
+            else
+                viewHolder.badgeView.setBadgeNumber(-1);
+        } else {
             viewHolder.badgeView.setBadgeNumber(0);
-        else
-            viewHolder.badgeView.setBadgeNumber(-1);
+        }
 
         if(type.equals("2")){
             viewHolder.tv_title.setText(item.getTitle());

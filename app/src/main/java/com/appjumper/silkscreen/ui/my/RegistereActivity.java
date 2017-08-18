@@ -169,7 +169,7 @@ public class RegistereActivity extends BaseActivity{
     };
 
     private MyHandler handler = new MyHandler(this);
-    private static class MyHandler extends Handler {
+    private class MyHandler extends Handler {
 
         private WeakReference<Context> reference;
 

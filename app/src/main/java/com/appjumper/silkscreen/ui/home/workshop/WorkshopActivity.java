@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.AreaBean;
 import com.appjumper.silkscreen.bean.AreaBeanResponse;
@@ -27,6 +28,7 @@ import com.appjumper.silkscreen.ui.home.adapter.GirdDropDownAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.WorkshopListViewAdapter;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
@@ -86,7 +88,8 @@ public class WorkshopActivity extends BaseActivity {
             @Override
             public void click() {
                 if(checkLogined()){
-                    start_Activity(WorkshopActivity.this, WorkshopReleaseActivity.class);
+                    //start_Activity(WorkshopActivity.this, WorkshopReleaseActivity.class);
+                    CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_WORKSHOP);
                 }
             }
         });
@@ -428,6 +431,10 @@ public class WorkshopActivity extends BaseActivity {
             if (activity == null) {
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             pullToRefreshView.onRefreshComplete();
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT:

@@ -20,8 +20,13 @@ public class ArticleAdapter extends BaseQuickAdapter<TrendArticle, BaseViewHolde
     @Override
     protected void convert(BaseViewHolder helper, TrendArticle item) {
         helper.setText(R.id.txtTitle, item.getTitle())
-                .setText(R.id.txtDate, item.getCreate_time().substring(5, 10))
-                .setVisible(R.id.unRead, !item.is_read());
+                .setText(R.id.txtDate, item.getCreate_time().substring(5, 10));
+
+        if (helper.getAdapterPosition() < 3) {
+            helper.setVisible(R.id.unRead, !item.is_read());
+        } else {
+            helper.setVisible(R.id.unRead, false);
+        }
     }
 
 }

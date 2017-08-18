@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.my.MyReleaseActivity;
 import com.appjumper.silkscreen.util.Const;
@@ -22,6 +23,8 @@ import butterknife.OnClick;
 
 public class AddServiceCompleteActivity extends BaseActivity {
 
+    public static AddServiceCompleteActivity instance = null;
+
     @Bind(R.id.txtMessage)
     TextView txtMessage;
 
@@ -31,6 +34,7 @@ public class AddServiceCompleteActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
         setContentView(R.layout.activity_add_service_complete);
         ButterKnife.bind(this);
 
@@ -75,7 +79,7 @@ public class AddServiceCompleteActivity extends BaseActivity {
      * 继续添加
      */
     private void continueAdd() {
-        switch (serviceType) {
+        /*switch (serviceType) {
             case Const.SERVICE_TYPE_LOGISTICS://物流路线
                 start_Activity(this, EnterpriseReleaseActivity.class);
                 finish();
@@ -83,7 +87,18 @@ public class AddServiceCompleteActivity extends BaseActivity {
             default:
                 finish();
                 break;
-        }
+        }*/
+
+        if (ProductSelectActivity.instance != null)
+            ProductSelectActivity.instance.finish();
+
+        CommonApi.releaseCheck(context, getUserID(), serviceType);
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 }

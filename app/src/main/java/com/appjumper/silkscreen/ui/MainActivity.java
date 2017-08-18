@@ -161,7 +161,7 @@ public class MainActivity extends FragmentActivity {
     };
 
     private MyHandler handler = new MyHandler(this);
-    private static class MyHandler extends Handler {
+    private class MyHandler extends Handler {
         private WeakReference<Context> reference;
 
         public  MyHandler(Context context) {
@@ -190,7 +190,7 @@ public class MainActivity extends FragmentActivity {
                     break;
             }
         }
-    };
+    }
 
     // 跳转下载新版本界面
     public void downLoadNewVersion(final String url, String content) {
@@ -448,12 +448,13 @@ public class MainActivity extends FragmentActivity {
                         UnRead unRead = new UnRead();
                         unRead.setReadNum(dataObj.getJSONArray("readNum").optInt(0));
                         unRead.setTenderNum(dataObj.getJSONArray("tenderNum").optInt(0));
+                        unRead.setTenderSelectNum(dataObj.getJSONArray("tenderSelectNum").optInt(0));
                         unRead.setExpoNum(dataObj.getJSONArray("expoNum").optInt(0));
                         unRead.setNewsNum(dataObj.getJSONArray("newsNum").optInt(0));
                         unRead.setAnalysisNum(dataObj.getJSONArray("analysisNum").optInt(0));
                         unRead.setCollectionNum(dataObj.getJSONArray("collectionNum").optInt(0));
 
-                        if (unRead.getAnalysisNum() > 0)
+                        if (unRead.getAnalysisNum() < 3)
                             badgeTrend.setBadgeNumber(-1);
                         else
                             badgeTrend.setBadgeNumber(0);

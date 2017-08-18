@@ -45,7 +45,7 @@ public class BaseActivity extends FragmentActivity {
     public final static int NETWORK_OTHER = 0x19;
     public final static int NETWORK_SUCCESS_DATA_ERROR = 0x06;
     public final static int NETWORK_FAIL = 0x05;
-    public static MProgressDialog progress;
+    public MProgressDialog progress;
 
     //声明mLocationOption对象
     public AMapLocationClientOption mLocationOption = null;
@@ -143,9 +143,7 @@ public class BaseActivity extends FragmentActivity {
                 intent.putExtra(name[i].getName(), name[i].getValue());
             }
         activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.push_left_in,
-                R.anim.push_left_out);
-
+        //activity.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     /**
@@ -164,9 +162,7 @@ public class BaseActivity extends FragmentActivity {
                 intent.putExtra(name[i].getName(), name[i].getValue());
             }
         activity.startActivityForResult(intent, requestCode);
-        activity.overridePendingTransition(R.anim.push_left_in,
-                R.anim.push_left_out);
-
+        //activity.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     // 获取当前版本号

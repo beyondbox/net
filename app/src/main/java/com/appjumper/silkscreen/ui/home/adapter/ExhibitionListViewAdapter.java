@@ -90,10 +90,15 @@ public class ExhibitionListViewAdapter extends BaseAdapter {
     private void fillValue(int position, ViewHolder viewHolder) {
         Exhibition item = list.get(position);
 
-        if (item.is_read())
+        if (position < 3) {
+            if (item.is_read())
+                viewHolder.badgeView.setBadgeNumber(0);
+            else
+                viewHolder.badgeView.setBadgeNumber(-1);
+        } else {
             viewHolder.badgeView.setBadgeNumber(0);
-        else
-            viewHolder.badgeView.setBadgeNumber(-1);
+        }
+
 
         viewHolder.tv_title.setText(item.getTitle());
         viewHolder.tv_time.setText(item.getTime());

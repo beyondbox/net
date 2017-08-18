@@ -240,10 +240,11 @@ public class HomeFragment extends BaseFragment {
         badgeExhibition = new QBadgeView(context);
         badgeNews = new QBadgeView(context);
 
-        badgeMsg.bindTarget(txtMsg).setBadgeBackgroundColor(0xffffffff).setBadgeTextColor(0xffff6000).setGravityOffset(0, true).setBadgeTextSize(10, true);
-        badgeTender.bindTarget(rl_tender);
-        badgeExhibition.bindTarget(rl_exhibition);
-        badgeNews.bindTarget(rl_news);
+        //badgeMsg.bindTarget(txtMsg).setBadgeBackgroundColor(0xffffffff).setBadgeTextColor(0xffff6000).setGravityOffset(0, true).setBadgeTextSize(10, true);
+        badgeMsg.bindTarget(txtMsg).setGravityOffset(3, 3, true);
+        badgeTender.bindTarget(rl_tender).setGravityOffset(6, 7, true);
+        badgeExhibition.bindTarget(rl_exhibition).setGravityOffset(6, 7, true);
+        badgeNews.bindTarget(rl_news).setGravityOffset(6, 7, true);
     }
 
 
@@ -630,10 +631,14 @@ public class HomeFragment extends BaseFragment {
                 setTrendChartData();
             } else if (action.equals(Const.ACTION_UNREAD_REFRESH)) {
                 UnRead unRead = (UnRead) intent.getSerializableExtra(Const.KEY_OBJECT);
-                badgeMsg.setBadgeNumber(unRead.getReadNum());
-                badgeTender.setBadgeNumber(unRead.getTenderNum());
-                badgeExhibition.setBadgeNumber(unRead.getExpoNum());
-                badgeNews.setBadgeNumber(unRead.getNewsNum());
+                badgeMsg.setBadgeNumber(unRead.getReadNum() > 0 ? -1 : 0);
+                badgeExhibition.setBadgeNumber(unRead.getExpoNum() < 3 ? -1 : 0);
+                badgeNews.setBadgeNumber(unRead.getNewsNum() < 3 ? -1 : 0);
+
+                if (unRead.getTenderNum() < 3 || unRead.getTenderSelectNum() < 3)
+                    badgeTender.setBadgeNumber(-1);
+                else
+                    badgeTender.setBadgeNumber(0);
             } else if (action.equals(Const.ACTION_LOGIN_SUCCESS)) {
                 new Thread(new HomeDataRun()).start();
             }

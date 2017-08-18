@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.EquipmentCategory;
 import com.appjumper.silkscreen.bean.EquipmentCategoryResponse;
@@ -25,6 +26,7 @@ import com.appjumper.silkscreen.ui.home.adapter.SelectRecyclerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SubListViewAdapter;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
@@ -82,7 +84,8 @@ public class EquipmentActivity extends BaseActivity {
             @Override
             public void click() {
                 if(checkLogined()) {
-                    start_Activity(EquipmentActivity.this, EquipmentReleaseActivity.class);
+                    //start_Activity(EquipmentActivity.this, EquipmentReleaseActivity.class);
+                    CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_DEVICE);
                 }
             }
         });
@@ -287,6 +290,10 @@ public class EquipmentActivity extends BaseActivity {
             if (activity == null) {
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             pullToRefreshView.onRefreshComplete();
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT:

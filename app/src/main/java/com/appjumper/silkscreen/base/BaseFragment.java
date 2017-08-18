@@ -38,7 +38,7 @@ public abstract class BaseFragment extends Fragment {
     public final static int NETWORK_OTHER = 0x19;
     public final static int NETWORK_SUCCESS_DATA_ERROR = 0x06;
     public final static int NETWORK_FAIL = 0x05;
-    public static MProgressDialog progress;
+    public MProgressDialog progress;
 
     protected FragmentActivity context;
 
@@ -112,8 +112,7 @@ public abstract class BaseFragment extends Fragment {
                 intent.putExtra(name[i].getName(), name[i].getValue());
             }
         activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.push_left_in,
-                R.anim.push_left_out);
+        //activity.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
     }
 
@@ -136,8 +135,7 @@ public abstract class BaseFragment extends Fragment {
                 intent.putExtra(name[i].getName(), name[i].getValue());
             }
         startActivityForResult(intent, requestCode);
-        activity.overridePendingTransition(R.anim.push_left_in,
-                R.anim.push_left_out);
+        //activity.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
     }
 

@@ -427,7 +427,7 @@
                         android:layout_weight="1"
                         android:paddingBottom="12dp"
                         android:paddingTop="12dp"
-                        android:text="一小时"
+                        android:text="3天"
                         android:textColor="@color/black_color"
                         android:textSize="14sp" />
 

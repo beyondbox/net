@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.AreaBean;
 import com.appjumper.silkscreen.bean.AreaBeanResponse;
@@ -28,6 +29,7 @@ import com.appjumper.silkscreen.ui.home.adapter.SelectRecyclerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SubListViewAdapter;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
@@ -88,7 +90,8 @@ public class RecruitActivity extends BaseActivity {
             @Override
             public void click() {
                 if(checkLogined()) {
-                    start_Activity(RecruitActivity.this, RecruitReleaseActivity.class);
+                    //start_Activity(RecruitActivity.this, RecruitReleaseActivity.class);
+                    CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_JOB);
                 }
             }
         });
@@ -372,6 +375,10 @@ public class RecruitActivity extends BaseActivity {
             if (activity == null) {
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             pullToRefreshView.onRefreshComplete();
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT:

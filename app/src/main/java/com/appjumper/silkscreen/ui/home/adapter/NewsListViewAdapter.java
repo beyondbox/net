@@ -91,10 +91,14 @@ public class NewsListViewAdapter extends BaseAdapter {
     private void fillValue(int position, ViewHolder viewHolder) {
         News item = list.get(position);
 
-        if (item.is_read())
+        if (position < 3) {
+            if (item.is_read())
+                viewHolder.badgeView.setBadgeNumber(0);
+            else
+                viewHolder.badgeView.setBadgeNumber(-1);
+        } else {
             viewHolder.badgeView.setBadgeNumber(0);
-        else
-            viewHolder.badgeView.setBadgeNumber(-1);
+        }
 
         if(item.getImg()!=null){
             Picasso.with(mContext).load(item.getImg().getOrigin()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_img);

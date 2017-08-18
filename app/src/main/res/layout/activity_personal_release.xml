@@ -545,7 +545,7 @@
                             android:layout_weight="1"
                             android:paddingBottom="12dp"
                             android:paddingTop="12dp"
-                            android:text="1小时"
+                            android:text="6小时"
                             android:textColor="@color/black_color"
                             android:textSize="14sp" />
 

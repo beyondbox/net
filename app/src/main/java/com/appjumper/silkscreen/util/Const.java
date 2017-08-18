@@ -123,7 +123,12 @@ public class Const {
     public static final int SERVICE_TYPE_ORDER = 1; //订做
     public static final int SERVICE_TYPE_PROCESS = 2; //加工
     public static final int SERVICE_TYPE_STOCK = 3; //现货
-    public static final int SERVICE_TYPE_LOGISTICS = 4; //物流线路
+    public static final int SERVICE_TYPE_LOGISTICS = 4; //物流-货站
+    public static final int SERVICE_TYPE_LOGISTICS_PER = 5; //物流-个人
+    public static final int SERVICE_TYPE_LOGISTICS_CAR = 6; //物流-找车
+    public static final int SERVICE_TYPE_WORKSHOP = 7; //厂房
+    public static final int SERVICE_TYPE_DEVICE = 8; //设备
+    public static final int SERVICE_TYPE_JOB = 9; //招聘
 
 
     public static final int AUTH_NOT_YET = 0; //未认证

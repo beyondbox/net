@@ -23,16 +23,32 @@ import android.widget.TimePicker.OnTimeChangedListener;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
 import com.appjumper.silkscreen.ui.home.adapter.PassbyAdapter;
+import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianStockActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
+import com.appjumper.silkscreen.ui.spec.ReleaseHuLanStockActivity;
+import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.MProgressDialog;
 import com.appjumper.silkscreen.view.MyRecyclerView;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -46,6 +62,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.R.attr.data;
 
 /**
  * Created by Administrator on 2016-11-18.
@@ -82,9 +100,9 @@ public class PersonalReleaseActivity extends BaseActivity {
     LinearLayout llExpiry;
 
 
-    private long expiry_datatime = 3600;
+    private long expiry_datatime = 3600 * 6;
 
-    private String[] expiry = {"1小时", "5小时", "12小时", "1天", "2天", "3天"};
+    private String[] expiry = {"6小时", "12小时", "1天", "2天", "3天"};
 
     public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private String startdata;
@@ -149,13 +167,19 @@ public class PersonalReleaseActivity extends BaseActivity {
                 }
 
                 hideKeyboard();
-                initProgressDialog();
+                initProgressDialog(false, "");
                 progress.show();
                 progress.setMessage("正在发布...");
                 new Thread(submitRun).start();
             }
         });
+
+
+        if (AddServiceCompleteActivity.instance != null)
+            AddServiceCompleteActivity.instance.finish();
     }
+
+
 
     private void initRecycler(final ArrayList<String> addresses) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -363,30 +387,31 @@ public class PersonalReleaseActivity extends BaseActivity {
                 tv_start.setCompoundDrawables(null, null, null, null);
                 break;
             case 2://目的地
-                end_id = data.getStringExtra("id");
-                String end_name = data.getStringExtra("name");
-                tv_end.setText(end_name);
-                tv_end.setCompoundDrawables(null, null, null, null);
+                if (type.equals("1")) {
+                    locationCheck(data);
+                } else {
+                    end_id = data.getStringExtra("id");
+                    String end_name = data.getStringExtra("name");
+                    tv_end.setText(end_name);
+                    tv_end.setCompoundDrawables(null, null, null, null);
+                }
                 break;
             case 3://信息时长
                 int expiry_date = Integer.parseInt(data.getStringExtra("val"));
                 switch (expiry_date) {
-                    case 0://一小时
-                        expiry_datatime = 3600 * 1;
+                    case 0://6小时
+                        expiry_datatime = 3600 * 6;
                         break;
-                    case 1://5小时
-                        expiry_datatime = 3600 * 5;
-                        break;
-                    case 2://12小时
+                    case 1://12小时
                         expiry_datatime = 3600 * 12;
                         break;
-                    case 3://一天
+                    case 2://一天
                         expiry_datatime = 3600 * 24;
                         break;
-                    case 4://两天
+                    case 3://两天
                         expiry_datatime = 3600 * 48;
                         break;
-                    case 5://三天
+                    case 4://三天
                         expiry_datatime = 3600 * 72;
                         break;
                 }
@@ -413,4 +438,58 @@ public class PersonalReleaseActivity extends BaseActivity {
                 break;
         }
     }
+
+
+
+    /**
+     * 检查是否已发布过该目的地的路线
+     */
+    private void locationCheck(final Intent data) {
+        initProgressDialog(false, "");
+
+        RequestParams params = MyHttpClient.getApiParam("service", "oneCheck");
+        params.put("uid", getUserID());
+        params.put("type", 4);
+        params.put("product_id", data.getStringExtra("id"));
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        end_id = data.getStringExtra("id");
+                        String end_name = data.getStringExtra("name");
+                        tv_end.setText(end_name);
+                        tv_end.setCompoundDrawables(null, null, null, null);
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showErrorToast(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
+
 }

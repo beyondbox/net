@@ -22,6 +22,7 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.adapter.ProductListAdapter;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
@@ -31,6 +32,7 @@ import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianStockActivity;
 import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
 import com.appjumper.silkscreen.ui.spec.ReleaseHuLanStockActivity;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.MProgressDialog;
 import com.appjumper.silkscreen.util.SPUtil;
 import com.appjumper.silkscreen.view.IndexSideBar;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -171,6 +173,9 @@ public class ProductSelectActivity extends BaseActivity {
                 lvData.setSelection(position);
             }
         });
+
+        if (AddServiceCompleteActivity.instance != null)
+            AddServiceCompleteActivity.instance.finish();
     }
 
 
@@ -256,23 +261,7 @@ public class ProductSelectActivity extends BaseActivity {
 
         switch (motion) {
             case MOTION_RELEASE_SERVICE: //添加服务
-                if (serviceType == Const.SERVICE_TYPE_STOCK) {
-                    if (product.getId().equals("104"))
-                        intent = new Intent(context, ReleaseHuLanStockActivity.class);
-                    else if (product.getId().equals("27"))
-                        intent = new Intent(context, ReleaseDaoPianStockActivity.class);
-                    else
-                        intent = new Intent(context, SpecificationStockActivity.class);
-                } else {
-                    if (product.getId().equals("104"))
-                        intent = new Intent(context, ReleaseHuLanActivity.class);
-                    else if (product.getId().equals("27"))
-                        intent = new Intent(context, ReleaseDaoPianActivity.class);
-                    else
-                        intent = new Intent(context, SpecificationActivity.class);
-                }
-                intent.putExtra("service", product);
-                intent.putExtra("type", serviceType + "");
+                productCheck(product);
                 break;
 
             case MOTION_RELEASE_INQUIRY: //发布询价
@@ -285,12 +274,11 @@ public class ProductSelectActivity extends BaseActivity {
                 intent.putExtra("identity", "3");
                 intent.putExtra("service", product);
                 intent.putExtra("type", serviceType + "");
+                startActivity(intent);
                 break;
             default:
                 break;
         }
-
-        startActivity(intent);
 
     }
 
@@ -369,6 +357,77 @@ public class ProductSelectActivity extends BaseActivity {
 
         sideBar.setActualCitySections(actualSectionList);
         productAdapter.notifyDataSetChanged();
+    }
+
+
+
+    /**
+     * 检查是否已发布过该产品
+     * @param product
+     */
+    private void productCheck(final ServiceProduct product) {
+        final MProgressDialog progress2 = new MProgressDialog(context, false);
+
+        RequestParams params = MyHttpClient.getApiParam("service", "oneCheck");
+        params.put("uid", getUserID());
+        params.put("type", serviceType);
+        params.put("product_id", product.getId());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress2.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        Intent intent = null;
+
+                        if (serviceType == Const.SERVICE_TYPE_STOCK) {
+                            if (product.getId().equals("104"))
+                                intent = new Intent(context, ReleaseHuLanStockActivity.class);
+                            else if (product.getId().equals("27"))
+                                intent = new Intent(context, ReleaseDaoPianStockActivity.class);
+                            else
+                                intent = new Intent(context, SpecificationStockActivity.class);
+                        } else {
+                            if (product.getId().equals("104"))
+                                intent = new Intent(context, ReleaseHuLanActivity.class);
+                            else if (product.getId().equals("27"))
+                                intent = new Intent(context, ReleaseDaoPianActivity.class);
+                            else
+                                intent = new Intent(context, SpecificationActivity.class);
+                        }
+                        intent.putExtra("service", product);
+                        intent.putExtra("type", serviceType + "");
+
+                        startActivity(intent);
+
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showErrorToast(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress2.dismiss();
+            }
+        });
     }
 
 

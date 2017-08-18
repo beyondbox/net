@@ -24,6 +24,7 @@ import com.appjumper.silkscreen.bean.AreaBean;
 import com.appjumper.silkscreen.bean.AreaBeanResponse;
 import com.appjumper.silkscreen.bean.LineList;
 import com.appjumper.silkscreen.bean.LineListResponse;
+import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
@@ -32,6 +33,7 @@ import com.appjumper.silkscreen.ui.home.adapter.AddRessRecyclerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.CityListViewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.LogisticsStandingListviewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.TruckListviewAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
@@ -678,19 +680,18 @@ public class LogisticsActivity extends BaseActivity {
             case R.id.right:
                 if (checkLogined()) {
                     if (type.equals("3")) {
-                        /*if (getUser().getEnterprise() == null) {
-                            showErrorToast("请您先创建企业");
-                            return;
-                        }*/
-                        start_Activity(LogisticsActivity.this, TruckReleaseActivity.class);
+                        //start_Activity(LogisticsActivity.this, TruckReleaseActivity.class);
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS_CAR);
                     } else if (type.equals("2")) {
-                        start_Activity(LogisticsActivity.this, PersonalReleaseActivity.class, new BasicNameValuePair("type", "2"));
+                        //start_Activity(LogisticsActivity.this, PersonalReleaseActivity.class, new BasicNameValuePair("type", "2"));
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS_PER);
                     } else {
                         if (getUser().getEnterprise() == null) {
                             showErrorToast("请您先创建企业");
                             return;
                         }
-                        start_Activity(LogisticsActivity.this, PersonalReleaseActivity.class, new BasicNameValuePair("type", "1"));
+                        //start_Activity(LogisticsActivity.this, PersonalReleaseActivity.class, new BasicNameValuePair("type", "1"));
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
                     }
                 }
                 break;

@@ -10,7 +10,8 @@ import java.io.Serializable;
 public class UnRead implements Serializable{
 
     private int readNum; //我的询报价
-    private int tenderNum; //招投标信息
+    private int tenderNum; //招标信息
+    private int tenderSelectNum; //投标信息
     private int expoNum; //展会信息
     private int newsNum; //行业新闻
     private int analysisNum; //走势分析文章
@@ -63,5 +64,13 @@ public class UnRead implements Serializable{
 
     public void setCollectionNum(int collectionNum) {
         this.collectionNum = collectionNum;
+    }
+
+    public int getTenderSelectNum() {
+        return tenderSelectNum;
+    }
+
+    public void setTenderSelectNum(int tenderSelectNum) {
+        this.tenderSelectNum = tenderSelectNum;
     }
 }

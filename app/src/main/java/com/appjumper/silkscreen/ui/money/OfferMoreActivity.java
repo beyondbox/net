@@ -158,6 +158,10 @@ public class OfferMoreActivity extends BaseActivity {
             if (activity == null) {
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             pullToRefreshView.onRefreshComplete();
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT:

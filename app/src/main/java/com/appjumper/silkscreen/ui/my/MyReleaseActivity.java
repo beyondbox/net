@@ -32,6 +32,7 @@ import com.appjumper.silkscreen.ui.home.recruit.RecruitDetailsActivity;
 import com.appjumper.silkscreen.ui.home.stock.StockDetailActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopDetailsActivity;
 import com.appjumper.silkscreen.ui.my.adapter.MyReleaseAdapter;
+import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthFirstepActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ProductivityAuthenticationActivity;
@@ -108,6 +109,10 @@ public class MyReleaseActivity extends BaseActivity {
         initRefreshLayout();
         initDeleteDialog();
         initCertifyDialog();
+
+        if (AddServiceCompleteActivity.instance != null)
+            AddServiceCompleteActivity.instance.finish();
+
         ptrLayt.postDelayed(new Runnable() {
             @Override
             public void run() {

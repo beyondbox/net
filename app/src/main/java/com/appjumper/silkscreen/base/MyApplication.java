@@ -1,6 +1,7 @@
 package com.appjumper.silkscreen.base;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.appjumper.silkscreen.util.manager.MyUserManager;
 import com.umeng.socialize.PlatformConfig;
@@ -37,6 +38,7 @@ public class MyApplication extends Application{
         checkInit();
     }
 
+
     //各个平台的配置，建议放在全局Application或者程序入口
     {
         //微信
@@ -44,6 +46,7 @@ public class MyApplication extends Application{
         //qq
         PlatformConfig.setQQZone(QQappId, QQappKey);
     }
+
     public void checkInit() {
         if (!hadInit) {
             myUserBeanManager = new MyUserManager(this);
@@ -56,4 +59,5 @@ public class MyApplication extends Application{
     public MyUserManager getMyUserManager() {
         return myUserBeanManager;
     }
+
 }
