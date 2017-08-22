@@ -13,7 +13,7 @@ import com.umeng.socialize.UMShareAPI;
  * Created by Administrator on 2016/6/29.
  */
 public class MyApplication extends Application{
-    public static boolean hadInit; // 如果为false
+    public boolean hadInit; // 如果为false
     private MyUserManager myUserBeanManager; // 说明Application以及被系统回收了，需要重新初始化一遍所有的Manager
 
 

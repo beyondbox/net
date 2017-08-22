@@ -43,6 +43,5 @@
     <com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView
         android:id="@+id/listview"
         style="@style/ListViewDividerStyle"
-        android:layout_marginBottom="-45dp"
         android:dividerHeight="0dp"></com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView>
 </LinearLayout>

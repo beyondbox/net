@@ -205,7 +205,7 @@ public abstract class BaseFragment extends Fragment {
      * @return
      */
     public MyApplication getMyApplication() {
-        return (MyApplication) getActivity().getApplication();
+        return (MyApplication) context.getApplication();
     }
 
     /**
