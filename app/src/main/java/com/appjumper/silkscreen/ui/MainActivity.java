@@ -126,8 +126,8 @@ public class MainActivity extends FragmentActivity {
         badgeTrend = new QBadgeView(this);
         badgeDynamic = new QBadgeView(this);
 
-        badgeTrend.bindTarget(markTrend).setGravityOffset(11, 1, true);
-        badgeDynamic.bindTarget(markDynamic).setGravityOffset(12, 1, true);
+        badgeTrend.bindTarget(markTrend).setBadgePadding(4.3f, true).setGravityOffset(12, 1, true);
+        badgeDynamic.bindTarget(markDynamic).setBadgePadding(4.3f, true).setGravityOffset(13, 1, true);
     }
 
 

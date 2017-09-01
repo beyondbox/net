@@ -39,10 +39,13 @@ public class WebViewActivity extends BaseActivity {
     public void init() {
         mWebView = (WebView) findViewById(R.id.web_view);
         WebSettings mWebSettings = mWebView.getSettings();
+        mWebSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mWebSettings.setLoadWithOverviewMode(true);
         mWebSettings.setJavaScriptEnabled(true);
         mWebSettings.setBuiltInZoomControls(true);
         mWebSettings.setLightTouchEnabled(true);
         mWebSettings.setSupportZoom(true);
+        mWebSettings.setDisplayZoomControls(false);
         mWebView.loadUrl(url);
 
         mWebView.setWebViewClient(new WebViewClient() {

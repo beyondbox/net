@@ -93,6 +93,23 @@ public class AppTool {
     }
 
     /**
+     * 字符串时间转换为Date
+     * @param time
+     * @param format
+     * @return
+     */
+    public static Date getDate(String time, String format) {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        Date date = null;
+        try {
+            date = sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    /**
      * 拨打电话
      * @param phone
      */

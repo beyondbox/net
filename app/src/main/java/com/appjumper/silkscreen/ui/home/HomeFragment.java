@@ -11,41 +11,40 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.HomeData;
 import com.appjumper.silkscreen.bean.HomeDataResponse;
-import com.appjumper.silkscreen.bean.HotInquiry;
-import com.appjumper.silkscreen.bean.MaterProduct;
 import com.appjumper.silkscreen.bean.Notice;
+import com.appjumper.silkscreen.bean.OfferList;
 import com.appjumper.silkscreen.bean.ScoreResponse;
-import com.appjumper.silkscreen.bean.ServiceProduct;
+import com.appjumper.silkscreen.bean.StockGoods;
 import com.appjumper.silkscreen.bean.UnRead;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.CommonApi;
-import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
-import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
-import com.appjumper.silkscreen.ui.home.adapter.HotInquiryAdapter;
-import com.appjumper.silkscreen.ui.home.adapter.TrendChartAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.HomeMenuAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.StockShopListAdapter;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentActivity;
 import com.appjumper.silkscreen.ui.home.exhibition.ExhibitionActivity;
 import com.appjumper.silkscreen.ui.home.logistics.LogisticsActivity;
@@ -55,52 +54,35 @@ import com.appjumper.silkscreen.ui.home.process.ProcessingActivity;
 import com.appjumper.silkscreen.ui.home.recruit.RecruitActivity;
 import com.appjumper.silkscreen.ui.home.search.SearchingActivity;
 import com.appjumper.silkscreen.ui.home.stock.StockActivity;
+import com.appjumper.silkscreen.ui.home.stockshop.GoodsDetailActivity;
+import com.appjumper.silkscreen.ui.home.stockshop.StockConsignActivity;
+import com.appjumper.silkscreen.ui.home.stockshop.StockShopActivity;
 import com.appjumper.silkscreen.ui.home.tender.TenderActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopActivity;
-import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
-import com.appjumper.silkscreen.ui.money.MessageActivity;
-import com.appjumper.silkscreen.ui.money.OfferDetailsActivity;
 import com.appjumper.silkscreen.ui.my.MyPointActivity;
-import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
-import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
-import com.appjumper.silkscreen.ui.trend.AttentionManageActivity;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.util.LogHelper;
-import com.appjumper.silkscreen.util.db.DBManager;
-import com.appjumper.silkscreen.view.ItemSpaceDecorationLine;
-import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
-import com.appjumper.silkscreen.view.VerticalSwitchTextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import q.rorbin.badgeview.QBadgeView;
+import butterknife.OnItemClick;
 
-import static com.appjumper.silkscreen.R.id.viewPager;
-import static com.loopj.android.http.AsyncHttpClient.log;
+import static android.R.attr.type;
 
 
 /**
@@ -109,37 +91,24 @@ import static com.loopj.android.http.AsyncHttpClient.log;
  */
 public class HomeFragment extends BaseFragment {
 
-    @Bind(R.id.listview1)
-    MyListView listview1;
+    @Bind(R.id.gridViMenu)
+    GridView gridViMenu;
 
-    @Bind(R.id.imageView3)//签到按钮
-            ImageView imageView3;
+    @Bind(R.id.llStockShop)
+    LinearLayout llStockShop;
+
+    @Bind(R.id.recyclerStockShop)
+    RecyclerView recyclerStockShop;
 
     @Bind(R.id.img_back_top)//返回顶部
             ImageView img_back_top;
 
-    @Bind(R.id.l_integral)//积分布局
-            LinearLayout l_integral;
-
-    @Bind(R.id.tv_integral)//积分数字
-            TextView tv_integral;
-
     @Bind(R.id.pull_refresh_scrollview)
     PtrClassicFrameLayout mPullRefreshScrollView;
-
-    @Bind(R.id.vertical_switch_textview1)
-    VerticalSwitchTextView verticalSwitchTextView1;
-
-    @Bind(R.id.ll_enterprise_list)//企业列表外部布局
-            LinearLayout llEnterpriseList;
 
     @Bind(R.id.l_homeview)
     LinearLayout l_homeview;
 
-    @Bind(R.id.tabLaytTrend)
-    TabLayout tabLaytTrend;
-    @Bind(R.id.pagerTrend)
-    ViewPager pagerTrend;
     @Bind(R.id.tabLaytRecommend)
     TabLayout tabLaytRecommend;
     @Bind(R.id.pagerRecommend)
@@ -147,34 +116,26 @@ public class HomeFragment extends BaseFragment {
 
     @Bind(R.id.scrollView)
     ObservableScrollView mScrollView;
-    @Bind(R.id.recyclerHotInquiry)
-    RecyclerView recyclerHotInquiry;
+    @Bind(R.id.txtCheckin)
+    TextView txtCheckin;
+    @Bind(R.id.txtScore)
+    TextView txtScore;
+    @Bind(R.id.txtNotice)
+    TextView txtNotice;
+    @Bind(R.id.flipperReport)
+    ViewFlipper flipperReport;
+    @Bind(R.id.llHoverRecommend)
+    LinearLayout llHoverRecommend;
+    @Bind(R.id.tabLaytHoverRecommend)
+    TabLayout tabLaytHoverRecommend;
+    @Bind(R.id.txtTitleRecommend)
+    TextView txtTitleRecommend;
+    @Bind(R.id.llRecommend)
+    LinearLayout llRecommend;
 
-    @Bind(R.id.txtMsg)
-    ImageView txtMsg;
-    @Bind(R.id.rl_tender)
-    RelativeLayout rl_tender;
-    @Bind(R.id.rl_exhibition)
-    RelativeLayout rl_exhibition;
-    @Bind(R.id.rl_news)
-    RelativeLayout rl_news;
 
-
-    private QBadgeView badgeMsg; //右上角小红点
-    private QBadgeView badgeTender; //招投标信息小红点
-    private QBadgeView badgeExhibition; //展会信息小红点
-    private QBadgeView badgeNews; //行业新闻小红点
-
-    private List<HotInquiry> hotInquiryList;//热门产品询价
-    private HotInquiryAdapter hotInquiryAdapter;
-
-    private List<MaterProduct> materList; //关注的原材料
-    private List<Fragment> trendFragList; //走势图fragment集合
-    private TrendChartAdapter trendChartAdapter; //走势图适配器
-
-    private ScheduledExecutorService scheduledExecutorService;
-    private ScheduledFuture future;
-    private int currTrendItem = 0;
+    private List<StockGoods> stockList; //现货商城列表
+    private StockShopListAdapter stockAdapter;
 
     private List<Fragment> recommendFragList; //推荐企业
     private ViewPagerFragAdapter recommendAdapter;
@@ -193,7 +154,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
-        view = inflater.inflate(R.layout.fragment_home2, null);
+        view = inflater.inflate(R.layout.fragment_home3, null);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -201,25 +162,15 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        initUnread();
+        if (getUser() == null) {
+            txtCheckin.setText("登录");
+            txtScore.setVisibility(View.GONE);
+        } else {
+            setScore();
+        }
 
-        initTrendChart();
         setRecyclerView();
         setRefreshLayout();
-
-        listview1.setFocusable(false);
-
-        mScrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
-
-            @Override
-            public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
-                if (y > 1000) {
-                    img_back_top.setVisibility(View.VISIBLE);
-                } else {
-                    img_back_top.setVisibility(View.GONE);
-                }
-            }
-        });
 
         HomeDataResponse homedata = getMyApplication().getMyUserManager().getHome();
         if(homedata != null){
@@ -228,23 +179,6 @@ public class HomeFragment extends BaseFragment {
         }
 
         new Thread(new HomeDataRun()).start();
-    }
-
-
-    /**
-     * 初始化未读小红点
-     */
-    private void initUnread() {
-        badgeMsg = new QBadgeView(context);
-        badgeTender = new QBadgeView(context);
-        badgeExhibition = new QBadgeView(context);
-        badgeNews = new QBadgeView(context);
-
-        //badgeMsg.bindTarget(txtMsg).setBadgeBackgroundColor(0xffffffff).setBadgeTextColor(0xffff6000).setGravityOffset(0, true).setBadgeTextSize(10, true);
-        badgeMsg.bindTarget(txtMsg).setGravityOffset(3, 3, true);
-        badgeTender.bindTarget(rl_tender).setGravityOffset(6, 7, true);
-        badgeExhibition.bindTarget(rl_exhibition).setGravityOffset(6, 7, true);
-        badgeNews.bindTarget(rl_news).setGravityOffset(6, 7, true);
     }
 
 
@@ -264,29 +198,28 @@ public class HomeFragment extends BaseFragment {
 
 
     private void setRecyclerView() {
-        /**
-         * 热门询价
-         */
-        hotInquiryList = new ArrayList<>();
-        hotInquiryAdapter = new HotInquiryAdapter(R.layout.item_recycler_line_hot_inquiry, hotInquiryList);
-        recyclerHotInquiry.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-        recyclerHotInquiry.addItemDecoration(new ItemSpaceDecorationLine(5,0,0,0));
-        hotInquiryAdapter.bindToRecyclerView(recyclerHotInquiry);
-        hotInquiryAdapter.setEmptyView(R.layout.pull_listitem_empty_padding);
+        gridViMenu.setAdapter(new HomeMenuAdapter());
 
-        hotInquiryAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        /**
+         * 商城
+         */
+        stockList = new ArrayList<>();
+        stockAdapter = new StockShopListAdapter(R.layout.item_recycler_line_stock_shop, stockList);
+        recyclerStockShop.setLayoutManager(new LinearLayoutManager(context));
+        stockAdapter.bindToRecyclerView(recyclerStockShop);
+
+        stockAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (checkLogined()) {
-                    //start_Activity(context, OfferDetailsActivity.class, new BasicNameValuePair("id", hotInquiryList.get(position).getId()));
-                    HotInquiry hotInquiry = hotInquiryList.get(position);
-                    getProductSpec(hotInquiry.getType(), hotInquiry.getProduct_id());
-                }
+                Intent intent = new Intent(context, GoodsDetailActivity.class);
+                intent.putExtra(Const.KEY_OBJECT, stockList.get(position));
+                startActivity(intent);
             }
         });
 
+
         /**
-         * 推荐
+         * 推荐企业
          */
         RecommendFragment orderFrag = new RecommendFragment();
         Bundle bundle1 =  new Bundle();
@@ -313,6 +246,23 @@ public class HomeFragment extends BaseFragment {
         pagerRecommend.setOffscreenPageLimit(recommendFragList.size() - 1);
         pagerRecommend.setAdapter(recommendAdapter);
         tabLaytRecommend.setupWithViewPager(pagerRecommend);
+
+        tabLaytHoverRecommend.setupWithViewPager(pagerRecommend);
+
+        pagerRecommend.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mScrollView.smoothScrollTo(0, llRecommend.getTop() + txtTitleRecommend.getHeight());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
 
@@ -320,43 +270,80 @@ public class HomeFragment extends BaseFragment {
     private void initView() {
         l_homeview.setVisibility(View.VISIBLE);
 
-        setTrendChartData();
-
-        final List<Notice> notice = data.getNotice();
-        ArrayList<String> list = new ArrayList<String>();
-        for (int i = 0; i < notice.size(); i++) {
-            list.add(notice.get(i).getTitle());
+        //公告
+        List<Notice> noticeList = data.getNotice();
+        if (noticeList != null && noticeList.size() > 0) {
+            final Notice notice = noticeList.get(0);
+            txtNotice.setText("[公告] " + notice.getTitle());
+            txtNotice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    start_Activity(context, WebViewActivity.class, new BasicNameValuePair("url",notice.getArticle_url()), new BasicNameValuePair("title","公告详情"));
+                    CommonApi.addLiveness(getUserID(), 6);
+                }
+            });
         }
-        verticalSwitchTextView1.setTextContent(list);
-        verticalSwitchTextView1.setCbInterface(new VerticalSwitchTextView.VerticalSwitchTextViewCbInterface() {
-            @Override
-            public void showNext(int index) {
 
+        //每日盘条快报
+        if (flipperReport.isFlipping())
+            flipperReport.stopFlipping();
+        flipperReport.removeAllViews();
+
+        List<OfferList> offerList = data.getDynamicOffer();
+        if (offerList != null && offerList.size() > 0) {
+            for (OfferList offer : offerList) {
+                long time = AppTool.getTimeMs(offer.getOffer_time(), "yyyy-MM-dd HH:mm:ss");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(time);
+                String timeStr = (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日 ";
+
+                String isTax = "";
+                /*if (offer.getOffer_value_tax().equals("0")) {
+                    isTax = "不含税 ";
+                } else {
+                    isTax = "含税 ";
+                }*/
+
+                String report = "[每日盘条] " + timeStr + offer.getCompany_name()
+                        + " "
+                        + isTax
+                        + offer.getOffer_value()
+                        + offer.getOffer_unit();
+
+                View contentView = LayoutInflater.from(context).inflate(R.layout.layout_home_report, null);
+                TextView textView = (TextView) contentView.findViewById(R.id.textView);
+                textView.setText(report);
+                flipperReport.addView(contentView);
             }
+        }
+        flipperReport.startFlipping();
 
-            @Override
-            public void onItemClick(int index) {
-                start_Activity(HomeFragment.this.getActivity(), WebViewActivity.class,new BasicNameValuePair("url",notice.get(index).getArticle_url()),new BasicNameValuePair("title","公告详情"));
-                CommonApi.addLiveness(getUserID(), 6);
-            }
-        });
 
-        if (data.getCheckin().equals("1")) {
-            l_integral.setVisibility(View.VISIBLE);
-            imageView3.setVisibility(View.GONE);
-            String[] scoreArr = data.getScore();
-            tv_integral.setText(scoreArr[0]);
+        //签到
+        if (getUser() == null) {
+            txtCheckin.setText("登录");
+            txtScore.setVisibility(View.GONE);
         } else {
-            l_integral.setVisibility(View.GONE);
-            imageView3.setVisibility(View.VISIBLE);
+            if (data.getCheckin().equals("1"))
+                txtCheckin.setText("明日");
+            else
+                txtCheckin.setText("签到");
+
+            setScore();
+            txtScore.setVisibility(View.VISIBLE);
         }
 
 
-        //热门询价
-        hotInquiryList.clear();
-        hotInquiryList.addAll(data.getOfferView());
-        hotInquiryAdapter.notifyDataSetChanged();
-        recyclerHotInquiry.smoothScrollToPosition(0);
+        //现货商品
+        List<StockGoods> goodsList = data.getGoods();
+        if (goodsList != null && goodsList.size() > 0) {
+            stockList.clear();
+            stockList.addAll(goodsList);
+            stockAdapter.notifyDataSetChanged();
+            llStockShop.setVisibility(View.VISIBLE);
+        } else {
+            llStockShop.setVisibility(View.GONE);
+        }
 
 
         //推荐企业
@@ -374,30 +361,49 @@ public class HomeFragment extends BaseFragment {
         }, 200);
 
 
-        /*final List<Enterprise> recommend = data.getRecommend();
-        final List<NewPublic> newPublic = data.getNewpublic();
-        if (recommend != null && recommend.size() > 0) {
-            llEnterpriseList.setVisibility(View.VISIBLE);
-            listview1.setAdapter(new HomeListview1Adapter(getActivity(), recommend));
-        }else {
-            llEnterpriseList.setVisibility(View.GONE);
-        }
+        //推荐企业悬停效果
+        final int hoverMark = llRecommend.getTop() + txtTitleRecommend.getHeight();
+        mScrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
 
-
-        listview1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                start_Activity(getActivity(), CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", recommend.get(i).getEnterprise_id()));
-            }
-        });*/
+            public void onScrollChanged(ObservableScrollView scrollView, int x, int y, int oldx, int oldy) {
+                if (y > 1000) {
+                    img_back_top.setVisibility(View.VISIBLE);
+                } else {
+                    img_back_top.setVisibility(View.GONE);
+                }
 
-        recyclerHotInquiry.requestFocus();
-        recyclerHotInquiry.requestFocusFromTouch();
+                if (y >= hoverMark)
+                    llHoverRecommend.setVisibility(View.VISIBLE);
+                else
+                    llHoverRecommend.setVisibility(View.GONE);
+            }
+        });
     }
 
 
+    /**
+     * 计算每日签到所得积分
+     */
+    private void setScore() {
+        int score = 10;
+        User user = getUser();
 
-    //首页
+        if (user.getAuth_status().equals("2"))
+            score += 10;
+        if (user.getEnterprise() != null) {
+            Enterprise enterprise = user.getEnterprise();
+            if (enterprise.getEnterprise_auth_status().equals("2"))
+                score += 10;
+            if (enterprise.getEnterprise_productivity_auth_status().equals("2"))
+                score += 20;
+        }
+
+        txtScore.setText("+" + score);
+    }
+
+
+    //首页数据
     private class HomeDataRun implements Runnable {
         private HomeDataResponse response;
 
@@ -424,6 +430,7 @@ public class HomeFragment extends BaseFragment {
             }
         }
     };
+
 
     //签到
     private class CheckInRun implements Runnable {
@@ -462,9 +469,10 @@ public class HomeFragment extends BaseFragment {
             }
 
             switch (msg.what) {
-                case NETWORK_SUCCESS_PAGER_RIGHT:
+                case NETWORK_SUCCESS_PAGER_RIGHT: //首页数据
                     HomeDataResponse detailsResponse = (HomeDataResponse) msg.obj;
                     if (detailsResponse.isSuccess()) {
+                        data = null;
                         data = detailsResponse.getData();
                         initView();
                         getMyApplication().getMyUserManager().storeHomeInfo(detailsResponse);
@@ -478,12 +486,13 @@ public class HomeFragment extends BaseFragment {
                     ScoreResponse baseResponse = (ScoreResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
                         showErrorToast("签到成功+" + baseResponse.getData().getScore());
-                        l_integral.setVisibility(View.VISIBLE);
-                        imageView3.setVisibility(View.GONE);
-                        tv_integral.setText(baseResponse.getData().getIntegral());
+                        txtCheckin.setText("明日");
+
                         User user = getUser();
                         user.setScore(baseResponse.getData().getIntegral());
                         getMyApplication().getMyUserManager().storeUserInfo(user);
+
+                        new Thread(new HomeDataRun()).start();
                         CommonApi.addLiveness(getUserID(), 2);
                     } else {
                         showErrorToast(baseResponse.getError_desc());
@@ -500,124 +509,9 @@ public class HomeFragment extends BaseFragment {
     };
 
 
-    /**
-     * 初始化走势图
-     */
-    private void initTrendChart() {
-        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        materList = new ArrayList<>();
-        trendFragList = new ArrayList<>();
-
-        tabLaytTrend.setupWithViewPager(pagerTrend);
-        tabLaytTrend.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLaytTrend.setTabGravity(TabLayout.GRAVITY_CENTER);
-
-        pagerTrend.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            private int oldPosition = 0;
-
-            @Override
-            public void onPageSelected(int position) {
-                currTrendItem = position;
-            }
-
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-                switch (arg0) {
-                    case ViewPager.SCROLL_STATE_DRAGGING:
-                        if (future != null) {
-                            future.cancel(true);
-                        }
-                        break;
-                    case ViewPager.SCROLL_STATE_IDLE:
-                        if (future != null && future.isCancelled()) {
-                            startTrendPlay();
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-    }
-
-
-    /**
-     * 设置走势图数据
-     */
-    private void setTrendChartData() {
-        if (future != null) {
-            future.cancel(true);
-            future = null;
-            currTrendItem = 0;
-        }
-
-        if (trendFragList.size() > 0) {
-            FragmentTransaction ftr = context.getSupportFragmentManager().beginTransaction();
-            for (int i = 0; i < trendFragList.size(); i++) {
-                Fragment fragment = trendFragList.get(i);
-                trendChartAdapter.destroyItem(pagerTrend, i, fragment);
-                ftr.remove(fragment);
-            }
-            ftr.commitAllowingStateLoss();
-        }
-
-        materList.clear();
-        trendFragList.clear();
-        DBManager dbHelper = new DBManager(context);
-        materList.addAll(dbHelper.query());
-        dbHelper.closeDB();
-
-        trendChartAdapter = null;
-        trendChartAdapter = new TrendChartAdapter(context.getSupportFragmentManager(), materList, trendFragList);
-        pagerTrend.setOffscreenPageLimit(materList.size() - 1);
-        pagerTrend.setAdapter(trendChartAdapter);
-
-        for (int i = 0; i < materList.size(); i++) {
-            Bundle mBundle = new Bundle();
-            mBundle.putString("type", materList.get(i).getId());
-            TrendChartFragment fragment = new TrendChartFragment();
-            fragment.setArguments(mBundle);
-            trendFragList.add(i, fragment);
-        }
-
-        trendChartAdapter.notifyDataSetChanged();
-        startTrendPlay();
-    }
-
-
-    /**
-     * 开始走势图轮播
-     */
-    private void startTrendPlay() {
-        if (trendChartAdapter.getCount() < 2) {
-            return;
-        }
-
-        future = scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
-
-            @Override
-            public void run() {
-                currTrendItem = (currTrendItem + 1) % trendChartAdapter.getCount();
-                trendHandler.obtainMessage().sendToTarget();
-            }
-        }, 3000, 3500, TimeUnit.MILLISECONDS);
-    }
-
-    private Handler trendHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            pagerTrend.setCurrentItem(currTrendItem, true);
-        };
-    };
-
-
 
     private void registerBroadcastReceiver() {
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Const.ACTION_ATTENTION_MATER_REFRESH);
         filter.addAction(Const.ACTION_UNREAD_REFRESH);
         filter.addAction(Const.ACTION_LOGIN_SUCCESS);
         getActivity().registerReceiver(myReceiver, filter);
@@ -627,18 +521,27 @@ public class HomeFragment extends BaseFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(Const.ACTION_ATTENTION_MATER_REFRESH)) {
-                setTrendChartData();
-            } else if (action.equals(Const.ACTION_UNREAD_REFRESH)) {
+            if (action.equals(Const.ACTION_UNREAD_REFRESH)) {
+                if (getUser() == null)
+                    return;
+
+                if (!isDataInited)
+                    return;
+
                 UnRead unRead = (UnRead) intent.getSerializableExtra(Const.KEY_OBJECT);
-                badgeMsg.setBadgeNumber(unRead.getReadNum() > 0 ? -1 : 0);
-                badgeExhibition.setBadgeNumber(unRead.getExpoNum() < 3 ? -1 : 0);
-                badgeNews.setBadgeNumber(unRead.getNewsNum() < 3 ? -1 : 0);
+
+                View newsUnread = gridViMenu.getChildAt(3).findViewById(R.id.unRead);
+                View tenderUnread = gridViMenu.getChildAt(4).findViewById(R.id.unRead);
+                View expoUnread = gridViMenu.getChildAt(9).findViewById(R.id.unRead);
+
+                newsUnread.setVisibility(unRead.getNewsNum() < 3 ? View.VISIBLE : View.INVISIBLE);
+                expoUnread.setVisibility(unRead.getExpoNum() < 3 ? View.VISIBLE : View.INVISIBLE);
 
                 if (unRead.getTenderNum() < 3 || unRead.getTenderSelectNum() < 3)
-                    badgeTender.setBadgeNumber(-1);
+                    tenderUnread.setVisibility(View.VISIBLE);
                 else
-                    badgeTender.setBadgeNumber(0);
+                    tenderUnread.setVisibility(View.INVISIBLE);
+
             } else if (action.equals(Const.ACTION_LOGIN_SUCCESS)) {
                 new Thread(new HomeDataRun()).start();
             }
@@ -646,69 +549,8 @@ public class HomeFragment extends BaseFragment {
     };
 
 
-    /**
-     * 获取产品规格，跳转到询价界面
-     */
-    private void getProductSpec(final String serviceType, String productId) {
-        RequestParams params = MyHttpClient.getApiParam("collection", "hotProduct");
-        params.put("uid", getUserID());
-        params.put("service_type", serviceType);
-        params.put("product_id", productId);
-        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                initProgressDialog();
-                progress.show();
-            }
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String jsonStr = new String(responseBody);
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
-                    if (state == Const.HTTP_STATE_SUCCESS) {
-                        JSONArray jsonArr = jsonObj.getJSONArray("data");
-                        ServiceProduct product = GsonUtil.getEntity(jsonArr.getJSONObject(0).toString(), ServiceProduct.class);
-
-                        Intent intent = null;
-                        if (product.getId().equals("104"))
-                            intent = new Intent(context, InquiryHuLanActivity.class);
-                        else if (product.getId().equals("27"))
-                            intent = new Intent(context, InquiryDaoPianActivity.class);
-                        else
-                            intent = new Intent(context, InquirySpecificationActivity.class);
-                        intent.putExtra("identity", "3");
-                        intent.putExtra("service", product);
-                        intent.putExtra("type", serviceType);
-                        startActivity(intent);
-                    } else {
-                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                showFailTips(getResources().getString(R.string.requst_fail));
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                progress.dismiss();
-            }
-        });
-    }
-
-
-
-    @OnClick({R.id.tv_machine, R.id.tv_logistics, R.id.rl_search, R.id.tv_orders, R.id.tv_stocks, R.id.tv_equipment,
-            R.id.tv_workshop, R.id.tv_recruit, R.id.rl_tender, R.id.rl_exhibition, R.id.rl_news, R.id.imageView3,
-            R.id.l_integral, R.id.img_back_top, R.id.txtMsg, R.id.imgViAdd})
+    @OnClick({R.id.rl_search, R.id.img_back_top, R.id.rlStockShop, R.id.rlCheckin, R.id.flipperReport, R.id.txtMoreGoods, R.id.rlStockConsign})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_back_top://返回顶部
@@ -719,55 +561,83 @@ public class HomeFragment extends BaseFragment {
                     }
                 });
                 break;
-            case R.id.l_integral://积分
-                start_Activity(getActivity(), MyPointActivity.class);
-                break;
-            case R.id.imageView3://签到
-                if (checkLogined()) {
-                    initProgressDialog();
-                    progress.show();
-                    progress.setMessage("正在签到...");
-                    new Thread(new CheckInRun()).start();
-                }
-                break;
-            case R.id.tv_machine://加工
-                start_Activity(getActivity(), ProcessingActivity.class);
-                break;
-            case R.id.tv_logistics://物流
-                start_Activity(getActivity(), LogisticsActivity.class);
-                break;
             case R.id.rl_search://搜索
                 start_Activity(getActivity(), SearchingActivity.class);
                 break;
-            case R.id.tv_orders://订做
+            case R.id.rlStockShop: //现货商城
+                start_Activity(context, StockShopActivity.class);
+                break;
+            case R.id.rlStockConsign: //现货寄售
+                if (checkLogined())
+                    start_Activity(context, StockConsignActivity.class);
+                break;
+            case R.id.rlCheckin: //签到
+                if (checkLogined()) {
+                    if (data != null) {
+                        if (data.getCheckin().equals("1")) {
+                            start_Activity(getActivity(), MyPointActivity.class);
+                        } else {
+                            initProgressDialog();
+                            progress.show();
+                            progress.setMessage("正在签到...");
+                            new Thread(new CheckInRun()).start();
+                        }
+                    }
+                }
+                break;
+            case R.id.flipperReport: //每日盘条快报
+                ((MainActivity)getActivity()).bottom_lly.check(R.id.rd_trend);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Const.ACTION_CHART_DETAIL);
+                        intent.putExtra("type", type);
+                        context.sendBroadcast(intent);
+                    }
+                }, 200);
+                break;
+            case R.id.txtMoreGoods: //商城-更多
+                start_Activity(context, StockShopActivity.class);
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+    @OnItemClick(R.id.gridViMenu)
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (position) {
+            case 0: //订做
                 start_Activity(getActivity(), OrderActivity.class);
                 break;
-            case R.id.tv_stocks://现货
+            case 1: //加工
+                start_Activity(getActivity(), ProcessingActivity.class);
+                break;
+            case 2: //现货
                 start_Activity(getActivity(), StockActivity.class);
                 break;
-            case R.id.tv_equipment://设备
-                start_Activity(getActivity(), EquipmentActivity.class);
-                break;
-            case R.id.tv_workshop://厂房
-                start_Activity(getActivity(), WorkshopActivity.class);
-                break;
-            case R.id.tv_recruit://招聘
-                start_Activity(getActivity(), RecruitActivity.class);
-                break;
-            case R.id.rl_tender://招标中标
-                start_Activity(getActivity(), TenderActivity.class);
-                break;
-            case R.id.rl_exhibition://展会信息
-                start_Activity(getActivity(), ExhibitionActivity.class);
-                break;
-            case R.id.rl_news://行业新闻
+            case 3: //新闻
                 start_Activity(getActivity(), NewsActivity.class);
                 break;
-            case R.id.txtMsg: //消息
-                start_Activity(getActivity(), MessageActivity.class);
+            case 4: //招投标
+                start_Activity(getActivity(), TenderActivity.class);
                 break;
-            case R.id.imgViAdd: //添加关注
-                start_Activity(context, AttentionManageActivity.class);
+            case 5: //物流
+                start_Activity(getActivity(), LogisticsActivity.class);
+                break;
+            case 6: //设备
+                start_Activity(getActivity(), EquipmentActivity.class);
+                break;
+            case 7: //厂房
+                start_Activity(getActivity(), WorkshopActivity.class);
+                break;
+            case 8: //招聘
+                start_Activity(getActivity(), RecruitActivity.class);
+                break;
+            case 9: //展会
+                start_Activity(getActivity(), ExhibitionActivity.class);
                 break;
             default:
                 break;
@@ -776,29 +646,9 @@ public class HomeFragment extends BaseFragment {
 
 
     @Override
-    public void onStop() {
-        super.onStop();
-        if (future != null) {
-            future.cancel(true);
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        if (future != null && future.isCancelled()) {
-            startTrendPlay();
-        }
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
-        if (future != null) {
-            future.cancel(true);
-            future = null;
-        }
-
         context.unregisterReceiver(myReceiver);
     }
+
 }

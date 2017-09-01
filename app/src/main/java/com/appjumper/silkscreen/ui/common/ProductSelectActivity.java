@@ -89,6 +89,7 @@ public class ProductSelectActivity extends BaseActivity {
 
     private boolean isMultiMode = false; //多选模式
     private boolean isFilterMode = false; //筛选模式
+    private boolean isStockShop = false; //选择现货商城的商品
     private int serviceType; //产品类型
     private String action = "";
 
@@ -133,6 +134,7 @@ public class ProductSelectActivity extends BaseActivity {
         Intent intent = getIntent();
         isMultiMode = intent.getBooleanExtra(Const.KEY_IS_MULTI_MODE, false);
         isFilterMode = intent.getBooleanExtra(Const.KEY_IS_FILTER_MODE, false);
+        isStockShop = intent.getBooleanExtra(Const.KEY_IS_STOCK_SHOP, false);
         serviceType = intent.getIntExtra(Const.KEY_SERVICE_TYPE, 0);
         motion = intent.getIntExtra(Const.KEY_MOTION, 0);
         if (intent.hasExtra(Const.KEY_ACTION))
@@ -236,7 +238,12 @@ public class ProductSelectActivity extends BaseActivity {
             progress.show();
         } else {
             //加载缓存
-            String cache = SPUtil.getString(null, Const.KEY_PRODUCT_LIST + serviceType, "");
+            String cache = "";
+            if (isStockShop)
+                cache = SPUtil.getString(null, Const.KEY_PRODUCT_LIST, "");
+            else
+                cache = SPUtil.getString(null, Const.KEY_PRODUCT_LIST + serviceType, "");
+
             if (!TextUtils.isEmpty(cache)) {
                 try {
                     parseJson(new JSONObject(cache));
@@ -292,6 +299,11 @@ public class ProductSelectActivity extends BaseActivity {
         RequestParams params = MyHttpClient.getApiParam("collection", "productByServiceType");
         params.put("uid", getUserID());
         params.put("service_type", serviceType);
+        if (isStockShop)
+            params.put("type", 1);
+        else
+            params.put("type", 2);
+
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
@@ -312,7 +324,10 @@ public class ProductSelectActivity extends BaseActivity {
                             parseJson(dataObj);
 
                         //数据缓存到本地
-                        SPUtil.putString(null, Const.KEY_PRODUCT_LIST + serviceType, dataObj.toString());
+                        if (isStockShop)
+                            SPUtil.putString(null, Const.KEY_PRODUCT_LIST, dataObj.toString());
+                        else
+                            SPUtil.putString(null, Const.KEY_PRODUCT_LIST + serviceType, dataObj.toString());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

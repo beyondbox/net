@@ -111,6 +111,10 @@ public class RepasswordActivity extends BaseActivity{
             if(activity == null){
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_RIGHT://重置密码
                     progress.dismiss();

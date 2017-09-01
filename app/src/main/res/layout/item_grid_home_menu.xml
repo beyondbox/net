@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/select_white_background"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/home_supply_order"/>
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:gravity="center_horizontal"
+        android:text="订做"
+        android:textSize="12sp"
+        android:textColor="@color/text_black_color"/>
+
+    <View
+        android:id="@+id/unRead"
+        android:layout_width="7dp"
+        android:layout_height="7dp"
+        android:layout_toRightOf="@id/imageView"
+        android:visibility="invisible"
+        android:background="@drawable/shape_red_dot"/>
+
+</RelativeLayout>

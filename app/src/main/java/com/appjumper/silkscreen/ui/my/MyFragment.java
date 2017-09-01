@@ -22,7 +22,7 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
-import com.appjumper.silkscreen.ui.my.enterprise.AuthenticationAdministrationActivity;
+import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ServiceAdministrationActivity;
@@ -156,11 +156,13 @@ public class MyFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        if (getUser() != null) {
+        /*if (getUser() != null) {
             new Thread(new UserInfoRun()).start();
         } else {
             initView();
-        }
+        }*/
+
+        initView();
     }
 
 
@@ -176,7 +178,7 @@ public class MyFragment extends BaseFragment {
 
     @OnClick({R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rl_enterprise,
             R.id.rl_feedback, R.id.ll_view, R.id.ll_service, R.id.rl_point, R.id.ll_company,
-            R.id.rl_collect, R.id.rl_personal_certificate, R.id.tv_help, R.id.rl_my_release})
+            R.id.rl_collect, R.id.rl_personal_certificate, R.id.tv_help, R.id.rl_my_release, R.id.rlMyDeal})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_help://帮助
@@ -237,6 +239,9 @@ public class MyFragment extends BaseFragment {
                 if (checkLogined())
                     start_Activity(context, MyReleaseActivity.class);
                 break;
+            case R.id.rlMyDeal: //我的询报价
+                start_Activity(getActivity(), MessageActivity.class);
+                break;
             default:
                 break;
         }
@@ -278,7 +283,8 @@ public class MyFragment extends BaseFragment {
                         User user = userResponse.getData();
                         getMyApplication().getMyUserManager()
                                 .storeUserInfo(user);
-                        initView();
+                        if (isViewCreated && isDataInited)
+                            initView();
                     } else {
                         showErrorToast(userResponse.getError_desc());
                     }

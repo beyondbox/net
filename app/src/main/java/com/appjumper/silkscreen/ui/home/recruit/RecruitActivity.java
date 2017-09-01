@@ -312,7 +312,6 @@ public class RecruitActivity extends BaseActivity {
                 response = JsonParser.getEquipmentCategoryResponse(HttpUtil.getMsg(
                         Url.JOB_TYPE));
             } catch (Exception e) {
-                progress.dismiss();
                 e.printStackTrace();
             }
             if (response != null) {

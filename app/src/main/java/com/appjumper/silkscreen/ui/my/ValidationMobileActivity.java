@@ -151,6 +151,10 @@ public class ValidationMobileActivity extends BaseActivity{
             if(activity == null){
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             switch (msg.what) {
                 case NETWORK_OTHER: // 验证码倒计时
                     if (activity.CURRENTDELAYTIME <= 0) {
@@ -206,5 +210,12 @@ public class ValidationMobileActivity extends BaseActivity{
             }
         };
         timer.schedule(task, 0, 1000);
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (task != null)
+            task.cancel();
     }
 }

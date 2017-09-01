@@ -10,8 +10,8 @@ android {
         applicationId "com.appjumper.silkscreen"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 24
-        versionName "2.1.7"
+        versionCode 25
+        versionName "3.0.0"
     }
 
     //配置多版本的apk

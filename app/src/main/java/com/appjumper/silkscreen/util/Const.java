@@ -155,6 +155,7 @@ public class Const {
     public static final String KEY_REGISTER_ID = "registerID";
     public static final String KEY_NAME = "name";
     public static final String KEY_PID = "pid";
+    public static final String KEY_IS_STOCK_SHOP = "isStockShop";
 
 
 

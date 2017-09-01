@@ -235,6 +235,13 @@
         <!--企业认证第一步-->
         <activity android:name=".ui.my.enterprise.EnterpriseAuthFirstepActivity" />
 
+        <!--现货商城-->
+        <activity android:name=".ui.home.stockshop.StockShopActivity" />
+        <!--商品详情-->
+        <activity android:name=".ui.home.stockshop.GoodsDetailActivity" />
+        <!--现货寄售-->
+        <activity android:name=".ui.home.stockshop.StockConsignActivity" />
+
 
         <!--发布护栏网-->
         <activity android:name=".ui.spec.ReleaseHuLanActivity" />

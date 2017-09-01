@@ -38,8 +38,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.appjumper.silkscreen.R.id.viewPager;
-
 /**
  * 搜索结果
  * Created by Botx on 2017/4/10.
@@ -61,7 +59,7 @@ public class SearchResultsActivity extends BaseActivity {
     private List<String> titleList;
 
     public String keyworks;
-    private String [] titleALLArr = {"订做", "现货", "加工", "物流", "设备", "厂房", "招聘"};
+    private String [] titleALLArr = {"商城", "订做", "现货", "加工", "物流", "设备", "厂房", "招聘"};
 
     private LocalBroadcastManager broadcastManager;
 
@@ -184,6 +182,10 @@ public class SearchResultsActivity extends BaseActivity {
                         resultAdapter = new ViewPagerFragAdapter(getSupportFragmentManager(), fragList, titleList);
                         pagerResult.setAdapter(resultAdapter);
 
+                        if (dataObj.getBoolean("goods")) {
+                            titleList.add("商城");
+                            fragList.add(new SearchGoodsFragment());
+                        }
 
                         if (dataObj.getBoolean("dingzuo")) {
                             titleList.add("订做");

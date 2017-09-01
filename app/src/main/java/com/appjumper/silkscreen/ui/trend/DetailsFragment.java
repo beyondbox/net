@@ -419,6 +419,9 @@ public class DetailsFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
+                if (isDetached())
+                    return;
+
                 if (articleList.size() == 0)
                     recyclerArticle.setVisibility(View.GONE);
                 else

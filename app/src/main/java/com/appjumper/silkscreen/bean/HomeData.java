@@ -11,10 +11,12 @@ public class HomeData {
     private String checkin;//是否签到
     private String[] score;//当日积分
     private List<Notice> notice;//公告
-    private List<Enterprise> recommend;//订做推荐企业
     private List<HomeBanner> ad;//广告
     private List<NewPublic> newpublic;//最新发布
+    private List<StockGoods> goods; //现货商品
+    private List<OfferList> dynamicOffer; //快报
 
+    private List<Enterprise> recommend;//订做推荐企业
     private List<Enterprise> recommend_xianhuo; //现货推荐企业
     private List<Enterprise> recommend_jiagong; //加工推荐企业
 
@@ -111,5 +113,21 @@ public class HomeData {
 
     public void setShare_app(String share_app) {
         this.share_app = share_app;
+    }
+
+    public List<StockGoods> getGoods() {
+        return goods;
+    }
+
+    public void setGoods(List<StockGoods> goods) {
+        this.goods = goods;
+    }
+
+    public List<OfferList> getDynamicOffer() {
+        return dynamicOffer;
+    }
+
+    public void setDynamicOffer(List<OfferList> dynamicOffer) {
+        this.dynamicOffer = dynamicOffer;
     }
 }

@@ -6,7 +6,7 @@
 
     <include layout="@layout/layout_header_with_img"/>
 
-    <ScrollView
+    <com.appjumper.silkscreen.view.TouchScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:descendantFocusability="afterDescendants">
@@ -62,7 +62,8 @@
             <WebView
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:scrollbars="none"/>
 
 
             <LinearLayout
@@ -114,7 +115,7 @@
 
 
         </LinearLayout>
-    </ScrollView>
+    </com.appjumper.silkscreen.view.TouchScrollView>
 
 
 

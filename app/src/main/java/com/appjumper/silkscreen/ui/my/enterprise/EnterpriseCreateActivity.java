@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -39,7 +40,6 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.util.Applibrary;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
-import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.manager.ActivityTaskManager;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 import com.squareup.picasso.Picasso;
@@ -121,9 +121,11 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         ActivityTaskManager.getInstance().putActivity(this);
         hideKeyboard();
         ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         initBack();
         initView();
         initLocation();
+
         type = getIntent().getStringExtra("type");
         if (type.equals("1")) {
             initProgressDialog(false, "正在提交...");

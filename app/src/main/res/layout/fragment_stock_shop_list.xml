@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/while_color">
+
+        <TextView
+            android:id="@+id/txtProduct"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:text="全部产品"
+            android:textSize="14sp"
+            android:textColor="@color/text_gray_color"/>
+
+        <RadioGroup
+            android:id="@+id/rdoGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <com.appjumper.silkscreen.view.MDMRadioButton
+                android:id="@+id/rdoBtnPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableRight="@mipmap/order_default"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="价格"
+                android:textSize="14sp"
+                android:textColor="@drawable/selector_orderby_text"/>
+
+            <RadioButton
+                android:id="@+id/rdoBtnHolder"
+                android:layout_width="0dp"
+                android:layout_height="0dp" />
+
+            <com.appjumper.silkscreen.view.MDMRadioButton
+                android:id="@+id/rdoBtnConsult"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableRight="@mipmap/order_default"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="咨询"
+                android:textSize="14sp"
+                android:textColor="@drawable/selector_orderby_text"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <View style="@style/LineStyle"/>
+
+    <com.chanven.lib.cptr.PtrClassicFrameLayout
+        android:id="@+id/ptrLayt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </com.chanven.lib.cptr.PtrClassicFrameLayout>
+
+</LinearLayout>
