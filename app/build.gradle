@@ -10,7 +10,7 @@ android {
         applicationId "com.appjumper.silkscreen"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 25
+        versionCode 26
         versionName "3.0.0"
     }
 

@@ -136,7 +136,7 @@ public class EnterpriseListListViewAdapter extends BaseAdapter {
                 viewHolder.tv_service.setText("有现货");
             }
         }
-        viewHolder.tvDate.setText("入驻时间"+item.getCreate_time().substring(0,9));
+        viewHolder.tvDate.setText("入驻时间"+item.getCreate_time().substring(0,10));
         viewHolder.tvDistance.setText(item.getDistance()+"km");
     }
 

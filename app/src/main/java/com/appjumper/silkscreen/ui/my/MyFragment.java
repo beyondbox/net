@@ -270,7 +270,8 @@ public class MyFragment extends BaseFragment {
         }
     }
 
-    ;
+
+
     private MyHandler handler = new MyHandler();
 
     private class MyHandler extends Handler {

@@ -16,6 +16,7 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.appjumper.silkscreen.util.Applibrary.mContext;
 
 
 /**
@@ -70,6 +73,8 @@ public class GoodsDetailActivity extends BaseActivity {
     private void setData() {
         Picasso.with(context)
                 .load(goods.getCover_img())
+                .resize(DisplayUtil.dip2px(mContext, 320), DisplayUtil.dip2px(mContext, 240))
+                .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(imageView);

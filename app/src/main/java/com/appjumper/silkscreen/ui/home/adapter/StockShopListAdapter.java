@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.StockGoods;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.squareup.picasso.Picasso;
@@ -28,6 +29,8 @@ public class StockShopListAdapter extends BaseQuickAdapter<StockGoods, BaseViewH
     protected void convert(BaseViewHolder helper, StockGoods item) {
         Picasso.with(mContext)
                 .load(item.getCover_img())
+                .resize(DisplayUtil.dip2px(mContext, 70), DisplayUtil.dip2px(mContext, 70))
+                .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.imageView));
