@@ -27,7 +27,6 @@ import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ServiceAdministrationActivity;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.util.ShareUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -101,7 +100,9 @@ public class MyFragment extends BaseFragment {
                 rl_enterprise.setVisibility(View.GONE);
                 rl_enterprise_create.setVisibility(View.VISIBLE);
                 if (enterprise.getEnterprise_logo() != null) {
-                    Picasso.with(getContext()).load(enterprise.getEnterprise_logo().getSmall()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).transform(new PicassoRoundTransform()).into(iv_enterprise_logo);
+                    Picasso.with(getContext()).load(enterprise.getEnterprise_logo().getSmall()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61)
+                            //.transform(new PicassoRoundTransform())
+                            .into(iv_enterprise_logo);
                 }
                 tv_enterprise_name.setText(enterprise.getEnterprise_name());
 
@@ -140,7 +141,9 @@ public class MyFragment extends BaseFragment {
             tv_score.setText(user.getScore());
             tv_mobile.setText("手机号：" + user.getMobile());
             if (user.getAvatar() != null) {
-                Picasso.with(getContext()).load(user.getAvatar().getSmall()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head).transform(new PicassoRoundTransform()).into(img_head);
+                Picasso.with(getContext()).load(user.getAvatar().getSmall()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head)
+                        //.transform(new PicassoRoundTransform())
+                        .into(img_head);
             }
         } else {
             rl_enterprise.setVisibility(View.VISIBLE);

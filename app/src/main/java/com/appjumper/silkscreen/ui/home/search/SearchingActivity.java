@@ -84,8 +84,14 @@ public class SearchingActivity extends BaseActivity {
             }
         });
 
-        new Thread(new KeyworksRun()).start();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                new Thread(new KeyworksRun()).start();
+            }
+        }, 80);
     }
+
 
     //热门搜索
     private class KeyworksRun implements Runnable {

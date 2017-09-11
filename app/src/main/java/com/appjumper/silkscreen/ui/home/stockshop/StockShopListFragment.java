@@ -101,7 +101,7 @@ public class StockShopListFragment extends BaseFragment {
             public void run() {
                ptrLayt.autoRefresh();
             }
-        }, 50);
+        }, 80);
     }
 
 

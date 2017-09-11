@@ -66,7 +66,7 @@
                     android:id="@+id/iv_logo"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
-                    android:src="@mipmap/avatar_company"
+                    android:src="@mipmap/icon_company"
                     android:scaleType="centerCrop"
                     app:border_color="@color/border_gray_light"
                     app:border_width="1dp" />

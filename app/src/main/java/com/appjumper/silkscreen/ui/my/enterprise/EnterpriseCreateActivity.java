@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -45,6 +46,9 @@ import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -154,6 +158,7 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
             initProgressDialog(false, "正在创建企业...");
             initTitle("创建企业");
             next_btn.setText("创建企业");
+            createDefaultLogo();
         }
     }
 
@@ -520,6 +525,43 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         }
         return str;
     }
+
+
+    /**
+     * 生成默认的企业logo图片
+     */
+    private void createDefaultLogo() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_company);
+        File file = new File(Applibrary.IMAGE_CACHE_DIR, System.currentTimeMillis() + ".png");
+
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            OutputStream os = null;
+            try {
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+                os = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+                logoPath = file.getPath();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(context, "生成默认logo出错", Toast.LENGTH_SHORT).show();
+            } finally {
+                if (os != null) {
+                    try {
+                        os.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+        } else {
+            Toast.makeText(context, "手机存储不可用，请检查存储状态", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 
     @Override
     protected void onDestroy() {

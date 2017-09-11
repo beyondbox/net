@@ -30,8 +30,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.appjumper.silkscreen.util.Applibrary.mContext;
-
 
 /**
  * 商品详情
@@ -73,7 +71,7 @@ public class GoodsDetailActivity extends BaseActivity {
     private void setData() {
         Picasso.with(context)
                 .load(goods.getCover_img())
-                .resize(DisplayUtil.dip2px(mContext, 320), DisplayUtil.dip2px(mContext, 240))
+                .resize(DisplayUtil.dip2px(context, 320), DisplayUtil.dip2px(context, 240))
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
@@ -101,6 +99,11 @@ public class GoodsDetailActivity extends BaseActivity {
 
         webView.loadDataWithBaseURL(null, sHead + goods.getContent() + "</body></html>", "text/html", "utf-8", null);
     }
+
+
+
+
+
 
 
     @OnClick({R.id.txtCall, R.id.imageView})

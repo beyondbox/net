@@ -58,7 +58,7 @@ public class TrendArticleAllActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trend_article_all);
-        ButterKnife.bind(this);
+        ButterKnife.bind(context);
 
         type = getIntent().getStringExtra("type");
 

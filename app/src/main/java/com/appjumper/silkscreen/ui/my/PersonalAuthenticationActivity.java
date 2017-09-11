@@ -265,6 +265,10 @@ public class PersonalAuthenticationActivity extends MultiSelectPhotoActivity{
             if(activity == null){
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             if(progress!=null){
                 activity.progress.dismiss();
             }

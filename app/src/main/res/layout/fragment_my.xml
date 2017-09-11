@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/select_white_background">
 
-                <ImageView
+                <com.appjumper.silkscreen.view.BorderRectImageView
                     android:id="@+id/img_head"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
@@ -154,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical">
 
-                    <ImageView
+                    <com.appjumper.silkscreen.view.BorderRectImageView
                         android:id="@+id/iv_enterprise_logo"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
