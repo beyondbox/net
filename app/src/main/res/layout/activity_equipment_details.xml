@@ -89,15 +89,38 @@
                     android:textColor="@color/black_color"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/tv_date"
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:singleLine="true"
-                    android:text="11.01 19:02"
-                    android:textColor="@color/light_gray_color"
-                    android:textSize="13sp" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:singleLine="true"
+                        android:text="11.01 19:02"
+                        android:textColor="@color/light_gray_color"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/txtMark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_mark_person_bg"
+                        android:paddingTop="1dp"
+                        android:paddingBottom="1dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:textSize="11sp"
+                        android:text="个人"
+                        android:textColor="@color/text_black_color"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -132,199 +155,250 @@
                 android:layout_height="12dp"
                 android:background="@color/view_background_gray_color" />
 
-            <View style="@style/LineStyle" />
-            <RelativeLayout
+
+
+
+
+            <LinearLayout
                 android:id="@+id/rl_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/iv_logo"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="12dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_logo_image61" />
+                <View style="@style/LineStyle" />
 
-                <ImageView
-                    android:id="@+id/imgViArrow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_arrows_right" />
-
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/iv_logo"
-                    android:layout_toLeftOf="@id/imgViArrow"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_logo"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="12dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/icon_logo_image61" />
+
+                    <ImageView
+                        android:id="@+id/imgViArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="12dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/icon_arrows_right" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/iv_logo"
+                        android:layout_toLeftOf="@id/imgViArrow"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_company_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:maxWidth="170dp"
+                                android:text="深圳市阿普匠科技有限公司"
+                                android:textColor="@color/black_color"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:id="@+id/tv_auth_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:src="@mipmap/icon_certification_green" />
+
+                            <ImageView
+                                android:id="@+id/tv_enterprise_auth_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:src="@mipmap/icon_certification" />
+
+                            <ImageView
+                                android:id="@+id/tv_enterprise_productivity_auth_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:src="@mipmap/icon_certification_yellow" />
+                        </LinearLayout>
 
                         <TextView
-                            android:id="@+id/tv_company_name"
+                            android:id="@+id/tv_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLines="1"
+                            android:layout_marginTop="6dp"
+                            android:maxLines="2"
                             android:ellipsize="end"
-                            android:maxWidth="170dp"
-                            android:text="深圳市阿普匠科技有限公司"
+                            android:text="河北省衡水市安平县红旗街东头"
                             android:textColor="@color/black_color"
-                            android:textSize="14sp" />
+                            android:textSize="13sp" />
 
-                        <ImageView
-                            android:id="@+id/tv_auth_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:src="@mipmap/icon_certification_green" />
-
-                        <ImageView
-                            android:id="@+id/tv_enterprise_auth_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:src="@mipmap/icon_certification" />
-
-                        <ImageView
-                            android:id="@+id/tv_enterprise_productivity_auth_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:src="@mipmap/icon_certification_yellow" />
                     </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/tv_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:maxLines="2"
-                        android:ellipsize="end"
-                        android:text="河北省衡水市安平县红旗街东头"
-                        android:textColor="@color/black_color"
-                        android:textSize="13sp" />
-
-                </LinearLayout>
+                </RelativeLayout>
 
 
-            </RelativeLayout>
-            <RelativeLayout
+
+                <View style="@style/LineStyle" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:background="@color/view_background_gray_color" />
+
+            </LinearLayout>
+
+
+
+
+
+
+            <LinearLayout
                 android:id="@+id/rl_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:visibility="gone">
 
-                <ImageView
-                    android:id="@+id/iv_img"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_margin="12dp"
-                    android:src="@mipmap/ic_launcher" />
+                <View style="@style/LineStyle" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/iv_img"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_img"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="12dp"
+                        android:src="@mipmap/ic_launcher" />
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/iv_img"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:ellipsize="end"
+                                android:maxWidth="200dp"
+                                android:text="汪洋"
+                                android:textColor="@color/black_color"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:id="@+id/user_auth_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:src="@mipmap/icon_certification_green" />
+
+                        </LinearLayout>
 
                         <TextView
-                            android:id="@+id/tv_name"
+                            android:id="@+id/tv_mobile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:maxLines="1"
-                            android:ellipsize="end"
-                            android:maxWidth="200dp"
-                            android:text="汪洋"
+                            android:layout_marginTop="6dp"
+                            android:text="15919910684"
                             android:textColor="@color/black_color"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:id="@+id/user_auth_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:src="@mipmap/icon_certification_green" />
+                            android:textSize="13sp" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/tv_mobile"
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:text="15919910684"
-                        android:textColor="@color/black_color"
-                        android:textSize="13sp" />
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="12dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/icon_arrows_right" />
+                </RelativeLayout>
 
-                </LinearLayout>
 
-                <ImageView
+                <View style="@style/LineStyle" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:background="@color/view_background_gray_color" />
+
+            </LinearLayout>
+
+
+
+
+
+
+            <LinearLayout
+                android:id="@+id/llRecommend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <View style="@style/LineStyle" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/icon_arrows_right" />
-            </RelativeLayout>
+                    android:layout_margin="12dp"
+                    android:drawableLeft="@mipmap/icon_home_recommend"
+                    android:drawablePadding="6dp"
+                    android:text="相关推荐"
+                    android:textColor="@color/gray_color"
+                    android:textSize="14sp" />
 
-            <View style="@style/LineStyle" />
+                <View
+                    style="@style/LineStyle"
+                    android:layout_marginLeft="12dp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:background="@color/view_background_gray_color" />
+                <com.appjumper.silkscreen.view.MyListView
+                    android:id="@+id/list_view_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@null"
+                    android:dividerHeight="0dp">
 
-            <View style="@style/LineStyle" />
+                </com.appjumper.silkscreen.view.MyListView>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:drawableLeft="@mipmap/icon_home_recommend"
-                android:drawablePadding="6dp"
-                android:text="相关推荐"
-                android:textColor="@color/gray_color"
-                android:textSize="14sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp"
+                    android:background="@color/view_background_gray_color" />
 
-            <View
-                style="@style/LineStyle"
-                android:layout_marginLeft="12dp" />
+            </LinearLayout>
 
-            <com.appjumper.silkscreen.view.MyListView
-                android:id="@+id/list_view_down"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@null"
-                android:dividerHeight="0dp">
 
-            </com.appjumper.silkscreen.view.MyListView>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="12dp"
-                android:background="@color/view_background_gray_color" />
         </LinearLayout>
     </com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView>
 
@@ -338,4 +412,6 @@
         android:text="马上联系"
         android:textColor="@color/theme_color"
         android:textSize="16sp" />
+
+
 </RelativeLayout>

@@ -11,7 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
@@ -28,6 +28,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.GalleryAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.WorkshopListViewAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyLinearLayoutManger;
 import com.appjumper.silkscreen.view.MyListView;
@@ -44,6 +45,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -80,7 +82,7 @@ public class WorkshopDetailsActivity extends BaseActivity {
     MyRecyclerView myRecyclerView;
 
     @Bind(R.id.rl_company)
-    RelativeLayout rlCompany;
+    LinearLayout rlCompany;
     @Bind(R.id.iv_logo)//公司图片
             ImageView ivLogo;
     @Bind(R.id.tv_company_name)//公司名称
@@ -96,7 +98,7 @@ public class WorkshopDetailsActivity extends BaseActivity {
     @Bind(R.id.tv_enterprise_productivity_auth_status)//力
             ImageView tv_enterprise_productivity_auth_status;
     @Bind(R.id.rl_user)
-    RelativeLayout rlUser;
+    LinearLayout rlUser;
     @Bind(R.id.iv_img)//个人头像
             ImageView iv_img;
 
@@ -105,6 +107,13 @@ public class WorkshopDetailsActivity extends BaseActivity {
 
     @Bind(R.id.tv_mobile)//个人手机号
             TextView tv_mobile;
+
+    @Bind(R.id.txtMark)
+    TextView txtMark;
+    @Bind(R.id.llRecommend)
+    LinearLayout llRecommend;
+
+
 
     private String id;
     private String eid;//企业id
@@ -127,6 +136,26 @@ public class WorkshopDetailsActivity extends BaseActivity {
     }
 
     private void initView(final EquipmentList data) {
+        if (!TextUtils.isEmpty(data.getWorkshop_type())) {
+            int infoType = Integer.valueOf(data.getWorkshop_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    txtMark.setText("个人");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    txtMark.setText("企业");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    txtMark.setText("官方");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         tvTitle.setText(data.getTitle() + "/" + data.getPosition());
         tvRemark.setText(data.getRemark());
         tvDate.setText(data.getCreate_time().substring(5, 16));
@@ -205,10 +234,27 @@ public class WorkshopDetailsActivity extends BaseActivity {
                     user_auth_status.setVisibility(View.GONE);
                 }
             }
-
-
         }
+
+
+        if (!TextUtils.isEmpty(data.getWorkshop_type())) {
+            int infoType = Integer.valueOf(data.getWorkshop_type());
+            if (infoType == Const.INFO_TYPE_OFFICIAL) {
+                rlCompany.setVisibility(View.GONE);
+                rlUser.setVisibility(View.GONE);
+            }
+        }
+
+
+        List<EquipmentList> recommendList = data.getRecommend();
+        if (recommendList.size() == 0)
+            llRecommend.setVisibility(View.GONE);
+        else
+            llRecommend.setVisibility(View.VISIBLE);
+
     }
+
+
 
     private void refresh() {
         mPullRefreshScrollView.setRefreshing();

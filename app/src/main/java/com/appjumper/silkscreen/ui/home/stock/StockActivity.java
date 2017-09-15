@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
@@ -38,11 +37,9 @@ import com.appjumper.silkscreen.ui.home.adapter.FilterGridViewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.GirdDropDownAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StockListviewAdapter;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
-import com.appjumper.silkscreen.ui.my.PersonalAuthenticationActivity;
 import com.appjumper.silkscreen.ui.my.adapter.ChoiceRecyclerAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ProductionListViewAdapter;
-import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthFirstepActivity;
-import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthenticationActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
@@ -50,6 +47,7 @@ import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyGridView;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.MyViewGroup;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView;
@@ -97,6 +95,9 @@ public class StockActivity extends BaseActivity {
 
 
     private PullToRefreshPagedListView pullToRefreshView;
+    private SureOrCancelDialog certifyPerDialog;
+    private SureOrCancelDialog certifyComDialog;
+    private SureOrCancelDialog comCreateDialog;
 
     private String pagesize = "20";
     private String type = "3";
@@ -118,6 +119,8 @@ public class StockActivity extends BaseActivity {
     //private LinearLayout l_screening2;
     private String[] arr;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,6 +132,7 @@ public class StockActivity extends BaseActivity {
         //new Thread(serviceTypelistRun).start();
         initView();
 
+        initDialog();
         initDrawerLayout();
 
         initRightButton("发布", new RightButtonListener() {
@@ -136,17 +140,15 @@ public class StockActivity extends BaseActivity {
             public void click() {
                 if (checkLogined()) {
                     if (!getUser().getAuth_status().equals("2")) {
-                        Toast.makeText(context, "您尚未通过实名认证", Toast.LENGTH_SHORT).show();
-                        start_Activity(context, PersonalAuthenticationActivity.class);
+                        certifyPerDialog.show();
                         return;
                     }
                     if (getUser().getEnterprise() == null) {
-                        start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                        comCreateDialog.show();
                         return;
                     }
                     if (!getUser().getEnterprise().getEnterprise_auth_status().equals("2")) {
-                        Toast.makeText(context, "您的企业尚未通过认证", Toast.LENGTH_SHORT).show();
-                        start_Activity(context, EnterpriseAuthFirstepActivity.class);
+                        certifyComDialog.show();
                         return;
                     }
 
@@ -154,6 +156,36 @@ public class StockActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+
+    /**
+     * 初始化对话框
+     */
+    private void initDialog() {
+        certifyPerDialog = new SureOrCancelDialog(context, "提示", "您尚未完成个人认证，暂时不能在该板块发布信息，请完成个人认证后再继续操作", "确定", "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        start_Activity(context, CertifyManageActivity.class);
+                    }
+                });
+
+        certifyComDialog = new SureOrCancelDialog(context, "提示", "您尚未完成企业认证，暂时不能在该板块发布信息，请完成企业认证后再继续操作", "确定", "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        start_Activity(context, CertifyManageActivity.class);
+                    }
+                });
+
+        comCreateDialog = new SureOrCancelDialog(context, "提示", "您尚未完善企业信息，暂时不能在该板块发布信息，请完善企业信息后再继续操作", "确定", "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    }
+                });
     }
 
 

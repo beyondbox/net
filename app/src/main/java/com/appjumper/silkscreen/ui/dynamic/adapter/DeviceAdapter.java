@@ -39,6 +39,23 @@ public class DeviceAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHolde
                 .setText(R.id.txtTitle, item.getItems().get(0).getName())
                 .setVisible(R.id.unRead, !item.is_read());
 
+        TextView txtMark = helper.getView(R.id.txtMark);
+        if (item.getUser_id().equals("1")) {
+            txtMark.setText("官方");
+            txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+        } else {
+            if (item.getEnterprise_auth_status().equals("2")) {
+                txtMark.setText("企业");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+            } else {
+                txtMark.setText("个人");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+            }
+        }
+
+
+
+
         TextView txtName = helper.getView(R.id.txtName);
 
         if (TextUtils.isEmpty(item.getEnterprise_id())) { //个人

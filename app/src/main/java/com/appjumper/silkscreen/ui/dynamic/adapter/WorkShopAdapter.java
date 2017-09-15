@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.EquipmentList;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -40,6 +41,29 @@ public class WorkShopAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHol
                 .setText(R.id.txtPrice, item.getPrice() + "元/年")
                 .setText(R.id.txtLocation, item.getArea() + "m²,  " + item.getPosition() + "  " + item.getDistance() + "km")
                 .setVisible(R.id.unRead, !item.is_read());
+
+        TextView txtMark = helper.getView(R.id.txtMark);
+        if (!TextUtils.isEmpty(item.getWorkshop_type())) {
+            int infoType = Integer.valueOf(item.getWorkshop_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    txtMark.setText("个人");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    txtMark.setText("企业");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    txtMark.setText("官方");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
 
         TextView txtName = helper.getView(R.id.txtName);
 

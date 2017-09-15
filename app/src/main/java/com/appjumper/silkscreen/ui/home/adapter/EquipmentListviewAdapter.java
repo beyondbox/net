@@ -20,6 +20,7 @@
 package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +96,6 @@ public class EquipmentListviewAdapter extends BaseAdapter {
         if (item.getEnterprise_logo() != null && !item.getEnterprise_logo().getSmall().equals("")) {
             Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.ivLogo);
         }
-        viewHolder.tvCompanyName.setText(item.getEnterprise_name());
         viewHolder.tvEquipment.setText(item.getItems().get(0).getName());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
         MyLinearLayoutManger linearLayoutManager = new MyLinearLayoutManger(mContext);
@@ -120,6 +120,41 @@ public class EquipmentListviewAdapter extends BaseAdapter {
         } else {
             viewHolder.llLine.setVisibility(View.VISIBLE);
         }
+
+
+        if (TextUtils.isEmpty(item.getEnterprise_id()))
+            viewHolder.tvCompanyName.setText(item.getUser_nicename());
+        else
+            viewHolder.tvCompanyName.setText(item.getEnterprise_name());
+
+
+        if (item.getAuth_status() != null && item.getAuth_status().equals("2"))
+            viewHolder.imgViCertiGreen.setVisibility(View.VISIBLE);
+        else
+            viewHolder.imgViCertiGreen.setVisibility(View.GONE);
+        if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2"))
+            viewHolder.imgViCertiBlue.setVisibility(View.VISIBLE);
+        else
+            viewHolder.imgViCertiBlue.setVisibility(View.GONE);
+        if (item.getEnterprise_productivity_auth_status() != null && item.getEnterprise_productivity_auth_status().equals("2"))
+            viewHolder.imgViCertiYellow.setVisibility(View.VISIBLE);
+        else
+            viewHolder.imgViCertiYellow.setVisibility(View.GONE);
+
+
+
+        if (item.getUser_id().equals("1")) {
+            viewHolder.txtMark.setText("官方");
+            viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+        } else {
+            if (item.getEnterprise_auth_status().equals("2")) {
+                viewHolder.txtMark.setText("企业");
+                viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+            } else {
+                viewHolder.txtMark.setText("个人");
+                viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+            }
+        }
     }
 
     static class ViewHolder {
@@ -135,6 +170,14 @@ public class EquipmentListviewAdapter extends BaseAdapter {
                 TextView tvEquipment;
         @Bind(R.id.tv_date)//发布日期
                 TextView tvDate;
+        @Bind(R.id.imgViCertiGreen)
+                ImageView imgViCertiGreen;
+        @Bind(R.id.imgViCertiBlue)
+                ImageView imgViCertiBlue;
+        @Bind(R.id.imgViCertiYellow)
+                ImageView imgViCertiYellow;
+        @Bind(R.id.txtMark)
+                TextView txtMark;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

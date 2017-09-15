@@ -33,8 +33,10 @@ import com.appjumper.silkscreen.ui.home.adapter.AddRessRecyclerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.CityListViewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.LogisticsStandingListviewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.TruckListviewAdapter;
+import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView;
@@ -97,6 +99,7 @@ public class LogisticsActivity extends BaseActivity {
     private List<LineList> list;
     private List<LineList> list2;
     private LogisticsStandingListviewAdapter adapter;
+    private SureOrCancelDialog comCreateDialog;
 
     private String start_id = "";
     private String end_id = "";
@@ -124,6 +127,7 @@ public class LogisticsActivity extends BaseActivity {
         mEmptyLayout = LayoutInflater.from(this).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
         initView();
+        initDialog();
         new Thread(addressrun).start();
         initListener();
         refresh();
@@ -134,6 +138,21 @@ public class LogisticsActivity extends BaseActivity {
             }
         });
     }
+
+
+    /**
+     * 初始化对话框
+     */
+    private void initDialog() {
+        comCreateDialog = new SureOrCancelDialog(context, "提示", "您尚未完善企业信息，暂时不能在该板块发布信息，请完善企业信息后再继续操作", "确定", "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    }
+                });
+    }
+
 
     private void selectRadioBtn() {
         RadioButton radioButton = (RadioButton) findViewById(rg.getCheckedRadioButtonId());
@@ -687,7 +706,7 @@ public class LogisticsActivity extends BaseActivity {
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS_PER);
                     } else {
                         if (getUser().getEnterprise() == null) {
-                            showErrorToast("请您先创建企业");
+                            comCreateDialog.show();
                             return;
                         }
                         //start_Activity(LogisticsActivity.this, PersonalReleaseActivity.class, new BasicNameValuePair("type", "1"));

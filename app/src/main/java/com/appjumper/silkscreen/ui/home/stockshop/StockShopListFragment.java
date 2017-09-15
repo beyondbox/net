@@ -6,22 +6,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
+import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
+import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.bean.StockGoods;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
+import com.appjumper.silkscreen.ui.home.adapter.ShopProductSelectAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StockShopListAdapter;
 import com.appjumper.silkscreen.util.Const;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -54,14 +59,17 @@ public class StockShopListFragment extends BaseFragment {
     PtrClassicFrameLayout ptrLayt;
     @Bind(R.id.recyclerData)
     RecyclerView recyclerData;
-    @Bind(R.id.txtProduct)
-    TextView txtProduct;
+    @Bind(R.id.txtDefault)
+    TextView txtDefault;
     @Bind(R.id.rdoGroup)
     RadioGroup rdoGroup;
     @Bind(R.id.rdoBtnPrice)
     RadioButton rdoBtnPrice;
     @Bind(R.id.rdoBtnConsult)
     RadioButton rdoBtnConsult;
+    @Bind(R.id.gridProduct)
+    GridView gridProduct;
+
 
     private final int DEFAULT = 0; //默认排序
     private final int PRICE_ASC = 1; //价格升序
@@ -74,11 +82,14 @@ public class StockShopListFragment extends BaseFragment {
     private List<StockGoods> dataList;
     private StockShopListAdapter adapter;
 
+    private List<Product> productList;
+    private ShopProductSelectAdapter productAdapter;
+
     private int page = 1;
     private int pageSize = 20;
     private int totalSize;
 
-    private int orderby = 0;
+    private int orderby = DEFAULT;
     private String pid = "";
     private long lastClickTime = 0;
 
@@ -96,16 +107,52 @@ public class StockShopListFragment extends BaseFragment {
         initRecyclerView();
         initRefreshLayout();
 
+        getRecommendProduct();
+        txtDefault.setSelected(true);
         ptrLayt.postDelayed(new Runnable() {
             @Override
             public void run() {
+                isFastClick();
                ptrLayt.autoRefresh();
             }
         }, 80);
     }
 
 
+
     private void initRecyclerView() {
+        /**
+         * 顶部推荐产品
+         */
+        productList = new ArrayList<>();
+        productAdapter = new ShopProductSelectAdapter(context, productList);
+        gridProduct.setAdapter(productAdapter);
+
+        gridProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Product product = productList.get(position);
+                if (product.getProduct_name().equals("更多")) {
+                    Intent intent = new Intent(context, ProductSelectActivity.class);
+                    intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
+                    intent.putExtra(Const.KEY_IS_FILTER_MODE, true);
+                    intent.putExtra(Const.KEY_IS_STOCK_SHOP, true);
+                    startActivityForResult(intent, Const.REQUEST_CODE_SELECT_PRODUCT);
+
+                } else {
+                    if (isFastClick())
+                        return;
+                    productAdapter.changeSelected(position);
+                    pid = product.getProduct_id();
+                    setDefaultOrder();
+                }
+            }
+        });
+
+
+        /**
+         * 商品数据
+         */
         dataList = new ArrayList<>();
         adapter = new StockShopListAdapter(R.layout.item_recycler_line_stock_shop, dataList);
         recyclerData.setLayoutManager(new LinearLayoutManager(context));
@@ -147,6 +194,7 @@ public class StockShopListFragment extends BaseFragment {
     }
 
 
+
     /**
      * 获取数据
      */
@@ -186,6 +234,8 @@ public class StockShopListFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (isDetached())
+                    return;
                 showFailTips(getResources().getString(R.string.requst_fail));
                 if (page > 1)
                     page--;
@@ -208,10 +258,64 @@ public class StockShopListFragment extends BaseFragment {
     }
 
 
+    /**
+     * 获取顶部推荐的产品
+     */
+    private void getRecommendProduct() {
+        RequestParams params = MyHttpClient.getApiParam("collection", "productByGoods");
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        List<Product> list = GsonUtil.getEntityList(jsonObj.getJSONArray("data").toString(), Product.class);
+                        if (list.size() > 0)
+                            gridProduct.setVisibility(View.VISIBLE);
+                        else
+                            gridProduct.setVisibility(View.GONE);
+
+                        productList.clear();
+
+                        Product product = new Product();
+                        product.setProduct_id("");
+                        product.setProduct_name("全部");
+                        productList.add(product);
+
+                        if (list.size() >= 9)
+                            productList.addAll(list.subList(0, 8));
+                        else
+                            productList.addAll(list);
+
+                        Product product2 = new Product();
+                        product2.setProduct_id("");
+                        product2.setProduct_name("更多");
+                        productList.add(product2);
+
+                        productAdapter.notifyDataSetChanged();
+                        productAdapter.changeSelected(0);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
+
     @OnCheckedChanged({R.id.rdoBtnPrice, R.id.rdoBtnConsult})
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
             isCheckedChanged = true;
+            txtDefault.setSelected(false);
             switch (buttonView.getId()) {
                 case R.id.rdoBtnPrice:
                     orderby = PRICE_ASC;
@@ -234,7 +338,7 @@ public class StockShopListFragment extends BaseFragment {
 
 
 
-    @OnClick({R.id.rdoBtnPrice, R.id.rdoBtnConsult, R.id.txtProduct})
+    @OnClick({R.id.rdoBtnPrice, R.id.rdoBtnConsult, R.id.txtDefault})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rdoBtnPrice: //价格排序
@@ -271,12 +375,10 @@ public class StockShopListFragment extends BaseFragment {
                     }
                 }
                 break;
-            case R.id.txtProduct: //选择产品
-                Intent intent = new Intent(context, ProductSelectActivity.class);
-                intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
-                intent.putExtra(Const.KEY_IS_FILTER_MODE, true);
-                intent.putExtra(Const.KEY_IS_STOCK_SHOP, true);
-                startActivityForResult(intent, Const.REQUEST_CODE_SELECT_PRODUCT);
+            case R.id.txtDefault: //默认排序
+                if (isFastClick())
+                    return;
+                setDefaultOrder();
                 break;
             default:
                 break;
@@ -293,20 +395,48 @@ public class StockShopListFragment extends BaseFragment {
 
         switch (requestCode) {
             case Const.REQUEST_CODE_SELECT_PRODUCT:
-                ServiceProduct product = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
-                pid = product.getId();
-                orderby = DEFAULT;
-                txtProduct.setText(product.getName());
+                ServiceProduct serviceProduct = (ServiceProduct) data.getSerializableExtra(Const.KEY_OBJECT);
+                pid = serviceProduct.getId();
+                if (TextUtils.isEmpty(pid)) {
+                    productAdapter.changeSelected(0);
+                    setDefaultOrder();
+                    return;
+                }
 
-                rdoGroup.check(R.id.rdoBtnHolder);
-                setDrawableRight(rdoBtnPrice, R.mipmap.order_default);
-                setDrawableRight(rdoBtnConsult, R.mipmap.order_default);
+                boolean result = false;
+                for (int i = 0; i < productList.size(); i++) {
+                    Product product = productList.get(i);
+                    if (pid.equals(product.getProduct_id())) {
+                        result = true;
+                        productAdapter.changeSelected(i);
+                        break;
+                    }
+                }
+                if (!result) {
+                    Product product = productList.get(productList.size() - 2);
+                    product.setProduct_id(pid);
+                    product.setProduct_name(serviceProduct.getName());
+                    productAdapter.changeSelected(productList.size() - 2);
+                }
 
-                ptrLayt.autoRefresh();
+                setDefaultOrder();
                 break;
             default:
                 break;
         }
+    }
+
+
+    /**
+     * 设置为默认排序
+     */
+    private void setDefaultOrder() {
+        txtDefault.setSelected(true);
+        orderby = DEFAULT;
+        rdoGroup.check(R.id.rdoBtnHolder);
+        setDrawableRight(rdoBtnPrice, R.mipmap.order_default);
+        setDrawableRight(rdoBtnConsult, R.mipmap.order_default);
+        ptrLayt.autoRefresh();
     }
 
 

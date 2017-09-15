@@ -137,6 +137,11 @@ public class Const {
     public static final int AUTH_FAIL = 3; //认证失败
 
 
+    public static final int INFO_TYPE_PER = 1; //信息类型-个人
+    public static final int INFO_TYPE_COM = 2; //信息类型-企业
+    public static final int INFO_TYPE_OFFICIAL = 3; //信息类型-官方
+
+
     public static final String KEY_MOBILE = "mobile";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_TITLE = "title";
@@ -156,6 +161,8 @@ public class Const {
     public static final String KEY_NAME = "name";
     public static final String KEY_PID = "pid";
     public static final String KEY_IS_STOCK_SHOP = "isStockShop";
+    public static final String KEY_BITMAP = "bitmap";
+    public static final String KEY_QUALITY = "quality";
 
 
 

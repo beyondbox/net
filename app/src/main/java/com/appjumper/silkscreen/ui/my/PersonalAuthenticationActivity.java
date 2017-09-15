@@ -11,14 +11,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.bean.PersonalAuthInfo;
 import com.appjumper.silkscreen.bean.PersonalAuthInfoResponse;
-import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
+import com.appjumper.silkscreen.util.Applibrary;
+import com.appjumper.silkscreen.util.ImageUtil;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.bumptech.glide.Glide;
 
@@ -67,6 +69,10 @@ public class PersonalAuthenticationActivity extends MultiSelectPhotoActivity{
     int mark=0;
     private String str;
     private String enterprise_auth_status="";
+
+    private File tempImageFile;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -213,10 +219,26 @@ public class PersonalAuthenticationActivity extends MultiSelectPhotoActivity{
     @Override
     protected void requestImage(String[] path) {
         str = path[0];
-        initProgressDialog();
+
+
+        if (tempImageFile != null) {
+            if (tempImageFile.exists())
+                tempImageFile.delete();
+        }
+        tempImageFile = new File(Applibrary.IMAGE_CACHE_DIR, System.currentTimeMillis() + ".jpg");
+        boolean result = ImageUtil.saveBitmap(ImageUtil.compressImage(str, 1920, 1080), 80, tempImageFile);
+        if (result) {
+            initProgressDialog();
+            progress.show();
+            new Thread(new UpdateStringRun(tempImageFile.getPath())).start();
+        }
+
+
+        /*initProgressDialog();
         progress.show();
-        new Thread(new UpdateStringRun(str)).start();
+        new Thread(new UpdateStringRun(str)).start();*/
     }
+
 
     // 如果不是切割的upLoadBitmap就很大
     public class UpdateStringRun implements Runnable {
@@ -233,7 +255,6 @@ public class PersonalAuthenticationActivity extends MultiSelectPhotoActivity{
             ImageResponse retMap = null;
             try {
                 String url = Url.UPLOADIMAGE;
-                // 如果不是切割的upLoadBitmap就很大,在这里压缩
                 retMap = JsonParser.getImageResponse(HttpUtil.uploadFile(url,
                         upLoadBitmapFile));
             } catch (Exception e) {
@@ -318,4 +339,14 @@ public class PersonalAuthenticationActivity extends MultiSelectPhotoActivity{
             }
         }
     };
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (tempImageFile != null) {
+            if (tempImageFile.exists())
+                tempImageFile.delete();
+        }
+    }
 }

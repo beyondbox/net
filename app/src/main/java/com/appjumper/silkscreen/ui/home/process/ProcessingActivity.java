@@ -43,6 +43,7 @@ import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.MyViewGroup;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView;
@@ -108,6 +109,7 @@ public class ProcessingActivity extends BaseActivity {
     private List<Spec> spec = new ArrayList<>();
     //private LinearLayout l_screening1;
     //private LinearLayout l_screening2;
+    private SureOrCancelDialog comCreateDialog;
 
 
     @Override
@@ -121,6 +123,7 @@ public class ProcessingActivity extends BaseActivity {
 //        initLocation();
         initView();
 
+        initDialog();
         initDrawerLayout();
 
         initRightButton("发布", new RightButtonListener() {
@@ -128,7 +131,7 @@ public class ProcessingActivity extends BaseActivity {
             public void click() {
                 if (checkLogined()) {
                     if (getUser().getEnterprise() == null) {
-                        start_Activity(ProcessingActivity.this, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                        comCreateDialog.show();
                     } else {
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_PROCESS);
                     }
@@ -136,6 +139,20 @@ public class ProcessingActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+
+    /**
+     * 初始化对话框
+     */
+    private void initDialog() {
+        comCreateDialog = new SureOrCancelDialog(context, "提示", "您尚未完善企业信息，暂时不能在该板块发布信息，请完善企业信息后再继续操作", "确定", "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    }
+                });
     }
 
 

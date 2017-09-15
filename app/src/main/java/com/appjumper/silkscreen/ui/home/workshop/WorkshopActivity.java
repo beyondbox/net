@@ -77,6 +77,9 @@ public class WorkshopActivity extends BaseActivity {
     private String min_area;
     private String min_price;
     private String max_price;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

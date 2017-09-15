@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -164,7 +163,7 @@ public class DynamicFragment extends BaseFragment {
             @Override
             public void onStart() {
                 super.onStart();
-                initProgressDialog();
+                initProgressDialog(false, null);
                 progress.show();
             }
 
@@ -279,6 +278,9 @@ public class DynamicFragment extends BaseFragment {
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if (isDetached())
+                    return;
+
                 String jsonStr = new String(responseBody);
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);

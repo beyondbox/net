@@ -31,7 +31,7 @@ public class RecruitDetail {
     private User user;
     private List<RecruitDetail> recommend;
     private String auth_status;
-
+    private String recruit_type;
 
 
 //    private AreaBean location;
@@ -245,4 +245,11 @@ public class RecruitDetail {
         this.auth_status = auth_status;
     }
 
+    public String getRecruit_type() {
+        return recruit_type;
+    }
+
+    public void setRecruit_type(String recruit_type) {
+        this.recruit_type = recruit_type;
+    }
 }

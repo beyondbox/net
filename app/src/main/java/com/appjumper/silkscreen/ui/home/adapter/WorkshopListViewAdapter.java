@@ -33,6 +33,7 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.EquipmentList;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopDetailsActivity;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyLinearLayoutManger;
 import com.appjumper.silkscreen.view.MyRecyclerView;
@@ -113,7 +114,6 @@ public class WorkshopListViewAdapter extends BaseAdapter {
         } else {
             viewHolder.llLine.setVisibility(View.VISIBLE);
         }
-        viewHolder.tvCompanyName.setText(item.getEnterprise_name());
         if (TextUtils.isEmpty(item.getEnterprise_logo().getSmall()))
             viewHolder.ivLogo.setImageResource(R.mipmap.icon_logo_image61);
         else
@@ -123,6 +123,48 @@ public class WorkshopListViewAdapter extends BaseAdapter {
         viewHolder.tvPrice.setText(item.getPrice() + "元/年");
         viewHolder.tvPosition.setText(item.getPosition() + " | " + item.getDistance() + "km");
         viewHolder.tvLocation.setText(item.getTitle() + "/" + item.getPosition());
+
+        if (TextUtils.isEmpty(item.getEnterprise_id()))
+            viewHolder.tvCompanyName.setText(item.getUser_nicename());
+        else
+            viewHolder.tvCompanyName.setText(item.getEnterprise_name());
+
+
+        if (item.getAuth_status() != null && item.getAuth_status().equals("2"))
+            viewHolder.imgViCertiGreen.setVisibility(View.VISIBLE);
+        else
+            viewHolder.imgViCertiGreen.setVisibility(View.GONE);
+        if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2"))
+            viewHolder.imgViCertiBlue.setVisibility(View.VISIBLE);
+        else
+            viewHolder.imgViCertiBlue.setVisibility(View.GONE);
+        if (item.getEnterprise_productivity_auth_status() != null && item.getEnterprise_productivity_auth_status().equals("2"))
+            viewHolder.imgViCertiYellow.setVisibility(View.VISIBLE);
+        else
+            viewHolder.imgViCertiYellow.setVisibility(View.GONE);
+
+
+
+        if (!TextUtils.isEmpty(item.getWorkshop_type())) {
+            int infoType = Integer.valueOf(item.getWorkshop_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    viewHolder.txtMark.setText("个人");
+                    viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    viewHolder.txtMark.setText("企业");
+                    viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    viewHolder.txtMark.setText("官方");
+                    viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 
     static class ViewHolder {
@@ -144,6 +186,14 @@ public class WorkshopListViewAdapter extends BaseAdapter {
         TextView tvPrice;
         @Bind(R.id.tv_location)
         TextView tvLocation;
+        @Bind(R.id.imgViCertiGreen)
+        ImageView imgViCertiGreen;
+        @Bind(R.id.imgViCertiBlue)
+        ImageView imgViCertiBlue;
+        @Bind(R.id.imgViCertiYellow)
+        ImageView imgViCertiYellow;
+        @Bind(R.id.txtMark)
+        TextView txtMark;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

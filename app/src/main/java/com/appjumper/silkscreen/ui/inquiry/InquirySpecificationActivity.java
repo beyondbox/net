@@ -57,7 +57,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.attr.data;
 import static com.appjumper.silkscreen.R.id.et_remark;
 
 /**
@@ -102,9 +101,9 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_specifiaction_inquiry2);
+        ButterKnife.bind(context);
         ActivityTaskManager.getInstance().putActivity(this);
         initBack();
-        ButterKnife.bind(this);
         initView();
         initProgressDialog(false, "正在发布...");
 
@@ -608,6 +607,9 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if (isDestroyed())
+                    return;
+
                 String jsonStr = new String(responseBody);
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);

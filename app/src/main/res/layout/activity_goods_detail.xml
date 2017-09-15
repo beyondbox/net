@@ -25,8 +25,15 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
+                android:visibility="gone"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/icon_home_banner_bg"/>
+
+            <fragment
+                android:id="@+id/fragment_cycle_viewpager_content"
+                android:name="com.appjumper.silkscreen.view.banner.CycleView2Pager"
+                android:layout_width="match_parent"
+                android:layout_height="240dip" />
 
             <TextView
                 android:id="@+id/txtTitle"
@@ -51,7 +58,7 @@
                     android:id="@+id/txtPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="¥195元/套"
+                    android:text="195元/套"
                     android:textSize="14sp"
                     android:textColor="@color/orange_color"/>
 
@@ -59,6 +66,15 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/txtSales"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:text="销售200套"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_gray_light_color"/>
 
                 <TextView
                     android:id="@+id/txtSurplus"

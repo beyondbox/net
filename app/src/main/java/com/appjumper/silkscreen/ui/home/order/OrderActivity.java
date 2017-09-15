@@ -44,6 +44,7 @@ import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.MyViewGroup;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView;
@@ -108,6 +109,9 @@ public class OrderActivity extends BaseActivity {
     //private LinearLayout l_screening1;
     //private LinearLayout l_screening2;
     private Product product;
+    private SureOrCancelDialog comCreateDialog;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +124,7 @@ public class OrderActivity extends BaseActivity {
         //new Thread(serviceTypelistRun).start();
         initView();
 
+        initDialog();
         initDrawerLayout();
 
         initRightButton("发布", new RightButtonListener() {
@@ -127,13 +132,27 @@ public class OrderActivity extends BaseActivity {
             public void click() {
                 if (checkLogined()) {
                     if (getUser().getEnterprise() == null) {
-                        start_Activity(OrderActivity.this, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                        comCreateDialog.show();
                     } else {
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_ORDER);
                     }
                 }
             }
         });
+    }
+
+
+    /**
+     * 初始化对话框
+     */
+    private void initDialog() {
+        comCreateDialog = new SureOrCancelDialog(context, "提示", "您尚未完善企业信息，暂时不能在该板块发布信息，请完善企业信息后再继续操作", "确定", "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    }
+                });
     }
 
 

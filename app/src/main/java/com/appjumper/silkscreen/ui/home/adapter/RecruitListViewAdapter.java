@@ -20,6 +20,7 @@
 package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.RecruitList;
+import com.appjumper.silkscreen.util.Const;
 
 import java.util.List;
 
@@ -88,10 +90,12 @@ public class RecruitListViewAdapter extends BaseAdapter {
 //        }
         viewHolder.tv_address.setText(item.getPlace());
         viewHolder.tvJobPosition.setText(item.getName());
-        viewHolder.tvSalary.setText("￥"+item.getSalary()+"元/月");
+        if (item.getSalary().equals("面议"))
+            viewHolder.tvSalary.setText("￥"+item.getSalary());
+        else
+            viewHolder.tvSalary.setText("￥"+item.getSalary()+"元/月");
         viewHolder.tvExperience.setText(item.getExperience() + "年  " + item.getEducation());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
-        viewHolder.tvEnterpriseName.setText(item.getEnterprise_name());
         if (item.getAuth_status() != null && item.getAuth_status().equals("2")) {
             viewHolder.img_auth_status.setVisibility(View.VISIBLE);
         } else {
@@ -112,6 +116,34 @@ public class RecruitListViewAdapter extends BaseAdapter {
         } else {
             viewHolder.llLine.setVisibility(View.VISIBLE);
         }
+
+
+        if (TextUtils.isEmpty(item.getEnterprise_id()))
+            viewHolder.tvEnterpriseName.setText(item.getUser_nicename());
+        else
+            viewHolder.tvEnterpriseName.setText(item.getEnterprise_name());
+
+
+        if (!TextUtils.isEmpty(item.getRecruit_type())) {
+            int infoType = Integer.valueOf(item.getRecruit_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    viewHolder.txtMark.setText("个人");
+                    viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    viewHolder.txtMark.setText("企业");
+                    viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    viewHolder.txtMark.setText("官方");
+                    viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 
     static class ViewHolder {
@@ -135,6 +167,8 @@ public class RecruitListViewAdapter extends BaseAdapter {
                 TextView tvSalary;
         @Bind(R.id.tv_experience)
         TextView tvExperience;
+        @Bind(R.id.txtMark)
+                TextView txtMark;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

@@ -528,6 +528,9 @@ public class HomeFragment extends BaseFragment {
                 if (!isDataInited)
                     return;
 
+                if (isDetached())
+                    return;
+
                 UnRead unRead = (UnRead) intent.getSerializableExtra(Const.KEY_OBJECT);
 
                 View newsUnread = gridViMenu.getChildAt(3).findViewById(R.id.unRead);

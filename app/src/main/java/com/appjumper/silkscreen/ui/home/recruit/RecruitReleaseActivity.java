@@ -38,9 +38,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.attr.data;
-import static com.appjumper.silkscreen.R.id.tv_end;
-
 /**
  * Created by Administrator on 2016-11-18.
  * 发布招聘
@@ -77,7 +74,7 @@ public class RecruitReleaseActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setContentView(R.layout.activity_recruit_release);
+        setContentView(R.layout.activity_recruit_release2);
         initBack();
         ButterKnife.bind(this);
         initTitle("招聘");
@@ -203,7 +200,7 @@ public class RecruitReleaseActivity extends BaseActivity {
                 intent = new Intent(RecruitReleaseActivity.this, InformationSelectActivity.class);
                 bundle = new Bundle();
                 bundle.putStringArray("val", experiences);
-                intent.putExtra("title", "出租形式");
+                intent.putExtra("title", "学历要求");
                 intent.putExtras(bundle);
                 startActivityForResult(intent, 11);
                 overridePendingTransition(R.anim.push_left_in,

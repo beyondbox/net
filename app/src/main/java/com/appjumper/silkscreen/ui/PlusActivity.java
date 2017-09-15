@@ -3,22 +3,15 @@ package com.appjumper.silkscreen.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
-import com.appjumper.silkscreen.ui.home.equipment.EquipmentReleaseActivity;
-import com.appjumper.silkscreen.ui.home.logistics.PersonalReleaseActivity;
-import com.appjumper.silkscreen.ui.home.logistics.TruckReleaseActivity;
-import com.appjumper.silkscreen.ui.home.recruit.RecruitReleaseActivity;
-import com.appjumper.silkscreen.ui.home.workshop.WorkshopReleaseActivity;
-import com.appjumper.silkscreen.ui.my.PersonalAuthenticationActivity;
-import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthFirstepActivity;
-import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthenticationActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -32,11 +25,17 @@ import butterknife.OnClick;
 
 public class PlusActivity extends BaseActivity {
 
+    private SureOrCancelDialog certifyPerDialog;
+    private SureOrCancelDialog certifyComDialog;
+    private SureOrCancelDialog comCreateDialog;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plus2);
         ButterKnife.bind(context);
+        initDialog();
     }
 
 
@@ -50,7 +49,7 @@ public class PlusActivity extends BaseActivity {
 
             case R.id.llReleaseProcess: //提供代加工
                 if (getUser().getEnterprise() == null) {
-                    start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    comCreateDialog.show();
                     return;
                 }
                 //goToProductSelect(Const.SERVICE_TYPE_PROCESS, ProductSelectActivity.MOTION_RELEASE_SERVICE);
@@ -59,7 +58,7 @@ public class PlusActivity extends BaseActivity {
 
             case R.id.llReleaseOrder: //接受丝网订做
                 if (getUser().getEnterprise() == null) {
-                    start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    comCreateDialog.show();
                     return;
                 }
                 //goToProductSelect(Const.SERVICE_TYPE_ORDER, ProductSelectActivity.MOTION_RELEASE_SERVICE);
@@ -68,17 +67,15 @@ public class PlusActivity extends BaseActivity {
 
             case R.id.llReleaseStock: //现货库存供应
                 if (!getUser().getAuth_status().equals("2")) {
-                    Toast.makeText(context, "您尚未通过实名认证", Toast.LENGTH_SHORT).show();
-                    start_Activity(context, PersonalAuthenticationActivity.class);
+                    certifyPerDialog.show();
                     return;
                 }
                 if (getUser().getEnterprise() == null) {
-                    start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    comCreateDialog.show();
                     return;
                 }
                 if (!getUser().getEnterprise().getEnterprise_auth_status().equals("2")) {
-                    Toast.makeText(context, "您的企业尚未通过认证", Toast.LENGTH_SHORT).show();
-                    start_Activity(context, EnterpriseAuthFirstepActivity.class);
+                    certifyComDialog.show();
                     return;
                 }
                 //goToProductSelect(Const.SERVICE_TYPE_STOCK, ProductSelectActivity.MOTION_RELEASE_SERVICE);
@@ -87,7 +84,7 @@ public class PlusActivity extends BaseActivity {
 
             case R.id.llReleaseStation: //货站线路发布
                 if (getUser().getEnterprise() == null) {
-                    start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    comCreateDialog.show();
                     return;
                 }
                 //start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "1"));
@@ -130,6 +127,36 @@ public class PlusActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+
+    /**
+     * 初始化对话框
+     */
+    private void initDialog() {
+        certifyPerDialog = new SureOrCancelDialog(context, "提示", "您尚未完成个人认证，暂时不能在该板块发布信息，请完成个人认证后再继续操作", "确定", "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        start_Activity(context, CertifyManageActivity.class);
+                    }
+                });
+
+        certifyComDialog = new SureOrCancelDialog(context, "提示", "您尚未完成企业认证，暂时不能在该板块发布信息，请完成企业认证后再继续操作", "确定", "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        start_Activity(context, CertifyManageActivity.class);
+                    }
+                });
+
+        comCreateDialog = new SureOrCancelDialog(context, "提示", "您尚未完善企业信息，暂时不能在该板块发布信息，请完善企业信息后再继续操作", "确定", "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    }
+                });
     }
 
 

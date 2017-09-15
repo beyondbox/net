@@ -10,15 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.AuthInfo;
 import com.appjumper.silkscreen.bean.AuthInfoResponse;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.ImageResponse;
-import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
+import com.appjumper.silkscreen.util.Applibrary;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.ImageUtil;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.bumptech.glide.Glide;
 
@@ -71,6 +73,10 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
     private String registerID;
     private String personName;
     private String pID;
+
+    private File tempImageFile;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -244,9 +250,23 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
     @Override
     protected void requestImage(String[] path) {
         str = path[0];
-        initProgressDialog();
+
+        if (tempImageFile != null) {
+            if (tempImageFile.exists())
+                tempImageFile.delete();
+        }
+        tempImageFile = new File(Applibrary.IMAGE_CACHE_DIR, System.currentTimeMillis() + ".jpg");
+        boolean result = ImageUtil.saveBitmap(ImageUtil.compressImage(str, 1920, 1080), 80, tempImageFile);
+        if (result) {
+            initProgressDialog();
+            progress.show();
+            new Thread(new UpdateStringRun(tempImageFile.getPath())).start();
+        }
+
+
+        /*initProgressDialog();
         progress.show();
-        new Thread(new UpdateStringRun(str)).start();
+        new Thread(new UpdateStringRun(str)).start();*/
     }
 
 
@@ -298,6 +318,10 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
             if(activity == null){
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             if(progress!=null){
                 activity.progress.dismiss();
             }
@@ -351,4 +375,15 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
             }
         }
     };
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (tempImageFile != null) {
+            if (tempImageFile.exists())
+                tempImageFile.delete();
+        }
+    }
+
 }

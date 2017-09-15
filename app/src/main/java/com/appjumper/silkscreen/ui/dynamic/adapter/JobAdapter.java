@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.RecruitList;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -29,9 +30,32 @@ public class JobAdapter extends BaseQuickAdapter<RecruitList, BaseViewHolder> {
         helper.setText(R.id.txtTime, item.getCreate_time().replaceAll("-", "\\.").substring(0, 16))
                 .setText(R.id.txtTitle, item.getName())
                 .setText(R.id.txtSubTitle, item.getExperience() + "年经验，学历" + item.getEducation() + "，性别" + item.getGender() + "，" + item.getRemark())
-                .setText(R.id.txtPrice, item.getSalary() + "元")
+                .setText(R.id.txtPrice, item.getSalary().equals("面议") ? item.getSalary() : item.getSalary() + "元")
                 .setText(R.id.txtLocation, item.getPlace())
                 .setVisible(R.id.unRead, !item.is_read());
+
+        TextView txtMark = helper.getView(R.id.txtMark);
+        if (!TextUtils.isEmpty(item.getRecruit_type())) {
+            int infoType = Integer.valueOf(item.getRecruit_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    txtMark.setText("个人");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    txtMark.setText("企业");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    txtMark.setText("官方");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
 
         TextView txtName = helper.getView(R.id.txtName);
 

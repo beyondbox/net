@@ -301,8 +301,10 @@ public class ProductSelectActivity extends BaseActivity {
         params.put("service_type", serviceType);
         if (isStockShop)
             params.put("type", 1);
-        else
+        else if (isFilterMode)
             params.put("type", 2);
+        else
+            params.put("type", 0);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

@@ -1,7 +1,6 @@
 package com.appjumper.silkscreen.base;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.appjumper.silkscreen.util.manager.MyUserManager;
 import com.umeng.socialize.PlatformConfig;

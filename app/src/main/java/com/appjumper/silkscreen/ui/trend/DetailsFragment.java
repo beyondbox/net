@@ -422,6 +422,9 @@ public class DetailsFragment extends BaseFragment {
                 if (isDetached())
                     return;
 
+                if (context.isDestroyed())
+                    return;
+
                 if (articleList.size() == 0)
                     recyclerArticle.setVisibility(View.GONE);
                 else

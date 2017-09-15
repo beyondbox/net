@@ -48,6 +48,8 @@ public class EquipmentList {
     private User user;
     private String auth_status;
     private boolean is_read = true;
+    private String workshop_type;
+
 
     public String getAddress() {
         return address;
@@ -376,5 +378,13 @@ public class EquipmentList {
 
     public void setIs_read(boolean is_read) {
         this.is_read = is_read;
+    }
+
+    public String getWorkshop_type() {
+        return workshop_type;
+    }
+
+    public void setWorkshop_type(String workshop_type) {
+        this.workshop_type = workshop_type;
     }
 }

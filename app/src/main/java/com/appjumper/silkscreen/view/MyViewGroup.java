@@ -12,6 +12,7 @@ import java.util.List;
  * Created by Administrator on 2016-10-11.
  */
 public class MyViewGroup extends ViewGroup {
+
     public MyViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -188,4 +189,6 @@ public class MyViewGroup extends ViewGroup {
         }
 
     }
+
+
 }

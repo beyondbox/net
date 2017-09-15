@@ -130,7 +130,7 @@ public class ProductSearchActivity extends BaseActivity {
                 filterList.addAll(origList);
             } else {
                 for (ServiceProduct product : origList) {
-                    if (product.getName().contains(content))
+                    if (product.getName().contains(content) || product.getAlias().contains(content))
                         filterList.add(product);
                 }
             }

@@ -9,7 +9,7 @@ import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
@@ -35,6 +35,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -62,7 +63,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
     TextView tvDate;
 
     @Bind(R.id.rl_company)
-    RelativeLayout rlCompany;
+    LinearLayout rlCompany;
     @Bind(R.id.iv_logo)//公司图片
             ImageView ivLogo;
     @Bind(R.id.tv_company_name)//公司名称
@@ -78,7 +79,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
     @Bind(R.id.tv_enterprise_productivity_auth_status)//力
             ImageView tv_enterprise_productivity_auth_status;
     @Bind(R.id.rl_user)
-    RelativeLayout rlUser;
+    LinearLayout rlUser;
     @Bind(R.id.iv_img)//个人头像
             ImageView iv_img;
 
@@ -87,6 +88,12 @@ public class EquipmentDetailsActivity extends BaseActivity {
 
     @Bind(R.id.tv_mobile)//个人手机号
             TextView tv_mobile;
+    @Bind(R.id.txtMark)
+    TextView txtMark;
+    @Bind(R.id.llRecommend)
+    LinearLayout llRecommend;
+
+
 
     private String id;
     private String eid;//企业id
@@ -109,6 +116,19 @@ public class EquipmentDetailsActivity extends BaseActivity {
     }
 
     private void initView(final EquipmentList data) {
+        if (data.getUser_id().equals("1")) {
+            txtMark.setText("官方");
+            txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+        } else {
+            if (data.getEnterprise_auth_status().equals("2")) {
+                txtMark.setText("企业");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+            } else {
+                txtMark.setText("个人");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+            }
+        }
+
         mobile = data.getMobile();
         tvTitle.setText(data.getTitle());
         tvRemark.setText(data.getRemark());
@@ -158,7 +178,21 @@ public class EquipmentDetailsActivity extends BaseActivity {
                 user_auth_status.setVisibility(View.GONE);
             }
         }
+
+
+        if (data.getUser_id().equals("1")) {
+            rlCompany.setVisibility(View.GONE);
+            rlUser.setVisibility(View.GONE);
+        }
+
+        List<EquipmentList> recommendList = data.getRecommend();
+        if (recommendList.size() == 0)
+            llRecommend.setVisibility(View.GONE);
+        else
+            llRecommend.setVisibility(View.VISIBLE);
     }
+
+
 
     private void refresh() {
         mPullRefreshScrollView.setRefreshing();

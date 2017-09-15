@@ -34,6 +34,7 @@ public class RecruitList {
     private List<RecruitList> recommend;
     private String auth_status;
     private boolean is_read = true;
+    private String recruit_type;
 
 
 
@@ -270,5 +271,13 @@ public class RecruitList {
 
     public void setIs_read(boolean is_read) {
         this.is_read = is_read;
+    }
+
+    public String getRecruit_type() {
+        return recruit_type;
+    }
+
+    public void setRecruit_type(String recruit_type) {
+        this.recruit_type = recruit_type;
     }
 }

@@ -11,20 +11,23 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.StockGoods;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.util.DisplayUtil;
+import com.appjumper.silkscreen.view.banner.CycleView2Pager;
+import com.appjumper.silkscreen.view.banner.ViewFactory;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.squareup.picasso.Picasso;
 
 import org.apache.http.Header;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,8 +52,10 @@ public class GoodsDetailActivity extends BaseActivity {
     @Bind(R.id.webView)
     WebView webView;
 
-
+    private CycleView2Pager cycleViewPager;
     private StockGoods goods;
+    private List<String> urlList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,20 +74,21 @@ public class GoodsDetailActivity extends BaseActivity {
      * 渲染数据
      */
     private void setData() {
-        Picasso.with(context)
+        /*Picasso.with(context)
                 .load(goods.getCover_img())
                 .resize(DisplayUtil.dip2px(context, 320), DisplayUtil.dip2px(context, 240))
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
-                .into(imageView);
+                .into(imageView);*/
+        setCycleViewPager();
 
         txtTitle.setText(goods.getTitle());
         txtSurplus.setText("剩余" + goods.getStock() + goods.getStock_unit());
         if (TextUtils.isEmpty(goods.getUnit_price()))
             txtPrice.setText("时价");
         else
-            txtPrice.setText("¥" + goods.getUnit_price() + "/" + goods.getPrice_unit());
+            txtPrice.setText(goods.getUnit_price() + "元/" + goods.getPrice_unit());
 
         WebSettings settings = webView.getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
@@ -101,8 +107,59 @@ public class GoodsDetailActivity extends BaseActivity {
     }
 
 
+    /**
+     * 设置轮播图
+     */
+    private void setCycleViewPager() {
+        cycleViewPager = (CycleView2Pager) getFragmentManager().findFragmentById(R.id.fragment_cycle_viewpager_content);
+        List<ImageView> views = new ArrayList<>();
 
+        String [] imgArr = goods.getCover_img().split(",");
+        urlList.clear();
+        urlList.addAll(Arrays.asList(imgArr));
+        List<Avatar> avatarList = new ArrayList<>();
+        for (String url : urlList) {
+            Avatar avatar = new Avatar();
+            avatar.setOrigin(url);
+            avatarList.add(avatar);
+        }
 
+        // 将最后一个ImageView添加进来
+        views.add(ViewFactory.getImageView(this, urlList.get(urlList.size() - 1)));
+        for (int i = 0; i < urlList.size(); i++) {
+            views.add(ViewFactory.getImageView(this, urlList.get(i)));
+        }
+        // 将第一个ImageView添加进来
+        views.add(ViewFactory.getImageView(this, urlList.get(0)));
+
+        // 设置循环，在调用setData方法前调用
+        cycleViewPager.setCycle(true);
+
+        // 在加载数据前设置是否循环
+        cycleViewPager.setData(views, avatarList, mAdCycleViewListener);
+        //设置轮播
+        cycleViewPager.setWheel(true);
+
+        // 设置轮播时间，默认5000ms
+        cycleViewPager.setTime(3000);
+        //设置圆点指示图标组居中显示，默认靠右
+        cycleViewPager.setIndicatorCenter();
+    }
+
+    private CycleView2Pager.ImageCycleViewListener mAdCycleViewListener = new CycleView2Pager.ImageCycleViewListener() {
+
+        @Override
+        public void onImageClick(Avatar info, int position, View imageView) {
+            if (cycleViewPager.isCycle()) {
+                position = position - 1;
+                Intent intent = new Intent(context, GalleryActivity.class);
+                intent.putExtra(GalleryActivity.EXTRA_IMAGE_URLS, (ArrayList)urlList);
+                intent.putExtra(GalleryActivity.EXTRA_IMAGE_INDEX, position);
+                startActivity(intent);
+            }
+        }
+
+    };
 
 
 

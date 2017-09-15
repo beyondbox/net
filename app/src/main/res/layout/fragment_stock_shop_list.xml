@@ -4,6 +4,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <GridView
+        android:id="@+id/gridProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:padding="10dp"
+        android:background="@color/view_background_gray_color"
+        android:numColumns="5"
+        android:horizontalSpacing="6dp"
+        android:verticalSpacing="7dp"
+        android:stretchMode="columnWidth"/>
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -11,16 +25,16 @@
         android:background="@color/while_color">
 
         <TextView
-            android:id="@+id/txtProduct"
+            android:id="@+id/txtDefault"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:gravity="center"
-            android:text="全部产品"
+            android:text="默认"
             android:textSize="14sp"
-            android:textColor="@color/text_gray_color"/>
+            android:textColor="@drawable/selector_text_gray_blue"/>
 
         <RadioGroup
             android:id="@+id/rdoGroup"
