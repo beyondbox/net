@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -36,6 +38,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
@@ -46,13 +49,9 @@ public class RecruitReleaseActivity extends BaseActivity {
     @Bind(R.id.tv_job_position)
     TextView tvJobPosition;
     @Bind(R.id.tv_experience)//学历
-            TextView tvEducation;
-    @Bind(R.id.tv_gender)
-    TextView tvGender;
+    TextView tvEducation;
     @Bind(R.id.et_experience)
     EditText etExperience;
-    @Bind(R.id.tv_job_form)
-    TextView tvJobForm;
     @Bind(R.id.et_salary)
     EditText etSalary;
     @Bind(R.id.tv_work_address)
@@ -61,14 +60,23 @@ public class RecruitReleaseActivity extends BaseActivity {
     TextView tvInfoLength;
     @Bind(R.id.et_responsibilities)
     EditText etResponsibilities;
+    @Bind(R.id.edtTxtTitle)
+    EditText edtTxtTitle;
+    @Bind(R.id.txtAdressDetail)
+    EditText txtAdressDetail;
+    @Bind(R.id.right)
+    TextView txtRight;
 
     private long expiry_datatime = 3600 * 72;
     private String[] expiry = {"3天", "5天", "10天", "30天"};//信息时长
 
     private String[] experiences = {"不限", "本科", "大专", "高中"};//学历
-    private String[] genders = {"不限","男", "女"};//性别
-    private String[] forms = {"兼职", "全职"};//工作类型
-    private String address_id;
+    private String address_id = "3775"; //默认是安平县城
+
+    private String sex = "不限";
+    private String workType = "全职";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,32 +89,24 @@ public class RecruitReleaseActivity extends BaseActivity {
         initRightButton("发布", new RightButtonListener() {
             @Override
             public void click() {
+                if (TextUtils.isEmpty(edtTxtTitle.getText().toString().trim())) {
+                    showErrorToast("请输入标题");
+                    return;
+                }
                 if (tvJobPosition.getText().toString().length() < 1) {
                     showErrorToast("请选择招聘职位");
-                    return;
-                }
-                if (tvEducation.getText().toString().length() < 1) {
-                    showErrorToast("请选择学历");
-                    return;
-                }
-                if (tvGender.getText().toString().length() < 1) {
-                    showErrorToast("请选择性别");
-                    return;
-                }
-                if (etExperience.getText().toString().trim().length() < 1) {
-                    showErrorToast("请输入工作经验");
-                    return;
-                }
-                if (tvJobForm.getText().toString().length() < 1) {
-                    showErrorToast("请选择职位类型");
                     return;
                 }
                 if (etSalary.getText().toString().trim().length() < 1) {
                     showErrorToast("请输入薪资范围");
                     return;
                 }
-                if (tvWorkAddress.getText().toString().length() < 1) {
-                    showErrorToast("请选择工作地点");
+                if (etExperience.getText().toString().trim().length() < 1) {
+                    showErrorToast("请输入工作经验要求");
+                    return;
+                }
+                if (TextUtils.isEmpty(txtAdressDetail.getText().toString().trim())) {
+                    showErrorToast("请输入详细地址");
                     return;
                 }
                 if (etResponsibilities.getText().toString().trim().length() < 1) {
@@ -123,6 +123,35 @@ public class RecruitReleaseActivity extends BaseActivity {
 
     }
 
+
+
+    @OnCheckedChanged({R.id.rdoBtnfulltime, R.id.rdoBtnParttime, R.id.rdoBtnAll, R.id.rdoBtnMan, R.id.rdoBtnWoman})
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            switch (buttonView.getId()) {
+                case R.id.rdoBtnfulltime:
+                    workType = "全职";
+                    break;
+                case R.id.rdoBtnParttime:
+                    workType = "兼职";
+                    break;
+                case R.id.rdoBtnAll:
+                    sex = "不限";
+                    break;
+                case R.id.rdoBtnMan:
+                    sex = "仅男士";
+                    break;
+                case R.id.rdoBtnWoman:
+                    sex = "仅女士";
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+
+
     private Runnable submitRun = new Runnable() {
         private BaseResponse response;
 
@@ -134,12 +163,13 @@ public class RecruitReleaseActivity extends BaseActivity {
                 data.put("name", tvJobPosition.getText().toString());
                 data.put("education", tvEducation.getText().toString());
                 data.put("expiry_date", expiry_datatime + "");
-                data.put("gender", tvGender.getText().toString());
+                data.put("gender", sex);
                 data.put("experience", etExperience.getText().toString().trim());
                 data.put("salary", etSalary.getText().toString().trim());
                 data.put("place", address_id);
                 data.put("responsibilities", etResponsibilities.getText().toString().trim());
-                data.put("remark", tvJobForm.getText().toString());
+                data.put("remark", workType);
+                data.put("address", txtAdressDetail.getText().toString().trim());
                 response = JsonParser.getBaseResponse(HttpUtil.postMsg(
                         HttpUtil.getData(data), Url.RECRUIT_RELEASE));
             } catch (Exception e) {
@@ -154,6 +184,9 @@ public class RecruitReleaseActivity extends BaseActivity {
             }
         }
     };
+
+
+
     private MyHandler handler = new MyHandler(this);
 
     private class MyHandler extends Handler {
@@ -170,6 +203,10 @@ public class RecruitReleaseActivity extends BaseActivity {
             if (activity == null) {
                 return;
             }
+
+            if (isDestroyed())
+                return;
+
             switch (msg.what) {
                 case NETWORK_SUCCESS_PAGER_RIGHT://发布
                     progress.dismiss();
@@ -191,7 +228,7 @@ public class RecruitReleaseActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.tv_experience, R.id.tv_info_length, R.id.tv_work_address, R.id.tv_gender, R.id.tv_job_form, R.id.tv_job_position})
+    @OnClick({R.id.tv_experience, R.id.tv_info_length, R.id.tv_work_address, R.id.tv_job_position, R.id.txtConfirm})
     public void onClick(View v) {
         Intent intent;
         Bundle bundle;
@@ -220,28 +257,11 @@ public class RecruitReleaseActivity extends BaseActivity {
                 startForResult_Activity(this,AddressSelectCityActivity.class,1,new BasicNameValuePair("type","2"),new BasicNameValuePair("id","208"),new BasicNameValuePair("code","1"));
 //                startForResult_Activity(this, AddressSelectActivity.class, 1, new BasicNameValuePair("code", "1"), new BasicNameValuePair("type", "1"));
                 break;
-            case R.id.tv_gender:
-                intent = new Intent(RecruitReleaseActivity.this, InformationSelectActivity.class);
-                bundle = new Bundle();
-                bundle.putStringArray("val", genders);
-                intent.putExtras(bundle);
-                intent.putExtra("title", "性别");
-                startActivityForResult(intent, 10);
-                overridePendingTransition(R.anim.push_left_in,
-                        R.anim.push_left_out);
-                break;
-            case R.id.tv_job_form:
-                intent = new Intent(RecruitReleaseActivity.this, InformationSelectActivity.class);
-                bundle = new Bundle();
-                bundle.putStringArray("val", forms);
-                intent.putExtras(bundle);
-                intent.putExtra("title", "职位类型");
-                startActivityForResult(intent, 9);
-                overridePendingTransition(R.anim.push_left_in,
-                        R.anim.push_left_out);
-                break;
             case R.id.tv_job_position:
                 startForResult_Activity(RecruitReleaseActivity.this, SelectActivity.class, 13, new BasicNameValuePair("title", "招聘职位"), new BasicNameValuePair("type", "2"));
+                break;
+            case R.id.txtConfirm:
+                txtRight.performClick();
                 break;
             default:
                 break;
@@ -282,14 +302,6 @@ public class RecruitReleaseActivity extends BaseActivity {
                 address_id = data.getStringExtra("id");
                 String address_name = data.getStringExtra("name");
                 tvWorkAddress.setText(address_name);
-                break;
-            case 10:
-                int selectGender = Integer.parseInt(data.getStringExtra("val"));
-                tvGender.setText(genders[selectGender]);
-                break;
-            case 9:
-                int selectForm = Integer.parseInt(data.getStringExtra("val"));
-                tvJobForm.setText(forms[selectForm]);
                 break;
             case 13:
                 jobCheck(data.getStringExtra("name"));
