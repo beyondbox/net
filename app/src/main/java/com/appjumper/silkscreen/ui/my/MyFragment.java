@@ -7,13 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
-import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.bean.UserResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
@@ -51,42 +48,19 @@ public class MyFragment extends BaseFragment {
     @Bind(R.id.img_head)//用户头像
             ImageView img_head;
 
-    @Bind(R.id.iv_enterprise_logo)//企业头像
-            ImageView iv_enterprise_logo;
-
-    @Bind(R.id.tv_enterprise_name)//企业名称
-            TextView tv_enterprise_name;
-
-    @Bind(R.id.tv_enterprise_auth_status)//企
-            ImageView tv_enterprise_auth_status;
-
-    @Bind(R.id.tv_enterprise_productivity_auth_status)//力
-            ImageView tv_enterprise_productivity_auth_status;
-
-    @Bind(R.id.rl_enterprise_create)//已创建企业显示布局
-            LinearLayout rl_enterprise_create;
-
-    @Bind(R.id.rl_enterprise)//未创建企业显示布局
-            RelativeLayout rl_enterprise;
-
     @Bind(R.id.tv_name)//用户姓名
             TextView tv_name;
 
-    @Bind(R.id.tv_mobile)//用户手机号
-            TextView tv_mobile;
+    /*@Bind(R.id.tv_mobile)//用户手机号
+            TextView tv_mobile;*/
 
-    @Bind(R.id.tv_score)//积分
-            TextView tv_score;
 
-    @Bind(R.id.tv_personal_certificate)//个人认证状态
-            TextView tv_personal_certificate;
 
-    private Enterprise enterprise;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
-        view = inflater.inflate(R.layout.fragment_my, null);
+        view = inflater.inflate(R.layout.fragment_my2, null);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -95,63 +69,16 @@ public class MyFragment extends BaseFragment {
     private void initView() {
         User user = getUser();
         if (user != null) {
-            enterprise = user.getEnterprise();
-            if (enterprise != null) {
-                rl_enterprise.setVisibility(View.GONE);
-                rl_enterprise_create.setVisibility(View.VISIBLE);
-                if (enterprise.getEnterprise_logo() != null) {
-                    Picasso.with(getContext()).load(enterprise.getEnterprise_logo().getSmall()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61)
-                            //.transform(new PicassoRoundTransform())
-                            .into(iv_enterprise_logo);
-                }
-                tv_enterprise_name.setText(enterprise.getEnterprise_name());
-
-                if (enterprise.getEnterprise_auth_status() != null && enterprise.getEnterprise_auth_status().equals("2")) {
-                    tv_enterprise_auth_status.setVisibility(View.VISIBLE);
-                } else {
-                    tv_enterprise_auth_status.setVisibility(View.GONE);
-                }
-                if (enterprise.getEnterprise_productivity_auth_status() != null && enterprise.getEnterprise_productivity_auth_status().equals("2")) {
-                    tv_enterprise_productivity_auth_status.setVisibility(View.VISIBLE);
-                } else {
-                    tv_enterprise_productivity_auth_status.setVisibility(View.GONE);
-                }
-            } else {
-                rl_enterprise.setVisibility(View.VISIBLE);
-                rl_enterprise_create.setVisibility(View.GONE);
-            }
-
-            String authStatus = user.getAuth_status();
-            switch (authStatus) {
-                case "0":
-                    tv_personal_certificate.setText("未认证");
-                    break;
-                case "1":
-                    tv_personal_certificate.setText("认证中");
-                    break;
-                case "2":
-                    tv_personal_certificate.setText("认证成功");
-                    break;
-                case "3":
-                    tv_personal_certificate.setText("认证失败");
-                    break;
-            }
-            tv_mobile.setVisibility(View.VISIBLE);
+            //tv_mobile.setVisibility(View.VISIBLE);
+            //tv_mobile.setText("手机号：" + user.getMobile());
             tv_name.setText(user.getUser_nicename());
-            tv_score.setText(user.getScore());
-            tv_mobile.setText("手机号：" + user.getMobile());
             if (user.getAvatar() != null) {
                 Picasso.with(getContext()).load(user.getAvatar().getSmall()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head)
-                        //.transform(new PicassoRoundTransform())
                         .into(img_head);
             }
         } else {
-            rl_enterprise.setVisibility(View.VISIBLE);
-            rl_enterprise_create.setVisibility(View.GONE);
+            //tv_mobile.setVisibility(View.GONE);
             tv_name.setText("请登录／注册");
-            tv_score.setText("");
-            tv_mobile.setVisibility(View.GONE);
-            tv_personal_certificate.setText("");
             img_head.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.img_error_head));
         }
     }
@@ -179,30 +106,27 @@ public class MyFragment extends BaseFragment {
 
 
 
-    @OnClick({R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rl_enterprise,
-            R.id.rl_feedback, R.id.ll_view, R.id.ll_service, R.id.rl_point, R.id.ll_company,
-            R.id.rl_collect, R.id.rl_personal_certificate, R.id.tv_help, R.id.rl_my_release, R.id.rlMyDeal})
+    @OnClick({R.id.llCompany, R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rlHelp,
+            R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_help://帮助
+            case R.id.llCompany: //企业信息
+                if (checkLogined()) {
+                    if (getUser().getEnterprise() != null)
+                        start_Activity(getActivity(), CompanyDetailsActivity.class, new BasicNameValuePair("from", "1"), new BasicNameValuePair("id", getUser().getEnterprise().getEnterprise_id()));
+                    else
+                        start_Activity(getActivity(), EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                }
+                break;
+            case R.id.rlHelp://帮助
                 start_Activity(getActivity(), WebViewActivity.class,new BasicNameValuePair("title","帮助"),new BasicNameValuePair("url",Url.IP+"/index.php?g=portal&m=page&a=index&id=3"));
                 break;
             case R.id.rl_share://分享
                 ShareUtil.intShare(getActivity(), v, "构建丝网新生态，打造丝网行业的信息服务平台，在这里有你想要知道的所有丝网行业相关信息", "丝网+", Const.SHARE_APP_URL);
                 break;
-            case R.id.rl_personal_certificate://个人认证
-                if (checkLogined()) {
-                    start_Activity(getActivity(), PersonalAuthenticationActivity.class);
-                }
-                break;
             case R.id.rl_feedback://意见反馈
                 start_Activity(getActivity(), FeedbackActivity.class);
                 //start_Activity(context, InquiryHuLanActivity.class);
-                break;
-            case R.id.rl_enterprise://企业信息
-                if (checkLogined()) {
-                    start_Activity(getActivity(), EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
-                }
                 break;
             case R.id.rl_user://用户信息
                 if (checkLogined()) {
@@ -214,7 +138,7 @@ public class MyFragment extends BaseFragment {
                 //test();
                 //start_Activity(context, InquiryCiShengActivity.class);
                 break;
-            case R.id.ll_view://查看公司认证
+            case R.id.ll_certify://查看认证
                 if (checkLogined()) {
                     //start_Activity(getActivity(), AuthenticationAdministrationActivity.class);
                     start_Activity(context, CertifyManageActivity.class);
@@ -230,14 +154,6 @@ public class MyFragment extends BaseFragment {
                     start_Activity(getActivity(), MyPointActivity.class);
                 }
                 break;
-            case R.id.ll_company://公司详情
-                start_Activity(getActivity(), CompanyDetailsActivity.class, new BasicNameValuePair("from", "1"), new BasicNameValuePair("id", enterprise.getEnterprise_id()));
-                break;
-            case R.id.rl_collect://企业收藏
-                if (checkLogined()) {
-                    start_Activity(getActivity(), EnterpriseCollectionActivity.class);
-                }
-                break;
             case R.id.rl_my_release: //我的发布
                 if (checkLogined())
                     start_Activity(context, MyReleaseActivity.class);
@@ -250,7 +166,8 @@ public class MyFragment extends BaseFragment {
         }
     }
 
-    //修改
+
+    //用户信息
     private class UserInfoRun implements Runnable {
         private UserResponse response;
 
@@ -281,7 +198,7 @@ public class MyFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case NETWORK_SUCCESS_PAGER_RIGHT://修改性别
+                case NETWORK_SUCCESS_PAGER_RIGHT://用户信息
                     UserResponse userResponse = (UserResponse) msg.obj;
                     if (userResponse.isSuccess()) {
                         User user = userResponse.getData();

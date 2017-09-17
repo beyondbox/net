@@ -10,15 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.bean.UserResponse;
-import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
-import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
+import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
+import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.squareup.picasso.Picasso;
@@ -51,6 +54,9 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
     @Bind(R.id.tv_mobile)//手机号
             TextView tv_mobile;
 
+    @Bind(R.id.txtCompanyName)
+    TextView txtCompanyName;
+
 //    private String imgPath;
 
     private String[] expiry={"保密","男","女"};
@@ -65,7 +71,7 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
         initBack();
     }
 
-    @OnClick({R.id.rl_img,R.id.rl_nickname,R.id.rl_sex})
+    @OnClick({R.id.rl_img,R.id.rl_nickname,R.id.rl_sex, R.id.rlCompany})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_img://选择头像
@@ -86,6 +92,12 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
                 startActivityForResult(intent,3);
                 overridePendingTransition(R.anim.push_left_in,
                         R.anim.push_left_out);
+                break;
+            case R.id.rlCompany: //所属企业
+                if (getUser().getEnterprise() != null)
+                    start_Activity(context, CompanyDetailsActivity.class, new BasicNameValuePair("from", "1"), new BasicNameValuePair("id", getUser().getEnterprise().getEnterprise_id()));
+                else
+                    start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
                 break;
             default:
                 break;
@@ -115,6 +127,13 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
                     .centerCrop()
                     .into(iv_img);
         }
+
+
+        Enterprise enterprise = user.getEnterprise();
+        if (enterprise != null)
+            txtCompanyName.setText(enterprise.getEnterprise_name());
+        else
+            txtCompanyName.setText("立即添加企业信息");
     }
 
 

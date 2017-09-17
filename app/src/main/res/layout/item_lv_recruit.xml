@@ -15,15 +15,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="18dp">
+            android:layout_marginTop="12dp">
 
             <TextView
                 android:id="@+id/tv_job_position"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="6dp"
-                android:maxWidth="180dp"
+                android:layout_marginRight="8dp"
+                android:maxWidth="290dp"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:text="挖掘机老司机挖掘机老司机挖掘机老司机挖掘机老司机挖掘机老司机"
@@ -45,50 +45,64 @@
                 android:text="个人"
                 android:textColor="@color/text_black_color"/>
 
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
             <TextView
                 android:id="@+id/tv_salary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:text="￥5000-6000"
                 android:textColor="@color/orange_color"
                 android:textSize="14sp" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:orientation="horizontal"
+                android:layout_toRightOf="@id/tv_salary">
+                
+                <TextView
+                    android:id="@+id/txtPosition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="挖掘机老司机"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_gray_light_color"/>
+            </LinearLayout>
+
         </RelativeLayout>
 
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/tv_address"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="9dp">
-
-            <TextView
-                android:id="@+id/tv_experience"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3-5年 学历不限"
-                android:textColor="@color/text_gray_color"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tv_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="衡水-安平县"
-                android:textColor="@color/text_gray_color"
-                android:textSize="13sp" />
-        </RelativeLayout>
+            android:layout_marginTop="7dp"
+            android:text="衡水-安平县"
+            android:textColor="@color/text_gray_color"
+            android:textSize="13sp" />
 
         <View
             style="@style/LineStyle"
-            android:layout_marginTop="12dp" />
+            android:layout_marginTop="10dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
+            android:layout_marginBottom="12dp"
             android:layout_marginTop="12dp">
 
             <LinearLayout
@@ -142,6 +156,7 @@
                 android:textSize="12sp" />
         </RelativeLayout>
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/ll_line"

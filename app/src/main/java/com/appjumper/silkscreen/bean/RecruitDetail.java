@@ -32,6 +32,8 @@ public class RecruitDetail {
     private List<RecruitDetail> recommend;
     private String auth_status;
     private String recruit_type;
+    private String official_name;
+    private String official_mobile;
 
 
 //    private AreaBean location;
@@ -251,5 +253,21 @@ public class RecruitDetail {
 
     public void setRecruit_type(String recruit_type) {
         this.recruit_type = recruit_type;
+    }
+
+    public String getOfficial_name() {
+        return official_name;
+    }
+
+    public void setOfficial_name(String official_name) {
+        this.official_name = official_name;
+    }
+
+    public String getOfficial_mobile() {
+        return official_mobile;
+    }
+
+    public void setOfficial_mobile(String official_mobile) {
+        this.official_mobile = official_mobile;
     }
 }
