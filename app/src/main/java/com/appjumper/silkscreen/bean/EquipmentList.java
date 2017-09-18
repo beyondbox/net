@@ -49,6 +49,8 @@ public class EquipmentList {
     private String auth_status;
     private boolean is_read = true;
     private String workshop_type;
+    private String official_name;
+    private String official_mobile;
 
 
     public String getAddress() {
@@ -386,5 +388,21 @@ public class EquipmentList {
 
     public void setWorkshop_type(String workshop_type) {
         this.workshop_type = workshop_type;
+    }
+
+    public String getOfficial_name() {
+        return official_name;
+    }
+
+    public void setOfficial_name(String official_name) {
+        this.official_name = official_name;
+    }
+
+    public String getOfficial_mobile() {
+        return official_mobile;
+    }
+
+    public void setOfficial_mobile(String official_mobile) {
+        this.official_mobile = official_mobile;
     }
 }

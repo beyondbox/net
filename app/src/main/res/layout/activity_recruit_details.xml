@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/view_background_gray_color">
+
+
     <!-- title -->
     <LinearLayout
         android:id="@+id/title_layout"
@@ -56,6 +58,7 @@
         </RelativeLayout>
     </LinearLayout>
 
+
     <com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/pull_refresh_scrollview"
         android:layout_width="match_parent"
@@ -82,6 +85,7 @@
                 android:paddingTop="15dp">
 
                 <LinearLayout
+                    android:id="@+id/llTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -106,7 +110,7 @@
                             android:id="@+id/tv_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginRight="8dp"
                             android:singleLine="true"
                             android:text="11.01 19:02"
                             android:textColor="@color/light_gray_color"
@@ -136,8 +140,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:singleLine="true"
+                    android:layout_alignBottom="@id/llTitle"
+                    android:layout_marginLeft="10dp"
                     android:text="￥8000-10000"
                     android:textColor="@color/orange_color"
                     android:textSize="15sp" />
@@ -153,7 +157,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingBottom="18dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
                 android:paddingTop="18dp">
@@ -173,6 +176,29 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="职位"
+                            android:textColor="@color/light_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtPosition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text=""
+                            android:textColor="@color/black_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="学历"
                             android:textColor="@color/light_gray_color"
                             android:textSize="14sp" />
@@ -181,7 +207,7 @@
                             android:id="@+id/tv_education"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="18dp"
+                            android:layout_marginLeft="12dp"
                             android:text="大专"
                             android:textColor="@color/black_color"
                             android:textSize="14sp" />
@@ -210,8 +236,11 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
-
                 </LinearLayout>
+
+
+
+
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -246,6 +275,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -265,8 +295,66 @@
                             android:textSize="14sp" />
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="工作城市"
+                            android:textColor="@color/light_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtPlace"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:text=""
+                            android:textColor="@color/black_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
+
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="详细地址"
+                    android:textColor="@color/light_gray_color"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/txtAdressDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text=""
+                    android:textColor="@color/black_color"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+
+
+
 
             <View style="@style/LineStyle" />
 
@@ -296,7 +384,7 @@
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="3dp"
                 android:padding="12dp"
-                android:text="岗位职责岗位职责岗位职责岗位职责，岗位职责岗位职责岗位 岗位职责岗位职责岗位职责岗位职责，岗位职责岗位职责岗位 岗位职责岗位职责岗位职责岗位职责，职责岗位职责。"
+                android:text="岗位职责"
                 android:textColor="@color/text_gray_color"
                 android:textSize="13sp" />
 
@@ -306,6 +394,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:background="@color/view_background_gray_color" />
+
+
+
+
+
+
+
+
 
 
             <LinearLayout

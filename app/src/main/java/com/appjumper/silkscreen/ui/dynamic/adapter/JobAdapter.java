@@ -34,28 +34,6 @@ public class JobAdapter extends BaseQuickAdapter<RecruitList, BaseViewHolder> {
                 .setText(R.id.txtLocation, item.getPlace())
                 .setVisible(R.id.unRead, !item.is_read());
 
-        TextView txtMark = helper.getView(R.id.txtMark);
-        if (!TextUtils.isEmpty(item.getRecruit_type())) {
-            int infoType = Integer.valueOf(item.getRecruit_type());
-            switch (infoType) {
-                case Const.INFO_TYPE_PER:
-                    txtMark.setText("个人");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
-                    break;
-                case Const.INFO_TYPE_COM:
-                    txtMark.setText("企业");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
-                    break;
-                case Const.INFO_TYPE_OFFICIAL:
-                    txtMark.setText("官方");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-
 
         TextView txtName = helper.getView(R.id.txtName);
 
@@ -90,6 +68,30 @@ public class JobAdapter extends BaseQuickAdapter<RecruitList, BaseViewHolder> {
                     .setVisible(R.id.imgViCertiGreen, item.getAuth_status().equals("2"))
                     .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
                     .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"));
+        }
+
+
+
+        TextView txtMark = helper.getView(R.id.txtMark);
+        if (!TextUtils.isEmpty(item.getRecruit_type())) {
+            int infoType = Integer.valueOf(item.getRecruit_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    txtMark.setText("个人");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    txtMark.setText("企业");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    txtMark.setText("官方");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    txtName.setText(item.getOfficial_name());
+                    break;
+                default:
+                    break;
+            }
         }
 
     }

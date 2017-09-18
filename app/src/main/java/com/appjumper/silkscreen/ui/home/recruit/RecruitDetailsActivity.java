@@ -19,6 +19,7 @@ import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.RecruitDetail;
 import com.appjumper.silkscreen.bean.RecruitDetailsResponse;
+import com.appjumper.silkscreen.bean.RecruitList;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
@@ -27,7 +28,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.MapviewActivity;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
-import com.appjumper.silkscreen.ui.home.adapter.RecruitDetailAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.RecruitListViewAdapter;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyListView;
@@ -108,6 +109,12 @@ public class RecruitDetailsActivity extends BaseActivity {
     TextView txtMark;
     @Bind(R.id.llRecommend)
     LinearLayout llRecommend;
+    @Bind(R.id.txtPosition)
+    TextView txtPosition;
+    @Bind(R.id.txtPlace)
+    TextView txtPlace;
+    @Bind(R.id.txtAdressDetail)
+    TextView txtAdressDetail;
 
 
 
@@ -154,18 +161,21 @@ public class RecruitDetailsActivity extends BaseActivity {
         }
 
 
-        tvTitle.setText(data.getName());
+        txtPosition.setText(data.getName());
+        txtPlace.setText(data.getPlace());
+        txtAdressDetail.setText(data.getAddress());
+        tvTitle.setText(data.getTitle());
         tvRemark.setText(data.getResponsibilities());
-        if (data.getSalary().equals("面议"))
-            tvSalary.setText("￥" + data.getSalary());
+        if (data.getSalary().equals("面议") || data.getSalary().equals("面谈"))
+            tvSalary.setText("￥面议");
         else
             tvSalary.setText("￥" + data.getSalary()+"元/月");
         tvEducation.setText(data.getEducation());
         tvGender.setText(data.getGender());
         tvJobForm.setText(data.getRemark());
-        tvWorkExperience.setText(data.getExperience() + "年");
+        tvWorkExperience.setText(TextUtils.isEmpty(data.getExperience()) ? "不限" : data.getExperience() + "年");
         tvDate.setText(data.getCreate_time().substring(5, 16));
-        listView.setAdapter(new RecruitDetailAdapter(this, data.getRecommend()));
+        listView.setAdapter(new RecruitListViewAdapter(this, data.getRecommend()));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -229,7 +239,7 @@ public class RecruitDetailsActivity extends BaseActivity {
         }
 
 
-        List<RecruitDetail> recommendList = data.getRecommend();
+        List<RecruitList> recommendList = data.getRecommend();
         if (recommendList.size() == 0)
             llRecommend.setVisibility(View.GONE);
         else

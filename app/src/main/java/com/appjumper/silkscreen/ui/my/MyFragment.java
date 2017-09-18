@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
+import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.bean.UserResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
@@ -22,7 +23,6 @@ import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
-import com.appjumper.silkscreen.ui.my.enterprise.ServiceAdministrationActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.ShareUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -51,9 +51,8 @@ public class MyFragment extends BaseFragment {
     @Bind(R.id.tv_name)//用户姓名
             TextView tv_name;
 
-    /*@Bind(R.id.tv_mobile)//用户手机号
-            TextView tv_mobile;*/
-
+    @Bind(R.id.txtCompanyName)
+    TextView txtCompanyName;
 
 
 
@@ -69,15 +68,20 @@ public class MyFragment extends BaseFragment {
     private void initView() {
         User user = getUser();
         if (user != null) {
-            //tv_mobile.setVisibility(View.VISIBLE);
-            //tv_mobile.setText("手机号：" + user.getMobile());
             tv_name.setText(user.getUser_nicename());
             if (user.getAvatar() != null) {
                 Picasso.with(getContext()).load(user.getAvatar().getSmall()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head)
                         .into(img_head);
             }
+
+            txtCompanyName.setVisibility(View.VISIBLE);
+            Enterprise enterprise = user.getEnterprise();
+            if (enterprise != null)
+                txtCompanyName.setText(enterprise.getEnterprise_name());
+            else
+                txtCompanyName.setText("完善企业信息");
         } else {
-            //tv_mobile.setVisibility(View.GONE);
+            txtCompanyName.setVisibility(View.GONE);
             tv_name.setText("请登录／注册");
             img_head.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.img_error_head));
         }
@@ -142,11 +146,6 @@ public class MyFragment extends BaseFragment {
                 if (checkLogined()) {
                     //start_Activity(getActivity(), AuthenticationAdministrationActivity.class);
                     start_Activity(context, CertifyManageActivity.class);
-                }
-                break;
-            case R.id.ll_service://服务管理
-                if (checkLogined()) {
-                    start_Activity(getActivity(), ServiceAdministrationActivity.class);
                 }
                 break;
             case R.id.rl_point://我的积分

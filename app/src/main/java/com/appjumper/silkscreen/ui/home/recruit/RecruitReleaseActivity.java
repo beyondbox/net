@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
@@ -159,7 +160,17 @@ public class RecruitReleaseActivity extends BaseActivity {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+
+                int infoType;
+                Enterprise enterprise = getUser().getEnterprise();
+                if (enterprise != null && enterprise.getEnterprise_auth_status().equals("2"))
+                    infoType = Const.INFO_TYPE_COM;
+                else
+                    infoType = Const.INFO_TYPE_PER;
+
+                data.put("recruit_type", infoType + "");
                 data.put("uid", getUserID());
+                data.put("title", edtTxtTitle.getText().toString().trim());
                 data.put("name", tvJobPosition.getText().toString());
                 data.put("education", tvEducation.getText().toString());
                 data.put("expiry_date", expiry_datatime + "");

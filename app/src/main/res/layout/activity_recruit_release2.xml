@@ -382,7 +382,6 @@
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:background="@null"
-                            android:inputType="phone"
                             android:hint="输入工作年限要求"
                             android:textColor="@color/black_color"
                             android:textColorHint="@color/light_gray_color"

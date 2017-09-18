@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class RecruitList {
     private String id;
+    private String title;
     private String name;
     private String education;
     private String gender;
@@ -297,5 +298,13 @@ public class RecruitList {
 
     public void setOfficial_mobile(String official_mobile) {
         this.official_mobile = official_mobile;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

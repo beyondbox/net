@@ -66,7 +66,7 @@ public class RecruitActivity extends BaseActivity {
     private View productView;
     private MyRecyclerView recyclerView;
     private ListView list_view;
-    private String pagesize = "30";
+    private String pagesize = "20";
     private int pageNumber = 1;
     private String name = "";//筛选 职位名称
     private String location = "";//筛选 地区名称

@@ -7,6 +7,7 @@ import java.util.List;
  */
 public class RecruitDetail {
     private String id;
+    private String title;
     private String name;
     private String education;
     private String gender;
@@ -29,11 +30,12 @@ public class RecruitDetail {
     private String enterprise_productivity_auth_status;
     private Enterprise enterprise;
     private User user;
-    private List<RecruitDetail> recommend;
+    private List<RecruitList> recommend;
     private String auth_status;
     private String recruit_type;
     private String official_name;
     private String official_mobile;
+    private String address;
 
 
 //    private AreaBean location;
@@ -46,11 +48,11 @@ public class RecruitDetail {
 //        this.location = location;
 //    }
 
-    public List<RecruitDetail> getRecommend() {
+    public List<RecruitList> getRecommend() {
         return recommend;
     }
 
-    public void setRecommend(List<RecruitDetail> recommend) {
+    public void setRecommend(List<RecruitList> recommend) {
         this.recommend = recommend;
     }
 
@@ -269,5 +271,21 @@ public class RecruitDetail {
 
     public void setOfficial_mobile(String official_mobile) {
         this.official_mobile = official_mobile;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

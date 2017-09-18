@@ -242,6 +242,7 @@ public class WorkshopDetailsActivity extends BaseActivity {
             if (infoType == Const.INFO_TYPE_OFFICIAL) {
                 rlCompany.setVisibility(View.GONE);
                 rlUser.setVisibility(View.GONE);
+                mobile = data.getOfficial_mobile();
             }
         }
 

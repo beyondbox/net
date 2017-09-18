@@ -43,7 +43,7 @@
         android:ellipsize="end"
         android:lineSpacingExtra="2dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginRight="3dp"
         android:text="铁丝拔丝现货拔丝现货拔丝现货"
         android:textSize="15sp"
         android:textColor="@color/theme_color"/>

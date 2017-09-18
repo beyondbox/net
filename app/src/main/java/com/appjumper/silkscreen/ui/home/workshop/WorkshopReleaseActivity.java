@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
@@ -19,6 +20,7 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.AddressSelectCityActivity;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -151,6 +153,15 @@ public class WorkshopReleaseActivity extends BasePhotoGridActivity {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+
+                int infoType;
+                Enterprise enterprise = getUser().getEnterprise();
+                if (enterprise != null && enterprise.getEnterprise_auth_status().equals("2"))
+                    infoType = Const.INFO_TYPE_COM;
+                else
+                    infoType = Const.INFO_TYPE_PER;
+
+                data.put("workshop_type", infoType + "");
                 data.put("uid", getUserID());
                 data.put("title", etTitle.getText().toString().trim());
                 data.put("remark", etRemark.getText().toString().trim());

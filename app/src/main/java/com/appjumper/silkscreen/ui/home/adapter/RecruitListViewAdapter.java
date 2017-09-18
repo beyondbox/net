@@ -89,11 +89,11 @@ public class RecruitListViewAdapter extends BaseAdapter {
 //        if(item.getLocation()!=null){
 //        }
         viewHolder.tv_address.setText(item.getPlace());
-        viewHolder.tvJobPosition.setText(item.getName());
+        viewHolder.tvJobPosition.setText(TextUtils.isEmpty(item.getTitle()) ? item.getName() : item.getTitle());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
         viewHolder.txtPosition.setText(item.getName());
-        if (item.getSalary().equals("面议"))
-            viewHolder.tvSalary.setText("￥"+item.getSalary());
+        if (item.getSalary().equals("面议") || item.getSalary().equals("面谈"))
+            viewHolder.tvSalary.setText("￥面议");
         else
             viewHolder.tvSalary.setText("￥"+item.getSalary()+"元/月");
 

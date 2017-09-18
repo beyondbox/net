@@ -159,6 +159,7 @@ public class WorkshopListViewAdapter extends BaseAdapter {
                 case Const.INFO_TYPE_OFFICIAL:
                     viewHolder.txtMark.setText("官方");
                     viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    viewHolder.tvCompanyName.setText(item.getOfficial_name());
                     break;
                 default:
                     break;

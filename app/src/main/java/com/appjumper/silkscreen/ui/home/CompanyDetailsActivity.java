@@ -43,6 +43,7 @@ import com.appjumper.silkscreen.ui.home.recruit.RecruitDetailsActivity;
 import com.appjumper.silkscreen.ui.home.stock.StockDetailActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopDetailsActivity;
 import com.appjumper.silkscreen.ui.my.adapter.MyLogisticsListviewAdapter;
+import com.appjumper.silkscreen.ui.my.enterprise.AddServiceActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.MyLogisticsDetailsActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.ViewOrderActivity;
@@ -171,6 +172,9 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
 
     @Bind(R.id.tv_enterprise_address)//地址
             TextView tv_enterprise_address;
+
+    @Bind(R.id.txtAddService)
+    TextView txtAddService;
 
 
     private String from;//from 1代表从我的见面跳转，2从其他界面跳转
@@ -533,9 +537,21 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
 
 
         if (list.size() == 0 && list2.size() == 0 && list3.size() == 0 && list4.size() == 0) {
-            llService.setVisibility(View.GONE);
+            if (from.equals("1")) {
+                llService.setVisibility(View.VISIBLE);
+                rgTab.setVisibility(View.GONE);
+            } else {
+                llService.setVisibility(View.GONE);
+            }
+
         } else {
             llService.setVisibility(View.VISIBLE);
+            if (from.equals("1"))
+                txtAddService.setVisibility(View.VISIBLE);
+            else
+                txtAddService.setVisibility(View.GONE);
+
+
             boolean hasFirst = false;
 
             if (list.size() > 0) {
@@ -582,7 +598,7 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
 
 
 
-    @OnClick({R.id.rl_url, R.id.rl_phone, R.id.rl_location, R.id.tv_inquiry, R.id.iv_collect, R.id.tv_edit,R.id.iv_share})
+    @OnClick({R.id.rl_url, R.id.rl_phone, R.id.rl_location, R.id.tv_inquiry, R.id.iv_collect, R.id.tv_edit,R.id.iv_share, R.id.txtAddService})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_url://网址
@@ -631,6 +647,9 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                 break;
             case R.id.iv_share:
                 ShareUtil.intShare2(this, v, data.getEnterprise_intro(), data.getEnterprise_name(), data.getUrl(),data.getEnterprise_logo().getSmall());
+                break;
+            case R.id.txtAddService: //添加服务
+                start_Activity(context, AddServiceActivity.class);
                 break;
             default:
                 break;

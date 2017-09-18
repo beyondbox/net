@@ -1,20 +1,18 @@
 package com.appjumper.silkscreen.view.phonegridview;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore.Images;
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-
-import android.content.Context;
-import android.content.res.Configuration;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Bitmap.CompressFormat;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore.Images;
-import android.util.Log;
 public class ImageCompress {
 	 public static final String CONTENT = "content";
 	    public static final String FILE = "file";
@@ -44,7 +42,7 @@ public class ImageCompress {
 	        /**
 	         * 图片压缩比例 默认为30
 	         */
-	        public int quality = 80;
+	        public int quality = 60;
 	 
 	        public  String filePath;
 	    }
