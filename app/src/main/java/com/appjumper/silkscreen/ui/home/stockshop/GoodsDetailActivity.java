@@ -49,6 +49,8 @@ public class GoodsDetailActivity extends BaseActivity {
     TextView txtPrice;
     @Bind(R.id.txtSurplus)
     TextView txtSurplus;
+    @Bind(R.id.txtSales)
+    TextView txtSales;
     @Bind(R.id.webView)
     WebView webView;
 
@@ -89,6 +91,15 @@ public class GoodsDetailActivity extends BaseActivity {
             txtPrice.setText("时价");
         else
             txtPrice.setText(goods.getUnit_price() + "元/" + goods.getPrice_unit());
+
+
+        if (TextUtils.isEmpty(goods.getSale_num())) {
+            txtSales.setVisibility(View.INVISIBLE);
+        } else {
+            txtSales.setVisibility(View.VISIBLE);
+            txtSales.setText("销售" + goods.getSale_num() + goods.getStock_unit());
+        }
+
 
         WebSettings settings = webView.getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);

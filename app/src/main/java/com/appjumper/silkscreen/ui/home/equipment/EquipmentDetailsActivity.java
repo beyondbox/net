@@ -120,7 +120,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
             txtMark.setText("官方");
             txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
         } else {
-            if (data.getEnterprise_auth_status().equals("2")) {
+            if (data.getEnterprise_auth_status() != null && data.getEnterprise_auth_status().equals("2")) {
                 txtMark.setText("企业");
                 txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
             } else {

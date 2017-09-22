@@ -5,7 +5,7 @@
     android:background="@drawable/select_white_background"
     android:orientation="horizontal">
 
-    <ImageView
+    <com.appjumper.silkscreen.view.BorderRectImageView
         android:id="@+id/iv_enterprise_logo"
         android:layout_width="51dp"
         android:layout_height="51dp"

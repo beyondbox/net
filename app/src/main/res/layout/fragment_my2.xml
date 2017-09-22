@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:background="@color/view_background_gray_color"
     android:orientation="vertical">
+
+
     <!-- title -->
     <LinearLayout
         android:id="@+id/title_layout"
@@ -66,7 +68,10 @@
                     android:id="@+id/img_head"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_margin="12dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginRight="15dp"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/img_error_head" />
 
@@ -420,7 +425,7 @@
                     android:id="@+id/imgViHelp"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginLeft="14dp"
+                    android:layout_marginLeft="14.5dp"
                     android:layout_centerVertical="true"
                     android:src="@mipmap/my_help"/>
 
@@ -429,7 +434,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@id/imgViHelp"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
+                    android:layout_marginLeft="13dp"
                     android:text="帮助中心"
                     android:textColor="@color/black_color"
                     android:textSize="14sp" />
@@ -442,6 +447,59 @@
                     android:src="@mipmap/icon_my_arrows_right" />
 
             </RelativeLayout>
+
+            <View style="@style/LineStyle" android:layout_marginBottom="10dp"/>
+
+
+
+
+            <LinearLayout
+                android:id="@+id/llReleaseStockGoods"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:orientation="vertical">
+
+                <View style="@style/LineStyle"/>
+
+                <RelativeLayout
+                    android:id="@+id/rlReleaseStockGoods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:background="@drawable/select_white_background"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/imgViGoods"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="15.5dp"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/my_release_goods"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/imgViGoods"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:text="发布现货"
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_my_arrows_right" />
+
+                </RelativeLayout>
+
+                <View style="@style/LineStyle" android:layout_marginBottom="10dp"/>
+            </LinearLayout>
 
 
 

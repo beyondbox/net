@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -17,6 +19,7 @@ import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.ui.common.adapter.ProductSearchAdapter;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 
 import java.util.ArrayList;
@@ -61,6 +64,19 @@ public class ProductSearchActivity extends BaseActivity {
 
         initListView();
         et_search.addTextChangedListener(new SearchWatcher());
+        et_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                switch (actionId) {
+                    case EditorInfo.IME_ACTION_SEARCH:
+                        AppTool.hideSoftInput(context);
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
 

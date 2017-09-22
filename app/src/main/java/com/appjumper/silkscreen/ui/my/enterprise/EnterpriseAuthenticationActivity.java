@@ -360,6 +360,9 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
                     BaseResponse baseresponse = (BaseResponse) msg.obj;
                     if(baseresponse.isSuccess()){
                         showErrorToast("企业认证提交成功");
+                        if (EnterpriseAuthFirstepActivity.instance != null)
+                            EnterpriseAuthFirstepActivity.instance.finish();
+
                         finish();
                     }else{
                         activity.showErrorToast(baseresponse.getError_desc());

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/chkSpec"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:button="@null"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/selector_goods_spec_choice_bg"
+        android:drawablePadding="3dp"
+        android:text="铁丝555555"
+        android:textSize="14sp"
+        android:textColor="@color/text_black_color"/>
+
+    <RelativeLayout
+        android:id="@+id/rlEdit"
+        android:layout_width="match_parent"
+        android:layout_height="25dp">
+
+        <EditText
+            android:id="@+id/edtTxtContent"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:paddingLeft="5dp"
+            android:background="@null"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/text_black_color"
+            android:textColorHint="@color/light_gray_color"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/text_black_color"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
+
+

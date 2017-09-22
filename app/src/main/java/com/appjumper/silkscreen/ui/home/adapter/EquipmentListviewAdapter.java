@@ -147,7 +147,7 @@ public class EquipmentListviewAdapter extends BaseAdapter {
             viewHolder.txtMark.setText("官方");
             viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
         } else {
-            if (item.getEnterprise_auth_status().equals("2")) {
+            if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2")) {
                 viewHolder.txtMark.setText("企业");
                 viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
             } else {

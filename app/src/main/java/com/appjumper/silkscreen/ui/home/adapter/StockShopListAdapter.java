@@ -32,7 +32,7 @@ public class StockShopListAdapter extends BaseQuickAdapter<StockGoods, BaseViewH
         String [] imgArr = item.getCover_img().split(",");
         Picasso.with(mContext)
                 .load(imgArr[0])
-                .resize(DisplayUtil.dip2px(mContext, 70), DisplayUtil.dip2px(mContext, 70))
+                .resize(DisplayUtil.dip2px(mContext, 100), DisplayUtil.dip2px(mContext, 80))
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)

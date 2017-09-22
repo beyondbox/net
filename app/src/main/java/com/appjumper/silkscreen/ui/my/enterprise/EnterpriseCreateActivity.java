@@ -523,6 +523,7 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
                 str += ",";
             }
         }
+
         return str;
     }
 

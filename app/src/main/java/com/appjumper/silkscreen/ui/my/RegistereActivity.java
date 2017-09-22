@@ -255,9 +255,14 @@ public class RegistereActivity extends BaseActivity{
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        new Thread(codeRun).start();
+                        //new Thread(codeRun).start();
+                        showErrorToast("验证码已发送，请注意查收");
+                        startTime();
+                        t_obtain_code.setClickable(false);
+                        t_obtain_code.setTextColor(getResources().getColor(R.color.text_gray_color));
+                        t_obtain_code.setText(DELAYTIME + "秒后重获");
                     } else {
-                        progress.dismiss();
+                        //progress.dismiss();
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
                 } catch (JSONException e) {
@@ -267,8 +272,14 @@ public class RegistereActivity extends BaseActivity{
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                progress.dismiss();
+                //progress.dismiss();
                 showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
             }
         });
     }
@@ -323,7 +334,7 @@ public class RegistereActivity extends BaseActivity{
 
 
     /**
-     * 登录
+     * 登录(没用着)
      */
     private void login() {
         Map<String, String> map = new HashMap<String, String>();

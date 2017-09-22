@@ -7,9 +7,145 @@
 
     <include layout="@layout/layout_header_with_text"/>
 
-    <FrameLayout
-        android:id="@+id/frameContent"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/shape_search_bg">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/icon_search_icon04" />
+
+        <EditText
+            android:id="@+id/edtTxtSearch"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:hint="请输入产品名称"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColorHint="@color/light_gray_color"
+            android:textColor="@color/text_black_color"
+            android:textSize="14sp"/>
+
+        <ImageView
+            android:id="@+id/imgViClose"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="6dp"
+            android:visibility="gone"
+            android:src="@mipmap/icon_close" />
+
+    </LinearLayout>
+
+
+
+    <GridView
+        android:id="@+id/gridProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:padding="10dp"
+        android:background="@color/view_background_gray_color"
+        android:numColumns="5"
+        android:horizontalSpacing="6dp"
+        android:verticalSpacing="7dp"
+        android:stretchMode="columnWidth"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/while_color">
+
+        <TextView
+            android:id="@+id/txtDefault"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:gravity="center"
+            android:text="默认"
+            android:textSize="14sp"
+            android:textColor="@drawable/selector_text_gray_blue"/>
+
+        <RadioGroup
+            android:id="@+id/rdoGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="horizontal">
+
+            <com.appjumper.silkscreen.view.MDMRadioButton
+                android:id="@+id/rdoBtnPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableRight="@mipmap/order_default"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="价格"
+                android:textSize="14sp"
+                android:textColor="@drawable/selector_orderby_text"/>
+
+            <RadioButton
+                android:id="@+id/rdoBtnHolder"
+                android:layout_width="0dp"
+                android:layout_height="0dp" />
+
+            <com.appjumper.silkscreen.view.MDMRadioButton
+                android:id="@+id/rdoBtnConsult"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableRight="@mipmap/order_default"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="咨询"
+                android:textSize="14sp"
+                android:textColor="@drawable/selector_orderby_text"/>
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <View style="@style/LineStyle"/>
+
+    <com.chanven.lib.cptr.PtrClassicFrameLayout
+        android:id="@+id/ptrLayt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </com.chanven.lib.cptr.PtrClassicFrameLayout>
 
 </LinearLayout>

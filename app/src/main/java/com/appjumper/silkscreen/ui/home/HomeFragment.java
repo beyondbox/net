@@ -56,7 +56,7 @@ import com.appjumper.silkscreen.ui.home.search.SearchingActivity;
 import com.appjumper.silkscreen.ui.home.stock.StockActivity;
 import com.appjumper.silkscreen.ui.home.stockshop.GoodsDetailActivity;
 import com.appjumper.silkscreen.ui.home.stockshop.StockConsignActivity;
-import com.appjumper.silkscreen.ui.home.stockshop.StockShopActivity;
+import com.appjumper.silkscreen.ui.home.stockshop.StockGoodsSelectActivity;
 import com.appjumper.silkscreen.ui.home.tender.TenderActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopActivity;
 import com.appjumper.silkscreen.ui.my.MyPointActivity;
@@ -373,7 +373,7 @@ public class HomeFragment extends BaseFragment {
                     img_back_top.setVisibility(View.GONE);
                 }
 
-                if (y >= hoverMark)
+                if (hoverMark > 0 && y >= hoverMark)
                     llHoverRecommend.setVisibility(View.VISIBLE);
                 else
                     llHoverRecommend.setVisibility(View.GONE);
@@ -568,7 +568,7 @@ public class HomeFragment extends BaseFragment {
                 start_Activity(getActivity(), SearchingActivity.class);
                 break;
             case R.id.rlStockShop: //现货商城
-                start_Activity(context, StockShopActivity.class);
+                start_Activity(context, StockGoodsSelectActivity.class);
                 break;
             case R.id.rlStockConsign: //现货寄售
                 if (checkLogined())
@@ -600,7 +600,7 @@ public class HomeFragment extends BaseFragment {
                 }, 200);
                 break;
             case R.id.txtMoreGoods: //商城-更多
-                start_Activity(context, StockShopActivity.class);
+                start_Activity(context, StockGoodsSelectActivity.class);
                 break;
             default:
                 break;

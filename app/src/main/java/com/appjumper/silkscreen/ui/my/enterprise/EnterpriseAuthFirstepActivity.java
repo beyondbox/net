@@ -2,7 +2,6 @@ package com.appjumper.silkscreen.ui.my.enterprise;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 
 import butterknife.Bind;
@@ -23,6 +21,8 @@ import butterknife.OnClick;
  */
 
 public class EnterpriseAuthFirstepActivity extends BaseActivity {
+
+    public static EnterpriseAuthFirstepActivity instance = null;
 
     @Bind(R.id.txtCompanyName)
     TextView txtCompanyName;
@@ -39,6 +39,7 @@ public class EnterpriseAuthFirstepActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enterprise_auth_firstep);
         ButterKnife.bind(context);
+        instance = this;
 
         initTitle("企业认证");
         initBack();
@@ -90,4 +91,9 @@ public class EnterpriseAuthFirstepActivity extends BaseActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 }

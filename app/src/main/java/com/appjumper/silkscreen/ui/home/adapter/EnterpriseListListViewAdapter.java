@@ -29,7 +29,6 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Enterprise;
-import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -87,7 +86,7 @@ public class EnterpriseListListViewAdapter extends BaseAdapter {
     private void fillValue(int position, ViewHolder viewHolder) {
         Enterprise item = list.get(position);
         if (item.getEnterprise_logo() != null && !item.getEnterprise_logo().getSmall().equals("")) {
-            Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.iv_enterprise_logo);
+            Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.iv_enterprise_logo);
         }
         viewHolder.tv_company_name.setText(item.getEnterprise_name());
 

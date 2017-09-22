@@ -241,6 +241,10 @@
         <activity android:name=".ui.home.stockshop.GoodsDetailActivity" />
         <!--现货寄售-->
         <activity android:name=".ui.home.stockshop.StockConsignActivity" />
+        <!--现货商品选择列表-->
+        <activity android:name=".ui.home.stockshop.StockGoodsSelectActivity" />
+        <!--发布现货商品-->
+        <activity android:name=".ui.home.stockshop.ReleaseStockGoodsActivity" />
 
 
         <!--发布护栏网-->

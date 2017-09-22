@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.ui.my;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
+import com.appjumper.silkscreen.ui.home.stockshop.ReleaseStockGoodsActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
@@ -68,11 +70,15 @@ public class MyFragment extends BaseFragment {
     private void initView() {
         User user = getUser();
         if (user != null) {
-            tv_name.setText(user.getUser_nicename());
             if (user.getAvatar() != null) {
                 Picasso.with(getContext()).load(user.getAvatar().getSmall()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head)
                         .into(img_head);
             }
+
+            if (TextUtils.isEmpty(user.getUser_nicename()))
+                tv_name.setText("未设置昵称");
+            else
+                tv_name.setText(user.getUser_nicename());
 
             txtCompanyName.setVisibility(View.VISIBLE);
             Enterprise enterprise = user.getEnterprise();
@@ -111,7 +117,7 @@ public class MyFragment extends BaseFragment {
 
 
     @OnClick({R.id.llCompany, R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rlHelp,
-            R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal})
+            R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal, R.id.rlReleaseStockGoods})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llCompany: //企业信息
@@ -159,6 +165,9 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.rlMyDeal: //我的询报价
                 start_Activity(getActivity(), MessageActivity.class);
+                break;
+            case R.id.rlReleaseStockGoods: //发布现货商品
+                start_Activity(context, ReleaseStockGoodsActivity.class);
                 break;
             default:
                 break;

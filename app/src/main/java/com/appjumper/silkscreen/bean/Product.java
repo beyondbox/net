@@ -45,6 +45,8 @@ public class Product implements Serializable{
     private String img_require;
     private boolean is_read = true;
     private String spec_num;
+    private String description;
+    private String img;
 
     @SerializedName("initial")
     private String section;
@@ -334,5 +336,21 @@ public class Product implements Serializable{
 
     public void setSpec_num(String spec_num) {
         this.spec_num = spec_num;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }
