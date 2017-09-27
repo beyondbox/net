@@ -21,7 +21,7 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
-import com.appjumper.silkscreen.ui.home.stockshop.ReleaseStockGoodsActivity;
+import com.appjumper.silkscreen.ui.home.stockshop.ReleaseGoodsSelectActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
@@ -167,7 +167,7 @@ public class MyFragment extends BaseFragment {
                 start_Activity(getActivity(), MessageActivity.class);
                 break;
             case R.id.rlReleaseStockGoods: //发布现货商品
-                start_Activity(context, ReleaseStockGoodsActivity.class);
+                start_Activity(context, ReleaseGoodsSelectActivity.class);
                 break;
             default:
                 break;

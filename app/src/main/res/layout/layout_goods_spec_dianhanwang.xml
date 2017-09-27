@@ -66,12 +66,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:layout_marginTop="15dp"
-                android:tag="2"
+                android:tag="1"
                 android:orientation="horizontal">
 
                 <TextView
@@ -79,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="主丝*次丝\n(内丝径mm)"
+                    android:text="丝径(#)"
                     android:textSize="14dp"
                     android:textColor="@color/text_black_color"/>
 
@@ -104,124 +105,6 @@
                         android:textColor="@color/text_black_color"
                         android:textColorHint="@color/light_gray_color"
                         android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="*"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:textSize="14sp"
-                        android:textColor="@color/text_black_color"/>
-
-                    <EditText
-                        android:layout_width="80dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="number|numberDecimal"
-                        android:background="@drawable/gid_background"
-                        android:gravity="center"
-                        android:hint=""
-                        android:padding="5dp"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:imeOptions="actionNext"
-                        android:textColor="@color/text_black_color"
-                        android:textColorHint="@color/light_gray_color"
-                        android:textSize="14sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginTop="15dp"
-                android:tag="3"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="拧股方式"
-                    android:textSize="14dp"
-                    android:textColor="@color/text_black_color"/>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:layout_weight="2.5"
-                    android:orientation="horizontal">
-
-                    <RadioGroup
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:button="@null"
-                            android:gravity="center_vertical"
-                            android:drawableLeft="@drawable/selector_checkbox_blue_round"
-                            android:drawablePadding="3dp"
-                            android:text="正拧"
-                            android:textColor="@color/text_black_color"
-                            android:textSize="14sp"/>
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:button="@null"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:drawableLeft="@drawable/selector_checkbox_blue_round"
-                            android:drawablePadding="3dp"
-                            android:text="反拧"
-                            android:textColor="@color/text_black_color"
-                            android:textSize="14sp"/>
-
-                        <RadioButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:button="@null"
-                            android:gravity="center_vertical"
-                            android:layout_marginLeft="10dp"
-                            android:drawableLeft="@drawable/selector_checkbox_blue_round"
-                            android:drawablePadding="3dp"
-                            android:text="其他"
-                            android:textColor="@color/text_black_color"
-                            android:textSize="14sp"/>
-                    </RadioGroup>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="19dp">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="18dp"
-                            android:paddingLeft="3dp"
-                            android:background="@null"
-                            android:maxLines="1"
-                            android:singleLine="true"
-                            android:gravity="center"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_black_color"
-                            android:textColorHint="@color/light_gray_color"/>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="@color/text_black_color"
-                            android:layout_alignParentBottom="true"/>
-
-                    </RelativeLayout>
-
                 </LinearLayout>
             </LinearLayout>
 
@@ -240,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="刺长(cm)"
+                    android:text="孔径(寸)"
                     android:textSize="14dp"
                     android:textColor="@color/text_black_color"/>
 
@@ -269,6 +152,7 @@
             </LinearLayout>
 
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -282,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="刺距(cm)"
+                    android:text="长*宽"
                     android:textSize="14dp"
                     android:textColor="@color/text_black_color"/>
 
@@ -333,6 +217,9 @@
                         android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
+
+
+
 
 
 
@@ -426,7 +313,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="价格(元/kg)"
+                    android:text="价格(元/卷)"
                     android:textSize="14dp"
                     android:textColor="@color/text_black_color"/>
 
@@ -469,7 +356,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="库存(kg)"
+                    android:text="库存(卷)"
                     android:textSize="14dp"
                     android:textColor="@color/text_black_color"/>
 

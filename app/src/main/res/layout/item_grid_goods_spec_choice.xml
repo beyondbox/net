@@ -20,13 +20,13 @@
     <RelativeLayout
         android:id="@+id/rlEdit"
         android:layout_width="match_parent"
-        android:layout_height="25dp">
+        android:layout_height="23dp">
 
         <EditText
             android:id="@+id/edtTxtContent"
             android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:paddingLeft="5dp"
+            android:layout_height="22dp"
+            android:paddingLeft="3dp"
             android:background="@null"
             android:maxLines="1"
             android:singleLine="true"

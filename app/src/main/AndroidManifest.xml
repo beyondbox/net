@@ -245,6 +245,8 @@
         <activity android:name=".ui.home.stockshop.StockGoodsSelectActivity" />
         <!--发布现货商品-->
         <activity android:name=".ui.home.stockshop.ReleaseStockGoodsActivity" />
+        <!--发布现货选择商品-->
+        <activity android:name=".ui.home.stockshop.ReleaseGoodsSelectActivity" />
 
 
         <!--发布护栏网-->

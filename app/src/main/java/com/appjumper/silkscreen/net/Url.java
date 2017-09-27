@@ -163,5 +163,7 @@ public class Url {
     public static final String UPDATE = HTTP_URL + "update";
     //帮助
     public static final String CONFIG = HTTP_URL + "config";
+    //发布现货商品
+    public static final String RELEASE_GOODS = HTTP_URL + "goods/add_goods";
 
 }
