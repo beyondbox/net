@@ -118,6 +118,7 @@ public class ProcessingActivity extends BaseActivity {
         setContentView(R.layout.activity_processing);
         ButterKnife.bind(this);
         initBack();
+        initTitle("丝网加工");
         initProgressDialog();
         //new Thread(serviceTypelistRun).start();
 //        initLocation();

@@ -23,7 +23,6 @@ import android.widget.TimePicker.OnTimeChangedListener;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.BaseResponse;
-import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
@@ -33,14 +32,7 @@ import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
 import com.appjumper.silkscreen.ui.home.adapter.PassbyAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
-import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
-import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianStockActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseHuLanStockActivity;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.util.MProgressDialog;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -63,15 +55,11 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static android.R.attr.data;
-
 /**
  * Created by Administrator on 2016-11-18.
  * 个人求车详情
  */
 public class PersonalReleaseActivity extends BaseActivity {
-    private String start_id = "214";
-    private String end_id = "";
 
     @Bind(R.id.tv_start)//货运起点
             TextView tv_start;
@@ -111,6 +99,11 @@ public class PersonalReleaseActivity extends BaseActivity {
     private PassbyAdapter adapter;
     private String ids = "";
     private String names = "";
+
+    private String start_id = "214";
+    private String end_id = "";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -119,6 +119,7 @@ public class OrderActivity extends BaseActivity {
         setContentView(R.layout.activity_processing);
         ButterKnife.bind(this);
         initBack();
+        initTitle("丝网订做");
         initProgressDialog();
         initLocation();
         //new Thread(serviceTypelistRun).start();

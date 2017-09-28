@@ -32,7 +32,7 @@ public class ShopProductSelectAdapter extends MyBaseAdapter<Product> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_grid_shop_product_select, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_grid_shop_product_select2, null);
         TextView txtName = (TextView) view.findViewById(R.id.txtName);
         txtName.setText(list.get(position).getProduct_name());
 

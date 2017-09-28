@@ -19,7 +19,6 @@
 
 package com.appjumper.silkscreen.ui.home.adapter;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,14 +31,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.EquipmentList;
-import com.appjumper.silkscreen.ui.home.workshop.WorkshopDetailsActivity;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.util.PicassoRoundTransform;
-import com.appjumper.silkscreen.view.MyLinearLayoutManger;
-import com.appjumper.silkscreen.view.MyRecyclerView;
-import com.squareup.picasso.Picasso;
-
-import org.apache.http.message.BasicNameValuePair;
 
 import java.util.List;
 
@@ -84,7 +76,7 @@ public class WorkshopListViewAdapter extends BaseAdapter {
         if (convertView != null) {
             viewHolder = (ViewHolder) convertView.getTag();
         } else {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_lv_workshop, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_lv_workshop2, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
@@ -93,36 +85,22 @@ public class WorkshopListViewAdapter extends BaseAdapter {
     }
 
     private void fillValue(final int position, ViewHolder viewHolder) {
-        final EquipmentList item = list.get(position);
-        MyLinearLayoutManger linearLayoutManager = new MyLinearLayoutManger(mContext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        viewHolder.myRecyclerView.setLayoutManager(linearLayoutManager);
-        if (item.getImg_list() != null && item.getImg_list().size() > 0) {
-            GalleryAdapter adapter = new GalleryAdapter(mContext, item.getImg_list());
-            viewHolder.myRecyclerView.setAdapter(adapter);
-            adapter.setOnItemClickLitener(new GalleryAdapter.OnItemClickLitener() {
-                @Override
-                public void onItemClick(View view, int pos) {
-                    if (!mContext.checkLogined())
-                        return;
-                    mContext.start_Activity(mContext, WorkshopDetailsActivity.class, new BasicNameValuePair("id", item.getId()));
-                }
-            });
-        }
+        EquipmentList item = list.get(position);
         if (position == (list.size() - 1)) {
             viewHolder.llLine.setVisibility(View.GONE);
         } else {
             viewHolder.llLine.setVisibility(View.VISIBLE);
         }
-        if (TextUtils.isEmpty(item.getEnterprise_logo().getSmall()))
-            viewHolder.ivLogo.setImageResource(R.mipmap.icon_logo_image61);
-        else
-            Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.ivLogo);
+
+        viewHolder.txtTitle.setText(item.getTitle());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
-        viewHolder.tvEnterpriseArea.setText(item.getArea() + "m²");
-        viewHolder.tvPrice.setText(item.getPrice() + "元/年");
+        viewHolder.tvEnterpriseArea.setText(item.getArea() + "平米");
         viewHolder.tvPosition.setText(item.getPosition() + " | " + item.getDistance() + "km");
-        viewHolder.tvLocation.setText(item.getTitle() + "/" + item.getPosition());
+        if (item.getLease_mode().equals("出售")) {
+            viewHolder.tvPrice.setText(item.getPrice() + "元");
+        } else {
+            viewHolder.tvPrice.setText(item.getPrice() + "元/年");
+        }
 
         if (TextUtils.isEmpty(item.getEnterprise_id()))
             viewHolder.tvCompanyName.setText(item.getUser_nicename());
@@ -168,15 +146,13 @@ public class WorkshopListViewAdapter extends BaseAdapter {
 
     }
 
+
+
     static class ViewHolder {
-        @Bind(R.id.recycler_view)
-        MyRecyclerView myRecyclerView;
         @Bind(R.id.ll_line)
         LinearLayout llLine;
         @Bind(R.id.tv_company_name)
         TextView tvCompanyName;
-        @Bind(R.id.iv_logo)
-        ImageView ivLogo;
         @Bind(R.id.tv_position)
         TextView tvPosition;
         @Bind(R.id.tv_date)
@@ -185,8 +161,8 @@ public class WorkshopListViewAdapter extends BaseAdapter {
         TextView tvEnterpriseArea;
         @Bind(R.id.tv_price)
         TextView tvPrice;
-        @Bind(R.id.tv_location)
-        TextView tvLocation;
+        @Bind(R.id.txtTitle)
+        TextView txtTitle;
         @Bind(R.id.imgViCertiGreen)
         ImageView imgViCertiGreen;
         @Bind(R.id.imgViCertiBlue)

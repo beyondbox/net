@@ -1,6 +1,9 @@
 package com.appjumper.silkscreen.ui.home.recruit;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,22 +16,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.CommonApi;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.AreaBean;
 import com.appjumper.silkscreen.bean.AreaBeanResponse;
 import com.appjumper.silkscreen.bean.EquipmentCategory;
 import com.appjumper.silkscreen.bean.EquipmentCategoryResponse;
 import com.appjumper.silkscreen.bean.RecruitList;
 import com.appjumper.silkscreen.bean.RecruitListResponse;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.adapter.AddRessRecyclerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.CityListViewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.RecruitListViewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SelectRecyclerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SubListViewAdapter;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
@@ -86,6 +89,7 @@ public class RecruitActivity extends BaseActivity {
         ButterKnife.bind(this);
         initBack();
         initTitle("招聘");
+        registerBroadcastReceiver();
         initRightButton("发布", new RightButtonListener() {
             @Override
             public void click() {
@@ -258,6 +262,26 @@ public class RecruitActivity extends BaseActivity {
         });
     }
 
+
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_RELEASE_SUCCESS);
+        registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_RELEASE_SUCCESS)) {
+                refresh();
+            }
+        }
+    };
+
+
+
+
     private Runnable run = new Runnable() {
 
         public void run() {
@@ -383,6 +407,7 @@ public class RecruitActivity extends BaseActivity {
                 case NETWORK_SUCCESS_DATA_RIGHT:
                     RecruitListResponse response = (RecruitListResponse) msg.obj;
                     if (response.isSuccess()) {
+                        initTitle("招聘" + " (" + response.getData().getTotal() + ")");
                         list = response.getData().getItems();
                         adapter = new RecruitListViewAdapter(activity, list);
                         activity.listView.onFinishLoading(response.getData().hasMore());
@@ -453,5 +478,12 @@ public class RecruitActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myReceiver);
     }
 }

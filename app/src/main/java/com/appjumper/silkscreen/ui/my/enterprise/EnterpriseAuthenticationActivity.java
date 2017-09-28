@@ -219,6 +219,8 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
             }
         }
     };
+
+
     //企业认证
     private class CompanyAuthRun implements Runnable {
         private BaseResponse response;
@@ -229,7 +231,7 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
                 data.put("uid",getUserID());
                 data.put("enterprise_registration_mark", registerID);
                 data.put("enterprise_corporate_representative", personName);
-                data.put("enterprise_corporateID", pID);
+                data.put("enterprise_corporate", pID);
                 data.put("enterprise_legal_img",iv_id_card_one_url);
                 data.put("enterprise_legal_img_back",iv_id_card_two_url);
                 data.put("enterprise_licence_img",iv_business_license_url);

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.EquipmentCategoryResponse;
 import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.net.CommonApi;
@@ -21,6 +23,7 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.InformationSelectActivity;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -33,6 +36,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
@@ -48,8 +52,6 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
             EditText etEquipmentBrand;
     @Bind(R.id.et_equipment_model)//设备型号
             EditText etEquipmentModel;
-    @Bind(R.id.tv_degree)//新旧程度
-            TextView tvDegree;
     @Bind(R.id.et_equipment_price)//设备价格
             EditText etEquipmentPrice;
     @Bind(R.id.et_remark)//备注
@@ -60,7 +62,7 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
     private long expiry_datatime = 3600 * 72;
     private String[] expiry = {"3天", "5天", "10天", "30天"};//信息时长
 
-    private String[] degrees = {"全新", "二手"};//新旧程度
+    private String degree = "全新";
     private ImageResponse imgResponse;
     private String json;
 
@@ -96,10 +98,6 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
                     showErrorToast("请输入设备价格");
                     return;
                 }
-                if (tvDegree.getText().toString().trim().length() < 1) {
-                    showErrorToast("请选择设备新旧程度");
-                    return;
-                }
 
                 hideKeyboard();
                 initProgressDialog();
@@ -111,6 +109,24 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
         });
 
     }
+
+
+    @OnCheckedChanged({R.id.rdoBtnNew, R.id.rdoBtnUsed})
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            switch (buttonView.getId()) {
+                case R.id.rdoBtnNew:
+                    degree = "全新";
+                    break;
+                case R.id.rdoBtnUsed:
+                    degree = "二手";
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
 
     // 如果不是切割的upLoadBitmap就很大
     public class UpdateStringRun implements Runnable {
@@ -155,6 +171,15 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+
+                int infoType;
+                Enterprise enterprise = getUser().getEnterprise();
+                if (enterprise != null && enterprise.getEnterprise_auth_status().equals("2"))
+                    infoType = Const.INFO_TYPE_COM;
+                else
+                    infoType = Const.INFO_TYPE_PER;
+
+                data.put("equipment_type", infoType + "");
                 data.put("uid", getUserID());
                 data.put("title", etTitle.getText().toString().trim());
                 data.put("items", json);
@@ -211,7 +236,7 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
                         jsonObject.put("name", tvEquipmentName.getText().toString());
                         jsonObject.put("brand", etEquipmentBrand.getText().toString().trim());
                         jsonObject.put("model", etEquipmentModel.getText().toString().trim());
-                        jsonObject.put("new_old_rate", tvDegree.getText().toString());
+                        jsonObject.put("new_old_rate", degree);
                         jsonObject.put("price", etEquipmentPrice.getText().toString().trim());
                         jsonObject.put("imgs", imags(imgResponse.getData()));
 
@@ -228,6 +253,7 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
                     BaseResponse baseResponse = (BaseResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
                         showErrorToast("发布成功");
+                        sendBroadcast(new Intent(Const.ACTION_RELEASE_SUCCESS));
                         CommonApi.addLiveness(getUserID(), 19);
                         finish();
                     } else {
@@ -252,23 +278,15 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
         }
     }
 
-    @OnClick({R.id.tv_equipment_name, R.id.tv_degree, R.id.tv_info_length})
+
+
+    @OnClick({R.id.tv_equipment_name, R.id.tv_info_length})
     public void onClick(View v) {
         Intent intent;
         Bundle bundle;
         switch (v.getId()) {
             case R.id.tv_equipment_name:
                 startForResult_Activity(EquipmentReleaseActivity.this, SelectActivity.class, 13, new BasicNameValuePair("title", "设备名称"),new BasicNameValuePair("type","1"));
-                break;
-            case R.id.tv_degree:
-                intent = new Intent(EquipmentReleaseActivity.this, InformationSelectActivity.class);
-                bundle = new Bundle();
-                bundle.putStringArray("val", degrees);
-                intent.putExtra("title", "新旧程度");
-                intent.putExtras(bundle);
-                startActivityForResult(intent, 11);
-                overridePendingTransition(R.anim.push_left_in,
-                        R.anim.push_left_out);
                 break;
             case R.id.tv_info_length:
                 intent = new Intent(EquipmentReleaseActivity.this, InformationSelectActivity.class);
@@ -310,10 +328,6 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
                         break;
                 }
                 tvInfoLength.setText(expiry[expiry_date]);
-                break;
-            case 11:
-                int selectPosition = Integer.parseInt(data.getStringExtra("val"));
-                tvDegree.setText(degrees[selectPosition]);
                 break;
             case 13:
                 tvEquipmentName.setText(data.getStringExtra("name"));

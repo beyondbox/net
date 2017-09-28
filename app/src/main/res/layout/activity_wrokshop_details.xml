@@ -66,8 +66,10 @@
         ptr:ptrMode="pullFromStart">
 
         <LinearLayout
+            android:id="@+id/llContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:background="@color/while_color"
             android:orientation="vertical">
 
@@ -84,7 +86,6 @@
                     android:id="@+id/tv_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
                     android:text="热门一手房源/安平县商业圈"
                     android:textColor="@color/black_color"
                     android:textSize="16sp" />
@@ -134,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="10dp"
                     android:text="520元/月/m²"
                     android:textColor="@color/orange_color"
                     android:textSize="15sp" />
@@ -173,6 +174,33 @@
                                 android:textColor="@color/black_color"
                                 android:textSize="15sp" />
                         </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/llTransfer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="12dp"
+                                android:text="转让费"
+                                android:textColor="@color/text_gray_color"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txtTransfer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="18dp"
+                                android:text="100元"
+                                android:textColor="@color/black_color"
+                                android:textSize="15sp" />
+                        </LinearLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"

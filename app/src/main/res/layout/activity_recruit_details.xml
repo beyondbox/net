@@ -94,7 +94,6 @@
                         android:id="@+id/tv_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:singleLine="true"
                         android:text="业务经理"
                         android:textColor="@color/black_color"
                         android:textSize="15sp" />

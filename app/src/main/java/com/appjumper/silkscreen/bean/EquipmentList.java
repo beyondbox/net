@@ -51,6 +51,8 @@ public class EquipmentList {
     private String workshop_type;
     private String official_name;
     private String official_mobile;
+    private String transfer_fee;
+    private String equipment_type;
 
 
     public String getAddress() {
@@ -404,5 +406,21 @@ public class EquipmentList {
 
     public void setOfficial_mobile(String official_mobile) {
         this.official_mobile = official_mobile;
+    }
+
+    public String getTransfer_fee() {
+        return transfer_fee;
+    }
+
+    public void setTransfer_fee(String transfer_fee) {
+        this.transfer_fee = transfer_fee;
+    }
+
+    public String getEquipment_type() {
+        return equipment_type;
+    }
+
+    public void setEquipment_type(String equipment_type) {
+        this.equipment_type = equipment_type;
     }
 }

@@ -127,6 +127,7 @@ public class StockActivity extends BaseActivity {
         setContentView(R.layout.activity_processing);
         ButterKnife.bind(this);
         initBack();
+        initTitle("丝网现货");
         initProgressDialog();
         initLocation();
         //new Thread(serviceTypelistRun).start();

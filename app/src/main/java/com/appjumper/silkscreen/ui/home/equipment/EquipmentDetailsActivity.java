@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.EquipmentDetailsListviewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.EquipmentListviewAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
@@ -50,6 +52,8 @@ public class EquipmentDetailsActivity extends BaseActivity {
     @Bind(R.id.pull_refresh_scrollview)
     PullToRefreshScrollView mPullRefreshScrollView;
 
+    @Bind(R.id.llContent)
+    LinearLayout llContent;
     @Bind(R.id.list_view_up)
     MyListView listViewUp;
 
@@ -116,16 +120,23 @@ public class EquipmentDetailsActivity extends BaseActivity {
     }
 
     private void initView(final EquipmentList data) {
-        if (data.getUser_id().equals("1")) {
-            txtMark.setText("官方");
-            txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
-        } else {
-            if (data.getEnterprise_auth_status() != null && data.getEnterprise_auth_status().equals("2")) {
-                txtMark.setText("企业");
-                txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
-            } else {
-                txtMark.setText("个人");
-                txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+        if (!TextUtils.isEmpty(data.getEquipment_type())) {
+            int infoType = Integer.valueOf(data.getEquipment_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    txtMark.setText("个人");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    txtMark.setText("企业");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    txtMark.setText("官方");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -180,9 +191,14 @@ public class EquipmentDetailsActivity extends BaseActivity {
         }
 
 
-        if (data.getUser_id().equals("1")) {
-            rlCompany.setVisibility(View.GONE);
-            rlUser.setVisibility(View.GONE);
+
+        if (!TextUtils.isEmpty(data.getEquipment_type())) {
+            int infoType = Integer.valueOf(data.getEquipment_type());
+            if (infoType == Const.INFO_TYPE_OFFICIAL) {
+                rlCompany.setVisibility(View.GONE);
+                rlUser.setVisibility(View.GONE);
+                mobile = data.getOfficial_mobile();
+            }
         }
 
         List<EquipmentList> recommendList = data.getRecommend();
@@ -258,6 +274,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                 case NETWORK_SUCCESS_PAGER_RIGHT://详情
                     EquipmentDetailsResponse baseResponse = (EquipmentDetailsResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
+                        llContent.setVisibility(View.VISIBLE);
                         EquipmentList data = baseResponse.getData();
                         initView(data);
 

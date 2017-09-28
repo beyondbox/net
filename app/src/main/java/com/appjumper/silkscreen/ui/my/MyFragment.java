@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
@@ -55,6 +56,8 @@ public class MyFragment extends BaseFragment {
 
     @Bind(R.id.txtCompanyName)
     TextView txtCompanyName;
+    @Bind(R.id.llReleaseStockGoods)
+    LinearLayout llReleaseStockGoods;
 
 
 
@@ -86,10 +89,17 @@ public class MyFragment extends BaseFragment {
                 txtCompanyName.setText(enterprise.getEnterprise_name());
             else
                 txtCompanyName.setText("完善企业信息");
+
+            if (user.getIs_goods().equals("1"))
+                llReleaseStockGoods.setVisibility(View.VISIBLE);
+            else
+                llReleaseStockGoods.setVisibility(View.GONE);
+
         } else {
             txtCompanyName.setVisibility(View.GONE);
             tv_name.setText("请登录／注册");
             img_head.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.img_error_head));
+            llReleaseStockGoods.setVisibility(View.GONE);
         }
     }
 

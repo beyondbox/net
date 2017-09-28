@@ -33,10 +33,9 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.EquipmentList;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentDetailsActivity;
-import com.appjumper.silkscreen.util.PicassoRoundTransform;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyLinearLayoutManger;
 import com.appjumper.silkscreen.view.MyRecyclerView;
-import com.squareup.picasso.Picasso;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -83,7 +82,7 @@ public class EquipmentListviewAdapter extends BaseAdapter {
         if (convertView != null) {
             viewHolder = (ViewHolder) convertView.getTag();
         } else {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_lv_equipment_sell, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_lv_equipment, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }
@@ -93,11 +92,10 @@ public class EquipmentListviewAdapter extends BaseAdapter {
 
     private void fillValue(final int position, ViewHolder viewHolder) {
         EquipmentList item = list.get(position);
-        if (item.getEnterprise_logo() != null && !item.getEnterprise_logo().getSmall().equals("")) {
-            Picasso.with(mContext).load(item.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(viewHolder.ivLogo);
-        }
-        viewHolder.tvEquipment.setText(item.getItems().get(0).getName());
+
+        viewHolder.tvEquipment.setText(item.getTitle());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
+        viewHolder.tv_price.setText(item.getItems().get(0).getPrice() + "元");
         MyLinearLayoutManger linearLayoutManager = new MyLinearLayoutManger(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         viewHolder.myRecyclerView.setLayoutManager(linearLayoutManager);
@@ -143,27 +141,35 @@ public class EquipmentListviewAdapter extends BaseAdapter {
 
 
 
-        if (item.getUser_id().equals("1")) {
-            viewHolder.txtMark.setText("官方");
-            viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
-        } else {
-            if (item.getEnterprise_auth_status() != null && item.getEnterprise_auth_status().equals("2")) {
-                viewHolder.txtMark.setText("企业");
-                viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
-            } else {
-                viewHolder.txtMark.setText("个人");
-                viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+        if (!TextUtils.isEmpty(item.getEquipment_type())) {
+            int infoType = Integer.valueOf(item.getEquipment_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    viewHolder.txtMark.setText("个人");
+                    viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    viewHolder.txtMark.setText("企业");
+                    viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    viewHolder.txtMark.setText("官方");
+                    viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    viewHolder.tvCompanyName.setText(item.getOfficial_name());
+                    break;
+                default:
+                    break;
             }
         }
+
     }
+
 
     static class ViewHolder {
         @Bind(R.id.recycler_view)
         MyRecyclerView myRecyclerView;
         @Bind(R.id.ll_line)
         LinearLayout llLine;
-        @Bind(R.id.iv_logo)//公司图片
-                ImageView ivLogo;
         @Bind(R.id.tv_company_name)//公司名称
                 TextView tvCompanyName;
         @Bind(R.id.tv_equipment)//出售的设备
@@ -178,6 +184,8 @@ public class EquipmentListviewAdapter extends BaseAdapter {
                 ImageView imgViCertiYellow;
         @Bind(R.id.txtMark)
                 TextView txtMark;
+        @Bind(R.id.tv_price)
+                TextView tv_price;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

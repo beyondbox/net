@@ -112,6 +112,10 @@ public class Const {
      * 原材料走势图详情跳转
      */
     public static final String ACTION_CHART_DETAIL = "com.appjumper.silkscreen.CHART_DETAIL";
+    /**
+     * 发布信息成功
+     */
+    public static final String ACTION_RELEASE_SUCCESS = "com.appjumper.silkscreen.RELEASE_SUCCESS";
 
 
 

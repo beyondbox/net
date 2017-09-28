@@ -68,6 +68,7 @@ public class RecruitReleaseActivity extends BaseActivity {
     @Bind(R.id.right)
     TextView txtRight;
 
+
     private long expiry_datatime = 3600 * 72;
     private String[] expiry = {"3天", "5天", "10天", "30天"};//信息时长
 
@@ -224,6 +225,7 @@ public class RecruitReleaseActivity extends BaseActivity {
                     BaseResponse baseResponse = (BaseResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
                         showErrorToast("发布成功");
+                        sendBroadcast(new Intent(Const.ACTION_RELEASE_SUCCESS));
                         CommonApi.addLiveness(getUserID(), 19);
                         finish();
                     } else {

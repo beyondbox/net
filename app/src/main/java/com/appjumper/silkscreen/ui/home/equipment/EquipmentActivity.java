@@ -1,6 +1,9 @@
 package com.appjumper.silkscreen.ui.home.equipment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,19 +16,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.CommonApi;
-import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.EquipmentCategory;
 import com.appjumper.silkscreen.bean.EquipmentCategoryResponse;
 import com.appjumper.silkscreen.bean.EquipmentList;
 import com.appjumper.silkscreen.bean.EquipmentListResponse;
-import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.adapter.EquipmentListviewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.GirdDropDownAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SelectRecyclerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.SubListViewAdapter;
-import com.appjumper.silkscreen.net.HttpUtil;
-import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
@@ -67,7 +70,7 @@ public class EquipmentActivity extends BaseActivity {
     private String new_old_rate = "";//筛选 新旧
     private PagedListView listView;
     private View mEmptyLayout;
-    private String pagesize = "30";
+    private String pagesize = "20";
     private int pageNumber = 1;
 
     private EquipmentListviewAdapter adapter;
@@ -80,6 +83,7 @@ public class EquipmentActivity extends BaseActivity {
         ButterKnife.bind(this);
         initBack();
         initTitle("设备出售");
+        registerBroadcastReceiver();
         initRightButton("发布", new RightButtonListener() {
             @Override
             public void click() {
@@ -209,6 +213,25 @@ public class EquipmentActivity extends BaseActivity {
         });
     }
 
+
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_RELEASE_SUCCESS);
+        registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_RELEASE_SUCCESS)) {
+                refresh();
+            }
+        }
+    };
+
+
+
     private Runnable run = new Runnable() {
 
         public void run() {
@@ -275,6 +298,8 @@ public class EquipmentActivity extends BaseActivity {
             }
         }
     };
+
+
     public MyHandler handler = new MyHandler(this);
 
     public class MyHandler extends Handler {
@@ -299,6 +324,7 @@ public class EquipmentActivity extends BaseActivity {
                 case NETWORK_SUCCESS_DATA_RIGHT:
                     EquipmentListResponse response = (EquipmentListResponse) msg.obj;
                     if (response.isSuccess()) {
+                        initTitle("设备出售" + " (" + response.getData().getTotal() + ")");
                         list = response.getData().getItems();
                         adapter = new EquipmentListviewAdapter(activity, list);
                         activity.listView.onFinishLoading(response.getData().hasMore());
@@ -350,5 +376,12 @@ public class EquipmentActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myReceiver);
     }
 }

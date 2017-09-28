@@ -26,6 +26,7 @@ public class User {
     private String score;
     private String auth_status;
     private Enterprise enterprise;
+    private String is_goods;
 
 
     public String getAuth_status() {
@@ -194,5 +195,13 @@ public class User {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+    public String getIs_goods() {
+        return is_goods;
+    }
+
+    public void setIs_goods(String is_goods) {
+        this.is_goods = is_goods;
     }
 }

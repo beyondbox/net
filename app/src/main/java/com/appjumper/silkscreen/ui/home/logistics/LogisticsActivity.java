@@ -93,7 +93,7 @@ public class LogisticsActivity extends BaseActivity {
 
     private PagedListView listView;
     private View mEmptyLayout;
-    private String pagesize = "30";
+    private String pagesize = "20";
     private int pageNumber = 1;
     private String type = "1";
     private List<LineList> list;

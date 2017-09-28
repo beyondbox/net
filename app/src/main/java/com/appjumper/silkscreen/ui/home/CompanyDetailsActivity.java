@@ -638,6 +638,11 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                 }
                 break;
             case R.id.tv_edit://编辑
+                int authSate = Integer.valueOf(getUser().getEnterprise().getEnterprise_auth_status());
+                if (authSate == Const.AUTH_ING) {
+                    showErrorToast("您的企业资料正在认证中，暂时无法进行编辑");
+                    return;
+                }
                 Intent intent = new Intent(this, EnterpriseCreateActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("enterprise", data);

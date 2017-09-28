@@ -54,12 +54,14 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016-11-18.
- * 设备详情
+ * 厂房详情
  */
 public class WorkshopDetailsActivity extends BaseActivity {
     @Bind(R.id.pull_refresh_scrollview)
     PullToRefreshScrollView mPullRefreshScrollView;
 
+    @Bind(R.id.llContent)
+    LinearLayout llContent;
     @Bind(R.id.list_view_down)
     MyListView listView;
     @Bind(R.id.tv_title)
@@ -112,6 +114,10 @@ public class WorkshopDetailsActivity extends BaseActivity {
     TextView txtMark;
     @Bind(R.id.llRecommend)
     LinearLayout llRecommend;
+    @Bind(R.id.llTransfer)
+    LinearLayout llTransfer;
+    @Bind(R.id.txtTransfer)
+    TextView txtTransfer;
 
 
 
@@ -156,13 +162,22 @@ public class WorkshopDetailsActivity extends BaseActivity {
             }
         }
 
-        tvTitle.setText(data.getTitle() + "/" + data.getPosition());
+        tvTitle.setText(data.getTitle());
         tvRemark.setText(data.getRemark());
         tvDate.setText(data.getCreate_time().substring(5, 16));
         tvForm.setText(data.getLease_mode());
         tvArea.setText(data.getArea() + "m²");
         tvPosition.setText(data.getPosition());
         tvPrice.setText(data.getPrice() + "元/年");
+        if (data.getLease_mode().equals("出售"))
+            tvPrice.setText(data.getPrice() + "元");
+
+        if (data.getLease_mode().equals("转让")) {
+            llTransfer.setVisibility(View.VISIBLE);
+            txtTransfer.setText(data.getTransfer_fee() + "元");
+        } else {
+            llTransfer.setVisibility(View.GONE);
+        }
 
         tvDetailAddress.setText(data.getAddress());
         listView.setAdapter(new WorkshopListViewAdapter(this, data.getRecommend()));
@@ -321,6 +336,7 @@ public class WorkshopDetailsActivity extends BaseActivity {
                 case NETWORK_SUCCESS_PAGER_RIGHT://详情
                     EquipmentDetailsResponse baseResponse = (EquipmentDetailsResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
+                        llContent.setVisibility(View.VISIBLE);
                         EquipmentList data = baseResponse.getData();
                         initView(data);
 

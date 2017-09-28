@@ -34,7 +34,7 @@
                     android:text="标题"/>
 
                 <EditText
-                    android:id="@+id/edtTxtTitle"
+                    android:id="@+id/et_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -47,7 +47,6 @@
                     android:textColorHint="@color/light_gray_color"/>
 
             </LinearLayout>
-
 
             <View style="@style/LineStyle" />
 
@@ -67,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="12dp"
-                    android:text="职位信息"
+                    android:text="厂房信息"
                     android:textColor="@color/theme_color"
                     android:textSize="14sp" />
 
@@ -83,139 +82,6 @@
                 android:orientation="vertical"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="职位类别"
-                        android:textColor="@color/black_color"
-                        android:textSize="14sp"/>
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="22dp"
-                        android:background="#DEDFE0"/>
-
-                    <TextView
-                        android:id="@+id/tv_job_position"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3.5"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:drawableRight="@mipmap/icon_home_arrows_right04"
-                        android:background="@null"
-                        android:editable="false"
-                        android:hint="点击选择职位类别"
-                        android:textColor="@color/black_color"
-                        android:textColorHint="@color/light_gray_color"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-                <View style="@style/LineStyle"/>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="薪资"
-                        android:textColor="@color/black_color"
-                        android:textSize="14sp"/>
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="22dp"
-                        android:background="#DEDFE0"/>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_weight="3.5">
-
-                        <EditText
-                            android:id="@+id/et_salary"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="3.5"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
-                            android:imeOptions="actionNext"
-                            android:background="@null"
-                            android:hint="请输入薪资范围"
-                            android:textColor="@color/black_color"
-                            android:textColorHint="@color/light_gray_color"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="元/月"
-                            android:textColor="@color/black_color"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View style="@style/LineStyle"/>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="学历"
-                        android:textColor="@color/black_color"
-                        android:textSize="14sp"/>
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="22dp"
-                        android:background="#DEDFE0"/>
-
-                    <TextView
-                        android:id="@+id/tv_experience"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3.5"
-                        android:paddingLeft="10dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:drawableRight="@mipmap/icon_home_arrows_right04"
-                        android:background="@null"
-                        android:editable="false"
-                        android:text="不限"
-                        android:hint=""
-                        android:textColor="@color/black_color"
-                        android:textColorHint="@color/light_gray_color"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-
-                <View style="@style/LineStyle"/>
 
 
                 <LinearLayout
@@ -244,7 +110,7 @@
                         android:orientation="horizontal">
 
                         <RadioButton
-                            android:id="@+id/rdoBtnfulltime"
+                            android:id="@+id/rdoBtnType0"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
@@ -252,7 +118,7 @@
                             android:paddingBottom="12dp"
                             android:paddingLeft="10dp"
                             android:checked="true"
-                            android:text="全职"
+                            android:text="出租"
                             android:textColor="@color/black_color"
                             android:textSize="14sp"
                             android:button="@null"
@@ -260,62 +126,14 @@
                             android:drawablePadding="5dp"/>
 
                         <RadioButton
-                            android:id="@+id/rdoBtnParttime"
+                            android:id="@+id/rdoBtnType1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:layout_marginLeft="20dp"
-                            android:text="兼职"
-                            android:textColor="@color/black_color"
-                            android:textSize="14sp"
-                            android:button="@null"
-                            android:drawableLeft="@drawable/selector_checkbox_blue_round"
-                            android:drawablePadding="5dp"/>
-
-                    </RadioGroup>
-
-                </LinearLayout>
-
-                <View style="@style/LineStyle"/>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="性别"
-                        android:textColor="@color/black_color"
-                        android:textSize="14sp"/>
-
-                    <View
-                        android:layout_width="0.5dp"
-                        android:layout_height="22dp"
-                        android:background="#DEDFE0"/>
-
-                    <RadioGroup
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3.5"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/rdoBtnAll"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
-                            android:paddingLeft="10dp"
-                            android:checked="true"
-                            android:text="不限"
+                            android:text="转让"
                             android:textColor="@color/black_color"
                             android:textSize="14sp"
                             android:button="@null"
@@ -323,29 +141,14 @@
                             android:drawablePadding="5dp"/>
 
                         <RadioButton
-                            android:id="@+id/rdoBtnMan"
+                            android:id="@+id/rdoBtnType2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:layout_marginLeft="20dp"
-                            android:text="仅男士"
-                            android:textColor="@color/black_color"
-                            android:textSize="14sp"
-                            android:button="@null"
-                            android:drawableLeft="@drawable/selector_checkbox_blue_round"
-                            android:drawablePadding="5dp"/>
-
-                        <RadioButton
-                            android:id="@+id/rdoBtnWoman"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:paddingTop="12dp"
-                            android:paddingBottom="12dp"
-                            android:layout_marginLeft="20dp"
-                            android:text="仅女士"
+                            android:text="出售"
                             android:textColor="@color/black_color"
                             android:textSize="14sp"
                             android:button="@null"
@@ -370,7 +173,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="经验要求"
+                        android:text="面积"
                         android:textColor="@color/black_color"
                         android:textSize="14sp"/>
 
@@ -386,7 +189,7 @@
                         android:layout_weight="3.5">
 
                         <EditText
-                            android:id="@+id/et_experience"
+                            android:id="@+id/et_area"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="3.5"
@@ -395,7 +198,8 @@
                             android:paddingBottom="12dp"
                             android:background="@null"
                             android:imeOptions="actionNext"
-                            android:hint="输入工作年限要求"
+                            android:inputType="number|numberDecimal"
+                            android:hint="请输入厂房面积"
                             android:textColor="@color/black_color"
                             android:textColorHint="@color/light_gray_color"
                             android:textSize="14sp" />
@@ -403,14 +207,14 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="年"
+                            android:text="m²"
                             android:textColor="@color/black_color"
                             android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
-
                 <View style="@style/LineStyle"/>
+
 
 
                 <LinearLayout
@@ -423,7 +227,126 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="工作城市"
+                        android:text="价格"
+                        android:textColor="@color/black_color"
+                        android:textSize="14sp"/>
+
+                    <View
+                        android:layout_width="0.5dp"
+                        android:layout_height="22dp"
+                        android:background="#DEDFE0"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_weight="3.5">
+
+                        <EditText
+                            android:id="@+id/et_price"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="3.5"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="12dp"
+                            android:background="@null"
+                            android:imeOptions="actionNext"
+                            android:hint="请输入价格"
+                            android:textColor="@color/black_color"
+                            android:textColorHint="@color/light_gray_color"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/txtPriceUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="元/年"
+                            android:textColor="@color/black_color"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View style="@style/LineStyle"/>
+
+
+
+
+
+                <LinearLayout
+                    android:id="@+id/llTransfer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="转让费"
+                            android:textColor="@color/black_color"
+                            android:textSize="14sp"/>
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="22dp"
+                            android:background="#DEDFE0"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="3.5">
+
+                            <EditText
+                                android:id="@+id/edtTxtTransfer"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="3.5"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="12dp"
+                                android:paddingBottom="12dp"
+                                android:background="@null"
+                                android:imeOptions="actionNext"
+                                android:hint="请输入价格"
+                                android:textColor="@color/black_color"
+                                android:textColorHint="@color/light_gray_color"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="元"
+                                android:textColor="@color/black_color"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View style="@style/LineStyle"/>
+                </LinearLayout>
+
+
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="地点"
                         android:textColor="@color/black_color"
                         android:textSize="14sp"/>
 
@@ -433,7 +356,7 @@
                         android:background="#DEDFE0"/>
 
                     <TextView
-                        android:id="@+id/tv_work_address"
+                        android:id="@+id/tv_position"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3.5"
@@ -443,7 +366,7 @@
                         android:drawableRight="@mipmap/icon_home_arrows_right04"
                         android:background="@null"
                         android:editable="false"
-                        android:text="安平县城"
+                        android:text="安平"
                         android:hint=""
                         android:textColor="@color/black_color"
                         android:textColorHint="@color/light_gray_color"
@@ -475,7 +398,7 @@
                         android:background="#DEDFE0"/>
 
                     <EditText
-                        android:id="@+id/txtAdressDetail"
+                        android:id="@+id/et_address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3.5"
@@ -493,39 +416,46 @@
 
                 </LinearLayout>
 
+                <View style="@style/LineStyle"/>
+
             </LinearLayout>
 
 
-            <View style="@style/LineStyle"/>
 
 
 
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
 
+                <com.appjumper.silkscreen.view.MyGridView
+                    android:id="@+id/gridview"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="12dp"
+                    style="@style/GridViewStyle"
+                    android:layout_height="wrap_content"></com.appjumper.silkscreen.view.MyGridView>
+            </LinearLayout>
 
-
-
-
-
+            <View style="@style/LineStyle" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:background="@color/view_background_gray_color" />
 
+
+
+
+
+
+
+
             <View style="@style/LineStyle" />
-
-
-
-
-
-
-
-
-
-
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -542,7 +472,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="岗位职责"
+                        android:text="备注说明"
                         android:textColor="@color/theme_color"
                         android:textSize="14sp" />
 
@@ -556,17 +486,17 @@
                 </LinearLayout>
 
                 <EditText
-                    android:id="@+id/et_responsibilities"
+                    android:id="@+id/et_remark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/view_background_gray_color"
                     android:gravity="top"
-                    android:hint="请输入岗位职责相关描述"
+                    android:hint=" 有什么想和买家说的？"
                     android:inputType="textMultiLine"
                     android:lineSpacingExtra="3dp"
                     android:minLines="5"
                     android:maxLength="200"
-                    android:padding="12dp"
+                    android:padding="8dp"
                     android:textColor="@color/black_color"
                     android:textColorHint="@color/light_gray_color"
                     android:textSize="13sp" />
@@ -615,34 +545,13 @@
 
             <View style="@style/LineStyle" />
 
-            <TextView
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:text="注：在【我的】页面【我的发布】中刷新让信息更靠前"
-                android:textColor="@color/red_color"
-                android:textSize="12sp"/>
-
-
-            <TextView
-                android:id="@+id/txtConfirm"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:background="@drawable/selector_btn_blue"
-                android:gravity="center"
-                android:layout_marginLeft="6dp"
-                android:layout_marginRight="6dp"
-                android:layout_marginTop="70dp"
-                android:layout_marginBottom="6dp"
-                android:text="发布信息"
-                android:textColor="@color/while_color"
-                android:textSize="16sp" />
+                android:layout_height="12dp"
+                android:background="@color/view_background_gray_color" />
 
 
         </LinearLayout>
     </ScrollView>
-
 
 </LinearLayout>
