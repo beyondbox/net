@@ -177,7 +177,7 @@
         <!--设备名称-->
         <activity android:name=".ui.home.equipment.SelectActivity" />
         <!--企业路线发布-->
-        <activity android:name=".ui.my.enterprise.EnterpriseReleaseActivity" />
+        <activity android:name=".ui.home.logistics.ReleaseLineActivity" />
         <!--我的物流线路详情-->
         <activity android:name=".ui.my.enterprise.MyLogisticsDetailsActivity" />
         <!--生产力认证-->
@@ -234,6 +234,7 @@
         <activity android:name=".ui.my.enterprise.CertifyManageActivity" />
         <!--企业认证第一步-->
         <activity android:name=".ui.my.enterprise.EnterpriseAuthFirstepActivity" />
+
 
         <!--现货商城-->
         <activity android:name=".ui.home.stockshop.StockShopActivity" />

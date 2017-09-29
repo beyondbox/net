@@ -81,7 +81,7 @@ public class AddServiceCompleteActivity extends BaseActivity {
     private void continueAdd() {
         /*switch (serviceType) {
             case Const.SERVICE_TYPE_LOGISTICS://物流路线
-                start_Activity(this, EnterpriseReleaseActivity.class);
+                start_Activity(this, ReleaseLineActivity.class);
                 finish();
                 break;
             default:

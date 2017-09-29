@@ -95,11 +95,18 @@ public class EquipmentListviewAdapter extends BaseAdapter {
 
         viewHolder.tvEquipment.setText(item.getTitle());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
-        viewHolder.tv_price.setText(item.getItems().get(0).getPrice() + "元");
+        if (item.getItems().size() > 0) {
+            viewHolder.tv_price.setVisibility(View.VISIBLE);
+            viewHolder.tv_price.setText(item.getItems().get(0).getPrice() + "元");
+        } else {
+            viewHolder.tv_price.setVisibility(View.GONE);
+        }
+
         MyLinearLayoutManger linearLayoutManager = new MyLinearLayoutManger(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         viewHolder.myRecyclerView.setLayoutManager(linearLayoutManager);
-        if (item.getItems().get(0).getImg_list() != null && item.getItems().get(0).getImg_list().size() > 0) {
+        if (item.getItems().size() > 0 && item.getItems().get(0).getImg_list() != null && item.getItems().get(0).getImg_list().size() > 0) {
+            viewHolder.myRecyclerView.setVisibility(View.VISIBLE);
             GalleryAdapter adapter = new GalleryAdapter(mContext, item.getItems().get(0).getImg_list());
             viewHolder.myRecyclerView.setAdapter(adapter);
             adapter.setOnItemClickLitener(new GalleryAdapter.OnItemClickLitener() {
@@ -111,8 +118,11 @@ public class EquipmentListviewAdapter extends BaseAdapter {
                     mContext.start_Activity(mContext, EquipmentDetailsActivity.class, new BasicNameValuePair("id", list.get(position).getId()));
                 }
             });
-
+        } else {
+            viewHolder.myRecyclerView.setVisibility(View.GONE);
         }
+
+
         if (position == (list.size() - 1)) {
             viewHolder.llLine.setVisibility(View.GONE);
         } else {
