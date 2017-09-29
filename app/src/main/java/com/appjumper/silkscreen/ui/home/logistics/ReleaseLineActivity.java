@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.BaseResponse;
+import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
@@ -64,6 +65,7 @@ public class ReleaseLineActivity extends BaseActivity {
     private String names = "";
 
     private String type = "1";
+    private String toLevel; //目的地层级
 
 
 
@@ -76,29 +78,6 @@ public class ReleaseLineActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitle("创建线路");
         initRecycler(addressList);
-        initRightButton("发布", new RightButtonListener() {
-            @Override
-            public void click() {
-                if (TextUtils.isEmpty(start_id)) {
-                    showErrorToast("请选择始发地");
-                    return;
-                }
-                if (TextUtils.isEmpty(end_id)) {
-                    showErrorToast("请选择目的地");
-                    return;
-                }
-                if (ids.equals("")) {
-                    showErrorToast("请添加途经地");
-                    return;
-                }
-
-                hideKeyboard();
-                initProgressDialog();
-                progress.show();
-                progress.setMessage("正在发布...");
-                new Thread(submitRun).start();
-            }
-        });
     }
 
     private void initRecycler(final ArrayList<String> addresses) {
@@ -131,6 +110,18 @@ public class ReleaseLineActivity extends BaseActivity {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+
+                int infoType;
+                Enterprise enterprise = getUser().getEnterprise();
+                if (enterprise != null && enterprise.getEnterprise_auth_status().equals("2"))
+                    infoType = Const.INFO_TYPE_COM;
+                else
+                    infoType = Const.INFO_TYPE_PER;
+
+                data.put("line_type", infoType + "");
+                data.put("official_name", getUser().getEnterprise().getEnterprise_name());
+                data.put("official_mobile", getUser().getEnterprise().getEnterprise_mobile());
+                data.put("to_level", toLevel);
                 data.put("from", start_id);
                 data.put("to", end_id);
                 data.put("from_name", tv_start.getText().toString());
@@ -196,7 +187,7 @@ public class ReleaseLineActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.tv_start, R.id.tv_end, R.id.iv_add})
+    @OnClick({R.id.tv_start, R.id.tv_end, R.id.iv_add, R.id.txtConfirm})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_start://起点
@@ -207,6 +198,26 @@ public class ReleaseLineActivity extends BaseActivity {
                 break;
             case R.id.iv_add://货运途经
                 startForResult_Activity(this, AddressSelectActivity.class, 4, new BasicNameValuePair("code", "3"), new BasicNameValuePair("type", "1"));
+                break;
+            case R.id.txtConfirm: //发布
+                if (TextUtils.isEmpty(start_id)) {
+                    showErrorToast("请选择始发地");
+                    return;
+                }
+                if (TextUtils.isEmpty(end_id)) {
+                    showErrorToast("请选择目的地");
+                    return;
+                }
+                if (ids.equals("")) {
+                    showErrorToast("请添加途经地");
+                    return;
+                }
+
+                hideKeyboard();
+                initProgressDialog();
+                progress.show();
+                progress.setMessage("正在发布...");
+                new Thread(submitRun).start();
                 break;
             default:
                 break;
@@ -232,6 +243,7 @@ public class ReleaseLineActivity extends BaseActivity {
             case 2://目的地
                 end_id = data.getStringExtra("id");
                 String end_name = data.getStringExtra("name");
+                toLevel = data.getStringExtra(Const.KEY_ADDRESS_LEVEL);
                 tv_end.setText(end_name);
                 tv_end.setCompoundDrawables(null, null, null, null);
                 break;

@@ -1,15 +1,14 @@
 package com.appjumper.silkscreen.net;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentReleaseActivity;
 import com.appjumper.silkscreen.ui.home.logistics.PersonalReleaseActivity;
+import com.appjumper.silkscreen.ui.home.logistics.ReleaseLineActivity;
 import com.appjumper.silkscreen.ui.home.logistics.TruckReleaseActivity;
 import com.appjumper.silkscreen.ui.home.recruit.RecruitReleaseActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopReleaseActivity;
@@ -18,14 +17,11 @@ import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.MProgressDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.squareup.picasso.Request;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import static com.umeng.socialize.utils.DeviceConfig.context;
 
 /**
  * 通用接口
@@ -103,7 +99,8 @@ public class CommonApi {
                                     goToProductSelect(context, Const.SERVICE_TYPE_STOCK, ProductSelectActivity.MOTION_RELEASE_SERVICE);
                                     break;
                                 case Const.SERVICE_TYPE_LOGISTICS: //物流-货站
-                                    start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "1"));
+                                    //start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "1"));
+                                    start_Activity(context, ReleaseLineActivity.class);
                                     break;
                                 case Const.SERVICE_TYPE_LOGISTICS_PER: //物流-个人
                                     start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "2"));

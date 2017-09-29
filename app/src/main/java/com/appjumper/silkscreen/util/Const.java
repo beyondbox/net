@@ -146,6 +146,11 @@ public class Const {
     public static final int INFO_TYPE_OFFICIAL = 3; //信息类型-官方
 
 
+    public static final String ADDRESS_LEVEL_PROVINCE = "0"; //地址+省级
+    public static final String ADDRESS_LEVEL_CITY = "1"; //地址-市级
+    public static final String ADDRESS_LEVEL_COUNTY = "2"; //地址-县级
+
+
     public static final String KEY_MOBILE = "mobile";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_TITLE = "title";
@@ -167,6 +172,7 @@ public class Const {
     public static final String KEY_IS_STOCK_SHOP = "isStockShop";
     public static final String KEY_BITMAP = "bitmap";
     public static final String KEY_QUALITY = "quality";
+    public static final String KEY_ADDRESS_LEVEL = "addressLevel";
 
 
 

@@ -234,6 +234,8 @@
         <activity android:name=".ui.my.enterprise.CertifyManageActivity" />
         <!--企业认证第一步-->
         <activity android:name=".ui.my.enterprise.EnterpriseAuthFirstepActivity" />
+        <!--物流版块-->
+        <activity android:name=".ui.home.logistics.LogisticsListActivity" />
 
 
         <!--现货商城-->

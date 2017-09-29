@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/view_background_gray_color"
     android:orientation="vertical">
 
-    <!-- title -->
+
     <LinearLayout
         android:id="@+id/title_layout"
         android:layout_width="match_parent"
@@ -32,7 +31,7 @@
                 android:src="@mipmap/icon_return" />
 
             <RadioGroup
-                android:id="@+id/rg"
+                android:id="@+id/rdoGroup"
                 android:layout_width="200dip"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -48,7 +47,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/rb_bg_01"
                     android:button="@null"
-                    android:checked="true"
                     android:gravity="center"
                     android:padding="6dp"
                     android:text="货站"
@@ -99,79 +97,11 @@
 
 
 
-
-    <LinearLayout
-        android:id="@+id/l_hz_gr"
+    <FrameLayout
+        android:id="@+id/frameContent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/while_color">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="24dp">
-
-                <TextView
-                    android:id="@+id/tv_start"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:drawableLeft="@mipmap/icon_addition18"
-                    android:drawablePadding="6dp"
-                    android:gravity="center"
-                    android:text="起点地址"
-                    android:textColor="@color/text_gray_color"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:id="@+id/iv_dzqh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@mipmap/icon_conversion18" />
-
-                <TextView
-                    android:id="@+id/tv_end"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:drawableLeft="@mipmap/icon_addition18"
-                    android:drawablePadding="6dp"
-                    android:gravity="center"
-                    android:text="终点地址"
-                    android:textColor="@color/text_gray_color"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView
-            android:id="@+id/listview"
-            style="@style/ListViewDividerStyle"
-            android:layout_marginTop="0.5dp"
-            android:dividerHeight="0dp">
-
-        </com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView>
-
-    </LinearLayout>
+        android:layout_height="match_parent"/>
 
 
-    <com.yyydjk.library.DropDownMenu
-        android:id="@+id/dropDownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:dddividerColor="@color/view_background_gray_color"
-        app:ddmaskColor="#20000000"
-        app:ddmenuBackgroundColor="@color/while_color"
-        app:ddmenuSelectedIcon="@mipmap/icon_arrows_up"
-        app:ddmenuTextSize="13sp"
-        app:ddmenuUnselectedIcon="@mipmap/icon_arrows_down"
-        app:ddtextSelectedColor="@color/theme_color"
-        app:ddtextUnselectedColor="@color/black_color"
-        app:ddunderlineColor="@color/view_background_gray_color" />
+
 </LinearLayout>

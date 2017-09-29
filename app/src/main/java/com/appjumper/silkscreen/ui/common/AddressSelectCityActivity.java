@@ -19,6 +19,7 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.adapter.AddressListAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.QuickIndexBar;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -80,6 +81,7 @@ public class AddressSelectCityActivity extends BaseActivity {
                     Intent intent = new Intent();
                     intent.putExtra("id", id);
                     intent.putExtra("name", levelName);
+                    intent.putExtra(Const.KEY_ADDRESS_LEVEL, Const.ADDRESS_LEVEL_CITY);
                     setResult(Integer.parseInt(code), intent);
                     finish();
                 }
@@ -94,6 +96,7 @@ public class AddressSelectCityActivity extends BaseActivity {
                     Intent intent = new Intent();
                     intent.putExtra("id",items.get(i).getId());
                     intent.putExtra("name",items.get(i).getShortname());
+                    intent.putExtra(Const.KEY_ADDRESS_LEVEL, Const.ADDRESS_LEVEL_COUNTY);
                     setResult(Integer.parseInt(code),intent);
                     finish();
                 }else{

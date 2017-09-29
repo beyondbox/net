@@ -47,7 +47,7 @@ import com.appjumper.silkscreen.ui.home.adapter.HomeMenuAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StockShopListAdapter;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentActivity;
 import com.appjumper.silkscreen.ui.home.exhibition.ExhibitionActivity;
-import com.appjumper.silkscreen.ui.home.logistics.LogisticsActivity;
+import com.appjumper.silkscreen.ui.home.logistics.LogisticsListActivity;
 import com.appjumper.silkscreen.ui.home.news.NewsActivity;
 import com.appjumper.silkscreen.ui.home.order.OrderActivity;
 import com.appjumper.silkscreen.ui.home.process.ProcessingActivity;
@@ -628,7 +628,7 @@ public class HomeFragment extends BaseFragment {
                 start_Activity(getActivity(), TenderActivity.class);
                 break;
             case 5: //物流
-                start_Activity(getActivity(), LogisticsActivity.class);
+                start_Activity(getActivity(), LogisticsListActivity.class);
                 break;
             case 6: //设备
                 start_Activity(getActivity(), EquipmentActivity.class);
