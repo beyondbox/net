@@ -8,6 +8,10 @@ import android.view.ViewGroup;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
+import com.appjumper.silkscreen.bean.Province;
+import com.appjumper.silkscreen.ui.home.adapter.ProvinceAdapter;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -17,6 +21,10 @@ import butterknife.ButterKnife;
  */
 
 public class LineFragment extends BaseFragment {
+
+    private List<Province> provinceList;
+    private ProvinceAdapter provinceAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,6 +38,7 @@ public class LineFragment extends BaseFragment {
     protected void initData() {
 
     }
+
 
 
     @Override
