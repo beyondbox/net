@@ -76,7 +76,7 @@ public class AddressSelectVillageActivity extends BaseActivity {
         tv_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(type.equals("2")) {
+                if(!TextUtils.isEmpty(tv_name.getText().toString().trim())) {
                     Intent intent = new Intent();
                     intent.putExtra("id", id);
                     intent.putExtra("name", levelName);
