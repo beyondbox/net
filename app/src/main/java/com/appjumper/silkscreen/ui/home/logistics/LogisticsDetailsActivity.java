@@ -125,6 +125,9 @@ public class LogisticsDetailsActivity extends BaseActivity {
     @Bind(R.id.tv_data)//发车时间
             TextView tv_data;
 
+    @Bind(R.id.llDetail)
+    LinearLayout llDetail;
+
     private String id;
     private String type;//1 货站 2个人
     private String eid;//企业id
@@ -164,6 +167,11 @@ public class LogisticsDetailsActivity extends BaseActivity {
         tv_car_load.setText(data.getCar_load() + "吨");
         tv_remark.setText(data.getRemark());
         tv_data.setText(data.getDate());
+
+        if (type.equals("1"))
+            llDetail.setVisibility(View.GONE);
+        else
+            llDetail.setVisibility(View.VISIBLE);
 
         if (data.getEnterprise() != null) {//企业
             eid = data.getEnterprise().getEnterprise_id();

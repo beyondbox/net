@@ -95,12 +95,6 @@ public class EquipmentListviewAdapter extends BaseAdapter {
 
         viewHolder.tvEquipment.setText(item.getTitle());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
-        if (item.getItems().size() > 0) {
-            viewHolder.tv_price.setVisibility(View.VISIBLE);
-            viewHolder.tv_price.setText(item.getItems().get(0).getPrice() + "元");
-        } else {
-            viewHolder.tv_price.setVisibility(View.GONE);
-        }
 
         MyLinearLayoutManger linearLayoutManager = new MyLinearLayoutManger(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -157,15 +151,18 @@ public class EquipmentListviewAdapter extends BaseAdapter {
                 case Const.INFO_TYPE_PER:
                     viewHolder.txtMark.setText("个人");
                     viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    viewHolder.tv_price.setText(item.getItems().get(0).getPrice() + "元");
                     break;
                 case Const.INFO_TYPE_COM:
                     viewHolder.txtMark.setText("企业");
                     viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    viewHolder.tv_price.setText(item.getItems().get(0).getPrice() + "元");
                     break;
                 case Const.INFO_TYPE_OFFICIAL:
                     viewHolder.txtMark.setText("官方");
                     viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
                     viewHolder.tvCompanyName.setText(item.getOfficial_name());
+                    viewHolder.tv_price.setText(item.getPrice() + "元");
                     break;
                 default:
                     break;

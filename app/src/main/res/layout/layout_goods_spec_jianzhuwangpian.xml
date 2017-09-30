@@ -377,7 +377,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="价格(元/平米)"
+                    android:text="价格(元/片)"
                     android:textSize="14dp"
                     android:textColor="@color/text_black_color"/>
 
@@ -420,7 +420,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="库存(平米)"
+                    android:text="库存(片)"
                     android:textSize="14dp"
                     android:textColor="@color/text_black_color"/>
 

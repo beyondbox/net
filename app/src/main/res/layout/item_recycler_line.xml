@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@drawable/select_white_background"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/text_gray_color"
+                    android:textSize="14sp"
+                    android:text="深圳市阿普匠科技有限公司" />
+
+
+                <TextView
+                    android:id="@+id/txtMark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_mark_person_bg"
+                    android:layout_marginLeft="6dp"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textSize="11sp"
+                    android:text="个人"
+                    android:textColor="@color/text_black_color"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@mipmap/location_blue"/>
+
+                <TextView
+                    android:id="@+id/tv_form_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="线路：安平-深圳"
+                    android:textColor="@color/black_color"
+                    android:textSize="13sp"
+                    android:layout_marginLeft="3dp"
+                    android:gravity="center" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@mipmap/location_green"/>
+
+                <TextView
+                    android:id="@+id/tv_passby"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+                    android:lineSpacingExtra="2dp"
+                    android:text="途径：石家庄 武汉 郑州"
+                    android:textColor="@color/black_color"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <View
+            style="@style/LineStyle"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

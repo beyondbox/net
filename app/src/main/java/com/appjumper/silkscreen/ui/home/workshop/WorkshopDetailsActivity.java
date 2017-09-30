@@ -174,7 +174,10 @@ public class WorkshopDetailsActivity extends BaseActivity {
 
         if (data.getLease_mode().equals("转让")) {
             llTransfer.setVisibility(View.VISIBLE);
-            txtTransfer.setText(data.getTransfer_fee() + "元");
+            if (TextUtils.isEmpty(data.getTransfer_fee()))
+                txtTransfer.setText("0元");
+            else
+                txtTransfer.setText(data.getTransfer_fee() + "元");
         } else {
             llTransfer.setVisibility(View.GONE);
         }

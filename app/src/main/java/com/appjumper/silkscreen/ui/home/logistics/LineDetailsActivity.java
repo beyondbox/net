@@ -1,4 +1,5 @@
-package com.appjumper.silkscreen.ui.home.equipment;
+package com.appjumper.silkscreen.ui.home.logistics;
+
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,15 +16,18 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.bean.EquipmentDetailsResponse;
-import com.appjumper.silkscreen.bean.EquipmentList;
+import com.appjumper.silkscreen.bean.Enterprise;
+import com.appjumper.silkscreen.bean.LineDetails;
+import com.appjumper.silkscreen.bean.LineDetailsResponse;
+import com.appjumper.silkscreen.bean.LineList;
+import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
-import com.appjumper.silkscreen.ui.home.adapter.EquipmentDetailsListviewAdapter;
-import com.appjumper.silkscreen.ui.home.adapter.EquipmentListviewAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.LineRecommendAdapter;
+import com.appjumper.silkscreen.util.CircleTransform;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.appjumper.silkscreen.view.MyListView;
@@ -36,7 +40,6 @@ import com.squareup.picasso.Picasso;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,45 +49,52 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by Administrator on 2016-11-18.
- * 设备详情
+ * Created by yc on 2016/11/7.
+ * 物流详情
  */
-public class EquipmentDetailsActivity extends BaseActivity {
+public class LineDetailsActivity extends BaseActivity {
     @Bind(R.id.pull_refresh_scrollview)
     PullToRefreshScrollView mPullRefreshScrollView;
+    @Bind(R.id.layout)
+    LinearLayout layout;
 
-    @Bind(R.id.llContent)
-    LinearLayout llContent;
-    @Bind(R.id.list_view_up)
-    MyListView listViewUp;
+    @Bind(R.id.list_view)//相关推荐
+            MyListView listView;
 
-    @Bind(R.id.list_view_down)
-    MyListView listViewDown;
-    @Bind(R.id.tv_title)
-    TextView tvTitle;
-    @Bind(R.id.tv_remark)
-    TextView tvRemark;
-    @Bind(R.id.tv_date)
-    TextView tvDate;
+    @Bind(R.id.tv_start)//起点
+            TextView tv_start;
 
-    @Bind(R.id.rl_company)
-    LinearLayout rlCompany;
-    @Bind(R.id.iv_logo)//公司图片
-            ImageView ivLogo;
-    @Bind(R.id.tv_company_name)//公司名称
-            TextView tvCompanyName;
-    @Bind(R.id.tv_address)//公司地址
-            TextView tv_address;
+    @Bind(R.id.tv_end)//终点
+            TextView tv_end;
+
+    @Bind(R.id.tv_passby)//途经地
+            TextView tv_passby;
+
+    @Bind(R.id.tv_remark)//备注
+            TextView tv_remark;
+
+    @Bind(R.id.iv_logo)//公司logo
+            ImageView iv_logo;
+
+
     @Bind(R.id.user_auth_status)//个人认证
             ImageView user_auth_status;
+
     @Bind(R.id.tv_auth_status)//个人认证（企业上的）
             ImageView tv_auth_status;
+
     @Bind(R.id.tv_enterprise_auth_status)//企
             ImageView tv_enterprise_auth_status;
+
     @Bind(R.id.tv_enterprise_productivity_auth_status)//力
             ImageView tv_enterprise_productivity_auth_status;
-    @Bind(R.id.rl_user)
-    LinearLayout rlUser;
+
+    @Bind(R.id.tv_company_name)//公司名称
+            TextView tv_company_name;
+
+    @Bind(R.id.tv_address)//公司地址
+            TextView tv_address;
+
     @Bind(R.id.iv_img)//个人头像
             ImageView iv_img;
 
@@ -93,123 +103,113 @@ public class EquipmentDetailsActivity extends BaseActivity {
 
     @Bind(R.id.tv_mobile)//个人手机号
             TextView tv_mobile;
-    @Bind(R.id.txtMark)
-    TextView txtMark;
+
+    @Bind(R.id.rl_company)//企业
+            LinearLayout rl_company;
+
+    @Bind(R.id.rl_user)//个人
+            LinearLayout rl_user;
+
     @Bind(R.id.llRecommend)
     LinearLayout llRecommend;
 
-
-
     private String id;
+    private String type = "1";
     private String eid;//企业id
     private String mobile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_equipment_details);
-        initBack();
+        setContentView(R.layout.activity_line_details);
         ButterKnife.bind(this);
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
 
+        initBack();
         listerrefresh();
-        id = getIntent().getStringExtra("id");
         initProgressDialog();
         progress.show();
         progress.setMessage("正在加载...");
+
         refresh();
         mPullRefreshScrollView.scrollTo(0, 0);
+        listView.setFocusable(false);
     }
 
-    private void initView(final EquipmentList data) {
-        if (!TextUtils.isEmpty(data.getEquipment_type())) {
-            int infoType = Integer.valueOf(data.getEquipment_type());
-            switch (infoType) {
-                case Const.INFO_TYPE_PER:
-                    txtMark.setText("个人");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
-                    break;
-                case Const.INFO_TYPE_COM:
-                    txtMark.setText("企业");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
-                    break;
-                case Const.INFO_TYPE_OFFICIAL:
-                    txtMark.setText("官方");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
-                    break;
-                default:
-                    break;
-            }
-        }
 
-        mobile = data.getMobile();
-        tvTitle.setText(data.getTitle());
-        tvRemark.setText(data.getRemark());
-        tvDate.setText(data.getCreate_time().substring(5, 16));
+    //初始化信息
+    private void initView(final LineDetails data) {
 
-        listViewDown.setAdapter(new EquipmentListviewAdapter(this, data.getRecommend()));
-        listViewDown.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                start_Activity(EquipmentDetailsActivity.this, EquipmentDetailsActivity.class, new BasicNameValuePair("id", data.getRecommend().get(position).getId()));
+        tv_start.setText(data.getFrom());
+        tv_end.setText(data.getTo());
+        tv_passby.setText(data.getPassby_name());
+        tv_remark.setText(data.getRemark());
+
+        if (data.getEnterprise() != null) {//企业
+            eid = data.getEnterprise().getEnterprise_id();
+            Enterprise enterprise = data.getEnterprise();
+            mobile = enterprise.getEnterprise_tel();
+            rl_company.setVisibility(View.VISIBLE);
+            rl_user.setVisibility(View.GONE);
+            if (enterprise != null) {
+                Picasso.with(this).load(enterprise.getEnterprise_logo().getSmall()).transform(new CircleTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(iv_logo);
             }
-        });
-        if (data.getEnterprise_id() != null) {
-            eid = data.getEnterprise_id();
-            rlCompany.setVisibility(View.VISIBLE);
-            Picasso.with(this).load(data.getEnterprise_logo().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.icon_logo_image61).error(R.mipmap.icon_logo_image61).into(ivLogo);
-            tvCompanyName.setText(data.getEnterprise_name());
-            tv_address.setText(data.getEnterprise_address());
-            if (data.getAuth_status() != null && data.getAuth_status().equals("2")) {
+            tv_company_name.setText(enterprise.getEnterprise_name());
+            tv_address.setText(enterprise.getEnterprise_address());
+            if (enterprise.getUser_auth_status() != null && enterprise.getUser_auth_status().equals("2")) {
                 tv_auth_status.setVisibility(View.VISIBLE);
             } else {
                 tv_auth_status.setVisibility(View.GONE);
             }
-            if (data.getEnterprise_auth_status() != null && data.getEnterprise_auth_status().equals("2")) {
+            if (enterprise.getEnterprise_auth_status() != null && enterprise.getEnterprise_auth_status().equals("2")) {
                 tv_enterprise_auth_status.setVisibility(View.VISIBLE);
             } else {
                 tv_enterprise_auth_status.setVisibility(View.GONE);
             }
-            if (data.getEnterprise_productivity_auth_status() != null && data.getEnterprise_productivity_auth_status().equals("2")) {
+            if (enterprise.getEnterprise_productivity_auth_status() != null && enterprise.getEnterprise_productivity_auth_status().equals("2")) {
                 tv_enterprise_productivity_auth_status.setVisibility(View.VISIBLE);
             } else {
                 tv_enterprise_productivity_auth_status.setVisibility(View.GONE);
             }
-            rlUser.setVisibility(View.GONE);
-        } else {
-            rlCompany.setVisibility(View.GONE);
-            rlUser.setVisibility(View.VISIBLE);
-            tv_name.setText(data.getNicename());
-            tv_mobile.setText(data.getMobile());
-            if (data.getAvatar() != null && !data.getAvatar().getSmall().equals("")) {
-                Picasso.with(this).load(data.getAvatar().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head).into(iv_img);
-            }
-
-            if (data.getAuth_status() != null && data.getAuth_status().equals("2")) {
-                user_auth_status.setVisibility(View.VISIBLE);
-            } else {
-                user_auth_status.setVisibility(View.GONE);
+        } else {//个人
+            rl_company.setVisibility(View.GONE);
+            rl_user.setVisibility(View.VISIBLE);
+            User user = data.getUser();
+            mobile = user.getMobile();
+            if (user != null) {
+                tv_name.setText(user.getUser_nicename());
+                tv_mobile.setText(user.getMobile());
+                Picasso.with(this).load(user.getAvatar().getSmall()).transform(new PicassoRoundTransform()).placeholder(R.mipmap.img_error_head).error(R.mipmap.img_error_head).into(iv_img);
+                if (user.getAuth_status() != null && user.getAuth_status().equals("2")) {
+                    user_auth_status.setVisibility(View.VISIBLE);
+                } else {
+                    user_auth_status.setVisibility(View.GONE);
+                }
             }
         }
+        LineRecommendAdapter adapter = new LineRecommendAdapter(this, data.getRecommend());
+        listView.setAdapter(adapter);
+        listView.setDividerHeight(0);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                start_Activity(context, LineDetailsActivity.class, new BasicNameValuePair("id", data.getRecommend().get(position).getId()));
+            }
+        });
 
 
-
-        if (!TextUtils.isEmpty(data.getEquipment_type())) {
-            int infoType = Integer.valueOf(data.getEquipment_type());
+        if (!TextUtils.isEmpty(data.getLine_type())) {
+            int infoType = Integer.valueOf(data.getLine_type());
             if (infoType == Const.INFO_TYPE_OFFICIAL) {
-                rlCompany.setVisibility(View.GONE);
-                rlUser.setVisibility(View.GONE);
+                rl_company.setVisibility(View.GONE);
+                rl_user.setVisibility(View.GONE);
                 mobile = data.getOfficial_mobile();
-
-                List<EquipmentList> tempList = new ArrayList<>();
-                tempList.add(data);
-                tempList.get(0).setName(tempList.get(0).getEquipment_name());
-                listViewUp.setAdapter(new EquipmentDetailsListviewAdapter(this, tempList));
-            } else {
-                listViewUp.setAdapter(new EquipmentDetailsListviewAdapter(this, data.getItems()));
             }
         }
 
-        List<EquipmentList> recommendList = data.getRecommend();
+
+        List<LineList> recommendList = data.getRecommend();
         if (recommendList.size() == 0)
             llRecommend.setVisibility(View.GONE);
         else
@@ -234,16 +234,16 @@ public class EquipmentDetailsActivity extends BaseActivity {
 
     //详情
     private Runnable detailsRun = new Runnable() {
-        private EquipmentDetailsResponse response;
+        private LineDetailsResponse response;
 
         @SuppressWarnings("unchecked")
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
                 data.put("id", id);
-                data.put("uid", getUserID());
-                response = JsonParser.getEquipmentDetailsResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.EQUIPMENT_DETAILS));
+                data.put("uid", getUserID());//待定
+                response = JsonParser.getLineDetailsResponse(HttpUtil.postMsg(
+                        HttpUtil.getData(data), Url.LINEDETAILS));
             } catch (Exception e) {
                 progress.dismiss();
                 e.printStackTrace();
@@ -256,6 +256,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
             }
         }
     };
+
     private MyHandler handler = new MyHandler(this);
 
     private class MyHandler extends Handler {
@@ -274,16 +275,16 @@ public class EquipmentDetailsActivity extends BaseActivity {
             if (progress != null) {
                 progress.dismiss();
             }
-            EquipmentDetailsActivity activity = (EquipmentDetailsActivity) reference.get();
+            LineDetailsActivity activity = (LineDetailsActivity) reference.get();
             if (activity == null) {
                 return;
             }
             switch (msg.what) {
                 case NETWORK_SUCCESS_PAGER_RIGHT://详情
-                    EquipmentDetailsResponse baseResponse = (EquipmentDetailsResponse) msg.obj;
+                    LineDetailsResponse baseResponse = (LineDetailsResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
-                        llContent.setVisibility(View.VISIBLE);
-                        EquipmentList data = baseResponse.getData();
+                        layout.setVisibility(View.VISIBLE);
+                        LineDetails data = baseResponse.getData();
                         initView(data);
 
                         if (!getUserID().equals(data.getUser_id()))
@@ -299,8 +300,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         }
     }
 
-
-    @OnClick({R.id.tv_contact, R.id.rl_user, R.id.rl_company})
+    @OnClick({R.id.tv_contact, R.id.rl_company,R.id.rl_user})
     public void onClick(View v) {
         SureOrCancelDialog followDialog = new SureOrCancelDialog(this, "拨打电话？", new SureOrCancelDialog.SureButtonClick() {
             @Override
@@ -313,14 +313,15 @@ public class EquipmentDetailsActivity extends BaseActivity {
             case R.id.tv_contact://马上联系
                 followDialog.show();
                 break;
-            case R.id.rl_user://个人
-                followDialog.show();
+            case R.id.rl_company://公司详情
+                start_Activity(LineDetailsActivity.this, CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", eid));
                 break;
-            case R.id.rl_company:
-                start_Activity(EquipmentDetailsActivity.this, CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", eid));
+            case R.id.rl_user://个人跳转
+                followDialog.show();
                 break;
             default:
                 break;
         }
     }
+
 }

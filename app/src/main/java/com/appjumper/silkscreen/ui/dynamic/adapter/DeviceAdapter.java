@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.EquipmentList;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -38,22 +39,6 @@ public class DeviceAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHolde
         helper.setText(R.id.txtTime, item.getCreate_time().replaceAll("-", "\\.").substring(0, 16))
                 .setText(R.id.txtTitle, item.getItems().get(0).getName())
                 .setVisible(R.id.unRead, !item.is_read());
-
-        TextView txtMark = helper.getView(R.id.txtMark);
-        if (item.getUser_id().equals("1")) {
-            txtMark.setText("官方");
-            txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
-        } else {
-            if (item.getEnterprise_auth_status().equals("2")) {
-                txtMark.setText("企业");
-                txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
-            } else {
-                txtMark.setText("个人");
-                txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
-            }
-        }
-
-
 
 
         TextView txtName = helper.getView(R.id.txtName);
@@ -88,6 +73,30 @@ public class DeviceAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHolde
                     .setVisible(R.id.imgViCertiGreen, item.getAuth_status().equals("2"))
                     .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
                     .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"));
+        }
+
+
+
+        TextView txtMark = helper.getView(R.id.txtMark);
+        if (!TextUtils.isEmpty(item.getEquipment_type())) {
+            int infoType = Integer.valueOf(item.getEquipment_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    txtMark.setText("个人");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    txtMark.setText("企业");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    txtMark.setText("官方");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                    txtName.setText(item.getOfficial_name());
+                    break;
+                default:
+                    break;
+            }
         }
 
 

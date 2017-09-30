@@ -20,6 +20,7 @@ import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.dynamic.adapter.LogisticsAdapter;
+import com.appjumper.silkscreen.ui.home.logistics.LineDetailsActivity;
 import com.appjumper.silkscreen.ui.home.logistics.LogisticsDetailsActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -104,7 +105,11 @@ public class LogisticsFragment extends BaseFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                start_Activity(context, LogisticsDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()),
+                String type = dataList.get(position).getType();
+                if (type.equals("1"))
+                    start_Activity(context, LineDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()));
+                else
+                    start_Activity(context, LogisticsDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()),
                         new BasicNameValuePair("type", dataList.get(position).getType()));
 
                 dataList.get(position).setIs_read(true);

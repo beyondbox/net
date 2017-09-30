@@ -24,6 +24,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,13 +68,18 @@ public class LineListFragment extends BaseFragment {
         initRecyclerView();
         initRefreshLayout();
 
-        ptrLayt.autoRefresh();
+        ptrLayt.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptrLayt.autoRefresh();
+            }
+        }, 50);
     }
 
 
     private void initRecyclerView() {
         dataList = new ArrayList<>();
-        adapter = new LineListAdapter(R.layout.item_logistics_standing_listview, dataList);
+        adapter = new LineListAdapter(R.layout.item_recycler_line, dataList);
         recyclerData.setLayoutManager(new LinearLayoutManager(context));
         adapter.bindToRecyclerView(recyclerData);
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
@@ -81,7 +87,8 @@ public class LineListFragment extends BaseFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+                if (checkLogined())
+                    start_Activity(context, LineDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()));
             }
         });
 
@@ -178,5 +185,14 @@ public class LineListFragment extends BaseFragment {
         });
     }
 
+
+
+    @Override
+    public void setMenuVisibility(boolean menuVisible) {
+        super.setMenuVisibility(menuVisible);
+        if (getView() != null) {
+            getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
+        }
+    }
 
 }

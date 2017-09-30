@@ -53,6 +53,7 @@ public class EquipmentList {
     private String official_mobile;
     private String transfer_fee;
     private String equipment_type;
+    private String equipment_name;
 
 
     public String getAddress() {
@@ -422,5 +423,13 @@ public class EquipmentList {
 
     public void setEquipment_type(String equipment_type) {
         this.equipment_type = equipment_type;
+    }
+
+    public String getEquipment_name() {
+        return equipment_name;
+    }
+
+    public void setEquipment_name(String equipment_name) {
+        this.equipment_name = equipment_name;
     }
 }

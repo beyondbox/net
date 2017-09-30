@@ -106,7 +106,7 @@ public class ReleaseStockGoodsActivity extends BasePhotoGridActivity {
             case "98": //建筑网片
                 layoutRes = R.layout.layout_goods_spec_jianzhuwangpian;
                 textureList = Arrays.asList(arrJianZhuWangPian);
-                unit = "平米";
+                unit = "片";
                 break;
             case "22": //电焊网
                 layoutRes = R.layout.layout_goods_spec_dianhanwang;

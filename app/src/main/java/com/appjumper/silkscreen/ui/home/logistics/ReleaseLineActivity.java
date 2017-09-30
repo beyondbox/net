@@ -22,10 +22,8 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
 import com.appjumper.silkscreen.ui.home.adapter.PassbyAdapter;
-import com.appjumper.silkscreen.ui.my.enterprise.AddServiceActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.util.manager.ActivityTaskManager;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -78,6 +76,9 @@ public class ReleaseLineActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitle("创建线路");
         initRecycler(addressList);
+
+        if (AddServiceCompleteActivity.instance != null)
+            AddServiceCompleteActivity.instance.finish();
     }
 
     private void initRecycler(final ArrayList<String> addresses) {
@@ -170,7 +171,7 @@ public class ReleaseLineActivity extends BaseActivity {
                     if (baseResponse.isSuccess()) {
                         //showErrorToast("发布成功");
                         start_Activity(context, AddServiceCompleteActivity.class, new BasicNameValuePair(Const.KEY_MESSAGE, "线路添加完成"), new BasicNameValuePair(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_LOGISTICS + ""));
-                        ActivityTaskManager.getInstance().getActivity(AddServiceActivity.class).finish();
+                        //ActivityTaskManager.getInstance().getActivity(AddServiceActivity.class).finish();
                         CommonApi.addLiveness(getUserID(), 19);
                         finish();
                     } else {

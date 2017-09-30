@@ -236,6 +236,10 @@
         <activity android:name=".ui.my.enterprise.EnterpriseAuthFirstepActivity" />
         <!--物流版块-->
         <activity android:name=".ui.home.logistics.LogisticsListActivity" />
+        <!--货站搜索-->
+        <activity android:name=".ui.home.logistics.LineSearchActivity" />
+        <!--货站详情-->
+        <activity android:name=".ui.home.logistics.LineDetailsActivity" />
 
 
         <!--现货商城-->

@@ -40,6 +40,9 @@ public class LineList implements Serializable{
     private String distance;
     private String auth_status;
     private boolean is_read = true;
+    private String line_type;
+    private String official_name;
+    private String official_mobile;
 
     private String product_name;
     private String productspec;
@@ -322,5 +325,29 @@ public class LineList implements Serializable{
 
     public void setIs_read(boolean is_read) {
         this.is_read = is_read;
+    }
+
+    public String getLine_type() {
+        return line_type;
+    }
+
+    public void setLine_type(String line_type) {
+        this.line_type = line_type;
+    }
+
+    public String getOfficial_name() {
+        return official_name;
+    }
+
+    public void setOfficial_name(String official_name) {
+        this.official_name = official_name;
+    }
+
+    public String getOfficial_mobile() {
+        return official_mobile;
+    }
+
+    public void setOfficial_mobile(String official_mobile) {
+        this.official_mobile = official_mobile;
     }
 }

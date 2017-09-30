@@ -30,6 +30,7 @@ public class ProvinceAdapter extends MyBaseAdapter<Province> {
 
     public void changeSelected(int selectedPosition) {
         this.selectedPosition = selectedPosition;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -43,6 +44,11 @@ public class ProvinceAdapter extends MyBaseAdapter<Province> {
         } else {
             vh = (ViewHolder) convertView.getTag();
         }
+
+        if (position == selectedPosition)
+            vh.txtName.setSelected(true);
+        else
+            vh.txtName.setSelected(false);
 
         Province province = list.get(position);
         vh.txtName.setText(province.getProvince_name() + "(" + province.getShuling() + ")");
