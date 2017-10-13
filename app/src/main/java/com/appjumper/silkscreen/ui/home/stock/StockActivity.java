@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.bean.ProductResponse;
 import com.appjumper.silkscreen.bean.ProductSpecResponse;
@@ -746,6 +747,9 @@ public class StockActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_inquiry:
                 if (checkLogined()) {
+                    if (!MyApplication.appContext.checkMobile(context))
+                        return;
+
                     if (product_id == null || product_id.equals("") || product_id.length() < 1) {
                         showErrorToast("请先选择产品");
                         return;

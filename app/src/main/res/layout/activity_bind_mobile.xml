@@ -145,7 +145,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:layout_marginTop="40dp"
-            android:text="注册"
+            android:text="立即绑定"
             android:textSize="15sp"
             android:textColor="@color/while_color"
             />

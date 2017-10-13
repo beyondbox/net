@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.LineDetails;
 import com.appjumper.silkscreen.bean.LineDetailsResponse;
@@ -47,7 +48,7 @@ import butterknife.OnClick;
 
 /**
  * Created by yc on 2016/11/7.
- * 物流详情
+ * 物流详情-个人
  */
 public class LogisticsDetailsActivity extends BaseActivity {
     @Bind(R.id.pull_refresh_scrollview)
@@ -318,6 +319,8 @@ public class LogisticsDetailsActivity extends BaseActivity {
         });
         switch (v.getId()) {
             case R.id.tv_contact://马上联系
+                if (!MyApplication.appContext.checkMobile(context))
+                    return;
                 followDialog.show();
                 break;
             case R.id.rl_company://公司详情

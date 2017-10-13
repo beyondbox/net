@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by yc on 2016/10/9.
- * 我的余额
+ * 我的积分
  */
 public class MyPointActivity extends BaseActivity {
     @Bind(R.id.listview)

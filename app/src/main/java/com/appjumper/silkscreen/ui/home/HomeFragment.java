@@ -27,6 +27,7 @@ import android.widget.ViewFlipper;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.HomeData;
 import com.appjumper.silkscreen.bean.HomeDataResponse;
@@ -177,6 +178,14 @@ public class HomeFragment extends BaseFragment {
             data = homedata.getData();
             initView();
         }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                MyApplication.appContext.checkMobile(context);
+            }
+        }, 1000);
+
 
         new Thread(new HomeDataRun()).start();
     }

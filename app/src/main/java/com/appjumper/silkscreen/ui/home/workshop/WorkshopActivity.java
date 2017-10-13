@@ -419,8 +419,6 @@ public class WorkshopActivity extends BaseActivity {
                 mDropDownMenu.closeMenu();
             }
         });
-
-
     }
 
 

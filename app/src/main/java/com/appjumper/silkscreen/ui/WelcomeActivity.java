@@ -1,23 +1,23 @@
 package com.appjumper.silkscreen.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.bean.HomeDataResponse;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.bean.HomeDataResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
-import com.tencent.android.tpush.XGPushManager;
+import com.appjumper.silkscreen.net.Url;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * 欢迎页
+ */
 public class WelcomeActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

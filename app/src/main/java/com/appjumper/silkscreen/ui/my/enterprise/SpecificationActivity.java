@@ -48,6 +48,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016-11-22.
+ * 发布加工、订做
  */
 public class SpecificationActivity extends BasePhotoGridActivity {
     @Bind(R.id.ll_specification)//规格布局

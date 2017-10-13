@@ -7,21 +7,30 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.bean.UserResponse;
 import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.common.WebViewActivity;
-import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.util.Const;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.tencent.android.tpush.XGPushManager;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.Header;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -30,8 +39,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.appjumper.silkscreen.R.id.tv_company_name;
 
 /**
  * Created by yc on 2016/11/7.
@@ -43,16 +50,19 @@ public class LoginActivity extends BaseActivity{
 
     @Bind(R.id.et_pwd)
     EditText et_pwd;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initBack();
-        initProgressDialog(false, "正在登录...");
+        initProgressDialog(false, null);
     }
 
-    @OnClick({R.id.btn_register,R.id.login_btn,R.id.tv_repassword})
+    @OnClick({R.id.btn_register,R.id.login_btn,R.id.tv_repassword, R.id.txtLoginWechat})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_repassword://忘记密码
@@ -74,6 +84,12 @@ public class LoginActivity extends BaseActivity{
                 hideKeyboard();
                 progress.show();
                 new Thread(loginRun).start();
+                break;
+            case R.id.txtLoginWechat: //微信登录
+                if (WXAPIFactory.createWXAPI(context, null).isWXAppInstalled())
+                    UMShareAPI.get(context).getPlatformInfo(context, SHARE_MEDIA.WEIXIN, umAuthListener);
+                else
+                    showErrorToast("您还没有安装微信");
                 break;
             default:
                 break;
@@ -154,6 +170,112 @@ public class LoginActivity extends BaseActivity{
             }
         }
     }
+
+
+
+    private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            loginWeChat(data);
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            Toast.makeText( getApplicationContext(), "授权失败", Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+        }
+    };
+
+
+    /**
+     * 微信登录
+     */
+    private void loginWeChat(Map<String, String> data) {
+        RequestParams params = MyHttpClient.getApiParam("user", "register_WeChat");
+        params.put("openid", data.get("openid"));
+        params.put("sex", data.get("gender"));
+        params.put("avatar", data.get("profile_image_url"));
+        params.put("user_nicename", data.get("screen_name"));
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        getUserInfo(jsonObj.getJSONObject("data").getString("id"));
+                    } else {
+                        progress.dismiss();
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    progress.dismiss();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progress.dismiss();
+                showErrorToast(getResources().getString(R.string.requst_fail));
+            }
+        });
+    }
+
+
+    /**
+     * 微信登录后根据用户id获取用户信息
+     * @param uid
+     */
+    private void getUserInfo(String uid) {
+        RequestParams params = MyHttpClient.getApiParam("user", "info");
+        params.put("uid", uid);
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        User user = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), User.class);
+                        getMyApplication().getMyUserManager().storeUserInfo(user);
+                        CommonApi.addLiveness(getUserID(), 1);
+                        sendBroadcast(new Intent(Const.ACTION_LOGIN_SUCCESS));
+                        finish();
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showErrorToast(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
 
 
     @Override

@@ -47,7 +47,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016-11-18.
- * 发布求车详情
+ * 发布求车
  */
 public class TruckReleaseActivity extends BaseActivity {
     @Bind(R.id.tv_start)//货运起点

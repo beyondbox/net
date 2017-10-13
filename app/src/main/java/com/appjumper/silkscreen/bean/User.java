@@ -27,6 +27,8 @@ public class User {
     private String auth_status;
     private Enterprise enterprise;
     private String is_goods;
+    private String is_wechat; //微信用户是否绑定了手机号 0未绑定 1绑定
+    private String openid;
 
 
     public String getAuth_status() {
@@ -203,5 +205,21 @@ public class User {
 
     public void setIs_goods(String is_goods) {
         this.is_goods = is_goods;
+    }
+
+    public String getIs_wechat() {
+        return is_wechat;
+    }
+
+    public void setIs_wechat(String is_wechat) {
+        this.is_wechat = is_wechat;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 }

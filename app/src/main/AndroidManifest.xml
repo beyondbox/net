@@ -240,6 +240,8 @@
         <activity android:name=".ui.home.logistics.LineSearchActivity" />
         <!--货站详情-->
         <activity android:name=".ui.home.logistics.LineDetailsActivity" />
+        <!--绑定手机号-->
+        <activity android:name=".ui.my.BindMobileActivity" />
 
 
         <!--现货商城-->

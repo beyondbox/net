@@ -65,7 +65,7 @@ import butterknife.OnClick;
 
 /**
  * Created by yc on 2016/11/18.
- * 创建企业（基本信息）
+ * 创建企业
  */
 public class EnterpriseCreateActivity extends BasePhotoGridActivity {
     @Bind(R.id.iv_logo)

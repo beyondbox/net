@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.bean.ProductDetailsResponse;
@@ -398,6 +399,9 @@ public class StockDetailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.tv_inquiry://询价
                 if (checkLogined()) {
+                    if (!MyApplication.appContext.checkMobile(context))
+                        return;
+
                     if (multiSpecList.size() > 1) {
                         popup.showAtLocation(tv_inquiry, Gravity.BOTTOM, 0, 0);
                         AppTool.setBackgroundAlpha(context, 0.5f);

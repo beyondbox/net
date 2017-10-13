@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
@@ -117,10 +118,14 @@ public class PlusActivity extends BaseActivity {
                 break;
 
             case R.id.txtInquiryOrder: //订做询价
+                if (!MyApplication.appContext.checkMobile(context))
+                    return;
                 goToProductSelect(Const.SERVICE_TYPE_ORDER, ProductSelectActivity.MOTION_RELEASE_INQUIRY);
                 break;
 
             case R.id.txtInquiryStock: //现货询价
+                if (!MyApplication.appContext.checkMobile(context))
+                    return;
                 goToProductSelect(Const.SERVICE_TYPE_STOCK, ProductSelectActivity.MOTION_RELEASE_INQUIRY);
                 break;
 

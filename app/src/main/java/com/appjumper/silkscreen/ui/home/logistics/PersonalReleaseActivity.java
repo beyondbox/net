@@ -57,7 +57,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016-11-18.
- * 个人求车详情
+ * 个人-发布
  */
 public class PersonalReleaseActivity extends BaseActivity {
 

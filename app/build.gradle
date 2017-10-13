@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion 26
+    buildToolsVersion '26.0.2'
 
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.appjumper.silkscreen"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 30
         versionName "3.0.4"
     }
@@ -95,5 +95,6 @@ dependencies {
     compile 'com.android.support:design:25.2.0'
     compile 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
     compile 'q.rorbin:badgeview:1.1.1'
+    compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     compile project(':picasso')
 }

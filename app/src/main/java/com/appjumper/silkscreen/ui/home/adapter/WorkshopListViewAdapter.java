@@ -95,7 +95,13 @@ public class WorkshopListViewAdapter extends BaseAdapter {
         viewHolder.txtTitle.setText(item.getTitle());
         viewHolder.tvDate.setText(item.getCreate_time().substring(5, 16));
         viewHolder.tvEnterpriseArea.setText(item.getArea() + "平米");
-        viewHolder.tvPosition.setText(item.getPosition() + " | " + item.getDistance() + "km");
+
+        if (TextUtils.isEmpty(item.getDistance()))
+            viewHolder.tvPosition.setText(item.getPosition());
+        else
+            viewHolder.tvPosition.setText(item.getPosition() + " | " + item.getDistance() + "km");
+
+
         if (item.getLease_mode().equals("出售")) {
             viewHolder.tvPrice.setText(item.getPrice() + "元");
         } else {

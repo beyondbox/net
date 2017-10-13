@@ -11,7 +11,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016-11-21.
- * 认证管理
+ * 认证管理（废弃）
  */
 public class AuthenticationAdministrationActivity extends BaseActivity {
     @Override

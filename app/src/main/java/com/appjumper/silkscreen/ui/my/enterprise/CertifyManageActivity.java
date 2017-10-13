@@ -17,6 +17,8 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.my.PersonalAuthenticationActivity;
 import com.appjumper.silkscreen.util.Const;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -165,9 +167,21 @@ public class CertifyManageActivity extends BaseActivity {
                 start_Activity(context, PersonalAuthenticationActivity.class);
                 break;
             case R.id.txtStateCompany: //企业认证
+                if(getUser().getEnterprise() == null) {
+                    start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    finish();
+                    return;
+                }
+
                 start_Activity(context, EnterpriseAuthFirstepActivity.class);
                 break;
             case R.id.txtStateProductivity: //生产力认证
+                if(getUser().getEnterprise() == null) {
+                    start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
+                    finish();
+                    return;
+                }
+
                 if (getUser().getEnterprise().getEnterprise_auth_status().equals("2"))
                     start_Activity(context, ProductivityAuthenticationActivity.class);
                 else

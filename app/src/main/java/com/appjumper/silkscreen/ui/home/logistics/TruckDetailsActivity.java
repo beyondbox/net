@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.LineDetails;
 import com.appjumper.silkscreen.bean.LineDetailsResponse;
@@ -279,6 +280,8 @@ public class TruckDetailsActivity extends BaseActivity {
         });
         switch (v.getId()) {
             case R.id.tv_contact://马上联系
+                if (!MyApplication.appContext.checkMobile(context))
+                    return;
                 followDialog.show();
                 break;
             case R.id.rl_company:

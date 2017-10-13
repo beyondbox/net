@@ -26,7 +26,7 @@ import butterknife.OnClick;
 
 /**
  * Created by yc on 2016/11/18.
- * 创建企业（联系方式）
+ * 创建企业（联系方式）（没用着）
  */
 public class EnterpriseContactActivity extends BaseActivity {
     private Intent intent;

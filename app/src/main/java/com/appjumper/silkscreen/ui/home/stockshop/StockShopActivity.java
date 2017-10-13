@@ -136,12 +136,12 @@ public class StockShopActivity extends BaseActivity {
             }
         });
 
-        getRecommendProduct();
         txtDefault.setSelected(true);
         ptrLayt.postDelayed(new Runnable() {
             @Override
             public void run() {
                 isFastClick();
+                getRecommendProduct();
                 ptrLayt.autoRefresh();
             }
         }, 80);

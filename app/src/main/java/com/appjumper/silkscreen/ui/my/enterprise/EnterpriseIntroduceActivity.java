@@ -27,7 +27,7 @@ import butterknife.OnClick;
 
 /**
  * Created by yc on 2016/11/18.
- * 创建企业（简要介绍）
+ * 创建企业（简要介绍）（没用着）
  */
 public class EnterpriseIntroduceActivity extends BasePhotoGridActivity {
     @Bind(R.id.editSms)

@@ -20,7 +20,9 @@ import com.appjumper.silkscreen.net.JsonParser;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * 帮助
+ */
 public class HelpWebViewActivity extends BaseActivity {
     private WebView mWebView;
     private String url = "";

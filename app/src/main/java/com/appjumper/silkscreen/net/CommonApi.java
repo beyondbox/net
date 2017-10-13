@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentReleaseActivity;
 import com.appjumper.silkscreen.ui.home.logistics.PersonalReleaseActivity;
@@ -57,6 +58,9 @@ public class CommonApi {
      * 发布信息前检查已发布的条数
      */
     public static void releaseCheck(final Context context, String uid, final int type) {
+        if (!MyApplication.appContext.checkMobile(context))
+            return;
+
         RequestParams params = MyHttpClient.getApiParam("service", "addCheck");
         params.put("uid", uid);
         params.put("type", type);
@@ -173,6 +177,5 @@ public class CommonApi {
             }
         context.startActivity(intent);
     }
-
 
 }

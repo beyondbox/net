@@ -64,7 +64,7 @@ import q.rorbin.badgeview.QBadgeView;
 
 /**
  * Created by yc on 2016/11/7.
- * 首页
+ * 主界面
  */
 public class MainActivity extends FragmentActivity {
 
@@ -97,14 +97,9 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         //强制竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         instance = this;
-
-        //安卓6.0以后需要手动请求写入权限，才能在存储设备上创建文件夹
-        //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, Const.REQUEST_CODE_PERMISSION);
 
         setupViews();
         checkNewVersion();
@@ -116,6 +111,15 @@ public class MainActivity extends FragmentActivity {
             XGPushManager.registerPush(getApplicationContext());
         else
             XGPushManager.registerPush(getApplicationContext(), getUser().getMobile());
+
+
+        //安卓6.0以后需要手动请求写入权限，才能在存储设备上创建文件夹
+        //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        ActivityCompat.requestPermissions(this, new String[] {
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION}, Const.REQUEST_CODE_PERMISSION);
     }
 
 
@@ -490,10 +494,12 @@ public class MainActivity extends FragmentActivity {
             case Const.REQUEST_CODE_PERMISSION:
                 if (grantResults != null && grantResults.length > 0) {
                     boolean isSuccess = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                    if (isSuccess)
+                    if (isSuccess) {
                         Configure.init(this);
-                    else
+                    }
+                    else {
                         Toast.makeText(this, "请开启存储权限，否则将无法使用上传图片功能！", Toast.LENGTH_LONG).show();
+                    }
                 }
                 break;
             default:

@@ -39,7 +39,7 @@ import butterknife.OnClick;
 
 /**
  * Created by yc on 2016/11/7.
- * 物流详情
+ * 选择公司
  */
 public class SelectCompanyActivity extends BaseActivity {
 

@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by yc on 2016/11/18.
+ * 意见反馈
  */
 public class FeedbackActivity extends BaseActivity {
     @Bind(R.id.editSms)

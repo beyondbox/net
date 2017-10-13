@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
@@ -51,6 +50,7 @@ import butterknife.OnClick;
 
 /**
  * Created by Administrator on 2016-11-22.
+ * 发布现货
  */
 public class SpecificationStockActivity extends BasePhotoGridActivity {
 

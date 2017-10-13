@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.bean.ProductResponse;
 import com.appjumper.silkscreen.bean.ProductType;
@@ -62,6 +63,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.appjumper.silkscreen.R.id.tv_inquiry;
 
 /**
  * Created by yc on 2016/11/11.
@@ -625,11 +628,14 @@ public class OrderActivity extends BaseActivity {
         }
     }
 
-    @OnClick({R.id.tv_inquiry, R.id.txtProductSelect, R.id.txtSpecSelect})
+    @OnClick({tv_inquiry, R.id.txtProductSelect, R.id.txtSpecSelect})
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_inquiry:
+            case tv_inquiry:
                 if (checkLogined()) {
+                    if (!MyApplication.appContext.checkMobile(context))
+                        return;
+
                     if (product_id == null || product_id.equals("") || product_id.length() < 1) {
                         showErrorToast("请先选择产品");
                         return;
