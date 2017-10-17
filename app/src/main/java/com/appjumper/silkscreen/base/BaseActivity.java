@@ -396,10 +396,8 @@ public class BaseActivity extends FragmentActivity {
 
     /**
      * 点击屏幕其他区域关闭软键盘
-     * @param ev
-     * @return
      */
-    @Override
+    /*@Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
@@ -417,7 +415,7 @@ public class BaseActivity extends FragmentActivity {
             return true;
         }
         return onTouchEvent(ev);
-    }
+    }*/
 
     public boolean isShouldHideInput(View v, MotionEvent event) {
         if (v != null && (v instanceof EditText)) {

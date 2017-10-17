@@ -44,7 +44,8 @@ public class EnterpriseAuthFirstepActivity extends BaseActivity {
         initTitle("企业认证");
         initBack();
 
-        txtCompanyName.setText(getUser().getEnterprise().getEnterprise_name());
+        if (getUser().getEnterprise() != null)
+            txtCompanyName.setText(getUser().getEnterprise().getEnterprise_name());
         /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

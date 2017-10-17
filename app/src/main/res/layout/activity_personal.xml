@@ -177,6 +177,7 @@
             android:layout_marginLeft="12dp"
             />
         <RelativeLayout
+            android:id="@+id/rlMobile"
             android:layout_width="match_parent"
             android:background="@drawable/select_white_background"
             android:layout_height="wrap_content">
@@ -207,6 +208,14 @@
                     android:textColor="@color/text_gray_color"
                     android:textSize="14sp"
                     android:src="@mipmap/ic_launcher"/>
+
+                <ImageView
+                    android:id="@+id/imgViArrowMobile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/icon_my_arrows_right"/>
             </LinearLayout>
         </RelativeLayout>
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.Enterprise;
@@ -605,6 +606,10 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                 start_Activity(CompanyDetailsActivity.this, WebViewActivity.class, new BasicNameValuePair("url", tvUrl.getText().toString()), new BasicNameValuePair("title", tv_company_name.getText().toString()));
                 break;
             case R.id.rl_phone://电话
+                if (from.equals("2")) {
+                    if (!MyApplication.appContext.checkMobile(context))
+                        return;
+                }
                 SureOrCancelDialog followDialog = new SureOrCancelDialog(this, "拨打电话？", new SureOrCancelDialog.SureButtonClick() {
                     @Override
                     public void onSureButtonClick() {

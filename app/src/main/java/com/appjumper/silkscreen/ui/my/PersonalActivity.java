@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.ImageResponse;
@@ -57,6 +59,9 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
     @Bind(R.id.txtCompanyName)
     TextView txtCompanyName;
 
+    @Bind(R.id.imgViArrowMobile)
+    ImageView imgViArrowMobile;
+
 //    private String imgPath;
 
     private String[] expiry={"保密","男","女"};
@@ -71,7 +76,7 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
         initBack();
     }
 
-    @OnClick({R.id.rl_img,R.id.rl_nickname,R.id.rl_sex, R.id.rlCompany})
+    @OnClick({R.id.rl_img,R.id.rl_nickname,R.id.rl_sex, R.id.rlCompany, R.id.rlMobile})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.rl_img://选择头像
@@ -99,6 +104,9 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
                 else
                     start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
                 break;
+            case R.id.rlMobile: //手机号
+                MyApplication.appContext.checkMobile(context);
+                break;
             default:
                 break;
         }
@@ -109,7 +117,15 @@ public class PersonalActivity extends MultiSelectPhotoActivity {
         super.onResume();
         User user = getUser();
         tv_nickname.setText(user.getUser_nicename());
-        tv_mobile.setText(user.getMobile());
+
+        if (TextUtils.isEmpty(user.getMobile())) {
+            tv_mobile.setText("尚未绑定手机号");
+            imgViArrowMobile.setVisibility(View.VISIBLE);
+        } else {
+            tv_mobile.setText(user.getMobile());
+            imgViArrowMobile.setVisibility(View.GONE);
+        }
+
         String sex = user.getSex();
         if(sex.equals("1")){
             tv_sex.setText("男");
