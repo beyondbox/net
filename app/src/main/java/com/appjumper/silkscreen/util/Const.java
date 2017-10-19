@@ -151,6 +151,11 @@ public class Const {
     public static final String ADDRESS_LEVEL_COUNTY = "2"; //地址-县级
 
 
+    public static final int ASKBUY_NO_OFFER = 0; //求购-未报价
+    public static final int ASKBUY_DEAL = 1; //求购-已交易
+    public static final int ASKBUY_OFFERED = 2; //求购-报价结束
+
+
     public static final String KEY_MOBILE = "mobile";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_TITLE = "title";
@@ -173,6 +178,7 @@ public class Const {
     public static final String KEY_BITMAP = "bitmap";
     public static final String KEY_QUALITY = "quality";
     public static final String KEY_ADDRESS_LEVEL = "addressLevel";
+    public static final String KEY_TYPE = "type";
 
 
 

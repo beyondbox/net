@@ -1,10 +1,5 @@
 package com.appjumper.silkscreen.view.phonegridview;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,12 +29,17 @@ import com.appjumper.silkscreen.util.PicassoRoundTransform;
 import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class SelectPictureActivity extends BaseActivity {
 
 	/**
 	 * 最多选择图片的个数
 	 */
-	public static final int MAX_NUM = 9;
+	public static int MAX_NUM = 9;
 
 	public static final String INTENT_MAX_NUM = "intent_max_num";
 	public static final String INTENT_SELECTED_PICTURE = "intent_selected_picture";

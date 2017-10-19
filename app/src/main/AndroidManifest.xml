@@ -258,6 +258,16 @@
         <activity android:name=".ui.home.stockshop.ReleaseGoodsSelectActivity" />
 
 
+        <!--发布求购-->
+        <activity android:name=".ui.dynamic.ReleaseAskBuyActivity" />
+        <!--发布报价-->
+        <activity android:name=".ui.dynamic.ReleaseOfferActivity" />
+        <!--发布成功-->
+        <activity android:name=".ui.dynamic.ReleaseCompleteActivity" />
+        <!--求购详情-->
+        <activity android:name=".ui.dynamic.AskBuyDetailActivity" />
+
+
         <!--发布护栏网-->
         <activity android:name=".ui.spec.ReleaseHuLanActivity" />
         <!--发布护栏网现货-->

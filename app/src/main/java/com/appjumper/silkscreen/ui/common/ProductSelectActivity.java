@@ -21,6 +21,7 @@ import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.adapter.ProductListAdapter;
+import com.appjumper.silkscreen.ui.dynamic.ReleaseAskBuyActivity;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
@@ -80,6 +81,10 @@ public class ProductSelectActivity extends BaseActivity {
      * 发布询价
      */
     public static final int MOTION_RELEASE_INQUIRY = 3002;
+    /**
+     * 发布求购
+     */
+    public static final int MOTION_RELEASE_ASKBUY = 3003;
 
 
     private List<ServiceProduct> productList;
@@ -281,6 +286,12 @@ public class ProductSelectActivity extends BaseActivity {
                 intent.putExtra("identity", "3");
                 intent.putExtra("service", product);
                 intent.putExtra("type", serviceType + "");
+                startActivity(intent);
+                break;
+
+            case MOTION_RELEASE_ASKBUY: //发布求购
+                intent = new Intent(context, ReleaseAskBuyActivity.class);
+                intent.putExtra(Const.KEY_OBJECT, product);
                 startActivity(intent);
                 break;
             default:

@@ -10,6 +10,7 @@ public class Avatar implements Serializable{
     private String width;
     private String origin;
     private String height;
+    private String img_id;
 
     public String getSmall() {
         return small;
@@ -41,5 +42,13 @@ public class Avatar implements Serializable{
 
     public void setHeight(String height) {
         this.height = height;
+    }
+
+    public String getImg_id() {
+        return img_id;
+    }
+
+    public void setImg_id(String img_id) {
+        this.img_id = img_id;
     }
 }
