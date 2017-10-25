@@ -15,6 +15,7 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.my.PersonalAuthenticationActivity;
+import com.appjumper.silkscreen.ui.my.driver.DriverAuthFirstActivity;
 import com.appjumper.silkscreen.util.Const;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -160,7 +161,7 @@ public class CertifyManageActivity extends BaseActivity {
 
 
 
-    @OnClick({R.id.txtStatePerson, R.id.txtStateCompany, R.id.txtStateProductivity})
+    @OnClick({R.id.txtStatePerson, R.id.txtStateCompany, R.id.txtStateProductivity, R.id.txtStateDriver})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txtStatePerson: //个人认证
@@ -169,7 +170,7 @@ public class CertifyManageActivity extends BaseActivity {
             case R.id.txtStateCompany: //企业认证
                 if(getUser().getEnterprise() == null) {
                     start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
-                    finish();
+                    //finish();
                     return;
                 }
 
@@ -178,7 +179,7 @@ public class CertifyManageActivity extends BaseActivity {
             case R.id.txtStateProductivity: //生产力认证
                 if(getUser().getEnterprise() == null) {
                     start_Activity(context, EnterpriseCreateActivity.class, new BasicNameValuePair("type", "0"));
-                    finish();
+                    //finish();
                     return;
                 }
 
@@ -186,6 +187,9 @@ public class CertifyManageActivity extends BaseActivity {
                     start_Activity(context, ProductivityAuthenticationActivity.class);
                 else
                     showErrorToast("完成企业认证后才可以申请生产力认证");
+                break;
+            case R.id.txtStateDriver: //司机认证
+                start_Activity(context, DriverAuthFirstActivity.class);
                 break;
             default:
                 break;

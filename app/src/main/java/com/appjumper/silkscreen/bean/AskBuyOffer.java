@@ -1,11 +1,13 @@
 package com.appjumper.silkscreen.bean;
 
+import java.io.Serializable;
+
 /**
  * 求购报价
  * Created by Botx on 2017/10/19.
  */
 
-public class AskBuyOffer {
+public class AskBuyOffer implements Serializable{
 
 
     /**
@@ -45,16 +47,19 @@ public class AskBuyOffer {
     private String offer_user_type;
     private String price_unit;
     private String offer_content;
-    private String offer_status;
+    private String offer_status; //0-尚未处理；1-已付定金；2-全额支付；3-交易结束
     private String mobile;
     private String user_nicename;
-    private Avatar avatar;
+    private String avatar;
     private String name;
     private String auth_status;
     private String enterprise_name;
     private String enterprise_logo;
     private String enterprise_auth_status;
     private String enterprise_productivity_auth_status;
+    private String product_img;
+    private String purchase_user_nicename;
+    private String purchase_user_mobile;
 
     public String getId() {
         return id;
@@ -225,11 +230,35 @@ public class AskBuyOffer {
         this.enterprise_productivity_auth_status = enterprise_productivity_auth_status;
     }
 
-    public Avatar getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Avatar avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getProduct_img() {
+        return product_img;
+    }
+
+    public void setProduct_img(String product_img) {
+        this.product_img = product_img;
+    }
+
+    public String getPurchase_user_nicename() {
+        return purchase_user_nicename;
+    }
+
+    public void setPurchase_user_nicename(String purchase_user_nicename) {
+        this.purchase_user_nicename = purchase_user_nicename;
+    }
+
+    public String getPurchase_user_mobile() {
+        return purchase_user_mobile;
+    }
+
+    public void setPurchase_user_mobile(String purchase_user_mobile) {
+        this.purchase_user_mobile = purchase_user_mobile;
     }
 }

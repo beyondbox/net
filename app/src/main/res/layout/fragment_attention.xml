@@ -5,15 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <View
+   <!-- <View
         android:id="@+id/divider1"
-        style="@style/LineStyle"/>
+        style="@style/LineStyle"/>-->
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/divider1"
         android:background="@color/white"
         app:tabBackground="@color/white"
         app:tabIndicatorColor="@color/theme_color"
@@ -25,7 +24,7 @@
     <View
         android:id="@+id/divider"
         style="@style/LineStyle"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:layout_below="@id/tabLayt"/>
 
     <android.support.v4.view.ViewPager

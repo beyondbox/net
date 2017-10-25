@@ -325,6 +325,15 @@ public class AttentionFragment extends BaseFragment {
     }
 
 
+    /**
+     * 打开动态管理界面
+     */
+    public void attentionManage() {
+        isModuleLoaded = false;
+        Intent intent = new Intent(context, DynamicManageActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -345,13 +354,6 @@ public class AttentionFragment extends BaseFragment {
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
-            /*case R.id.right: //管理
-                if (checkLogined()) {
-                    isModuleLoaded = false;
-                    intent = new Intent(context, DynamicManageActivity.class);
-                    startActivityForResult(intent, 0);
-                }
-                break;*/
             case R.id.txtLogin: //立即登录
                 intent = new Intent(context, LoginActivity.class);
                 startActivity(intent);

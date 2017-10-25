@@ -266,6 +266,28 @@
         <activity android:name=".ui.dynamic.ReleaseCompleteActivity" />
         <!--求购详情-->
         <activity android:name=".ui.dynamic.AskBuyDetailActivity" />
+        <!--求购编辑-->
+        <activity android:name=".ui.my.askbuy.AskBuyEditActivity" />
+        <!--查看报价-->
+        <activity android:name=".ui.my.askbuy.ChooseOfferActivity" />
+        <!--报价详情-未采用-->
+        <activity android:name=".ui.my.askbuy.AskBuyOfferNotAcceptActivity" />
+        <!--报价详情-已付订金-->
+        <activity android:name=".ui.my.askbuy.AskBuyOfferPayedSubActivity" />
+        <!--报价详情-已付全额-->
+        <activity android:name=".ui.my.askbuy.AskBuyOfferPayedAllActivity" />
+        <!--提交订单-->
+        <activity android:name=".ui.my.askbuy.AskBuyMakeOrderActivity" />
+        <!--订单详情-->
+        <activity android:name=".ui.my.askbuy.AskBuyOrderDetailActivity" />
+
+
+        <!--司机认证第一步-->
+        <activity android:name=".ui.my.driver.DriverAuthFirstActivity" />
+        <!--司机认证第二步-->
+        <activity android:name=".ui.my.driver.DriverAuthSecondActivity" />
+        <!--司机认证第三步-->
+        <activity android:name=".ui.my.driver.DriverAuthThirdActivity" />
 
 
         <!--发布护栏网-->
@@ -344,7 +366,7 @@
 
         <receiver
             android:name=".ui.MessageService"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <!-- 接收消息透传 -->
                 <action android:name="com.tencent.android.tpush.action.PUSH_MESSAGE" />

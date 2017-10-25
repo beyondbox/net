@@ -78,6 +78,13 @@
             </RelativeLayout>
 
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ask_buy_security"/>
+
+
             <LinearLayout
                 android:id="@+id/llRecord"
                 android:layout_width="match_parent"

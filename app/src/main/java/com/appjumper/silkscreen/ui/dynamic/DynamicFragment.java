@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.common.adapter.FragAdapter;
 import com.appjumper.silkscreen.util.Const;
@@ -35,8 +36,6 @@ public class DynamicFragment extends BaseFragment {
 
     @Bind(R.id.back)
     ImageView imgViBack;
-    @Bind(R.id.title)
-    TextView txtTitle;
     @Bind(R.id.right)
     TextView txtRight;
     @Bind(R.id.frameContent)
@@ -46,6 +45,8 @@ public class DynamicFragment extends BaseFragment {
 
     private List<Fragment> fragList;
     private FragAdapter fragAdapter;
+    private AskBuyFragment askBuyFragment;
+    private AttentionFragment attentionFragment;
 
 
     @Override
@@ -53,8 +54,8 @@ public class DynamicFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_dynamic, container, false);
         ButterKnife.bind(this, view);
 
-        txtTitle.setText("动态");
-        imgViBack.setVisibility(View.INVISIBLE);
+        //txtTitle.setText("动态");
+        imgViBack.setVisibility(View.GONE);
         txtRight.setText("发布");
         return view;
     }
@@ -62,9 +63,11 @@ public class DynamicFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        askBuyFragment = new AskBuyFragment();
+        attentionFragment = new AttentionFragment();
         fragList = new ArrayList<>();
-        fragList.add(new AskBuyFragment());
-        fragList.add(new AttentionFragment());
+        fragList.add(askBuyFragment);
+        fragList.add(attentionFragment);
 
         fragAdapter = new FragAdapter(context.getSupportFragmentManager(), fragList);
 
@@ -108,13 +111,15 @@ public class DynamicFragment extends BaseFragment {
             case R.id.right:
                 if (checkLogined()) {
                     if (txtRight.getText().toString().equals("发布")) {
+                        if (!MyApplication.appContext.checkCertifyPer(context))
+                            return;
                         intent = new Intent(context, ProductSelectActivity.class);
                         intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
                         intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
+                        startActivity(intent);
                     } else {
-                        intent = new Intent(context, DynamicManageActivity.class);
+                        attentionFragment.attentionManage();
                     }
-                    startActivity(intent);
                 }
                 break;
             default:

@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by Botx on 2017/8/1.
  */
 
-public class MyRelease {
+public class MyRelease implements Serializable{
 
     /**
      * id : 528
@@ -43,6 +44,7 @@ public class MyRelease {
     private String expiry_date;
     private String renovate_count;
     private List<Avatar> img_list;
+    private String examine_status;
 
     public String getId() {
         return id;
@@ -170,5 +172,13 @@ public class MyRelease {
 
     public void setRenovate_count(String renovate_count) {
         this.renovate_count = renovate_count;
+    }
+
+    public String getExamine_status() {
+        return examine_status;
+    }
+
+    public void setExamine_status(String examine_status) {
+        this.examine_status = examine_status;
     }
 }

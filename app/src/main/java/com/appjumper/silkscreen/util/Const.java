@@ -116,6 +116,14 @@ public class Const {
      * 发布信息成功
      */
     public static final String ACTION_RELEASE_SUCCESS = "com.appjumper.silkscreen.RELEASE_SUCCESS";
+    /**
+     * 增加浏览次数
+     */
+    public static final String ACTION_ADD_READ_NUM = "com.appjumper.silkscreen.ADD_READ_NUM";
+    /**
+     * 数据刷新
+     */
+    public static final String ACTION_REFRESH = "com.appjumper.silkscreen.REFRESH";
 
 
 
@@ -151,9 +159,23 @@ public class Const {
     public static final String ADDRESS_LEVEL_COUNTY = "2"; //地址-县级
 
 
-    public static final int ASKBUY_NO_OFFER = 0; //求购-未报价
-    public static final int ASKBUY_DEAL = 1; //求购-已交易
-    public static final int ASKBUY_OFFERED = 2; //求购-报价结束
+    public static final int OFFER_NOT_YET = 0; //求购报价-未报价
+    public static final int OFFER_DEAL = 1; //求购报价-已交易
+    public static final int OFFER_OFFERED = 2; //求购报价-报价结束
+
+
+    public static final int ASKBUY_AUDITING = 0; //求购-审核中
+    public static final int ASKBUY_OFFERING = 1; //求购-报价中
+    public static final int ASKBUY_REFUSE = 2; //求购-审核拒绝
+    public static final int ASKBUY_PAYED_SUB = 3; //求购-已付订金
+    public static final int ASKBUY_PAYED_ALL = 4; //求购-已付全额
+    public static final int ASKBUY_SEND_OUT = 5; //求购-确认发货
+    public static final int ASKBUY_RECEIPT_APPLY = 6; //求购-报价方申请收款
+    public static final int ASKBUY_RECEIPT_ACCEPT = 7; //求购-报价方收款审核通过
+
+
+    public static final String PAY_TYPE_ALL = "0"; //支付方式-全额
+    public static final String PAY_TYPE_SUB = "1"; //支付方式-订金
 
 
     public static final String KEY_MOBILE = "mobile";
@@ -179,6 +201,7 @@ public class Const {
     public static final String KEY_QUALITY = "quality";
     public static final String KEY_ADDRESS_LEVEL = "addressLevel";
     public static final String KEY_TYPE = "type";
+    public static final String KEY_IS_READ_MODE = "isReadMode";
 
 
 

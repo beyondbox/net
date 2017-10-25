@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
@@ -16,6 +17,7 @@ import com.appjumper.silkscreen.view.SureOrCancelDialog;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -25,6 +27,9 @@ import butterknife.OnClick;
  */
 
 public class PlusActivity extends BaseActivity {
+
+    @Bind(R.id.imgViClose)
+    ImageView imgViClose;
 
     private SureOrCancelDialog certifyPerDialog;
     private SureOrCancelDialog certifyComDialog;
@@ -37,17 +42,23 @@ public class PlusActivity extends BaseActivity {
         setContentView(R.layout.activity_plus2);
         ButterKnife.bind(context);
         initDialog();
+
+        imgViClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
 
-    @OnClick({R.id.imgViClose, R.id.llReleaseProcess, R.id.llReleaseOrder, R.id.llReleaseStock, R.id.llReleaseStation,
+    @OnClick({R.id.llReleaseProcess, R.id.llReleaseOrder, R.id.llReleaseStock, R.id.llReleaseStation,
             R.id.llReleaseTruck, R.id.llReleaseFindTruck, R.id.llReleaseWorkshop, R.id.llReleasePost, R.id.llReleaseDevice, R.id.txtInquiryOrder, R.id.txtInquiryStock})
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.imgViClose:
-                finish();
-                break;
+        if (!MyApplication.appContext.checkMobile(context))
+            return;
 
+        switch (view.getId()) {
             case R.id.llReleaseProcess: //提供代加工
                 if (getUser().getEnterprise() == null) {
                     comCreateDialog.show();

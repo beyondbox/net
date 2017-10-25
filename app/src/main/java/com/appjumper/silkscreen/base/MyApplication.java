@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.ui.my.BindMobileActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.util.manager.MyUserManager;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.umeng.socialize.PlatformConfig;
@@ -83,6 +84,37 @@ public class MyApplication extends Application{
                             @Override
                             public void onSureButtonClick() {
                                 Intent intent = new Intent(context, BindMobileActivity.class);
+                                context.startActivity(intent);
+                            }
+                        });
+
+                dialog.show();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+    /**
+     * 验证用户是否完成了个人认证
+     * @param context
+     */
+    public boolean checkCertifyPer(final Context context) {
+        User user = myUserBeanManager.getInstance();
+        if (user != null) {
+            if (!user.getAuth_status().equals("2")) {
+                SureOrCancelDialog dialog = new SureOrCancelDialog(context,
+                        "提示",
+                        "您尚未完成个人认证，暂时不能在该板块发布信息，请完成个人认证后再继续操作",
+                        "确定",
+                        "取消",
+                        new SureOrCancelDialog.SureButtonClick() {
+                            @Override
+                            public void onSureButtonClick() {
+                                Intent intent = new Intent(context, CertifyManageActivity.class);
                                 context.startActivity(intent);
                             }
                         });

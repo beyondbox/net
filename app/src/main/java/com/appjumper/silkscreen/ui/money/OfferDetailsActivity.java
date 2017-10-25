@@ -25,6 +25,7 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.adapter.GalleryAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
@@ -252,6 +253,7 @@ public class OfferDetailsActivity extends BaseActivity {
                 case NETWORK_SUCCESS_DATA_RIGHT://立即报价
                     BaseResponse base = (BaseResponse) msg.obj;
                     if (base.isSuccess()) {
+                        sendBroadcast(new Intent(Const.ACTION_REFRESH));
                         showSuccessTips("报价成功");
                         CommonApi.addLiveness(getUserID(), 4);
                         finish();

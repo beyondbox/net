@@ -146,7 +146,7 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.rl_feedback://意见反馈
                 start_Activity(getActivity(), FeedbackActivity.class);
-                //start_Activity(context, InquiryHuLanActivity.class);
+                //start_Activity(context, DriverAuthThirdActivity.class);
                 break;
             case R.id.rl_user://用户信息
                 if (checkLogined()) {

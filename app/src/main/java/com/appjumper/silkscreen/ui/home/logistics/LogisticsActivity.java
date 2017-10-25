@@ -61,7 +61,7 @@ import butterknife.OnClick;
 
 /**
  * Created by yc on 2016/11/11.
- * 物流
+ * 物流 (已废弃)
  */
 public class LogisticsActivity extends BaseActivity {
     private String headers[] = {"出发地", "目的地", "装货时间"};

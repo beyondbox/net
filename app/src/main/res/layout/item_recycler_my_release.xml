@@ -49,7 +49,7 @@
         android:layout_marginTop="5dp"
         android:text="展示中"
         android:textColor="@color/while_color"
-        android:textSize="9sp"/>
+        android:textSize="10sp"/>
 
     <TextView
         android:id="@+id/txtTime"
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/selector_my_release_menu"
-            android:paddingTop="2dp"
+            android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:gravity="center"
             android:visibility="invisible"
@@ -92,7 +92,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
             android:background="@drawable/selector_my_release_menu"
-            android:paddingTop="2dp"
+            android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:gravity="center"
             android:visibility="invisible"
@@ -107,7 +107,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
             android:background="@drawable/selector_my_release_menu"
-            android:paddingTop="2dp"
+            android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:gravity="center"
             android:text="刷新"
@@ -121,10 +121,25 @@
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
             android:background="@drawable/selector_my_release_menu"
-            android:paddingTop="2dp"
+            android:paddingTop="3dp"
             android:paddingBottom="3dp"
             android:gravity="center"
             android:text="删除"
+            android:textSize="11sp"
+            android:textColor="@color/text_gray_color"/>
+
+        <TextView
+            android:id="@+id/txtHandle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:visibility="visible"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/selector_my_release_menu"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:gravity="center"
+            android:text="查看报价"
             android:textSize="11sp"
             android:textColor="@color/text_gray_color"/>
 

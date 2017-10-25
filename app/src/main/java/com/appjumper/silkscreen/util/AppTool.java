@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +23,14 @@ import java.util.regex.Pattern;
  */
 
 public class AppTool {
+
+    public static DecimalFormat df = new DecimalFormat("0.00");
+    public static DecimalFormat dfRound = new DecimalFormat("0.00");
+
+    static {
+        dfRound.setRoundingMode(RoundingMode.HALF_UP);
+    }
+
 
     /**
      * 显示软键盘

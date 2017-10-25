@@ -1,12 +1,13 @@
 package com.appjumper.silkscreen.ui.my;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,16 +15,11 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.MyRelease;
-import com.appjumper.silkscreen.bean.Product;
-import com.appjumper.silkscreen.bean.RecruitList;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.PlusActivity;
-import com.appjumper.silkscreen.ui.dynamic.adapter.ProductAdapter;
-import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentDetailsActivity;
 import com.appjumper.silkscreen.ui.home.logistics.LogisticsDetailsActivity;
 import com.appjumper.silkscreen.ui.home.logistics.TruckDetailsActivity;
@@ -32,6 +28,9 @@ import com.appjumper.silkscreen.ui.home.recruit.RecruitDetailsActivity;
 import com.appjumper.silkscreen.ui.home.stock.StockDetailActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopDetailsActivity;
 import com.appjumper.silkscreen.ui.my.adapter.MyReleaseAdapter;
+import com.appjumper.silkscreen.ui.my.askbuy.AskBuyEditActivity;
+import com.appjumper.silkscreen.ui.my.askbuy.AskBuyOrderDetailActivity;
+import com.appjumper.silkscreen.ui.my.askbuy.ChooseOfferActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseAuthFirstepActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
@@ -39,7 +38,6 @@ import com.appjumper.silkscreen.ui.my.enterprise.ProductivityAuthenticationActiv
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyAlertDialog;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
-import com.appjumper.silkscreen.view.SureOrCancelEditDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -57,10 +55,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static android.R.attr.breadCrumbShortTitle;
-import static android.R.attr.id;
-import static android.R.attr.type;
 
 /**
  * 我的发布
@@ -93,6 +87,7 @@ public class MyReleaseActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_release);
         ButterKnife.bind(context);
+        registerBroadcastReceiver();
 
         initTitle("我的发布");
         initBack();
@@ -168,31 +163,44 @@ public class MyReleaseActivity extends BaseActivity {
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
                 MyRelease item = dataList.get(position);
                 switch (view.getId()) {
-                    case R.id.txtRefresh: //刷新排名
-                        int count = Integer.valueOf(item.getRenovate_count());
-                        if (count < 5) {
-                            Enterprise enterprise = getUser().getEnterprise();
-                            if (count == 3) {
-                                if (enterprise != null && enterprise.getEnterprise_productivity_auth_status().equals("2"))
-                                    showRefreshDialog(item, 2);
-                                else
-                                    certifyDialog.show();
-                            } else {
-                                int leftCount;
-                                if (enterprise != null && enterprise.getEnterprise_productivity_auth_status().equals("2"))
-                                    leftCount = 5 - count;
-                                else
-                                    leftCount = 3 - count;
-
-                                showRefreshDialog(item, leftCount);
-                            }
+                    case R.id.txtRefresh: //刷新排名或者编辑
+                        if (item.getType().equals("9")) {
+                            Intent intent = new Intent(context, AskBuyEditActivity.class);
+                            intent.putExtra(Const.KEY_OBJECT, item);
+                            startActivity(intent);
                         } else {
-                            showErrorToast("该信息今日刷新5次，已达上限！");
+                            refreshRank(item);
                         }
                         break;
                     case R.id.txtDelete: //删除
                         deleteIndex = position;
                         deleteDialog.show();
+                        break;
+                    case R.id.txtHandle: //求购信息的处理
+                        int state = Integer.valueOf(item.getExamine_status());
+                        Intent intent = null;
+                        switch (state) {
+                            case Const.ASKBUY_OFFERING: //报价中，查看报价
+                                intent = new Intent(context, ChooseOfferActivity.class);
+                                intent.putExtra("id", item.getInfo_id());
+                                break;
+                            case Const.ASKBUY_PAYED_SUB: //已付订金，查看订单
+                                intent = new Intent(context, AskBuyOrderDetailActivity.class);
+                                intent.putExtra("id", item.getInfo_id());
+                                break;
+                            case Const.ASKBUY_PAYED_ALL: //已付全额，查看订单
+                                intent = new Intent(context, AskBuyOrderDetailActivity.class);
+                                intent.putExtra(Const.KEY_IS_READ_MODE, true);
+                                intent.putExtra("id", item.getInfo_id());
+                                break;
+                            default: //其余都是查看订单
+                                intent = new Intent(context, AskBuyOrderDetailActivity.class);
+                                intent.putExtra(Const.KEY_IS_READ_MODE, true);
+                                intent.putExtra("id", item.getInfo_id());
+                                break;
+                        }
+                        if (intent != null)
+                            startActivity(intent);
                         break;
                     default:
                         break;
@@ -209,6 +217,33 @@ public class MyReleaseActivity extends BaseActivity {
         }, recyclerData);
 
         adapter.setEnableLoadMore(false);
+    }
+
+
+    /**
+     * 刷新排名
+     */
+    private void refreshRank(MyRelease item) {
+        int count = Integer.valueOf(item.getRenovate_count());
+        if (count < 5) {
+            Enterprise enterprise = getUser().getEnterprise();
+            if (count == 3) {
+                if (enterprise != null && enterprise.getEnterprise_productivity_auth_status().equals("2"))
+                    showRefreshDialog(item, 2);
+                else
+                    certifyDialog.show();
+            } else {
+                int leftCount;
+                if (enterprise != null && enterprise.getEnterprise_productivity_auth_status().equals("2"))
+                    leftCount = 5 - count;
+                else
+                    leftCount = 3 - count;
+
+                showRefreshDialog(item, leftCount);
+            }
+        } else {
+            showErrorToast("该信息今日刷新5次，已达上限！");
+        }
     }
 
 
@@ -365,7 +400,7 @@ public class MyReleaseActivity extends BaseActivity {
 
 
     /**
-     * 刷新排名
+     * 刷新排名接口
      */
     private void refresh(String info_id, String info_type, String id) {
         RequestParams params = MyHttpClient.getApiParam("user", "clearIntegral");
@@ -434,6 +469,30 @@ public class MyReleaseActivity extends BaseActivity {
                 showFailTips(getResources().getString(R.string.requst_fail));
             }
         });
+    }
+
+
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_RELEASE_SUCCESS);
+        registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_RELEASE_SUCCESS)) {
+                ptrLayt.autoRefresh();
+            }
+        }
+    };
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(myReceiver);
     }
 
 }

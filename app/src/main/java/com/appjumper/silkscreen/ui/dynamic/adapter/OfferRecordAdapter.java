@@ -40,6 +40,7 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
 
         AskBuyOffer offer = list.get(position);
         vh.txtTime.setText(offer.getCreate_time().substring(5));
+        vh.txtPrice.setText("***" + offer.getPrice_unit());
 
         if (offer.getOffer_user_type().equals("0")) {
             vh.txtName.setText("平台报价");

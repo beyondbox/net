@@ -42,7 +42,7 @@ public class ImageCompress {
 	        /**
 	         * 图片压缩比例 默认为30
 	         */
-	        public int quality = 60;
+	        public int quality = 70;
 	 
 	        public  String filePath;
 	    }

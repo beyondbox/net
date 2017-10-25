@@ -62,7 +62,7 @@ public class AskBuy {
     private String adviser_mobile;
     private String mobile;
     private String nickname;
-    private Avatar avatar;
+    private String avatar;
     private String name;
     private String auth_status;
     private String liveness_count;
@@ -72,8 +72,17 @@ public class AskBuy {
     private String enterprise_address;
     private String enterprise_auth_status;
     private String enterprise_productivity_auth_status;
+    private String adviser_avatar;
+    private String adviser_nicename;
     private List<Avatar> img_list;
     private List<AskBuyOffer> offer_list;
+
+    private String purchase_num;
+    private String pay_type;
+    private String pay_money;
+    private String offer_money;
+    private String purchase_unit;
+    private String surplus_money;
 
     public String getId() {
         return id;
@@ -299,14 +308,6 @@ public class AskBuy {
         this.enterprise_productivity_auth_status = enterprise_productivity_auth_status;
     }
 
-    public Avatar getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Avatar avatar) {
-        this.avatar = avatar;
-    }
-
     public List<Avatar> getImg_list() {
         return img_list;
     }
@@ -321,5 +322,77 @@ public class AskBuy {
 
     public void setOffer_list(List<AskBuyOffer> offer_list) {
         this.offer_list = offer_list;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAdviser_avatar() {
+        return adviser_avatar;
+    }
+
+    public void setAdviser_avatar(String adviser_avatar) {
+        this.adviser_avatar = adviser_avatar;
+    }
+
+    public String getAdviser_nicename() {
+        return adviser_nicename;
+    }
+
+    public void setAdviser_nicename(String adviser_nicename) {
+        this.adviser_nicename = adviser_nicename;
+    }
+
+    public String getPurchase_num() {
+        return purchase_num;
+    }
+
+    public void setPurchase_num(String purchase_num) {
+        this.purchase_num = purchase_num;
+    }
+
+    public String getPay_type() {
+        return pay_type;
+    }
+
+    public void setPay_type(String pay_type) {
+        this.pay_type = pay_type;
+    }
+
+    public String getPay_money() {
+        return pay_money;
+    }
+
+    public void setPay_money(String pay_money) {
+        this.pay_money = pay_money;
+    }
+
+    public String getOffer_money() {
+        return offer_money;
+    }
+
+    public void setOffer_money(String offer_money) {
+        this.offer_money = offer_money;
+    }
+
+    public String getPurchase_unit() {
+        return purchase_unit;
+    }
+
+    public void setPurchase_unit(String purchase_unit) {
+        this.purchase_unit = purchase_unit;
+    }
+
+    public String getSurplus_money() {
+        return surplus_money;
+    }
+
+    public void setSurplus_money(String surplus_money) {
+        this.surplus_money = surplus_money;
     }
 }

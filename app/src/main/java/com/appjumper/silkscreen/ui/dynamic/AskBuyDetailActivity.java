@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.AskBuyOffer;
 import com.appjumper.silkscreen.bean.Avatar;
@@ -29,6 +30,7 @@ import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.Header;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,6 +69,7 @@ public class AskBuyDetailActivity extends BaseActivity {
     @Bind(R.id.txtOffer)
     TextView txtOffer;
 
+    public static AskBuyDetailActivity instance = null;
     private String id;
     private AskBuy data;
 
@@ -75,6 +78,7 @@ public class AskBuyDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_askbuy_detail);
         ButterKnife.bind(context);
+        instance = this;
         initBack();
         initProgressDialog();
 
@@ -139,25 +143,43 @@ public class AskBuyDetailActivity extends BaseActivity {
     private void setData() {
         initTitle("求购" + data.getProduct_name());
         int state = Integer.valueOf(data.getPurchase_status());
-        switch (state) {
-            case Const.ASKBUY_NO_OFFER:
+        if (state == Const.OFFER_DEAL) {
+            txtOffer.setText("已交易");
+            txtOffer.setEnabled(false);
+        } else {
+            long expiryTime = AppTool.getTimeMs(data.getExpiry_date(), "yy-MM-dd HH:mm:ss");
+            long currTime = System.currentTimeMillis();
+            if (currTime < expiryTime) {
+                txtOffer.setText("报价");
+                if (data.getUser_id().equals(getUserID()))
+                    txtOffer.setEnabled(false);
+                else
+                    txtOffer.setEnabled(true);
+            } else {
+                txtOffer.setText("报价结束");
+                txtOffer.setEnabled(false);
+            }
+        }
+
+        /*switch (state) {
+            case Const.OFFER_NOT_YET:
                 txtOffer.setText("报价");
                 if (data.getUser_id().equals(getUserID()))
                     txtOffer.setEnabled(false);
                 else
                     txtOffer.setEnabled(true);
                 break;
-            case Const.ASKBUY_DEAL:
+            case Const.OFFER_DEAL:
                 txtOffer.setText("已交易");
                 txtOffer.setEnabled(false);
                 break;
-            case Const.ASKBUY_OFFERED:
+            case Const.OFFER_OFFERED:
                 txtOffer.setText("报价结束");
                 txtOffer.setEnabled(false);
                 break;
             default:
                 break;
-        }
+        }*/
 
         Picasso.with(mContext)
                 .load(data.getImg())
@@ -232,12 +254,22 @@ public class AskBuyDetailActivity extends BaseActivity {
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        Intent intent = new Intent(Const.ACTION_ADD_READ_NUM);
+                        intent.putExtra("id", id);
+                        sendBroadcast(intent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
             }
         });
     }
@@ -248,19 +280,31 @@ public class AskBuyDetailActivity extends BaseActivity {
         if (data == null)
             return;
 
+        if (!checkLogined())
+            return;
+
         switch (view.getId()) {
             case R.id.txtOffer: //报价
-                if (Integer.valueOf(data.getPurchase_status()) == Const.ASKBUY_NO_OFFER) {
-                    start_Activity(context, ReleaseOfferActivity.class);
+                if (txtOffer.getText().toString().equals("报价")) {
+                    if (!MyApplication.appContext.checkCertifyPer(context))
+                        return;
+                    start_Activity(context, ReleaseOfferActivity.class, new BasicNameValuePair("id", id));
                 }
                 break;
             case R.id.txtCall: //咨询顾问
-                if (!TextUtils.isEmpty(data.getAdviser_mobile()))
+                if (!TextUtils.isEmpty(data.getAdviser_mobile())) {
                     AppTool.dial(context, data.getAdviser_mobile());
+                }
                 break;
             default:
                 break;
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 }

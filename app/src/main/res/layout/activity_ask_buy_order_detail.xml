@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/llContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <include layout="@layout/layout_askbuy_product_info"/>
+
+            <View style="@style/LineStyle"/>
+
+            <View style="@style/LineStyle" android:layout_marginTop="10dp"/>
+
+            <include layout="@layout/layout_askbuy_adviser"/>
+
+            <View style="@style/LineStyle"/>
+
+            <View style="@style/LineStyle" android:layout_marginTop="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/while_color"
+                android:padding="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="产品单价 : "
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black_color"/>
+
+                <TextView
+                    android:id="@+id/txtPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥500"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black_color"/>
+
+            </LinearLayout>
+
+            <View style="@style/LineStyle"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/while_color"
+                android:padding="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="购买数量 : "
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black_color"/>
+
+                <TextView
+                    android:id="@+id/txtNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3套"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black_color"/>
+
+            </LinearLayout>
+
+            <View style="@style/LineStyle"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/while_color"
+                android:padding="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="已付金额 : "
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black_color"/>
+
+                <TextView
+                    android:id="@+id/txtPayedMoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="¥450"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black_color"/>
+
+            </LinearLayout>
+
+            <View style="@style/LineStyle"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/while_color"
+                android:padding="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="付款方式 : "
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black_color"/>
+
+                <TextView
+                    android:id="@+id/txtPayedType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30%订金"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black_color"/>
+
+            </LinearLayout>
+
+            <View style="@style/LineStyle" android:layout_marginBottom="40dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/llBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:visibility="gone"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/while_color">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="剩余付款 : "
+            android:textColor="@color/text_black_color"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/txtSurplus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:text=""
+            android:textColor="@color/orange_color"
+            android:textSize="15sp"/>
+
+
+        <TextView
+            android:id="@+id/txtConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@drawable/selector_btn_blue"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="立即支付"
+            android:textColor="@color/while_color"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

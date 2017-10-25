@@ -27,6 +27,7 @@ import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.GalleryAdapter;
 import com.appjumper.silkscreen.ui.money.adapter.InquiryListViewAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ViewOrderListViewAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
@@ -213,6 +214,7 @@ public class InquiryDetailsAlreadyActivity extends BaseActivity {
                 case NETWORK_SUCCESS_DATA_RIGHT://取消询价
                     BaseResponse base = (BaseResponse) msg.obj;
                     if (base.isSuccess()) {
+                        sendBroadcast(new Intent(Const.ACTION_REFRESH));
                         showErrorToast("取消成功");
                         //refresh();
                         finish();

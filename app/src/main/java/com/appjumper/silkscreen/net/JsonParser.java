@@ -2,6 +2,7 @@ package com.appjumper.silkscreen.net;
 
 
 import com.appjumper.silkscreen.bean.AreaBeanResponse;
+import com.appjumper.silkscreen.bean.AskBuyOfferResponse;
 import com.appjumper.silkscreen.bean.AuthInfoResponse;
 import com.appjumper.silkscreen.bean.BaseResponse;
 import com.appjumper.silkscreen.bean.ConfigResponse;
@@ -103,6 +104,11 @@ public class JsonParser {
 
     public static MyofferResponse getMyofferResponse(String json) {
         MyofferResponse rr = JsonUtil.getObject(json, MyofferResponse.class);
+        return rr;
+    }
+
+    public static AskBuyOfferResponse getAskBuyOfferResponse(String json) {
+        AskBuyOfferResponse rr = JsonUtil.getObject(json, AskBuyOfferResponse.class);
         return rr;
     }
 

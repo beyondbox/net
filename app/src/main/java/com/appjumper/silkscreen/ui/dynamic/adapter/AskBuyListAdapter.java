@@ -1,11 +1,8 @@
 package com.appjumper.silkscreen.ui.dynamic.adapter;
 
-import android.content.Intent;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,13 +10,12 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.Avatar;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,16 +66,21 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
 
 
         TextView txtState = helper.getView(R.id.txtState);
-        int state = Integer.valueOf(item.getPurchase_status());
+        int state = Integer.valueOf(item.getExamine_status());
         switch (state) {
-            case Const.ASKBUY_NO_OFFER:
-                txtState.setText(item.getExpiry_date().substring(5, 16) + "截止");
+            case Const.ASKBUY_OFFERING:
+                long expiryTime = AppTool.getTimeMs(item.getExpiry_date(), "yy-MM-dd HH:mm:ss");
+                long currTime = System.currentTimeMillis();
+                if (currTime < expiryTime)
+                    txtState.setText(item.getExpiry_date().substring(5, 16) + "截止");
+                else
+                    txtState.setText("报价结束");
                 break;
-            case Const.ASKBUY_DEAL:
+            case Const.ASKBUY_PAYED_SUB:
                 txtState.setText("已交易");
                 break;
-            case Const.ASKBUY_OFFERED:
-                txtState.setText("报价结束");
+            case Const.ASKBUY_PAYED_ALL:
+                txtState.setText("已交易");
                 break;
             default:
                 break;
@@ -92,7 +93,11 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
             GridView gridImg = helper.getView(R.id.gridImg);
             AskBuyImageAdapter imgAdapter = new AskBuyImageAdapter(mContext, imgList);
             gridImg.setAdapter(imgAdapter);
-            gridImg.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            gridImg.setClickable(false);
+            gridImg.setEnabled(false);
+            gridImg.setPressed(false);
+            /*gridImg.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Intent intent = new Intent(mContext, GalleryActivity.class);
@@ -104,7 +109,7 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
                     intent.putExtra(GalleryActivity.EXTRA_IMAGE_INDEX, i);
                     mContext.startActivity(intent);
                 }
-            });
+            });*/
         } else {
             helper.setVisible(R.id.gridImg, false);
         }

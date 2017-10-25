@@ -1,7 +1,10 @@
 package com.appjumper.silkscreen.ui.money;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,16 +18,21 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.bean.AskBuyOffer;
+import com.appjumper.silkscreen.bean.AskBuyOfferResponse;
 import com.appjumper.silkscreen.bean.MyInquiry;
 import com.appjumper.silkscreen.bean.MyInquiryResponse;
 import com.appjumper.silkscreen.bean.Myoffer;
-import com.appjumper.silkscreen.bean.MyofferResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.MainActivity;
+import com.appjumper.silkscreen.ui.money.adapter.AskBuyOfferAdapter;
 import com.appjumper.silkscreen.ui.money.adapter.InquiryAdapter;
-import com.appjumper.silkscreen.ui.money.adapter.OfferAdapter;
+import com.appjumper.silkscreen.ui.my.askbuy.AskBuyOfferNotAcceptActivity;
+import com.appjumper.silkscreen.ui.my.askbuy.AskBuyOfferPayedAllActivity;
+import com.appjumper.silkscreen.ui.my.askbuy.AskBuyOfferPayedSubActivity;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyAlertDialog;
 import com.appjumper.silkscreen.view.pulltorefresh.PagedListView;
 import com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshBase;
@@ -39,8 +47,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
-import static com.appjumper.silkscreen.R.id.map;
 
 /**
  * 消息
@@ -81,11 +87,12 @@ public class MessageActivity extends BaseActivity {
     private String type = "1";//我的报价或者我的询价
     private InquiryAdapter inquiryAdapter;
     private List<MyInquiry> inquiryList;
-    private OfferAdapter offerAdapter;
+    private AskBuyOfferAdapter offerAdapter;
     private String inquiryId = ""; //询价id
 
     private MyAlertDialog invalidDialog;
 
+    private List<AskBuyOffer> offerList = new ArrayList<>();
     private List<Myoffer> filterOfferList = new ArrayList<>(); //过滤后的我的报价数据
 
 
@@ -94,6 +101,7 @@ public class MessageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         ButterKnife.bind(this);
+        registerBroadcastReceiver();
 
         initBack();
         initTitle("消息");
@@ -119,8 +127,8 @@ public class MessageActivity extends BaseActivity {
         } else {
             if (getUser() != null) {
                 refresh();
-                if (!getMyApplication().getMyUserManager().getInvalidInquiryOption())
-                    invalidDialog.show();
+                /*if (!getMyApplication().getMyUserManager().getInvalidInquiryOption())
+                    invalidDialog.show();*/
             }
         }
 
@@ -148,8 +156,8 @@ public class MessageActivity extends BaseActivity {
                 inquiryList.clear();
                 inquiryAdapter.notifyDataSetChanged();
             }
-            if (filterOfferList.size() > 0) {
-                filterOfferList.clear();
+            if (offerList.size() > 0) {
+                offerList.clear();
                 offerAdapter.notifyDataSetChanged();
             }
             mEmptyLayout = LayoutInflater.from(context).inflate(R.layout.activity_money_login, null);
@@ -167,14 +175,6 @@ public class MessageActivity extends BaseActivity {
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getUser() != null) {
-            new Thread(run).start();
-        }
-    }
-
 
     /**
      * 监听
@@ -187,8 +187,28 @@ public class MessageActivity extends BaseActivity {
 
                 switch (type) {
                     case "1":
-                        if (filterOfferList != null && filterOfferList.size() > 0) {
-                            start_Activity(context, OfferDetailsActivity.class, new BasicNameValuePair("id", filterOfferList.get(position).getId()));
+                        AskBuyOffer offer = offerList.get(position);
+                        if (!TextUtils.isEmpty(offer.getOffer_status())) {
+                            Intent intent = null;
+                            switch (offer.getOffer_status()) {
+                                case "0": //尚未采用
+                                    intent = new Intent(context, AskBuyOfferNotAcceptActivity.class);
+                                    intent.putExtra(Const.KEY_OBJECT, offer);
+                                    startActivity(intent);
+                                    break;
+                                case "1": //已付订金
+                                    intent = new Intent(context, AskBuyOfferPayedSubActivity.class);
+                                    intent.putExtra(Const.KEY_OBJECT, offer);
+                                    startActivity(intent);
+                                    break;
+                                case "2": //已付全额
+                                    intent = new Intent(context, AskBuyOfferPayedAllActivity.class);
+                                    intent.putExtra(Const.KEY_OBJECT, offer);
+                                    startActivity(intent);
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                         break;
                     case "2":
@@ -236,17 +256,17 @@ public class MessageActivity extends BaseActivity {
 
         public void run() {
             if (type.equals("1")) {
-                MyofferResponse response = null;
+                AskBuyOfferResponse response = null;
                 try {
                     HashMap<String, String> data = new HashMap<String, String>();
                     data.put("g", "api");
-                    data.put("m", "inquiry");
+                    data.put("m", "purchase");
                     data.put("a", "my_offer");
 
                     data.put("pagesize", pagesize);
                     data.put("page", "1");
                     data.put("uid", getUserID());
-                    response = JsonParser.getMyofferResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
+                    response = JsonParser.getAskBuyOfferResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -286,13 +306,17 @@ public class MessageActivity extends BaseActivity {
         @SuppressWarnings("unchecked")
         public void run() {
             if (type.equals("1")) {
-                MyofferResponse response = null;
+                AskBuyOfferResponse response = null;
                 try {
                     HashMap<String, String> data = new HashMap<String, String>();
+                    data.put("g", "api");
+                    data.put("m", "purchase");
+                    data.put("a", "my_offer");
+
                     data.put("pagesize", pagesize);
                     data.put("page", "" + pageNumber);
                     data.put("uid", getUserID());
-                    response = JsonParser.getMyofferResponse(HttpUtil.getMsg(Url.MYOFFER + "?" + HttpUtil.getData(data)));
+                    response = JsonParser.getAskBuyOfferResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -374,15 +398,14 @@ public class MessageActivity extends BaseActivity {
                     }
                     break;
                 case 3:
-                    MyofferResponse offerresponse = (MyofferResponse) msg.obj;
+                    AskBuyOfferResponse offerresponse = (AskBuyOfferResponse) msg.obj;
                     if (offerresponse.isSuccess()) {
-                        List<Myoffer> list = offerresponse.getData().getItems();
-                        myOfferFilter(list, true);
-                        offerAdapter = new OfferAdapter(context, filterOfferList);
+                        offerList = offerresponse.getData().getItems();
+                        offerAdapter = new AskBuyOfferAdapter(context, offerList);
                         listView.setAdapter(offerAdapter);
                         listView.onFinishLoading(offerresponse.getData().hasMore());
                         pageNumber = 2;
-                        pullToRefreshView.setEmptyView(filterOfferList.isEmpty() ? myEmptyLayout : null);
+                        pullToRefreshView.setEmptyView(offerList.isEmpty() ? myEmptyLayout : null);
 
                     } else {
                         listView.onFinishLoading(false);
@@ -390,10 +413,10 @@ public class MessageActivity extends BaseActivity {
                     }
                     break;
                 case 4:
-                    MyofferResponse offerpageResponse = (MyofferResponse) msg.obj;
+                    AskBuyOfferResponse offerpageResponse = (AskBuyOfferResponse) msg.obj;
                     if (offerpageResponse.isSuccess()) {
-                        List<Myoffer> tempList = offerpageResponse.getData().getItems();
-                        myOfferFilter(tempList, false);
+                        List<AskBuyOffer> tempList = offerpageResponse.getData().getItems();
+                        offerList.addAll(tempList);
                         offerAdapter.notifyDataSetChanged();
                         listView.onFinishLoading(offerpageResponse.getData().hasMore());
                         pageNumber++;
@@ -437,6 +460,24 @@ public class MessageActivity extends BaseActivity {
                 break;
         }
     }
+
+
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_REFRESH);
+        registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_REFRESH)) {
+                refresh();
+            }
+        }
+    };
+
 
 
     /**
@@ -494,8 +535,10 @@ public class MessageActivity extends BaseActivity {
         if (inquiryAdapter != null) {
             inquiryAdapter.cancelAllTimers();
         }
-        if (offerAdapter != null) {
+        unregisterReceiver(myReceiver);
+
+        /*if (offerAdapter != null) {
             offerAdapter.cancelAllTimers();
-        }
+        }*/
     }
 }

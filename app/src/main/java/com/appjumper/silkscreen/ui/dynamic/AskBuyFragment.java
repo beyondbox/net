@@ -1,5 +1,9 @@
 package com.appjumper.silkscreen.ui.dynamic;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -52,6 +56,14 @@ public class AskBuyFragment extends BaseFragment {
     private int page = 1;
     private int pageSize = 20;
     private int totalSize;
+
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerBroadcastReceiver();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -176,12 +188,47 @@ public class AskBuyFragment extends BaseFragment {
     }
 
 
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_ADD_READ_NUM);
+        filter.addAction(Const.ACTION_RELEASE_SUCCESS);
+        getActivity().registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_ADD_READ_NUM)) {
+                String askId = intent.getStringExtra("id");
+                for (int i = 0; i < dataList.size(); i++) {
+                    AskBuy askBuy = dataList.get(i);
+                    if (askId.equals(askBuy.getId())) {
+                        dataList.get(i).setConsult_num((Integer.valueOf(askBuy.getConsult_num()) + 1) + "");
+                        adapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+            } else if (action.equals(Const.ACTION_RELEASE_SUCCESS)) {
+                ptrLayt.autoRefresh();
+            }
+        }
+    };
+
+
     @Override
     public void setMenuVisibility(boolean menuVisible) {
         super.setMenuVisibility(menuVisible);
         if (getView() != null) {
             getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
         }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        context.unregisterReceiver(myReceiver);
     }
 
 }

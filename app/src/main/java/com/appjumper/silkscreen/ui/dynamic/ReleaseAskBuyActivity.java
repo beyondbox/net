@@ -113,8 +113,8 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
                         int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                         if (state == Const.HTTP_STATE_SUCCESS) {
                             List<Avatar> list = GsonUtil.getEntityList(jsonObj.getJSONArray("data").toString(), Avatar.class);
+                            imgs = "";
                             for (int i = 0; i < list.size(); i++) {
-                                imgs = "";
                                 imgs += list.get(i).getImg_id();
                                 if (i < list.size() - 1)
                                     imgs += ",";
