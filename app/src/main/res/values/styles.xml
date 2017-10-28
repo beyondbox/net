@@ -61,6 +61,12 @@
         <item name="android:layout_height">0.5dp</item>
         <item name="android:layout_width">match_parent</item>
     </style>
+    <!-- 横线Light-->
+    <style name="LineStyleLight">
+        <item name="android:background">#F5F5F5</item>
+        <item name="android:layout_height">0.8dp</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
     <!-- 透明view-->
     <style name="transparent">
         <item name="android:background">@color/transparent_color</item>

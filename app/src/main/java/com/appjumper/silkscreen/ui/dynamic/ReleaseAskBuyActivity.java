@@ -152,7 +152,7 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
         params.put("uid", getUserID());
         params.put("img", product.getImg());
         params.put("imgs", imgs);
-        params.put("expiry_date", txtTime.getText().toString() + ":00");
+        params.put("expiry_date", txtTime.getText().toString() + ":59");
         params.put("product_id", product.getId());
         params.put("product_name", product.getName());
         params.put("purchase_content", edtTxtContent.getText().toString().trim());

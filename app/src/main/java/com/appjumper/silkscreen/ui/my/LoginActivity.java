@@ -103,11 +103,15 @@ public class LoginActivity extends BaseActivity{
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "user");
+                data.put("a", "login");
+
                 data.put("mobile", et_name.getText().toString().trim());
                 data.put("password", et_pwd.getText().toString().trim());
 
-                response = JsonParser.getUserResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.LOGIN));
+                //response = JsonParser.getUserResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.LOGIN));
+                response = JsonParser.getUserResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
 
                 //String url = "http://192.168.1.192/index.php?g=api&m=user&a=login&mobile=15930812811&password=siwangjia";
                 //response = JsonParser.getUserResponse(HttpUtil.getMsg(url));

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/while_color"
+    android:background="@drawable/select_white_background"
     android:orientation="vertical">
 
     <View style="@style/LineStyle"/>
@@ -11,14 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="12dp">
-
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/theme_color"
-            android:textSize="14sp"
-            android:text="衡水安平 — 山东青岛"/>
 
         <TextView
             android:id="@+id/txtMark"
@@ -34,15 +26,28 @@
             android:text="企业"
             android:textColor="@color/while_color"/>
 
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/txtMark"
+            android:layout_marginRight="10dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@color/theme_color"
+            android:textSize="15sp"
+            android:text="衡水安平 — 山东青岛"/>
+
 
         <TextView
             android:id="@+id/txtCarModel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtTitle"
-            android:layout_marginTop="7dp"
+            android:layout_marginTop="6dp"
             android:textColor="#a6a9ad"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:text="13米/围栏"/>
 
         <TextView
@@ -53,7 +58,7 @@
             android:layout_toRightOf="@id/txtCarModel"
             android:layout_marginLeft="60dp"
             android:textColor="#a6a9ad"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:text="35吨声屏障"/>
 
         <TextView
@@ -87,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/divider"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:textColor="#4d4d4d"
             android:textSize="13sp"
             android:text="丝网加物流专员-蔡/发车 524车次"/>
@@ -107,7 +112,7 @@
             android:id="@+id/lLaytCerti"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="3dp"
             android:layout_toRightOf="@id/txtName"
             android:layout_toLeftOf="@id/txtOfferNum"
             android:layout_alignBottom="@id/txtName">

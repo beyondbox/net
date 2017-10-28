@@ -25,4 +25,9 @@ public class CarLength {
     public void setCar_lengths_name(String car_lengths_name) {
         this.car_lengths_name = car_lengths_name;
     }
+
+    @Override
+    public String toString() {
+        return car_lengths_name;
+    }
 }

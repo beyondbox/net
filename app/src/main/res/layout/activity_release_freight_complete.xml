@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/view_background_gray_color">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:src="@mipmap/complete"/>
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:layout_marginTop="10dp"
+        android:text="提交订单成功\n请耐心等待丝网+官方审核\n审核后订单将出现在"
+        android:textSize="16sp"
+        android:textColor="@color/theme_color"/>
+
+    <TextView
+        android:id="@+id/txtFreightList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_btn_blue"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="物流-空车配货"
+        android:textColor="@color/while_color"
+        android:textSize="14sp" />
+
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="45dp"
+        android:paddingRight="45dp"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/txtCall"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector_btn_blue"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="联系客服"
+            android:textColor="@color/while_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/selector_btn_blue"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="继续发布"
+            android:textColor="@color/while_color"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

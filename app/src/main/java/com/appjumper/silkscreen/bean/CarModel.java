@@ -25,4 +25,9 @@ public class CarModel {
     public void setCar_models_name(String car_models_name) {
         this.car_models_name = car_models_name;
     }
+
+    @Override
+    public String toString() {
+        return car_models_name;
+    }
 }

@@ -50,6 +50,7 @@
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
                     android:text="求购"
+                    android:textSize="14sp"
                     android:textColor="@color/title_text_sel"/>
 
                 <RadioButton
@@ -62,6 +63,7 @@
                     android:paddingRight="30dp"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
+                    android:textSize="14sp"
                     android:text="关注"
                     android:textColor="@color/title_text_sel"/>
 

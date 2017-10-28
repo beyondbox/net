@@ -24,6 +24,8 @@ import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.stockshop.ReleaseGoodsSelectActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
+import com.appjumper.silkscreen.ui.my.deliver.DeliverOrderListActivity;
+import com.appjumper.silkscreen.ui.my.driver.DriverOrderListActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.util.Const;
@@ -126,7 +128,7 @@ public class MyFragment extends BaseFragment {
 
 
 
-    @OnClick({R.id.llCompany, R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rlHelp,
+    @OnClick({R.id.llCompany, R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rlHelp, R.id.txtMoreDeliver, R.id.txtMoreDriver,
             R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal, R.id.rlReleaseStockGoods})
     public void onClick(View v) {
         switch (v.getId()) {
@@ -179,6 +181,12 @@ public class MyFragment extends BaseFragment {
             case R.id.rlReleaseStockGoods: //发布现货商品
                 start_Activity(context, ReleaseGoodsSelectActivity.class);
                 break;
+            case R.id.txtMoreDeliver: //发货厂家订单列表
+                start_Activity(context, DeliverOrderListActivity.class);
+                break;
+            case R.id.txtMoreDriver: //司机订单列表
+                start_Activity(context, DriverOrderListActivity.class);
+                break;
             default:
                 break;
         }
@@ -193,9 +201,14 @@ public class MyFragment extends BaseFragment {
         public void run() {
             try {
                 Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "user");
+                data.put("a", "info");
+
                 data.put("uid", getUserID());
-                response = JsonParser.getUserResponse(HttpUtil.postMsg(
-                        HttpUtil.getData(data), Url.USERINFO));
+
+                //response = JsonParser.getUserResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.USERINFO));
+                response = JsonParser.getUserResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();
             }

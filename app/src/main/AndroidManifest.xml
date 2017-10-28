@@ -288,6 +288,22 @@
         <activity android:name=".ui.my.driver.DriverAuthSecondActivity" />
         <!--司机认证第三步-->
         <activity android:name=".ui.my.driver.DriverAuthThirdActivity" />
+        <!--司机认证提交成功-->
+        <activity android:name=".ui.my.driver.DriverAuthCompleteActivity" />
+        <!--发布空车配货订单-->
+        <activity android:name=".ui.home.logistics.ReleaseFreightActivity" />
+        <!--发布空车配货订单成功-->
+        <activity android:name=".ui.home.logistics.ReleaseFreightCompleteActivity" />
+        <!--空车配货详情-找车中-->
+        <activity android:name=".ui.home.logistics.FreightDetailOfferingActivity" />
+        <!--发货厂家-订单列表-->
+        <activity android:name=".ui.my.deliver.DeliverOrderListActivity" />
+        <!--发货厂家-选择司机-->
+        <activity android:name=".ui.my.deliver.ChooseDriverActivity" />
+        <!--发货厂家-等待司机支付-->
+        <activity android:name=".ui.my.deliver.WaitDriverPayActivity" />
+        <!--司机-订单列表-->
+        <activity android:name=".ui.my.driver.DriverOrderListActivity" />
 
 
         <!--发布护栏网-->

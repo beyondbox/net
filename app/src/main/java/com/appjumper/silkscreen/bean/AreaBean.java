@@ -1,14 +1,12 @@
 package com.appjumper.silkscreen.bean;
 
 
-import com.appjumper.silkscreen.util.PinyinUtil;
-
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * Created by yc on 2016/10/18.
  */
-public class AreaBean implements Comparable<AreaBean>{
+public class AreaBean implements Comparable<AreaBean>, Serializable {
     private String id;
     private String shortname;
     private String merger_name;

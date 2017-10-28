@@ -61,8 +61,7 @@ public class LogisticsListActivity extends BaseActivity {
     private void initData() {
         fragList = new ArrayList<>();
         fragList.add(new LineFragment());
-        fragList.add(new PersonalFragment());
-        fragList.add(new TruckFragment());
+        fragList.add(new FreightFragment());
 
         fragAdapter = new FragAdapter(getSupportFragmentManager());
 
@@ -77,10 +76,6 @@ public class LogisticsListActivity extends BaseActivity {
                     case R.id.rb1:
                         type = "2";
                         switchFragment(1);
-                        break;
-                    case R.id.rb2:
-                        type = "3";
-                        switchFragment(2);
                         break;
                     default:
                         break;
@@ -152,10 +147,7 @@ public class LogisticsListActivity extends BaseActivity {
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
                         break;
                     case "2":
-                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS_PER);
-                        break;
-                    case "3":
-                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS_CAR);
+                        start_Activity(context, ReleaseFreightActivity.class);
                         break;
                 }
                 break;

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingTop="17dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="承运司机"
+            android:textColor="@color/text_black_color"
+            android:textSize="14sp"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/txtPayState"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="暂未支付信息费、保险费"
+            android:textColor="@color/red_color"
+            android:textSize="13sp"/>
+    </LinearLayout>
+
+    <View style="@style/LineStyle"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="12dp">
+
+        <ImageView
+            android:id="@+id/imgViHead"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/plus_truck"/>
+
+        <TextView
+            android:id="@+id/txtDriverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imgViHead"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:text="张司机"
+            android:textColor="@color/text_black_color"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/txtDriverPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="运费5300元"
+            android:textColor="@color/text_black_color"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/txtDriverTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="10-10 13:40"
+            android:layout_centerVertical="true"
+            android:textColor="@color/text_black_color"
+            android:textSize="14sp"/>
+    </RelativeLayout>
+
+</LinearLayout>

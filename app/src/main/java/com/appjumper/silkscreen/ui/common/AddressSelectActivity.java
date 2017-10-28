@@ -13,21 +13,24 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.bean.AreaBean;
 import com.appjumper.silkscreen.bean.AreaBeanResponse;
-import com.appjumper.silkscreen.ui.common.adapter.AddressListAdapter;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
-import com.appjumper.silkscreen.view.QuickIndexBar;
+import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.adapter.AddressListAdapter;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.MyGridView;
+import com.appjumper.silkscreen.view.QuickIndexBar;
 
 import org.apache.http.message.BasicNameValuePair;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,11 +72,19 @@ public class AddressSelectActivity extends BaseActivity {
         tv_name.setVisibility(View.GONE);
         Intent intent = getIntent();
         code = intent.getStringExtra("code");
-        type = intent.getStringExtra("type");//type=1到市 type=2到村
+        type = intent.getStringExtra("type");//type=1到市 type=2到村  type=0到当前级别
         et_search.setText("城市选择");
         lv_data.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (type.equals("0")) {
+                    Intent intent = new Intent();
+                    intent.putExtra(Const.KEY_OBJECT, items.get(i));
+                    setResult(Integer.parseInt(code), intent);
+                    finish();
+                    return;
+                }
+
                 startForResult_Activity(AddressSelectActivity.this,AddressSelectCityActivity.class,
                         Integer.parseInt(code),new BasicNameValuePair("type",type),new BasicNameValuePair("id",items.get(i).getId())
                         ,new BasicNameValuePair("name",items.get(i).getShortname()),new BasicNameValuePair("code",code));
@@ -92,7 +103,13 @@ public class AddressSelectActivity extends BaseActivity {
         public void run() {
             AreaBeanResponse response = null;
             try {
-                response = JsonParser.getAreaBeanResponse(HttpUtil.getMsg(Url.CITYLIST ));
+                Map<String, String> data = new HashMap<String, String>();
+                data.put("g", "api");
+                data.put("m", "area");
+                data.put("a", "city_list");
+
+                //response = JsonParser.getAreaBeanResponse(HttpUtil.getMsg(Url.CITYLIST ));
+                response = JsonParser.getAreaBeanResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();
             }

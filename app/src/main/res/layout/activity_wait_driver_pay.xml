@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/while_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <include layout="@layout/layout_freight_detail"/>
+
+            <include layout="@layout/layout_selected_driver"/>
+
+            <LinearLayout
+                android:id="@+id/llCounting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtPremium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="保险费用：100元，保额：50万，来自平安保险"
+                    android:padding="12dp"
+                    android:autoLink="all"
+                    android:textSize="13sp"
+                    android:textColor="@color/theme_color"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="支付倒计时"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_black_color2"/>
+
+                <TextView
+                    android:id="@+id/txtCountTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="18:24"
+                    android:textSize="22sp"
+                    android:textColor="@color/text_black_color2"/>
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:id="@+id/llCountFinish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtProtocol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="本次运输由安平平安保险公司提供保险服务，查看条款"
+                    android:padding="12dp"
+                    android:autoLink="all"
+                    android:textSize="13sp"
+                    android:textColor="@color/theme_color"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:lineSpacingExtra="3dp"
+                    android:text="司机在规定时间内没有支付，我们已经对其处罚\n请重新发布订单"
+                    android:textSize="15sp"
+                    android:textColor="@color/red_color"/>
+
+                <TextView
+                    android:id="@+id/txtConfirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/selector_btn_blue"
+                    android:gravity="center"
+                    android:layout_marginBottom="40dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="重新发布订单"
+                    android:textColor="@color/while_color"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

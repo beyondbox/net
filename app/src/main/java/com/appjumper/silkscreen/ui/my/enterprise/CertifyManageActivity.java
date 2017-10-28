@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.bean.UserResponse;
@@ -40,6 +41,8 @@ public class CertifyManageActivity extends BaseActivity {
     TextView txtStateCompany;
     @Bind(R.id.txtStateProductivity)
     TextView txtStateProductivity;
+    @Bind(R.id.txtStateDriver)
+    TextView txtStateDriver;
 
 
     @Override
@@ -70,6 +73,20 @@ public class CertifyManageActivity extends BaseActivity {
             case Const.AUTH_SUCCESS: //认证通过
                 txtStatePerson.setText("已认证");
                 txtStatePerson.setEnabled(false);
+                break;
+            default:
+                break;
+        }
+
+        int stateDriver = Integer.valueOf(user.getDriver_status());
+        switch (stateDriver) {
+            case Const.AUTH_ING: //认证中
+                txtStateDriver.setText("认证中");
+                txtStateDriver.setEnabled(false);
+                break;
+            case Const.AUTH_SUCCESS: //认证通过
+                txtStateDriver.setText("已认证");
+                txtStateDriver.setEnabled(false);
                 break;
             default:
                 break;
@@ -163,6 +180,8 @@ public class CertifyManageActivity extends BaseActivity {
 
     @OnClick({R.id.txtStatePerson, R.id.txtStateCompany, R.id.txtStateProductivity, R.id.txtStateDriver})
     public void onClick(View view) {
+        if (!MyApplication.appContext.checkMobile(context)) return;
+
         switch (view.getId()) {
             case R.id.txtStatePerson: //个人认证
                 start_Activity(context, PersonalAuthenticationActivity.class);

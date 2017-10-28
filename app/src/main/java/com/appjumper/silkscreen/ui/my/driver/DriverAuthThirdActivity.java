@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.ui.my.driver;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -88,6 +89,10 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
         initLocation();
         initBack();
         initProgressDialog(false, null);
+
+        setCropSingleImage(false);
+        setSingleImage(true);
+        setCropTaskPhoto(false);
 
         driverAuth = (DriverAuth) getIntent().getSerializableExtra(Const.KEY_OBJECT);
         getCarLength();
@@ -186,8 +191,8 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
         RequestParams params = MyHttpClient.getApiParam("user", "driver_auth");
         params.put("uid", getUserID());
         params.put("vehicle_brand", edtTxtBrand.getText().toString().trim());
-        params.put("license_years", edtTxtYear.getText().toString().trim());
-        params.put("license_kilometers", edtTxtMileage.getText().toString().trim());
+        params.put("license_years", edtTxtYear.getText().toString().trim() + "年");
+        params.put("license_kilometers", edtTxtMileage.getText().toString().trim() + "万公里");
         params.put("weight", edtTxtWeight.getText().toString().trim());
         params.put("car_model_id", modelList.get(modelIndex).getId());
         params.put("car_model_name", modelList.get(modelIndex).getCar_models_name());
@@ -224,7 +229,8 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
                         if (DriverAuthSecondActivity.instance != null)
                             DriverAuthSecondActivity.instance.finish();
 
-                        showErrorToast("提交成功");
+                        Intent intent = new Intent(context, DriverAuthCompleteActivity.class);
+                        startActivity(intent);
                         finish();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
@@ -337,7 +343,7 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
     };
 
 
-    @OnClick({R.id.imgVi0, R.id.imgVi1, R.id.imgVi2, R.id.txtPrevious, R.id.txtConfirm})
+    @OnClick({R.id.imgVi0, R.id.imgVi1, R.id.imgVi2, R.id.txtPrevious, R.id.txtConfirm, R.id.txtCarLength, R.id.txtCarModel})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgVi0:
@@ -354,6 +360,14 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
                 break;
             case R.id.txtPrevious:
                 finish();
+                break;
+            case R.id.txtCarLength:
+                if (pvLength != null)
+                    pvLength.show();
+                break;
+            case R.id.txtCarModel:
+                if (pvModel != null)
+                    pvModel.show();
                 break;
             case R.id.txtConfirm:
                 if (TextUtils.isEmpty(edtTxtBrand.getText().toString().trim())) {
@@ -389,7 +403,7 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
                     return;
                 }
                 if (TextUtils.isEmpty(driverAuth.getImgGroup())) {
-                    showErrorToast("请上传手持证件合照");
+                    showErrorToast("请上传手持证件与车辆合照");
                     return;
                 }
                 submit();

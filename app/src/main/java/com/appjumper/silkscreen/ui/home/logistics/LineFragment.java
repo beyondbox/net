@@ -123,6 +123,8 @@ public class LineFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (isDetached())
+                    return;
                 showFailTips(getResources().getString(R.string.requst_fail));
             }
         });

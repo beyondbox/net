@@ -10,6 +10,9 @@ public class Const {
     //app分享链接
     public static String SHARE_APP_URL = "https://siwangjia.kuaizhan.com/";
 
+    //空车配货版块客服电话
+    public static final String SERVICE_PHONE_FREIGHT = "18531881233";
+
 
 
 
@@ -176,6 +179,17 @@ public class Const {
 
     public static final String PAY_TYPE_ALL = "0"; //支付方式-全额
     public static final String PAY_TYPE_SUB = "1"; //支付方式-订金
+
+
+    public static final int FREIGHT_AUDITING = 0; //空车配货-审核中
+    public static final int FREIGHT_AUDIT_PASS = 1; //空车配货-审核通过
+    public static final int FREIGHT_AUDIT_REFUSE = 2; //空车配货-审核拒绝
+    public static final int FREIGHT_DRIVER_PAYING = 3; //空车配货-等待司机支付
+    public static final int FREIGHT_GOTO_LOAD = 4; //空车配货-司机前往厂家
+    public static final int FREIGHT_LOADING = 5; //空车配货-装货中
+    public static final int FREIGHT_TRANSPORTING = 6; //空车配货-运输中
+    public static final int FREIGHT_TRANSPORT_FINISH = 7; //空车配货-运输完成
+    public static final int FREIGHT_ORDER_FINISH = 8; //空车配货-订单完成
 
 
     public static final String KEY_MOBILE = "mobile";

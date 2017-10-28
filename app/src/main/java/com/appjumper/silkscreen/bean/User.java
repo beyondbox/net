@@ -29,6 +29,7 @@ public class User {
     private String is_goods;
     private String is_wechat; //微信用户是否绑定了手机号 0未绑定 1绑定
     private String openid;
+    private String driver_status;
 
 
     public String getAuth_status() {
@@ -221,5 +222,13 @@ public class User {
 
     public void setOpenid(String openid) {
         this.openid = openid;
+    }
+
+    public String getDriver_status() {
+        return driver_status;
+    }
+
+    public void setDriver_status(String driver_status) {
+        this.driver_status = driver_status;
     }
 }
