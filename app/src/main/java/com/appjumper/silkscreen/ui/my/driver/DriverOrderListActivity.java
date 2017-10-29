@@ -12,7 +12,8 @@ import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.my.adapter.DeliverOrderListAdapter;
+import com.appjumper.silkscreen.ui.my.adapter.DriverOrderListAdapter;
+import com.appjumper.silkscreen.ui.my.deliver.ChooseDriverActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -44,7 +45,7 @@ public class DriverOrderListActivity extends BaseActivity {
     RecyclerView recyclerData;
 
     private List<Freight> dataList;
-    private DeliverOrderListAdapter adapter;
+    private DriverOrderListAdapter adapter;
 
     private int page = 1;
     private int pageSize = 20;
@@ -72,7 +73,7 @@ public class DriverOrderListActivity extends BaseActivity {
     private void initRecyclerView() {
         dataList = new ArrayList<>();
 
-        adapter = new DeliverOrderListAdapter(R.layout.item_recycler_freight_order_list, dataList);
+        adapter = new DriverOrderListAdapter(R.layout.item_recycler_freight_order_list, dataList);
         recyclerData.setLayoutManager(new LinearLayoutManager(context));
         adapter.bindToRecyclerView(recyclerData);
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
@@ -84,8 +85,8 @@ public class DriverOrderListActivity extends BaseActivity {
                 int state = Integer.valueOf(freight.getExamine_status());
                 Intent intent = null;
                 switch (state) {
-                    case Const.FREIGHT_AUDIT_PASS: // 收到询价/已报价
-                        //intent = new Intent(context, ChooseDriverActivity.class);
+                    case Const.FREIGHT_AUDIT_PASS: // 收到询价或者已报价
+                        intent = new Intent(context, ReceiveInquiryActivity.class);
                         break;
                     case Const.FREIGHT_DRIVER_PAYING: //等待支付
                         //intent = new Intent(context, WaitDriverPayActivity.class);

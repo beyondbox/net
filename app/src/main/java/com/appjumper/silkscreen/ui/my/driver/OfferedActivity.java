@@ -1,12 +1,7 @@
-package com.appjumper.silkscreen.ui.home.logistics;
+package com.appjumper.silkscreen.ui.my.driver;
 
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,7 +14,6 @@ import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.adapter.FreightOfferRecordAdapter;
-import com.appjumper.silkscreen.ui.my.driver.OfferedActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -36,11 +30,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 空车配货详情--找车中
+ * 司机--已报价
  * Created by Botx on 2017/10/27.
  */
 
-public class FreightDetailOfferingActivity extends BaseActivity {
+public class OfferedActivity extends BaseActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -70,23 +64,21 @@ public class FreightDetailOfferingActivity extends BaseActivity {
     LinearLayout llRecord;
     @Bind(R.id.lvRecord)
     ListView lvRecord;
-    @Bind(R.id.txtOffer)
-    TextView txtOffer;
     @Bind(R.id.txtRecord)
     TextView txtRecord;
+    @Bind(R.id.txtMyOffer)
+    TextView txtMyOffer;
 
-    public static FreightDetailOfferingActivity instance = null;
     private String id;
     private Freight data;
-    private AlertDialog offerDialog;
-    private EditText edtTxtPrice;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_freight_detail_offering);
+        setContentView(R.layout.activity_offered);
         ButterKnife.bind(context);
-        instance = this;
         initTitle("详情");
         initBack();
         initProgressDialog(false, null);
@@ -95,30 +87,6 @@ public class FreightDetailOfferingActivity extends BaseActivity {
         getData();
     }
 
-
-    private void initDialog() {
-        offerDialog = new AlertDialog.Builder(context).create();
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_freight_offer, null);
-        offerDialog.setView(view);
-
-        edtTxtPrice = (EditText) view.findViewById(R.id.edtTxtPrice);
-        TextView txtPlace = (TextView) view.findViewById(R.id.txtTitle);
-        TextView txtSubmitOffer = (TextView) view.findViewById(R.id.txtOffer);
-
-        txtPlace.setText(data.getFrom_name() + " - " + data.getTo_name());
-        txtSubmitOffer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String money = edtTxtPrice.getText().toString().trim();
-                if (TextUtils.isEmpty(money)) {
-                    showErrorToast("请输入报价金额");
-                    return;
-                }
-                offerDialog.dismiss();
-                offer(money);
-            }
-        });
-    }
 
 
     /**
@@ -145,7 +113,6 @@ public class FreightDetailOfferingActivity extends BaseActivity {
                         llContent.setVisibility(View.VISIBLE);
                         data = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), Freight.class);
                         setData();
-                        initDialog();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -214,6 +181,16 @@ public class FreightDetailOfferingActivity extends BaseActivity {
         List<FreightOffer> offerList = data.getOffer_list();
         if (offerList != null && offerList.size() > 0) {
             llRecord.setVisibility(View.VISIBLE);
+
+            for (int i = 0; i < offerList.size(); i++) {
+                FreightOffer offer = offerList.get(i);
+                if (getUserID().equals(offer.getUser_id())) {
+                    txtMyOffer.setText("我的报价 : " + offer.getMoney() + offer.getMoney_unit());
+                    offerList.remove(i);
+                    break;
+                }
+            }
+
             FreightOfferRecordAdapter recordAdapter = new FreightOfferRecordAdapter(context, offerList);
             lvRecord.setAdapter(recordAdapter);
             txtRecord.setText("报价列表（" + offerList.size() + "）");
@@ -224,60 +201,8 @@ public class FreightDetailOfferingActivity extends BaseActivity {
     }
 
 
-    /**
-     * 报价
-     */
-    private void offer(String money) {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "offer_driver");
-        params.put("order_id", data.getOrder_id());
-        params.put("uid", getUserID());
-        params.put("car_product_id", id);
-        params.put("money", money);
 
-        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                progress.show();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String jsonStr = new String(responseBody);
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
-                    if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, OfferedActivity.class);
-                        intent.putExtra("id", id);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                showFailTips(getResources().getString(R.string.requst_fail));
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                if (isDestroyed())
-                    return;
-
-                progress.dismiss();
-            }
-        });
-    }
-
-
-    @OnClick({R.id.txtOffer, R.id.txtCall})
+    @OnClick({R.id.txtCall})
     public void onClick(View view) {
         if (data == null)
             return;
@@ -286,9 +211,6 @@ public class FreightDetailOfferingActivity extends BaseActivity {
             return;
 
         switch (view.getId()) {
-            case R.id.txtOffer: //报价
-                offerDialog.show();
-                break;
             case R.id.txtCall: //联系客服
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
@@ -297,11 +219,5 @@ public class FreightDetailOfferingActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        instance = null;
-    }
 
 }

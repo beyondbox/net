@@ -1,4 +1,4 @@
-package com.appjumper.silkscreen.ui.home.logistics;
+package com.appjumper.silkscreen.ui.my.driver;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -19,7 +19,6 @@ import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.adapter.FreightOfferRecordAdapter;
-import com.appjumper.silkscreen.ui.my.driver.OfferedActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -36,11 +35,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 空车配货详情--找车中
+ * 司机--收到询价
  * Created by Botx on 2017/10/27.
  */
 
-public class FreightDetailOfferingActivity extends BaseActivity {
+public class ReceiveInquiryActivity extends BaseActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -75,7 +74,6 @@ public class FreightDetailOfferingActivity extends BaseActivity {
     @Bind(R.id.txtRecord)
     TextView txtRecord;
 
-    public static FreightDetailOfferingActivity instance = null;
     private String id;
     private Freight data;
     private AlertDialog offerDialog;
@@ -86,7 +84,6 @@ public class FreightDetailOfferingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_freight_detail_offering);
         ButterKnife.bind(context);
-        instance = this;
         initTitle("详情");
         initBack();
         initProgressDialog(false, null);
@@ -297,11 +294,5 @@ public class FreightDetailOfferingActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        instance = null;
-    }
 
 }

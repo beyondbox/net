@@ -304,6 +304,10 @@
         <activity android:name=".ui.my.deliver.WaitDriverPayActivity" />
         <!--司机-订单列表-->
         <activity android:name=".ui.my.driver.DriverOrderListActivity" />
+        <!--司机-收到询价-->
+        <activity android:name=".ui.my.driver.ReceiveInquiryActivity" />
+        <!--司机-已报价-->
+        <activity android:name=".ui.my.driver.OfferedActivity" />
 
 
         <!--发布护栏网-->
