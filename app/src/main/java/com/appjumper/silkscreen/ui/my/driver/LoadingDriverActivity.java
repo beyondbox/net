@@ -1,19 +1,17 @@
 package com.appjumper.silkscreen.ui.my.driver;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Freight;
-import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.home.adapter.FreightOfferRecordAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -23,18 +21,16 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 司机--已报价
- * Created by Botx on 2017/10/27.
+ * 装货中--司机端
+ * Created by Botx on 2017/10/28.
  */
 
-public class OfferedActivity extends BaseActivity {
+public class LoadingDriverActivity extends BaseActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -60,14 +56,9 @@ public class OfferedActivity extends BaseActivity {
     @Bind(R.id.txtPayedType)
     TextView txtPayedType;
 
-    @Bind(R.id.llRecord)
-    LinearLayout llRecord;
-    @Bind(R.id.lvRecord)
-    ListView lvRecord;
-    @Bind(R.id.txtRecord)
-    TextView txtRecord;
-    @Bind(R.id.txtMyOffer)
-    TextView txtMyOffer;
+    @Bind(R.id.txtPremium)
+    TextView txtPremium;
+
 
     private String id;
     private Freight data;
@@ -77,7 +68,7 @@ public class OfferedActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_offered);
+        setContentView(R.layout.activity_loading_driver);
         ButterKnife.bind(context);
         initTitle("详情");
         initBack();
@@ -150,7 +141,7 @@ public class OfferedActivity extends BaseActivity {
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
 
-        txtState.setText("已报价");
+        txtState.setText("装货中");
 
         String uid = data.getUser_id();
         String newName = "";
@@ -180,46 +171,29 @@ public class OfferedActivity extends BaseActivity {
             txtPayedType.setText("货主支付运费");
 
 
-        List<FreightOffer> offerList = data.getOffer_list();
-        if (offerList != null && offerList.size() > 0) {
-            llRecord.setVisibility(View.VISIBLE);
-
-            for (int i = 0; i < offerList.size(); i++) {
-                FreightOffer offer = offerList.get(i);
-                if (getUserID().equals(offer.getUser_id())) {
-                    txtMyOffer.setText("我的报价 : " + offer.getMoney() + offer.getMoney_unit());
-                    offerList.remove(i);
-                    break;
-                }
-            }
-
-            FreightOfferRecordAdapter recordAdapter = new FreightOfferRecordAdapter(context, offerList);
-            lvRecord.setAdapter(recordAdapter);
-            txtRecord.setText("报价列表（" + offerList.size() + "）");
-        } else {
-            llRecord.setVisibility(View.GONE);
-        }
+        txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        txtPremium.getPaint().setAntiAlias(true);
 
     }
 
 
 
-    @OnClick({R.id.txtCall})
+
+    @OnClick({R.id.txtCall, R.id.txtCallDeliver})
     public void onClick(View view) {
         if (data == null)
-            return;
-
-        if (!checkLogined())
             return;
 
         switch (view.getId()) {
             case R.id.txtCall: //联系客服
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
+            case R.id.txtCallDeliver: //联系厂家
+                AppTool.dial(context, data.getMobile());
+                break;
             default:
                 break;
         }
     }
-
 
 }

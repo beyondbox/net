@@ -1,24 +1,19 @@
 package com.appjumper.silkscreen.ui.my.driver;
 
-import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.os.CountDownTimer;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Freight;
-import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.home.adapter.FreightOfferRecordAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -28,18 +23,18 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.text.DecimalFormat;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 司机--收到询价
- * Created by Botx on 2017/10/27.
+ * 司机支付
+ * Created by Botx on 2017/10/28.
  */
 
-public class ReceiveInquiryActivity extends BaseActivity {
+public class DriverPayActivity extends BaseActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -65,24 +60,31 @@ public class ReceiveInquiryActivity extends BaseActivity {
     @Bind(R.id.txtPayedType)
     TextView txtPayedType;
 
-    @Bind(R.id.llRecord)
-    LinearLayout llRecord;
-    @Bind(R.id.lvRecord)
-    ListView lvRecord;
-    @Bind(R.id.txtOffer)
-    TextView txtOffer;
-    @Bind(R.id.txtRecord)
-    TextView txtRecord;
+    @Bind(R.id.txtPayState)
+    TextView txtPayState;
+
+    @Bind(R.id.llCounting)
+    LinearLayout llCounting;
+    @Bind(R.id.llCountFinish)
+    LinearLayout llCountFinish;
+    @Bind(R.id.txtCountTime)
+    TextView txtCountTime;
+    @Bind(R.id.txtPremium)
+    TextView txtPremium;
+
 
     private String id;
     private Freight data;
-    private AlertDialog offerDialog;
-    private EditText edtTxtPrice;
+    private CountDownTimer countDownTimer;
+
+    private DecimalFormat dFormat = new DecimalFormat("00");
+    private long mMs = 1000 * 60; //一分钟的毫秒数
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_receive_inquiry);
+        setContentView(R.layout.activity_driver_pay);
         ButterKnife.bind(context);
         initTitle("详情");
         initBack();
@@ -92,30 +94,6 @@ public class ReceiveInquiryActivity extends BaseActivity {
         getData();
     }
 
-
-    private void initDialog() {
-        offerDialog = new AlertDialog.Builder(context).create();
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_freight_offer, null);
-        offerDialog.setView(view);
-
-        edtTxtPrice = (EditText) view.findViewById(R.id.edtTxtPrice);
-        TextView txtPlace = (TextView) view.findViewById(R.id.txtTitle);
-        TextView txtSubmitOffer = (TextView) view.findViewById(R.id.txtOffer);
-
-        txtPlace.setText(data.getFrom_name() + " - " + data.getTo_name());
-        txtSubmitOffer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String money = edtTxtPrice.getText().toString().trim();
-                if (TextUtils.isEmpty(money)) {
-                    showErrorToast("请输入报价金额");
-                    return;
-                }
-                offerDialog.dismiss();
-                offer(money);
-            }
-        });
-    }
 
 
     /**
@@ -142,7 +120,6 @@ public class ReceiveInquiryActivity extends BaseActivity {
                         llContent.setVisibility(View.VISIBLE);
                         data = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), Freight.class);
                         setData();
-                        initDialog();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -180,7 +157,7 @@ public class ReceiveInquiryActivity extends BaseActivity {
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
 
-        txtState.setText("收到询价");
+        txtState.setText("等待支付");
 
         String uid = data.getUser_id();
         String newName = "";
@@ -210,28 +187,56 @@ public class ReceiveInquiryActivity extends BaseActivity {
             txtPayedType.setText("货主支付运费");
 
 
-        List<FreightOffer> offerList = data.getOffer_list();
-        if (offerList != null && offerList.size() > 0) {
-            llRecord.setVisibility(View.VISIBLE);
-            FreightOfferRecordAdapter recordAdapter = new FreightOfferRecordAdapter(context, offerList);
-            lvRecord.setAdapter(recordAdapter);
-            txtRecord.setText("报价列表（" + offerList.size() + "）");
-        } else {
-            llRecord.setVisibility(View.GONE);
-        }
+        txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        txtPremium.getPaint().setAntiAlias(true);
 
+
+        long endTime = AppTool.getTimeMs(data.getExpiry_driver_pay_date(), "yyyy-MM-dd HH:mm:ss");
+        if (System.currentTimeMillis() < endTime) {
+            llCounting.setVisibility(View.VISIBLE);
+            llCountFinish.setVisibility(View.GONE);
+            startCountDown(endTime);
+        } else {
+            llCounting.setVisibility(View.GONE);
+            llCountFinish.setVisibility(View.VISIBLE);
+            txtPayState.setText("已过支付期限");
+        }
     }
 
 
     /**
-     * 报价
+     * 开始倒计时
+     * @param endTime
      */
-    private void offer(String money) {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "offer_driver");
-        params.put("order_id", data.getOrder_id());
+    private void startCountDown(long endTime) {
+        long millisInFuture = endTime - System.currentTimeMillis();
+        countDownTimer = new CountDownTimer(millisInFuture, 1000) {
+
+            @Override
+            public void onTick(long l) {
+                long minutes = l / mMs;
+                long seconds = l % mMs / 1000;
+                txtCountTime.setText(dFormat.format(minutes) + " : " + dFormat.format(seconds));
+            }
+
+            @Override
+            public void onFinish() {
+                llCounting.setVisibility(View.GONE);
+                llCountFinish.setVisibility(View.VISIBLE);
+                txtPayState.setText("已过支付期限");
+            }
+        }.start();
+    }
+
+
+    /**
+     * 支付
+     */
+    private void pay() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "driver_pay");
         params.put("uid", getUserID());
         params.put("car_product_id", id);
-        params.put("money", money);
+        params.put("pay_money", 200);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
@@ -247,7 +252,7 @@ public class ReceiveInquiryActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, OfferedActivity.class);
+                        Intent intent = new Intent(context, GoToDeliverActivity.class);
                         intent.putExtra("id", id);
                         startActivity(intent);
                         finish();
@@ -276,72 +281,17 @@ public class ReceiveInquiryActivity extends BaseActivity {
     }
 
 
-    /**
-     * 忽略订单
-     */
-    private void ignoreOrder() {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "driver_ignore_order");
-        params.put("id", id);
-        params.put("uid", getUserID());
-
-        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                progress.show();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String jsonStr = new String(responseBody);
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
-                    if (state == Const.HTTP_STATE_SUCCESS) {
-                        showErrorToast("忽略订单成功");
-                        finish();
-                    } else {
-                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                showFailTips(getResources().getString(R.string.requst_fail));
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                if (isDestroyed())
-                    return;
-
-                progress.dismiss();
-            }
-        });
-    }
-
-
-    @OnClick({R.id.txtOffer, R.id.txtCall, R.id.txtIgnore})
+    @OnClick({R.id.txtCall, R.id.txtPay})
     public void onClick(View view) {
         if (data == null)
             return;
 
-        if (!checkLogined())
-            return;
-
         switch (view.getId()) {
-            case R.id.txtOffer: //报价
-                offerDialog.show();
-                break;
             case R.id.txtCall: //联系客服
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
-            case R.id.txtIgnore: //忽略订单
-                ignoreOrder();
+            case R.id.txtPay: //支付
+                pay();
                 break;
             default:
                 break;
@@ -349,4 +299,12 @@ public class ReceiveInquiryActivity extends BaseActivity {
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            countDownTimer = null;
+        }
+    }
 }

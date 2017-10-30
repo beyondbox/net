@@ -79,12 +79,17 @@ public class Freight {
     private String confirm_driver_id;
     private String confirm_driver_name;
     private String confirm_driver_mobile;
+    private String confirm_driver_offer;
     private String is_inquiry_price;
     private String confirm_arrive_img;
     private String is_ignore_order;
     private String min_money;
+    private String mobile;
 
     private List<FreightOffer> offer_list;
+
+
+
 
     public String getId() {
         return id;
@@ -380,5 +385,21 @@ public class Freight {
 
     public void setMin_money(String min_money) {
         this.min_money = min_money;
+    }
+
+    public String getConfirm_driver_offer() {
+        return confirm_driver_offer;
+    }
+
+    public void setConfirm_driver_offer(String confirm_driver_offer) {
+        this.confirm_driver_offer = confirm_driver_offer;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

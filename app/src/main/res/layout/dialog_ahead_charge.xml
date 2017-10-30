@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:background="@color/while_color"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:text="提前收运费"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:lineSpacingExtra="3dp"
+        android:text="提前收运费是“丝网+”特意面向司机推出的服务。符合条件的厂家发货和符合条件的司机运输后，丝网+会为厂家垫付运费，让司机快速收到运费。\n提前收运费手续费：运费的2%，100元封顶。\n申请通过时，运费会进入您的个人账户，到时提现即可。"
+        android:textColor="@color/text_black_color2"
+        android:textSize="14sp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:lineSpacingExtra="3dp"
+        android:text="经判断，您此次订单符合提前收运费条件"
+        android:textColor="@color/green_color"
+        android:textSize="14sp"/>
+
+
+
+    <TextView
+        android:id="@+id/txtConfirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/selector_btn_blue"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="申请"
+        android:textColor="@color/while_color"
+        android:textSize="15sp" />
+
+
+</LinearLayout>

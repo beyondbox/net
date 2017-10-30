@@ -2,25 +2,30 @@ package com.appjumper.silkscreen.ui.my.driver;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Freight;
-import com.appjumper.silkscreen.bean.FreightOffer;
+import com.appjumper.silkscreen.bean.ImageResponse;
 import com.appjumper.silkscreen.net.GsonUtil;
+import com.appjumper.silkscreen.net.HttpUtil;
+import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.home.adapter.FreightOfferRecordAdapter;
+import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
 import com.appjumper.silkscreen.util.AppTool;
+import com.appjumper.silkscreen.util.Applibrary;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.ImageUtil;
+import com.bumptech.glide.Glide;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -28,18 +33,18 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 司机--收到询价
- * Created by Botx on 2017/10/27.
+ * 运输途中--司机端
+ * Created by Botx on 2017/10/28.
  */
 
-public class ReceiveInquiryActivity extends BaseActivity {
+public class TransportingDriverActivity extends MultiSelectPhotoActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -65,28 +70,33 @@ public class ReceiveInquiryActivity extends BaseActivity {
     @Bind(R.id.txtPayedType)
     TextView txtPayedType;
 
-    @Bind(R.id.llRecord)
-    LinearLayout llRecord;
-    @Bind(R.id.lvRecord)
-    ListView lvRecord;
-    @Bind(R.id.txtOffer)
-    TextView txtOffer;
-    @Bind(R.id.txtRecord)
-    TextView txtRecord;
+    @Bind(R.id.txtPremium)
+    TextView txtPremium;
+
 
     private String id;
     private Freight data;
-    private AlertDialog offerDialog;
-    private EditText edtTxtPrice;
+    private AlertDialog arriveDialog;
+    private ImageView imgViUpload;
+    private File tempImageFile;
+    private String arriveImgUrl = "";
+
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_receive_inquiry);
+        setContentView(R.layout.activity_transporting_driver);
         ButterKnife.bind(context);
         initTitle("详情");
         initBack();
         initProgressDialog(false, null);
+
+        setCropSingleImage(false);
+        setSingleImage(true);
+        setCropTaskPhoto(false);
+
+        initDialog();
 
         id = getIntent().getStringExtra("id");
         getData();
@@ -94,28 +104,87 @@ public class ReceiveInquiryActivity extends BaseActivity {
 
 
     private void initDialog() {
-        offerDialog = new AlertDialog.Builder(context).create();
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_freight_offer, null);
-        offerDialog.setView(view);
+        arriveDialog = new AlertDialog.Builder(context).create();
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_confirm_arrived, null);
+        arriveDialog.setView(view);
 
-        edtTxtPrice = (EditText) view.findViewById(R.id.edtTxtPrice);
-        TextView txtPlace = (TextView) view.findViewById(R.id.txtTitle);
-        TextView txtSubmitOffer = (TextView) view.findViewById(R.id.txtOffer);
-
-        txtPlace.setText(data.getFrom_name() + " - " + data.getTo_name());
-        txtSubmitOffer.setOnClickListener(new View.OnClickListener() {
+        imgViUpload = (ImageView) view.findViewById(R.id.imgViUpload);
+        imgViUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String money = edtTxtPrice.getText().toString().trim();
-                if (TextUtils.isEmpty(money)) {
-                    showErrorToast("请输入报价金额");
-                    return;
-                }
-                offerDialog.dismiss();
-                offer(money);
+                showWindowSelectList(view);
             }
         });
     }
+
+
+    @Override
+    protected void requestImage(String[] path) {
+        String origPath = path[0];
+
+        if (tempImageFile != null) {
+            if (tempImageFile.exists())
+                tempImageFile.delete();
+        }
+        tempImageFile = new File(Applibrary.IMAGE_CACHE_DIR, System.currentTimeMillis() + ".jpg");
+        boolean result = ImageUtil.saveBitmap(ImageUtil.compressImage(origPath, 1920, 1080), 80, tempImageFile);
+        if (result) {
+            progress.show();
+            new Thread(new UpdateStringRun(tempImageFile.getPath())).start();
+        }
+    }
+
+
+    public class UpdateStringRun implements Runnable {
+        private File upLoadBitmapFile;
+        public UpdateStringRun(String newPicturePath) {
+            this.upLoadBitmapFile = new File(newPicturePath);
+        }
+
+        @Override
+        public void run() {
+            ImageResponse retMap = null;
+            try {
+                String url = Url.UPLOADIMAGE;
+                retMap = JsonParser.getImageResponse(HttpUtil.uploadFile(url, upLoadBitmapFile));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (retMap != null) {
+                handler.sendMessage(handler.obtainMessage(3, retMap));
+            } else {
+                handler.sendMessage(handler.obtainMessage(NETWORK_SUCCESS_DATA_ERROR));
+            }
+        }
+    }
+
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (isDestroyed())
+                return;
+
+            switch (msg.what) {
+                case 3://上传图片
+                    ImageResponse imgResponse = (ImageResponse) msg.obj;
+                    if (imgResponse.isSuccess()) {
+                        arriveImgUrl = imgResponse.getData().get(0).getOrigin();
+                        Glide.with(context).load(arriveImgUrl).placeholder(R.mipmap.img_error).into(imgViUpload);
+                    } else {
+                        progress.dismiss();
+                        showErrorToast(imgResponse.getError_desc());
+                    }
+                    break;
+                case NETWORK_SUCCESS_DATA_ERROR:
+                    progress.dismiss();
+                    showErrorToast("网络超时，请稍候");
+                    break;
+            }
+        }
+    };
+
 
 
     /**
@@ -142,7 +211,6 @@ public class ReceiveInquiryActivity extends BaseActivity {
                         llContent.setVisibility(View.VISIBLE);
                         data = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), Freight.class);
                         setData();
-                        initDialog();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -180,7 +248,7 @@ public class ReceiveInquiryActivity extends BaseActivity {
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
 
-        txtState.setText("收到询价");
+        txtState.setText("运输途中");
 
         String uid = data.getUser_id();
         String newName = "";
@@ -210,35 +278,22 @@ public class ReceiveInquiryActivity extends BaseActivity {
             txtPayedType.setText("货主支付运费");
 
 
-        List<FreightOffer> offerList = data.getOffer_list();
-        if (offerList != null && offerList.size() > 0) {
-            llRecord.setVisibility(View.VISIBLE);
-            FreightOfferRecordAdapter recordAdapter = new FreightOfferRecordAdapter(context, offerList);
-            lvRecord.setAdapter(recordAdapter);
-            txtRecord.setText("报价列表（" + offerList.size() + "）");
-        } else {
-            llRecord.setVisibility(View.GONE);
-        }
+        txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        txtPremium.getPaint().setAntiAlias(true);
 
     }
 
 
     /**
-     * 报价
+     * 确认送达
      */
-    private void offer(String money) {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "offer_driver");
-        params.put("order_id", data.getOrder_id());
-        params.put("uid", getUserID());
+    private void confirmArrived() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "driver_confirm_arrive");
         params.put("car_product_id", id);
-        params.put("money", money);
+        params.put("uid", getUserID());
+        params.put("confirm_arrive_img", arriveImgUrl);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                progress.show();
-            }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -247,7 +302,8 @@ public class ReceiveInquiryActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, OfferedActivity.class);
+                        arriveDialog.dismiss();
+                        Intent intent = new Intent(context, TransportFinishDriverActivity.class);
                         intent.putExtra("id", id);
                         startActivity(intent);
                         finish();
@@ -276,77 +332,38 @@ public class ReceiveInquiryActivity extends BaseActivity {
     }
 
 
-    /**
-     * 忽略订单
-     */
-    private void ignoreOrder() {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "driver_ignore_order");
-        params.put("id", id);
-        params.put("uid", getUserID());
 
-        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                progress.show();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String jsonStr = new String(responseBody);
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
-                    if (state == Const.HTTP_STATE_SUCCESS) {
-                        showErrorToast("忽略订单成功");
-                        finish();
-                    } else {
-                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                showFailTips(getResources().getString(R.string.requst_fail));
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                if (isDestroyed())
-                    return;
-
-                progress.dismiss();
-            }
-        });
-    }
-
-
-    @OnClick({R.id.txtOffer, R.id.txtCall, R.id.txtIgnore})
+    @OnClick({R.id.txtCall, R.id.btn0, R.id.btn1, R.id.btn2})
     public void onClick(View view) {
         if (data == null)
             return;
 
-        if (!checkLogined())
-            return;
-
         switch (view.getId()) {
-            case R.id.txtOffer: //报价
-                offerDialog.show();
-                break;
             case R.id.txtCall: //联系客服
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
-            case R.id.txtIgnore: //忽略订单
-                ignoreOrder();
+            case R.id.btn0: //联系厂家
+                AppTool.dial(context, data.getMobile());
+                break;
+            case R.id.btn1: //更新位置
+
+                break;
+            case R.id.btn2: //确认送达
+                arriveDialog.show();
                 break;
             default:
                 break;
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (tempImageFile != null) {
+            if (tempImageFile.exists())
+                tempImageFile.delete();
+        }
+    }
 
 }

@@ -60,9 +60,39 @@ public class DeliverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewH
                 break;
             case Const.FREIGHT_DRIVER_PAYING:
                 txtState.setText("等待司机支付");
-                txtContent.setText("");
+                txtContent.setText("确认运费\n" + item.getConfirm_driver_offer());
                 setButtonVisibility(helper, false, false, true);
                 setButtonName(helper, "", "", "联系客服");
+                break;
+            case Const.FREIGHT_GOTO_LOAD:
+                txtState.setText("司机正在赶来");
+                txtContent.setText("确认运费\n" + item.getConfirm_driver_offer());
+                setButtonVisibility(helper, false, true, true);
+                setButtonName(helper, "", "联系客服", "确认司机到达");
+                break;
+            case Const.FREIGHT_LOADING:
+                txtState.setText("装货中");
+                txtContent.setText("确认运费\n" + item.getConfirm_driver_offer());
+                setButtonVisibility(helper, false, true, true);
+                setButtonName(helper, "", "联系客服", "确认装货完成");
+                break;
+            case Const.FREIGHT_TRANSPORTING:
+                txtState.setText("运输途中");
+                txtContent.setText("");
+                setButtonVisibility(helper, true, true, true);
+                setButtonName(helper, "联系司机", "查看司机位置", "确认送达");
+                break;
+            case Const.FREIGHT_TRANSPORT_FINISH:
+                txtState.setText("运输完成");
+                txtContent.setText("确认运费\n" + item.getConfirm_driver_offer());
+                setButtonVisibility(helper, true, true, true);
+                setButtonName(helper, "联系司机", "联系客服", "支付运费");
+                break;
+            case Const.FREIGHT_ORDER_FINISH:
+                txtState.setText("订单完成");
+                txtContent.setText("");
+                setButtonVisibility(helper, false, false, true);
+                setButtonName(helper, "", "", "发布新订单");
                 break;
         }
 

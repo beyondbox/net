@@ -1,9 +1,9 @@
-package com.appjumper.silkscreen.ui.my.driver;
+package com.appjumper.silkscreen.ui.my.deliver;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
@@ -13,7 +13,6 @@ import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.home.adapter.FreightOfferRecordAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -30,11 +29,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 司机--已报价
- * Created by Botx on 2017/10/27.
+ * 运输完成--发货厂家
+ * Created by Botx on 2017/10/28.
  */
 
-public class OfferedActivity extends BaseActivity {
+public class TransportFinishDeliverActivity extends BaseActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -60,24 +59,30 @@ public class OfferedActivity extends BaseActivity {
     @Bind(R.id.txtPayedType)
     TextView txtPayedType;
 
-    @Bind(R.id.llRecord)
-    LinearLayout llRecord;
-    @Bind(R.id.lvRecord)
-    ListView lvRecord;
-    @Bind(R.id.txtRecord)
-    TextView txtRecord;
-    @Bind(R.id.txtMyOffer)
-    TextView txtMyOffer;
+    @Bind(R.id.txtPayState)
+    TextView txtPayState;
+    @Bind(R.id.txtDriverName)
+    TextView txtDriverName;
+    @Bind(R.id.txtDriverPrice)
+    TextView txtDriverPrice;
+    @Bind(R.id.txtDriverTime)
+    TextView txtDriverTime;
+
+    @Bind(R.id.txtPremium)
+    TextView txtPremium;
+
+    @Bind(R.id.btn1)
+    TextView btn1;
+
 
     private String id;
     private Freight data;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_offered);
+        setContentView(R.layout.activity_transport_finish_deliver);
         ButterKnife.bind(context);
         initTitle("详情");
         initBack();
@@ -150,7 +155,7 @@ public class OfferedActivity extends BaseActivity {
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
 
-        txtState.setText("已报价");
+        txtState.setText("运输完成");
 
         String uid = data.getUser_id();
         String newName = "";
@@ -180,46 +185,48 @@ public class OfferedActivity extends BaseActivity {
             txtPayedType.setText("货主支付运费");
 
 
-        List<FreightOffer> offerList = data.getOffer_list();
-        if (offerList != null && offerList.size() > 0) {
-            llRecord.setVisibility(View.VISIBLE);
+        txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        txtPremium.getPaint().setAntiAlias(true);
 
-            for (int i = 0; i < offerList.size(); i++) {
-                FreightOffer offer = offerList.get(i);
-                if (getUserID().equals(offer.getUser_id())) {
-                    txtMyOffer.setText("我的报价 : " + offer.getMoney() + offer.getMoney_unit());
-                    offerList.remove(i);
-                    break;
-                }
+
+        final List<FreightOffer> offerList = data.getOffer_list();
+        String selectedDriverId = data.getConfirm_driver_id();
+        FreightOffer selectedOffer = null;
+        for (FreightOffer offer : offerList) {
+            if (offer.getUser_id().equals(selectedDriverId)) {
+                selectedOffer = offer;
+                break;
             }
-
-            FreightOfferRecordAdapter recordAdapter = new FreightOfferRecordAdapter(context, offerList);
-            lvRecord.setAdapter(recordAdapter);
-            txtRecord.setText("报价列表（" + offerList.size() + "）");
-        } else {
-            llRecord.setVisibility(View.GONE);
         }
+
+        txtDriverName.setText(selectedOffer.getName().substring(0, 1) + "司机");
+        txtDriverPrice.setText("运费" + selectedOffer.getMoney() + selectedOffer.getMoney_unit());
+        txtDriverTime.setText(selectedOffer.getCreate_time().substring(5, 16));
+        txtPayState.setText("已支付信息费、保险费");
+        txtPayState.setTextColor(getResources().getColor(R.color.green_color));
 
     }
 
 
-
-    @OnClick({R.id.txtCall})
+    @OnClick({R.id.txtCall, R.id.btn0, R.id.btn1})
     public void onClick(View view) {
         if (data == null)
-            return;
-
-        if (!checkLogined())
             return;
 
         switch (view.getId()) {
             case R.id.txtCall: //联系客服
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
+            case R.id.btn0: //联系司机
+                AppTool.dial(context, data.getConfirm_driver_mobile());
+                break;
+            case R.id.btn1: //支付运费
+                btn1.setText("等待司机确认收款");
+                btn1.setEnabled(false);
+                break;
             default:
                 break;
         }
     }
-
 
 }

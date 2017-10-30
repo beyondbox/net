@@ -90,6 +90,18 @@ public class DeliverOrderListActivity extends BaseActivity {
                     case Const.FREIGHT_DRIVER_PAYING: //等待司机支付
                         intent = new Intent(context, WaitDriverPayActivity.class);
                         break;
+                    case Const.FREIGHT_GOTO_LOAD: //司机正在赶来
+                        intent = new Intent(context, DriverComingActivity.class);
+                        break;
+                    case Const.FREIGHT_LOADING: //装货中
+                        intent = new Intent(context, LoadingDeliverActivity.class);
+                        break;
+                    case Const.FREIGHT_TRANSPORTING: //运输途中
+                        intent = new Intent(context, TransportingDeliverActivity.class);
+                        break;
+                    case Const.FREIGHT_TRANSPORT_FINISH: //运输完成
+                        intent = new Intent(context, TransportFinishDeliverActivity.class);
+                        break;
                 }
 
                 if (intent != null) {

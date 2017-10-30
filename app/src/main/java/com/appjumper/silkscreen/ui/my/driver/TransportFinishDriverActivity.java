@@ -1,25 +1,20 @@
-package com.appjumper.silkscreen.ui.my.deliver;
+package com.appjumper.silkscreen.ui.my.driver;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.base.MyBaseAdapter;
-import com.appjumper.silkscreen.bean.DriverInfo;
 import com.appjumper.silkscreen.bean.Freight;
-import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.my.adapter.ChooseDriverAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -29,18 +24,16 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 选择司机
+ * 运输完成--司机端
  * Created by Botx on 2017/10/28.
  */
 
-public class ChooseDriverActivity extends BaseActivity {
+public class TransportFinishDriverActivity extends BaseActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -66,32 +59,45 @@ public class ChooseDriverActivity extends BaseActivity {
     @Bind(R.id.txtPayedType)
     TextView txtPayedType;
 
-    @Bind(R.id.llRecord)
-    LinearLayout llRecord;
-    @Bind(R.id.lvRecord)
-    ListView lvRecord;
-    @Bind(R.id.txtRecord)
-    TextView txtRecord;
+    @Bind(R.id.txtPremium)
+    TextView txtPremium;
+
 
     private String id;
     private Freight data;
-    private FreightOffer selectedOffer;
+    private AlertDialog aheadChargeDialog;
 
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_driver);
+        setContentView(R.layout.activity_transport_finish_driver);
         ButterKnife.bind(context);
         initTitle("详情");
         initBack();
         initProgressDialog(false, null);
 
+        initDialog();
+
         id = getIntent().getStringExtra("id");
         getData();
     }
 
+
+    private void initDialog() {
+        aheadChargeDialog = new AlertDialog.Builder(context).create();
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_ahead_charge, null);
+        aheadChargeDialog.setView(view);
+
+        TextView txtConfirm = (TextView) view.findViewById(R.id.txtConfirm);
+        txtConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                applyAheadCharge();
+            }
+        });
+    }
 
 
     /**
@@ -155,7 +161,7 @@ public class ChooseDriverActivity extends BaseActivity {
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
 
-        txtState.setText("等待司机报价");
+        txtState.setText("运输完成");
 
         String uid = data.getUser_id();
         String newName = "";
@@ -185,172 +191,19 @@ public class ChooseDriverActivity extends BaseActivity {
             txtPayedType.setText("货主支付运费");
 
 
-        final List<FreightOffer> offerList = data.getOffer_list();
-        if (offerList != null && offerList.size() > 0) {
-            llRecord.setVisibility(View.VISIBLE);
-            ChooseDriverAdapter recordAdapter = new ChooseDriverAdapter(context, offerList);
-            lvRecord.setAdapter(recordAdapter);
-            txtRecord.setText("报价列表（" + offerList.size() + "）");
-
-            lvRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    getDriverInfo(offerList.get(i));
-                }
-            });
-
-            recordAdapter.setOnWhichClickListener(new MyBaseAdapter.OnWhichClickListener() {
-                @Override
-                public void onWhichClick(View view, int position, int tag) {
-                    switch (view.getId()) {
-                        case R.id.txtHandle:
-                            selectedOffer = offerList.get(position);
-                            showConfirmDialog();
-                            break;
-                    }
-                }
-            });
-        } else {
-            llRecord.setVisibility(View.GONE);
-        }
+        txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        txtPremium.getPaint().setAntiAlias(true);
 
     }
 
 
     /**
-     * 获取司机信息
+     * 申请提前收取运费
      */
-    private void getDriverInfo(FreightOffer offer) {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "details_driver");
-        params.put("id", offer.getId());
-        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String jsonStr = new String(responseBody);
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
-                    if (state == Const.HTTP_STATE_SUCCESS) {
-                        DriverInfo driver = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), DriverInfo.class);
-                        showDriverInfoDialog(driver);
-                    } else {
-                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                showFailTips(getResources().getString(R.string.requst_fail));
-            }
-        });
-    }
-
-
-    /**
-     * 司机信息对话框
-     */
-    private void showDriverInfoDialog(DriverInfo driver) {
-        AlertDialog dialog = new AlertDialog.Builder(context).create();
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_driver_info, null);
-        dialog.setView(view);
-
-        TextView txtName = (TextView) view.findViewById(R.id.txtName);
-        TextView txtCarModel  = (TextView) view.findViewById(R.id.txtCarModel);
-        TextView txtYear = (TextView) view.findViewById(R.id.txtYear);
-        TextView txtMileage = (TextView) view.findViewById(R.id.txtMileage);
-        TextView txtOfferNum = (TextView) view.findViewById(R.id.txtOfferNum);
-
-        txtName.setText(driver.getName().substring(0, 1) + "司机");
-        txtCarModel.setText(driver.getVehicle_brand());
-        txtYear.setText(driver.getLicense_years());
-        txtMileage.setText(driver.getLicense_kilometers());
-        txtOfferNum.setText(driver.getOffer_num());
-
-        dialog.show();
-    }
-
-
-    /**
-     * 确认选择对话框
-     */
-    private void showConfirmDialog() {
-        final AlertDialog dialog = new AlertDialog.Builder(context).create();
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_confirm_choose_driver, null);
-        dialog.setView(view);
-
-        TextView txtName = (TextView) view.findViewById(R.id.txtName);
-        TextView txtPrice = (TextView) view.findViewById(R.id.txtPrice);
-        TextView txtConfirm = (TextView) view.findViewById(R.id.txtConfirm);
-
-        txtName.setText(selectedOffer.getName().substring(0, 1) + "司机");
-        txtPrice.setText(selectedOffer.getMoney() + selectedOffer.getMoney_unit());
-        txtConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-                getDriverState();
-            }
-        });
-
-        dialog.show();
-    }
-
-
-    /**
-     * 获取司机状态
-     */
-    private void getDriverState() {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "select_driver");
-        params.put("driver_id", selectedOffer.getUser_id());
-        params.put("offer_id", selectedOffer.getId());
-
-        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                progress.show();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String jsonStr = new String(responseBody);
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
-                    if (state == Const.HTTP_STATE_SUCCESS) {
-                        chooseDriver();
-                    } else {
-                        progress.dismiss();
-                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
-                    }
-                } catch (JSONException e) {
-                    progress.dismiss();
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                progress.dismiss();
-                showFailTips(getResources().getString(R.string.requst_fail));
-            }
-        });
-    }
-
-
-    /**
-     * 确认选择司机
-     */
-    private void chooseDriver() {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "confirm_driver");
-        params.put("driver_id", selectedOffer.getUser_id());
-        params.put("offer_id", selectedOffer.getId());
+    private void applyAheadCharge() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "driver_apply_payment");
         params.put("car_product_id", id);
-        params.put("driver_offer", selectedOffer.getMoney());
+        params.put("uid", getUserID());
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
 
@@ -361,7 +214,51 @@ public class ChooseDriverActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, WaitDriverPayActivity.class);
+                        showErrorToast("申请成功");
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (isDestroyed())
+                    return;
+
+                progress.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 确认收到运费
+     */
+    private void confirmPayment() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "driver_confirm_payment");
+        params.put("car_product_id", id);
+        params.put("uid", getUserID());
+        params.put("car_offer_id", "");
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        Intent intent = new Intent(context, OrderFinishDriverActivity.class);
                         intent.putExtra("id", id);
                         startActivity(intent);
                         finish();
@@ -381,13 +278,17 @@ public class ChooseDriverActivity extends BaseActivity {
             @Override
             public void onFinish() {
                 super.onFinish();
+                if (isDestroyed())
+                    return;
+
                 progress.dismiss();
             }
         });
     }
 
 
-    @OnClick({R.id.txtCall})
+
+    @OnClick({R.id.txtCall, R.id.btn0, R.id.btn1, R.id.btn2})
     public void onClick(View view) {
         if (data == null)
             return;
@@ -395,6 +296,15 @@ public class ChooseDriverActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.txtCall: //联系客服
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
+                break;
+            case R.id.btn0: //联系厂家
+                AppTool.dial(context, data.getMobile());
+                break;
+            case R.id.btn1: //提前收取运费
+                aheadChargeDialog.show();
+                break;
+            case R.id.btn2: //确认收到运费
+                confirmPayment();
                 break;
             default:
                 break;

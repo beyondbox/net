@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/while_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <include layout="@layout/layout_freight_detail"/>
+
+            <include layout="@layout/layout_driver_paystate"/>
+
+            <include layout="@layout/layout_freight_logistics_data"/>
+
+            <TextView
+                android:id="@+id/txtCallDeliver"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/selector_btn_blue"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="6dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
+                android:text="联系厂家"
+                android:textColor="@color/while_color"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

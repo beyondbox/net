@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Freight;
+import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.util.Const;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -37,16 +38,54 @@ public class DriverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewHo
         int state = Integer.valueOf(item.getExamine_status());
         switch (state) {
             case Const.FREIGHT_AUDIT_PASS:
-                txtState.setText("收到询价");
-                txtContent.setText("");
-                setButtonVisibility(helper, false, true, true);
-                setButtonName(helper, "", "忽略订单", "5300");
+                List<FreightOffer> offerList = item.getOffer_list();
+                if (offerList != null && offerList.size() > 0) {
+                    txtState.setText("已报价");
+                    txtContent.setText("当前报价\n" + item.getOffer_num());
+                    setButtonVisibility(helper, false, true, true);
+                    setButtonName(helper, "", "忽略订单", offerList.get(0).getMoney());
+                } else {
+                    txtState.setText("收到询价");
+                    txtContent.setText("当前报价\n" + item.getOffer_num());
+                    setButtonVisibility(helper, false, true, true);
+                    setButtonName(helper, "", "忽略订单", "报价");
+                }
                 break;
             case Const.FREIGHT_DRIVER_PAYING:
                 txtState.setText("等待支付");
                 txtContent.setText("");
                 setButtonVisibility(helper, false, true, true);
-                setButtonName(helper, "", "放弃订单", "支付");
+                setButtonName(helper, "", "放弃订单", "支付(200元)");
+                break;
+            case Const.FREIGHT_GOTO_LOAD:
+                txtState.setText("前往厂家");
+                txtContent.setText("");
+                setButtonVisibility(helper, false, true, true);
+                setButtonName(helper, "", "联系厂家", "导航去厂家");
+                break;
+            case Const.FREIGHT_LOADING:
+                txtState.setText("装货中");
+                txtContent.setText("");
+                setButtonVisibility(helper, false, true, true);
+                setButtonName(helper, "", "联系厂家", "联系客服");
+                break;
+            case Const.FREIGHT_TRANSPORTING:
+                txtState.setText("运输途中");
+                txtContent.setText("");
+                setButtonVisibility(helper, false, true, true);
+                setButtonName(helper, "", "更新位置", "确认送达");
+                break;
+            case Const.FREIGHT_TRANSPORT_FINISH:
+                txtState.setText("运输完成");
+                txtContent.setText("运费\n" + item.getOffer_list().get(0).getMoney());
+                setButtonVisibility(helper, true, true, true);
+                setButtonName(helper, "联系厂家", "联系客服", "确认收到运费");
+                break;
+            case Const.FREIGHT_ORDER_FINISH:
+                txtState.setText("订单完成");
+                txtContent.setText("");
+               setButtonVisibility(helper, false, false, false);
+                setButtonName(helper, "", "", "");
                 break;
         }
 

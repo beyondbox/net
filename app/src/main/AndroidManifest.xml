@@ -308,6 +308,26 @@
         <activity android:name=".ui.my.driver.ReceiveInquiryActivity" />
         <!--司机-已报价-->
         <activity android:name=".ui.my.driver.OfferedActivity" />
+        <!--司机支付-->
+        <activity android:name=".ui.my.driver.DriverPayActivity" />
+        <!--赶往厂家-->
+        <activity android:name=".ui.my.driver.GoToDeliverActivity" />
+        <!--司机正在赶来-->
+        <activity android:name=".ui.my.deliver.DriverComingActivity" />
+        <!--装货中-发货厂家-->
+        <activity android:name=".ui.my.deliver.LoadingDeliverActivity" />
+        <!--装货中-司机端-->
+        <activity android:name=".ui.my.driver.LoadingDriverActivity" />
+        <!--运输途中-发货厂家-->
+        <activity android:name=".ui.my.deliver.TransportingDeliverActivity" />
+        <!--运输途中-司机端-->
+        <activity android:name=".ui.my.driver.TransportingDriverActivity" />
+        <!--运输完成-司机端-->
+        <activity android:name=".ui.my.driver.TransportFinishDriverActivity" />
+        <!--运输完成-发货厂家-->
+        <activity android:name=".ui.my.deliver.TransportFinishDeliverActivity" />
+        <!--订单完成-司机端-->
+        <activity android:name=".ui.my.driver.OrderFinishDriverActivity" />
 
 
         <!--发布护栏网-->

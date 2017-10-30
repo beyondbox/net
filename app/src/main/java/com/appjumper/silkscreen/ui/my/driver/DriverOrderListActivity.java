@@ -9,11 +9,11 @@ import android.view.View;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Freight;
+import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.my.adapter.DriverOrderListAdapter;
-import com.appjumper.silkscreen.ui.my.deliver.ChooseDriverActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -86,10 +86,29 @@ public class DriverOrderListActivity extends BaseActivity {
                 Intent intent = null;
                 switch (state) {
                     case Const.FREIGHT_AUDIT_PASS: // 收到询价或者已报价
-                        intent = new Intent(context, ReceiveInquiryActivity.class);
+                        List<FreightOffer> offerList = freight.getOffer_list();
+                        if (offerList != null && offerList.size() > 0)
+                            intent = new Intent(context, OfferedActivity.class);
+                        else
+                            intent = new Intent(context, ReceiveInquiryActivity.class);
                         break;
                     case Const.FREIGHT_DRIVER_PAYING: //等待支付
-                        //intent = new Intent(context, WaitDriverPayActivity.class);
+                        intent = new Intent(context, DriverPayActivity.class);
+                        break;
+                    case Const.FREIGHT_GOTO_LOAD: //前往厂家
+                        intent = new Intent(context, GoToDeliverActivity.class);
+                        break;
+                    case Const.FREIGHT_LOADING: //装货中
+                        intent = new Intent(context, LoadingDriverActivity.class);
+                        break;
+                    case Const.FREIGHT_TRANSPORTING: //运输途中
+                        intent = new Intent(context, TransportingDriverActivity.class);
+                        break;
+                    case Const.FREIGHT_TRANSPORT_FINISH: //运输完成
+                        intent = new Intent(context, TransportFinishDriverActivity.class);
+                        break;
+                    case Const.FREIGHT_ORDER_FINISH: //订单完成
+                        intent = new Intent(context, OrderFinishDriverActivity.class);
                         break;
                 }
 

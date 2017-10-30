@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:background="@color/while_color"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:text="确认送达"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:lineSpacingExtra="3dp"
+        android:text="请在货主签收货单后确认送达\n点击下方上传货主签字照片"
+        android:textColor="@color/text_black_color2"
+        android:textSize="14sp"/>
+
+    <ImageView
+        android:id="@+id/imgViUpload"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="12dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/icon_uploading"/>
+
+
+</LinearLayout>
