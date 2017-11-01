@@ -155,7 +155,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
-        view = inflater.inflate(R.layout.fragment_home3, null);
+        view = inflater.inflate(R.layout.fragment_hom4, null);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -562,7 +562,7 @@ public class HomeFragment extends BaseFragment {
 
 
 
-    @OnClick({R.id.rl_search, R.id.img_back_top, R.id.rlStockShop, R.id.rlCheckin, R.id.flipperReport, R.id.txtMoreGoods, R.id.rlStockConsign})
+    @OnClick({R.id.rl_search, R.id.img_back_top, R.id.rlStockShop, R.id.rlCheckin, R.id.flipperReport, R.id.txtMoreGoods, R.id.rlStockConsign, R.id.llAskBuy, R.id.llFreight})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_back_top://返回顶部
@@ -610,6 +610,20 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.txtMoreGoods: //商城-更多
                 start_Activity(context, StockGoodsSelectActivity.class);
+                break;
+            case R.id.llAskBuy: //求购
+                ((MainActivity)getActivity()).bottom_lly.check(R.id.rd_dynamic);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        context.sendBroadcast(new Intent(Const.ACTION_ASKBUY_LIST));
+                    }
+                }, 200);
+                break;
+            case R.id.llFreight: //空车配货
+                Intent intent = new Intent(context, LogisticsListActivity.class);
+                intent.putExtra(Const.KEY_TYPE, 2);
+                startActivity(intent);
                 break;
             default:
                 break;

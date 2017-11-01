@@ -296,8 +296,14 @@
         <activity android:name=".ui.home.logistics.ReleaseFreightCompleteActivity" />
         <!--空车配货详情-找车中-->
         <activity android:name=".ui.home.logistics.FreightDetailOfferingActivity" />
+        <!--空车配货详情-已调车-->
+        <activity android:name=".ui.home.logistics.FreightDetailUnderwayActivity" />
         <!--发货厂家-订单列表-->
         <activity android:name=".ui.my.deliver.DeliverOrderListActivity" />
+        <!--发货信息审核中-->
+        <activity android:name=".ui.my.deliver.AuditingDeliverActivity" />
+        <!--发货信息审核不通过-->
+        <activity android:name=".ui.my.deliver.AuditRefuseActivity" />
         <!--发货厂家-选择司机-->
         <activity android:name=".ui.my.deliver.ChooseDriverActivity" />
         <!--发货厂家-等待司机支付-->
@@ -328,6 +334,8 @@
         <activity android:name=".ui.my.deliver.TransportFinishDeliverActivity" />
         <!--订单完成-司机端-->
         <activity android:name=".ui.my.driver.OrderFinishDriverActivity" />
+        <!--订单完成-发货厂家-->
+        <activity android:name=".ui.my.deliver.OrderFinishDeliverActivity" />
 
 
         <!--发布护栏网-->

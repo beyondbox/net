@@ -54,7 +54,11 @@ public class LogisticsListActivity extends BaseActivity {
         initBack();
         initDialog();
 
-        rdoGroup.check(R.id.rb0);
+        int comingType = getIntent().getIntExtra(Const.KEY_TYPE, 1);
+        if (comingType == 2)
+            rdoGroup.check(R.id.rb1);
+        else
+            rdoGroup.check(R.id.rb0);
     }
 
 

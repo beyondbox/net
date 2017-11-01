@@ -36,6 +36,8 @@ import com.squareup.picasso.Picasso;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +45,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 
 
 /**
@@ -61,6 +64,14 @@ public class MyFragment extends BaseFragment {
     @Bind(R.id.llReleaseStockGoods)
     LinearLayout llReleaseStockGoods;
 
+    @Bind(R.id.llDeliver)
+    LinearLayout llDeliver;
+    @Bind(R.id.llDriver)
+    LinearLayout llDriver;
+
+    @Bind(R.id.txtDriverState)
+    TextView txtDriverState;
+
 
 
     @Override
@@ -68,6 +79,7 @@ public class MyFragment extends BaseFragment {
         View view;
         view = inflater.inflate(R.layout.fragment_my2, null);
         ButterKnife.bind(this, view);
+        initProgressDialog();
         return view;
     }
 
@@ -96,6 +108,18 @@ public class MyFragment extends BaseFragment {
                 llReleaseStockGoods.setVisibility(View.VISIBLE);
             else
                 llReleaseStockGoods.setVisibility(View.GONE);
+
+
+            /*if (user.getDriver_status().equals(Const.AUTH_SUCCESS + "")) {
+                llDriver.setVisibility(View.VISIBLE);
+                llDeliver.setVisibility(View.GONE);
+                txtDriverState.setText(user.getDriver_car_status().equals("0") ? "更改为运输中" : "更改为空闲");
+            } else {
+                llDriver.setVisibility(View.GONE);
+                llDeliver.setVisibility(View.VISIBLE);
+            }*/
+
+            txtDriverState.setText(user.getDriver_car_status().equals("0") ? "更改为运输中" : "更改为空闲");
 
         } else {
             txtCompanyName.setVisibility(View.GONE);
@@ -129,7 +153,7 @@ public class MyFragment extends BaseFragment {
 
 
     @OnClick({R.id.llCompany, R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rlHelp, R.id.txtMoreDeliver, R.id.txtMoreDriver,
-            R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal, R.id.rlReleaseStockGoods})
+            R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal, R.id.rlReleaseStockGoods, R.id.txtDriverState})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llCompany: //企业信息
@@ -186,6 +210,9 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.txtMoreDriver: //司机订单列表
                 start_Activity(context, DriverOrderListActivity.class);
+                break;
+            case R.id.txtDriverState: //更改司机状态
+                changeDriverState();
                 break;
             default:
                 break;
@@ -250,6 +277,55 @@ public class MyFragment extends BaseFragment {
             }
         }
     };
+
+
+    /**
+     * 更改司机状态
+     */
+    private void changeDriverState() {
+        RequestParams params = MyHttpClient.getApiParam("user", "driver_car_status");
+        params.put("uid", getUserID());
+        params.put("driver_car_status", getUser().getDriver_car_status().equals("0") ? 1 : 0);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        new Thread(new UserInfoRun()).start();
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (isDetached())
+                    return;
+
+                progress.dismiss();
+            }
+        });
+    }
+
 
 
     /**

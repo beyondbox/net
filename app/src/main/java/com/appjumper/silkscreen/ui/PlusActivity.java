@@ -10,6 +10,7 @@ import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
+import com.appjumper.silkscreen.ui.home.logistics.ReleaseFreightActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.util.Const;
@@ -39,7 +40,7 @@ public class PlusActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_plus2);
+        setContentView(R.layout.activity_plus3);
         ButterKnife.bind(context);
         initDialog();
 
@@ -52,8 +53,7 @@ public class PlusActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.llReleaseProcess, R.id.llReleaseOrder, R.id.llReleaseStock, R.id.llReleaseStation,
-            R.id.llReleaseTruck, R.id.llReleaseFindTruck, R.id.llReleaseWorkshop, R.id.llReleasePost, R.id.llReleaseDevice, R.id.txtInquiryOrder, R.id.txtInquiryStock})
+    @OnClick({R.id.llReleaseProcess, R.id.llReleaseOrder, R.id.llReleaseStock, R.id.llReleaseStation, R.id.llReleaseWorkshop, R.id.llReleasePost, R.id.llReleaseDevice, R.id.txtInquiryOrder, R.id.txtInquiryStock})
     public void onClick(View view) {
         if (!MyApplication.appContext.checkMobile(context))
             return;
@@ -103,16 +103,6 @@ public class PlusActivity extends BaseActivity {
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
                 break;
 
-            case R.id.llReleaseTruck: //个人车辆拉货
-                //start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "2"));
-                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS_PER);
-                break;
-
-            case R.id.llReleaseFindTruck: //货物运输需求
-                //start_Activity(context, TruckReleaseActivity.class);
-                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS_CAR);
-                break;
-
             case R.id.llReleaseWorkshop: //厂房出租
                 //start_Activity(context, WorkshopReleaseActivity.class);
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_WORKSHOP);
@@ -128,16 +118,22 @@ public class PlusActivity extends BaseActivity {
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_DEVICE);
                 break;
 
-            case R.id.txtInquiryOrder: //订做询价
+            case R.id.txtInquiryOrder: //发布求购
                 if (!MyApplication.appContext.checkMobile(context))
                     return;
-                goToProductSelect(Const.SERVICE_TYPE_ORDER, ProductSelectActivity.MOTION_RELEASE_INQUIRY);
+
+                if (!MyApplication.appContext.checkCertifyPer(context))
+                    return;
+                Intent intent = new Intent(context, ProductSelectActivity.class);
+                intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
+                intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
+                startActivity(intent);
                 break;
 
-            case R.id.txtInquiryStock: //现货询价
+            case R.id.txtInquiryStock: //发布空车配货
                 if (!MyApplication.appContext.checkMobile(context))
                     return;
-                goToProductSelect(Const.SERVICE_TYPE_STOCK, ProductSelectActivity.MOTION_RELEASE_INQUIRY);
+                start_Activity(context, ReleaseFreightActivity.class);
                 break;
 
             default:

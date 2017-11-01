@@ -66,4 +66,9 @@ public class AreaBean implements Comparable<AreaBean>, Serializable {
     public int compareTo(AreaBean another) {
         return this.getFirst().compareTo(another.getFirst());
     }
+
+    @Override
+    public String toString() {
+        return shortname;
+    }
 }

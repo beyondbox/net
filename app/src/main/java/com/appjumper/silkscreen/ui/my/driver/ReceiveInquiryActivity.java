@@ -21,6 +21,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.adapter.FreightOfferRecordAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -341,7 +342,12 @@ public class ReceiveInquiryActivity extends BaseActivity {
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
             case R.id.txtIgnore: //忽略订单
-                ignoreOrder();
+                new SureOrCancelDialog(context, "提示", "确定要忽略该订单吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        ignoreOrder();
+                    }
+                }).show();
                 break;
             default:
                 break;

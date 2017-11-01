@@ -1,19 +1,29 @@
 package com.appjumper.silkscreen.ui.my.deliver;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.Freight;
+import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.home.logistics.ReleaseFreightActivity;
+import com.appjumper.silkscreen.ui.my.adapter.ChooseDriverAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.DeliverOrderListAdapter;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -45,6 +55,7 @@ public class DeliverOrderListActivity extends BaseActivity {
 
     private List<Freight> dataList;
     private DeliverOrderListAdapter adapter;
+    private Freight item; //当前操作的订单
 
     private int page = 1;
     private int pageSize = 20;
@@ -58,6 +69,7 @@ public class DeliverOrderListActivity extends BaseActivity {
 
         initTitle("订单列表");
         initBack();
+        initProgressDialog(false, null);
         initRecyclerView();
         initRefreshLayout();
         ptrLayt.postDelayed(new Runnable() {
@@ -68,6 +80,13 @@ public class DeliverOrderListActivity extends BaseActivity {
         }, 50);
     }
 
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        page = 1;
+        getData();
+    }
 
     private void initRecyclerView() {
         dataList = new ArrayList<>();
@@ -84,6 +103,12 @@ public class DeliverOrderListActivity extends BaseActivity {
                 int state = Integer.valueOf(freight.getExamine_status());
                 Intent intent = null;
                 switch (state) {
+                    case Const.FREIGHT_AUDITING: //审核中
+                        intent = new Intent(context, AuditingDeliverActivity.class);
+                        break;
+                    case Const.FREIGHT_AUDIT_REFUSE: //审核不通过
+                        intent = new Intent(context, AuditRefuseActivity.class);
+                        break;
                     case Const.FREIGHT_AUDIT_PASS: //司机报价中
                         intent = new Intent(context, ChooseDriverActivity.class);
                         break;
@@ -102,6 +127,9 @@ public class DeliverOrderListActivity extends BaseActivity {
                     case Const.FREIGHT_TRANSPORT_FINISH: //运输完成
                         intent = new Intent(context, TransportFinishDeliverActivity.class);
                         break;
+                    case Const.FREIGHT_ORDER_FINISH: //订单完成
+                        intent = new Intent(context, OrderFinishDeliverActivity.class);
+                        break;
                 }
 
                 if (intent != null) {
@@ -110,6 +138,77 @@ public class DeliverOrderListActivity extends BaseActivity {
                 }
             }
         });
+
+
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                item = dataList.get(position);
+                int state = Integer.valueOf(item.getExamine_status());
+                switch (view.getId()) {
+                    case R.id.txtHandle0: //第一个按钮
+                        AppTool.dial(context, item.getConfirm_driver_mobile());
+                        break;
+                    case R.id.txtHandle1: //第二个按钮
+                        switch (state) {
+                            case Const.FREIGHT_AUDIT_REFUSE:
+                                start_Activity(context, ReleaseFreightActivity.class);
+                                break;
+                            case Const.FREIGHT_TRANSPORTING:
+
+                                break;
+                            default:
+                                AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
+                                break;
+                        }
+                        break;
+                    case R.id.txtHandle2: //第三个按钮
+                        switch (state) {
+                            case Const.FREIGHT_AUDIT_PASS:
+                                if (item.getOffer_num().equals("0"))
+                                    showErrorToast("暂无司机报价");
+                                else
+                                    getOrderDetail(item.getId());
+                                break;
+                            case Const.FREIGHT_GOTO_LOAD:
+                                new SureOrCancelDialog(context, "提示", "是否确认司机到达？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                                    @Override
+                                    public void onSureButtonClick() {
+                                        confirmDriverArrived();
+                                    }
+                                }).show();
+                                break;
+                            case Const.FREIGHT_LOADING:
+                                new SureOrCancelDialog(context, "提示", "是否确认装货完成？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                                    @Override
+                                    public void onSureButtonClick() {
+                                        confirmLoaded();
+                                    }
+                                }).show();
+                                break;
+                            case Const.FREIGHT_TRANSPORTING:
+                                new SureOrCancelDialog(context, "提示", "是否确认送达？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                                    @Override
+                                    public void onSureButtonClick() {
+                                        confirmArrived();
+                                    }
+                                }).show();
+                                break;
+                            case Const.FREIGHT_TRANSPORT_FINISH:
+
+                                break;
+                            case Const.FREIGHT_ORDER_FINISH:
+                                start_Activity(context, ReleaseFreightActivity.class);
+                                break;
+                            default:
+                                AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
+                                break;
+                        }
+                        break;
+                }
+            }
+        });
+
 
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -162,7 +261,7 @@ public class DeliverOrderListActivity extends BaseActivity {
 
                         if (page == 1) {
                             dataList.clear();
-                            recyclerData.smoothScrollToPosition(0);
+                            //recyclerData.smoothScrollToPosition(0);
                         }
                         dataList.addAll(list);
                         adapter.notifyDataSetChanged();
@@ -198,5 +297,333 @@ public class DeliverOrderListActivity extends BaseActivity {
             }
         });
     }
+
+
+    /**
+     * 获取订单详情
+     */
+    private void getOrderDetail(String id) {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "details_car_product");
+        params.put("id", id);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        Freight data = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), Freight.class);
+                        showChooseDriverDialog(data.getOffer_list());
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 选择司机对话框
+     */
+    private void showChooseDriverDialog(final List<FreightOffer> offerList) {
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_choose_driver, null);
+        dialog.setView(view);
+
+        ListView lvRecord = (ListView) view.findViewById(R.id.lvRecord);
+        ChooseDriverAdapter recordAdapter = new ChooseDriverAdapter(context, offerList);
+        lvRecord.setAdapter(recordAdapter);
+
+        recordAdapter.setOnWhichClickListener(new MyBaseAdapter.OnWhichClickListener() {
+            @Override
+            public void onWhichClick(View view, int position, int tag) {
+                switch (view.getId()) {
+                    case R.id.txtHandle:
+                        dialog.dismiss();
+                        showConfirmDialog(offerList.get(position));
+                        break;
+                }
+            }
+        });
+
+        dialog.show();
+    }
+
+
+    /**
+     * 确认选择司机对话框
+     */
+    private void showConfirmDialog(final FreightOffer selectedOffer) {
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_confirm_choose_driver, null);
+        dialog.setView(view);
+
+        TextView txtName = (TextView) view.findViewById(R.id.txtName);
+        TextView txtPrice = (TextView) view.findViewById(R.id.txtPrice);
+        TextView txtConfirm = (TextView) view.findViewById(R.id.txtConfirm);
+
+        txtName.setText(selectedOffer.getName().substring(0, 1) + "司机");
+        txtPrice.setText(selectedOffer.getMoney() + selectedOffer.getMoney_unit());
+        txtConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                getDriverState(selectedOffer);
+            }
+        });
+
+        dialog.show();
+    }
+
+
+    /**
+     * 获取司机状态
+     */
+    private void getDriverState(final FreightOffer selectedOffer) {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "select_driver");
+        params.put("driver_id", selectedOffer.getUser_id());
+        params.put("offer_id", selectedOffer.getId());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        chooseDriver(selectedOffer);
+                    } else {
+                        progress.dismiss();
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    progress.dismiss();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                progress.dismiss();
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+        });
+    }
+
+
+    /**
+     * 确认选择司机
+     */
+    private void chooseDriver(FreightOffer selectedOffer) {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "confirm_driver");
+        params.put("driver_id", selectedOffer.getUser_id());
+        params.put("offer_id", selectedOffer.getId());
+        params.put("car_product_id", item.getId());
+        params.put("driver_offer", selectedOffer.getMoney());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        Intent intent = new Intent(context, WaitDriverPayActivity.class);
+                        intent.putExtra("id", item.getId());
+                        startActivity(intent);
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 确认司机到达
+     */
+    private void confirmDriverArrived() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "driver_enterprise_date");
+        params.put("car_product_id", item.getId());
+        params.put("driver_id", item.getConfirm_driver_id());
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        Intent intent = new Intent(context, LoadingDeliverActivity.class);
+                        intent.putExtra("id", item.getId());
+                        startActivity(intent);
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 确认装货完毕
+     */
+    private void confirmLoaded() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "enterprise_loading_finished");
+        params.put("car_product_id", item.getId());
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        Intent intent = new Intent(context, TransportingDeliverActivity.class);
+                        intent.putExtra("id", item.getId());
+                        startActivity(intent);
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 确认送达
+     */
+    private void confirmArrived() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "enterprise_confirm_arrive");
+        params.put("car_product_id", item.getId());
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        Intent intent = new Intent(context, TransportFinishDeliverActivity.class);
+                        intent.putExtra("id", item.getId());
+                        startActivity(intent);
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
 
 }

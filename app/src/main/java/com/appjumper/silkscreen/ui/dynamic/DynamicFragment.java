@@ -1,6 +1,9 @@
 package com.appjumper.silkscreen.ui.dynamic;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -48,6 +51,13 @@ public class DynamicFragment extends BaseFragment {
     private AskBuyFragment askBuyFragment;
     private AttentionFragment attentionFragment;
 
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerBroadcastReceiver();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -104,6 +114,26 @@ public class DynamicFragment extends BaseFragment {
     }
 
 
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_ASKBUY_LIST);
+        getActivity().registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!isDataInited)
+                return;
+
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_ASKBUY_LIST)) {
+                rdoGroup.check(R.id.rdoBtnAskBuy);
+            }
+        }
+    };
+
+
     @OnClick(R.id.right)
     public void onClick(View view) {
         Intent intent = null;
@@ -127,4 +157,10 @@ public class DynamicFragment extends BaseFragment {
         }
     }
 
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(myReceiver);
+    }
 }

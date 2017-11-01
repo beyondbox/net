@@ -1,8 +1,6 @@
-package com.appjumper.silkscreen.ui.my.deliver;
+package com.appjumper.silkscreen.ui.home.logistics;
 
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,7 +12,7 @@ import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.home.logistics.ReleaseFreightActivity;
+import com.appjumper.silkscreen.ui.my.driver.DriverAuthFirstActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -24,7 +22,6 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,11 +29,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 等待司机支付
+ * 空车配货详情--已调车
  * Created by Botx on 2017/10/28.
  */
 
-public class WaitDriverPayActivity extends BaseActivity {
+public class FreightDetailUnderwayActivity extends BaseActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -71,34 +68,31 @@ public class WaitDriverPayActivity extends BaseActivity {
     @Bind(R.id.txtDriverTime)
     TextView txtDriverTime;
 
-    @Bind(R.id.llCounting)
-    LinearLayout llCounting;
-    @Bind(R.id.llCountFinish)
-    LinearLayout llCountFinish;
-    @Bind(R.id.txtCountTime)
-    TextView txtCountTime;
-    @Bind(R.id.txtPremium)
-    TextView txtPremium;
-    @Bind(R.id.txtProtocol)
-    TextView txtProtocol;
+    @Bind(R.id.btn1)
+    TextView btn1;
 
 
     private String id;
     private Freight data;
-    private CountDownTimer countDownTimer;
-
-    private DecimalFormat dFormat = new DecimalFormat("00");
-    private long mMs = 1000 * 60; //一分钟的毫秒数
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wait_driver_pay);
+        setContentView(R.layout.activity_freight_detail_underway);
         ButterKnife.bind(context);
         initTitle("详情");
         initBack();
         initProgressDialog(false, null);
+
+        if (getUser() == null) {
+            btn1.setVisibility(View.GONE);
+        } else {
+            if (getUser().getDriver_status().equals(Const.AUTH_SUCCESS + ""))
+                btn1.setVisibility(View.GONE);
+            else
+                btn1.setVisibility(View.VISIBLE);
+        }
 
         id = getIntent().getStringExtra("id");
         getData();
@@ -167,7 +161,7 @@ public class WaitDriverPayActivity extends BaseActivity {
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
 
-        txtState.setText("等待司机支付");
+        txtState.setText("已调车");
 
         String uid = data.getUser_id();
         String newName = "";
@@ -197,12 +191,6 @@ public class WaitDriverPayActivity extends BaseActivity {
             txtPayedType.setText("货主支付运费");
 
 
-        txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        txtPremium.getPaint().setAntiAlias(true);
-        txtProtocol.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        txtProtocol.getPaint().setAntiAlias(true);
-
-
         final List<FreightOffer> offerList = data.getOffer_list();
         String selectedDriverId = data.getConfirm_driver_id();
         FreightOffer selectedOffer = null;
@@ -213,73 +201,37 @@ public class WaitDriverPayActivity extends BaseActivity {
             }
         }
 
-        txtDriverName.setText(selectedOffer.getName().substring(0, 1) + "司机");
-        txtDriverPrice.setText("运费" + selectedOffer.getMoney() + selectedOffer.getMoney_unit());
+        txtDriverName.setText(selectedOffer.getName().substring(0, 1) + "司机报价");
+        txtDriverPrice.setText("***元");
         txtDriverTime.setText(selectedOffer.getCreate_time().substring(5, 16));
+        txtPayState.setText("已支付信息费、保险费");
+        txtPayState.setTextColor(getResources().getColor(R.color.green_color));
 
-        long endTime = AppTool.getTimeMs(data.getExpiry_driver_pay_date(), "yyyy-MM-dd HH:mm:ss");
-        if (System.currentTimeMillis() < endTime) {
-            llCounting.setVisibility(View.VISIBLE);
-            llCountFinish.setVisibility(View.GONE);
-            startCountDown(endTime);
-        } else {
-            llCounting.setVisibility(View.GONE);
-            llCountFinish.setVisibility(View.VISIBLE);
-            txtPayState.setText("已过支付期限");
-        }
     }
 
 
-    /**
-     * 开始倒计时
-     * @param endTime
-     */
-    private void startCountDown(long endTime) {
-        long millisInFuture = endTime - System.currentTimeMillis();
-        countDownTimer = new CountDownTimer(millisInFuture, 1000) {
 
-            @Override
-            public void onTick(long l) {
-                long minutes = l / mMs;
-                long seconds = l % mMs / 1000;
-                txtCountTime.setText(dFormat.format(minutes) + " : " + dFormat.format(seconds));
-            }
-
-            @Override
-            public void onFinish() {
-                llCounting.setVisibility(View.GONE);
-                llCountFinish.setVisibility(View.VISIBLE);
-                txtPayState.setText("已过支付期限");
-            }
-        }.start();
-    }
-
-
-    @OnClick({R.id.txtCall, R.id.txtConfirm})
+    @OnClick({R.id.txtCall, R.id.btn0, R.id.btn1})
     public void onClick(View view) {
         if (data == null)
+            return;
+
+        if (!checkLogined())
             return;
 
         switch (view.getId()) {
             case R.id.txtCall: //联系客服
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
-            case R.id.txtConfirm: //重新发布
+            case R.id.btn0: //我要发货
                 start_Activity(context, ReleaseFreightActivity.class);
-                finish();
+                break;
+            case R.id.btn1: //成为司机
+                start_Activity(context, DriverAuthFirstActivity.class);
                 break;
             default:
                 break;
         }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-            countDownTimer = null;
-        }
-    }
 }

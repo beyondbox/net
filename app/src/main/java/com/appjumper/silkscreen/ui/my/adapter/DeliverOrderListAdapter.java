@@ -31,7 +31,10 @@ public class DeliverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewH
                 .setText(R.id.txtTitle, item.getFrom_name() + " - " + item.getTo_name())
                 .setText(R.id.txtCarModel, item.getLengths_name() + "/" + item.getModels_name())
                 .setText(R.id.txtProduct, item.getWeight() + item.getProduct_name())
-                .setText(R.id.txtTime, item.getExpiry_date().substring(5, 16) + "装车");
+                .setText(R.id.txtTime, item.getExpiry_date().substring(5, 16) + "装车")
+                .addOnClickListener(R.id.txtHandle0)
+                .addOnClickListener(R.id.txtHandle1)
+                .addOnClickListener(R.id.txtHandle2);
 
         TextView txtState = helper.getView(R.id.txtState);
         TextView txtContent = helper.getView(R.id.txtContent);
@@ -45,7 +48,10 @@ public class DeliverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewH
                 break;
             case Const.FREIGHT_AUDIT_REFUSE:
                 txtState.setText("审核不通过");
-                txtContent.setText("原因:" + item.getExamine_refusal_reason());
+                if (TextUtils.isEmpty(item.getExamine_refusal_reason()))
+                    txtContent.setText("");
+                else
+                    txtContent.setText("原因:" + item.getExamine_refusal_reason());
                 setButtonVisibility(helper, false, true, true);
                 setButtonName(helper, "", "重新发布", "联系客服");
                 break;
@@ -85,7 +91,7 @@ public class DeliverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewH
             case Const.FREIGHT_TRANSPORT_FINISH:
                 txtState.setText("运输完成");
                 txtContent.setText("确认运费\n" + item.getConfirm_driver_offer());
-                setButtonVisibility(helper, true, true, true);
+                setButtonVisibility(helper, true, true, item.getPay_type().equals("0") ? true : false);
                 setButtonName(helper, "联系司机", "联系客服", "支付运费");
                 break;
             case Const.FREIGHT_ORDER_FINISH:

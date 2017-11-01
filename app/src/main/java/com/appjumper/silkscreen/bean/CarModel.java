@@ -9,6 +9,7 @@ public class CarModel {
 
     private String id;
     private String car_models_name;
+    private boolean isSelected = false;
 
     public String getId() {
         return id;
@@ -29,5 +30,13 @@ public class CarModel {
     @Override
     public String toString() {
         return car_models_name;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

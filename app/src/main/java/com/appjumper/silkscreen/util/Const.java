@@ -127,6 +127,10 @@ public class Const {
      * 数据刷新
      */
     public static final String ACTION_REFRESH = "com.appjumper.silkscreen.REFRESH";
+    /**
+     * 求购列表
+     */
+    public static final String ACTION_ASKBUY_LIST = "com.appjumper.silkscreen.ASKBUY_LIST";
 
 
 

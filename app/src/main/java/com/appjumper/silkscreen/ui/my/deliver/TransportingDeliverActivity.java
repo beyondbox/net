@@ -16,6 +16,7 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -270,7 +271,12 @@ public class TransportingDeliverActivity extends BaseActivity {
                 AppTool.dial(context, data.getConfirm_driver_mobile());
                 break;
             case R.id.btn1: //确认送达
-                confirmArrived();
+                new SureOrCancelDialog(context, "提示", "是否确认送达？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        confirmArrived();
+                    }
+                }).show();
                 break;
             default:
                 break;

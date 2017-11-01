@@ -268,6 +268,7 @@
                 android:id="@+id/llDeliver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="visible"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -323,6 +324,7 @@
                 android:id="@+id/llDriver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="visible"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -360,7 +362,58 @@
                             android:textSize="13sp"
                             android:textColor="@color/text_gray_light_color"
                             android:text="查看更多订单"/>
+
                     </LinearLayout>
+
+
+                    <View
+                        style="@style/LineStyle"
+                        android:layout_marginLeft="12dp"
+                        android:layout_marginRight="12dp"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_horizontal"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:paddingLeft="50dp"
+                        android:paddingRight="50dp">
+
+                        <TextView
+                            android:id="@+id/txtUpdateLocation"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_btn_blue"
+                            android:gravity="center"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:text="更新位置"
+                            android:textColor="@color/while_color"
+                            android:textSize="13sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/txtDriverState"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selector_btn_blue"
+                            android:gravity="center"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:text="更改为运输中"
+                            android:textColor="@color/while_color"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
+
+
                 </LinearLayout>
 
 

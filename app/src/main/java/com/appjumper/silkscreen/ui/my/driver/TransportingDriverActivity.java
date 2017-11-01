@@ -172,6 +172,7 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
                     if (imgResponse.isSuccess()) {
                         arriveImgUrl = imgResponse.getData().get(0).getOrigin();
                         Glide.with(context).load(arriveImgUrl).placeholder(R.mipmap.img_error).into(imgViUpload);
+                        confirmArrived();
                     } else {
                         progress.dismiss();
                         showErrorToast(imgResponse.getError_desc());

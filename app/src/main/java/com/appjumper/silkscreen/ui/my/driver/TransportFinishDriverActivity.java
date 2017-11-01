@@ -194,6 +194,7 @@ public class TransportFinishDriverActivity extends BaseActivity {
         txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         txtPremium.getPaint().setAntiAlias(true);
 
+
     }
 
 

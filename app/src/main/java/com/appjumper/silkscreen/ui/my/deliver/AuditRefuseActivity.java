@@ -1,16 +1,15 @@
 package com.appjumper.silkscreen.ui.my.deliver;
 
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Freight;
-import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
@@ -24,19 +23,16 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 等待司机支付
+ * 审核不通过
  * Created by Botx on 2017/10/28.
  */
 
-public class WaitDriverPayActivity extends BaseActivity {
+public class AuditRefuseActivity extends BaseActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -62,39 +58,19 @@ public class WaitDriverPayActivity extends BaseActivity {
     @Bind(R.id.txtPayedType)
     TextView txtPayedType;
 
-    @Bind(R.id.txtPayState)
-    TextView txtPayState;
-    @Bind(R.id.txtDriverName)
-    TextView txtDriverName;
-    @Bind(R.id.txtDriverPrice)
-    TextView txtDriverPrice;
-    @Bind(R.id.txtDriverTime)
-    TextView txtDriverTime;
-
-    @Bind(R.id.llCounting)
-    LinearLayout llCounting;
-    @Bind(R.id.llCountFinish)
-    LinearLayout llCountFinish;
-    @Bind(R.id.txtCountTime)
-    TextView txtCountTime;
-    @Bind(R.id.txtPremium)
-    TextView txtPremium;
-    @Bind(R.id.txtProtocol)
-    TextView txtProtocol;
-
+    @Bind(R.id.imgViSecurity)
+    ImageView imgViSecurity;
+    @Bind(R.id.txtReason)
+    TextView txtReason;
 
     private String id;
     private Freight data;
-    private CountDownTimer countDownTimer;
-
-    private DecimalFormat dFormat = new DecimalFormat("00");
-    private long mMs = 1000 * 60; //一分钟的毫秒数
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wait_driver_pay);
+        setContentView(R.layout.activity_audit_refuse);
         ButterKnife.bind(context);
         initTitle("详情");
         initBack();
@@ -159,15 +135,17 @@ public class WaitDriverPayActivity extends BaseActivity {
      * 渲染数据
      */
     private void setData() {
+        imgViSecurity.setVisibility(View.GONE);
+
         txtTitle.setText(data.getFrom_name() + " - " + data.getTo_name());
         txtTime.setText(data.getCreate_time().substring(5, 16));
-        txtOrderId.setText("订单编号 : " + data.getOrder_id());
+        txtOrderId.setText("订单编号 : 空");
         txtCarNum.setText("已发车" + data.getCar_num() + "次");
         txtCarModel.setText(data.getLengths_name() + "/" + data.getModels_name());
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
 
-        txtState.setText("等待司机支付");
+        txtState.setText("审核不通过");
 
         String uid = data.getUser_id();
         String newName = "";
@@ -197,61 +175,12 @@ public class WaitDriverPayActivity extends BaseActivity {
             txtPayedType.setText("货主支付运费");
 
 
-        txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        txtPremium.getPaint().setAntiAlias(true);
-        txtProtocol.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
-        txtProtocol.getPaint().setAntiAlias(true);
-
-
-        final List<FreightOffer> offerList = data.getOffer_list();
-        String selectedDriverId = data.getConfirm_driver_id();
-        FreightOffer selectedOffer = null;
-        for (FreightOffer offer : offerList) {
-            if (offer.getUser_id().equals(selectedDriverId)) {
-                selectedOffer = offer;
-                break;
-            }
-        }
-
-        txtDriverName.setText(selectedOffer.getName().substring(0, 1) + "司机");
-        txtDriverPrice.setText("运费" + selectedOffer.getMoney() + selectedOffer.getMoney_unit());
-        txtDriverTime.setText(selectedOffer.getCreate_time().substring(5, 16));
-
-        long endTime = AppTool.getTimeMs(data.getExpiry_driver_pay_date(), "yyyy-MM-dd HH:mm:ss");
-        if (System.currentTimeMillis() < endTime) {
-            llCounting.setVisibility(View.VISIBLE);
-            llCountFinish.setVisibility(View.GONE);
-            startCountDown(endTime);
+        if (TextUtils.isEmpty(data.getExamine_refusal_reason())) {
+            txtReason.setVisibility(View.GONE);
         } else {
-            llCounting.setVisibility(View.GONE);
-            llCountFinish.setVisibility(View.VISIBLE);
-            txtPayState.setText("已过支付期限");
+            txtReason.setVisibility(View.VISIBLE);
+            txtReason.setText("不通过原因 : " + data.getExamine_refusal_reason());
         }
-    }
-
-
-    /**
-     * 开始倒计时
-     * @param endTime
-     */
-    private void startCountDown(long endTime) {
-        long millisInFuture = endTime - System.currentTimeMillis();
-        countDownTimer = new CountDownTimer(millisInFuture, 1000) {
-
-            @Override
-            public void onTick(long l) {
-                long minutes = l / mMs;
-                long seconds = l % mMs / 1000;
-                txtCountTime.setText(dFormat.format(minutes) + " : " + dFormat.format(seconds));
-            }
-
-            @Override
-            public void onFinish() {
-                llCounting.setVisibility(View.GONE);
-                llCountFinish.setVisibility(View.VISIBLE);
-                txtPayState.setText("已过支付期限");
-            }
-        }.start();
     }
 
 
@@ -273,13 +202,4 @@ public class WaitDriverPayActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-            countDownTimer = null;
-        }
-    }
 }

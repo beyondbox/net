@@ -31,7 +31,10 @@ public class DriverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewHo
                 .setText(R.id.txtTitle, item.getFrom_name() + " - " + item.getTo_name())
                 .setText(R.id.txtCarModel, item.getLengths_name() + "/" + item.getModels_name())
                 .setText(R.id.txtProduct, item.getWeight() + item.getProduct_name())
-                .setText(R.id.txtTime, item.getExpiry_date().substring(5, 16) + "装车");
+                .setText(R.id.txtTime, item.getExpiry_date().substring(5, 16) + "装车")
+                .addOnClickListener(R.id.txtHandle0)
+                .addOnClickListener(R.id.txtHandle1)
+                .addOnClickListener(R.id.txtHandle2);
 
         TextView txtState = helper.getView(R.id.txtState);
         TextView txtContent = helper.getView(R.id.txtContent);
