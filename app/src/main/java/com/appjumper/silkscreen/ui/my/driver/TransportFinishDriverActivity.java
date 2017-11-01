@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Freight;
+import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
@@ -248,7 +249,16 @@ public class TransportFinishDriverActivity extends BaseActivity {
         RequestParams params = MyHttpClient.getApiParam("purchase", "driver_confirm_payment");
         params.put("car_product_id", id);
         params.put("uid", getUserID());
-        params.put("car_offer_id", "");
+
+        String offerId = "";
+        for (FreightOffer offer : data.getOffer_list()) {
+            if (getUserID().equals(offer.getUser_id())) {
+                offerId = offer.getId();
+                break;
+            }
+        }
+
+        params.put("car_offer_id", offerId);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
 
