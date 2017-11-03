@@ -18,6 +18,7 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -315,7 +316,12 @@ public class TransportFinishDriverActivity extends BaseActivity {
                 aheadChargeDialog.show();
                 break;
             case R.id.btn2: //确认收到运费
-                confirmPayment();
+                new SureOrCancelDialog(context, "提示", "是否确认收到运费？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        confirmPayment();
+                    }
+                }).show();
                 break;
             default:
                 break;

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgViHead"
+        android:layout_marginLeft="10dp"
+        android:drawableLeft="@drawable/selector_single_select_bg"
+        android:drawablePadding="5dp"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:text="张司机"
+        android:textColor="@color/text_black_color"
+        android:textSize="14sp"/>
+
+    <LinearLayout
+        android:id="@+id/lLaytCerti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_toRightOf="@id/txtName"
+        android:layout_alignBottom="@id/txtName">
+
+        <ImageView
+            android:id="@+id/imgViCertiGreen"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:visibility="visible"
+            android:src="@mipmap/icon_certification_green"
+            android:layout_marginLeft="5dp"/>
+
+        <ImageView
+            android:id="@+id/imgViCertiDriver"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/icon_certification_driver"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/txtName"
+        android:layout_marginLeft="20dp"
+        android:layout_centerVertical="true"
+        android:text="5300元"
+        android:textColor="@color/text_black_color"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/txtPrice"
+        android:layout_marginLeft="20dp"
+        android:text="10-10 13:40"
+        android:layout_centerVertical="true"
+        android:textColor="@color/text_black_color"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/txtState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="已失效"
+        android:layout_centerVertical="true"
+        android:textColor="@color/text_black_color"
+        android:textSize="14sp"/>
+
+
+</RelativeLayout>

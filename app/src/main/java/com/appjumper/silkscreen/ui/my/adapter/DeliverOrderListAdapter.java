@@ -100,6 +100,12 @@ public class DeliverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewH
                 setButtonVisibility(helper, false, false, true);
                 setButtonName(helper, "", "", "发布新订单");
                 break;
+            case Const.FREIGHT_INVALID:
+                txtState.setText("已失效");
+                txtContent.setText("");
+                setButtonVisibility(helper, false, false, false);
+                setButtonName(helper, "", "", "");
+                break;
         }
 
     }

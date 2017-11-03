@@ -3,12 +3,12 @@ package com.appjumper.silkscreen.ui.common;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.amap.api.maps2d.AMap;
-import com.amap.api.maps2d.CameraUpdateFactory;
-import com.amap.api.maps2d.MapView;
-import com.amap.api.maps2d.model.LatLng;
-import com.amap.api.maps2d.model.Marker;
-import com.amap.api.maps2d.model.MarkerOptions;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 
@@ -30,17 +30,22 @@ public class MapviewActivity extends BaseActivity {
         initBack();
         ButterKnife.bind(this);
         initTitle("公司地址");
+
         Intent intent = getIntent();
         String address = intent.getStringExtra("address");
         String lng = intent.getStringExtra("lng");
         String lat = intent.getStringExtra("lat");
         String name = intent.getStringExtra("name");
+
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，实现地图生命周期管理
         mMapView.onCreate(savedInstanceState);
+
         //初始化地图变量
         if (aMap == null) {
             aMap = mMapView.getMap();
+            aMap.getUiSettings().setCompassEnabled(true);
         }
+
         LatLng latLng = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
         final Marker marker = aMap.addMarker(new MarkerOptions().

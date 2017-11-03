@@ -31,6 +31,7 @@ public class User {
     private String openid;
     private String driver_status;
     private String driver_car_status;
+    private String is_vender; //是否空车配货发货厂家 0不是  1是
 
 
     public String getAuth_status() {
@@ -239,5 +240,13 @@ public class User {
 
     public void setDriver_car_status(String driver_car_status) {
         this.driver_car_status = driver_car_status;
+    }
+
+    public String getIs_vender() {
+        return is_vender;
+    }
+
+    public void setIs_vender(String is_vender) {
+        this.is_vender = is_vender;
     }
 }

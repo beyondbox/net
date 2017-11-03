@@ -10,6 +10,10 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.services.core.PoiItem;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.AreaBean;
@@ -22,8 +26,10 @@ import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
+import com.appjumper.silkscreen.ui.common.MapChooseActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.LogHelper;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -68,6 +74,8 @@ public class ReleaseFreightActivity extends BaseActivity {
     CheckBox chkProtocol;
     @Bind(R.id.txtConfirm)
     TextView txtConfirm;
+    @Bind(R.id.txtLocation)
+    TextView txtLocation;
     @Bind(R.id.rdoGroupPayType)
     RadioGroup rdoGroupPayType;
 
@@ -100,8 +108,27 @@ public class ReleaseFreightActivity extends BaseActivity {
         instance = this;
         initTitle("空车配货订单");
         initBack();
-        initLocation();
         initProgressDialog(false, "正在发布....");
+
+        initLocation();
+        mlocationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        latitude = aMapLocation.getLatitude();//获取纬度
+                        longitude = aMapLocation.getLongitude();//获取经度
+                        accuracy = aMapLocation.getAccuracy();//获取精度信息
+                        mlocationClient.stopLocation();
+                        txtLocation.setText(aMapLocation.getAddress());
+
+                        LogHelper.e("latitude", latitude + "");
+                        LogHelper.e("longitude", longitude + "");
+                    }
+                }
+
+            }
+        });
 
         getStartPlace();
         getCarLength();
@@ -338,6 +365,7 @@ public class ReleaseFreightActivity extends BaseActivity {
         params.put("pay_type", payType);
         params.put("consignor_lng", longitude);
         params.put("consignor_lat", latitude);
+        params.put("consignor_place", txtLocation.getText().toString().trim());
 
         int infoType;
         Enterprise enterprise = getUser().getEnterprise();
@@ -413,15 +441,17 @@ public class ReleaseFreightActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.txtStart, R.id.txtEnd, R.id.txtWeight, R.id.txtCarLength, R.id.txtCarModel, R.id.txtTime, R.id.txtConfirm})
+    @OnClick({R.id.txtStart, R.id.txtEnd, R.id.txtWeight, R.id.txtCarLength, R.id.txtCarModel, R.id.txtTime, R.id.txtConfirm, R.id.txtLocation})
     public void onClick(View view) {
+        Intent intent = null;
+
         switch (view.getId()) {
             case R.id.txtStart: //起始地
                 if (pvStartPlace != null)
                     pvStartPlace.show();
                 break;
             case R.id.txtEnd: //目的地
-                Intent intent = new Intent(context, AddressSelectActivity.class);
+                intent = new Intent(context, AddressSelectActivity.class);
                 intent.putExtra("code", Const.REQUEST_CODE_SELECT_LOGISTICS + "");
                 intent.putExtra("type", "0");
                 startActivityForResult(intent, Const.REQUEST_CODE_SELECT_LOGISTICS);
@@ -440,6 +470,10 @@ public class ReleaseFreightActivity extends BaseActivity {
             case R.id.txtTime: //装车时间
                 pvTime.setDate(Calendar.getInstance());
                 pvTime.show();
+                break;
+            case R.id.txtLocation: //地图选点
+                intent = new Intent(context, MapChooseActivity.class);
+                startActivityForResult(intent, Const.REQUEST_CODE_MAP_CHOOSE);
                 break;
             case R.id.txtConfirm: //发布订单
                 if (TextUtils.isEmpty(startId)) {
@@ -495,6 +529,19 @@ public class ReleaseFreightActivity extends BaseActivity {
                     endName = endName.substring(0, endName.length() - 1);
 
                 txtEnd.setText(endName);
+                break;
+            case Const.REQUEST_CODE_MAP_CHOOSE: //地图选点
+                Bundle bundle = data.getExtras();
+                PoiItem poiItem = bundle.getParcelable(Const.KEY_POI);
+                LatLng latLng = bundle.getParcelable(Const.KEY_LATLNG);
+                int position = bundle.getInt(Const.KEY_POSITION);
+                latitude = latLng.latitude;
+                longitude = latLng.longitude;
+
+                if (position == 0)
+                    txtLocation.setText(poiItem.getTitle());
+                else
+                    txtLocation.setText(poiItem.getCityName() + poiItem.getAdName() + poiItem.getSnippet() + poiItem.getTitle());
                 break;
         }
     }

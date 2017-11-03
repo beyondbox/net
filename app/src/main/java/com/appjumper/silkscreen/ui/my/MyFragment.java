@@ -110,14 +110,16 @@ public class MyFragment extends BaseFragment {
                 llReleaseStockGoods.setVisibility(View.GONE);
 
 
-            /*if (user.getDriver_status().equals(Const.AUTH_SUCCESS + "")) {
+            if (user.getDriver_status().equals(Const.AUTH_SUCCESS + "")) {
                 llDriver.setVisibility(View.VISIBLE);
-                llDeliver.setVisibility(View.GONE);
-                txtDriverState.setText(user.getDriver_car_status().equals("0") ? "更改为运输中" : "更改为空闲");
             } else {
                 llDriver.setVisibility(View.GONE);
+            }
+
+            if (user.getIs_vender().equals("1"))
                 llDeliver.setVisibility(View.VISIBLE);
-            }*/
+            else
+                llDeliver.setVisibility(View.GONE);
 
             txtDriverState.setText(user.getDriver_car_status().equals("0") ? "更改为运输中" : "更改为空闲");
 
@@ -172,7 +174,7 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.rl_feedback://意见反馈
                 start_Activity(getActivity(), FeedbackActivity.class);
-                //start_Activity(context, DriverAuthThirdActivity.class);
+                //start_Activity(context, MapChooseActivity.class);
                 break;
             case R.id.rl_user://用户信息
                 if (checkLogined()) {
@@ -181,7 +183,6 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.rl_system_setting://系统设置
                 start_Activity(getActivity(), SystemSettingActivity.class);
-                //test();
                 //start_Activity(context, InquiryCiShengActivity.class);
                 break;
             case R.id.ll_certify://查看认证

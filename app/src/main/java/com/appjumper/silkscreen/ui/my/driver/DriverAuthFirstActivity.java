@@ -88,9 +88,12 @@ public class DriverAuthFirstActivity extends MultiSelectPhotoActivity{
             Glide.with(this).load(iv_id_card_one_url).placeholder(R.mipmap.icon_uploading_01).into(iv_id_card);
             Glide.with(this).load(iv_id_card_two_url).placeholder(R.mipmap.icon_uploading_01).into(iv_id_card_two);
             et_name.setText(data.getName());
-            et_name.setFocusable(false);
             et_idcard.setText(data.getIdcard());
+
+            et_name.setFocusable(false);
             et_idcard.setFocusable(false);
+            iv_id_card.setEnabled(false);
+            iv_id_card_two.setEnabled(false);
         }
     }
 
@@ -116,12 +119,17 @@ public class DriverAuthFirstActivity extends MultiSelectPhotoActivity{
                     showErrorToast("请上传身份证反面照");
                     break;
                 }
-                if(et_name.getText().toString().length()<0){
+                if(et_name.getText().toString().length()<1){
                     showErrorToast("真实姓名不能为空");
                     return;
                 }
-                if(et_idcard.getText().toString().length()<0){
+                if(et_idcard.getText().toString().length()<1){
                     showErrorToast("身份证号不能为空");
+                    return;
+                }
+
+                if (et_idcard.getText().toString().length() < 18) {
+                    showErrorToast("请输入正确的身份证号");
                     return;
                 }
 

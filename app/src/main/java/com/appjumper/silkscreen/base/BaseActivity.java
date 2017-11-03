@@ -29,6 +29,7 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.util.AppToast;
+import com.appjumper.silkscreen.util.LogHelper;
 import com.appjumper.silkscreen.util.MProgressDialog;
 import com.umeng.analytics.MobclickAgent;
 
@@ -82,6 +83,9 @@ public class BaseActivity extends FragmentActivity {
                         latitude = aMapLocation.getLatitude();//获取纬度
                         longitude = aMapLocation.getLongitude();//获取经度
                         accuracy = aMapLocation.getAccuracy();//获取精度信息
+
+                        LogHelper.e("latitude", latitude + "");
+                        LogHelper.e("longitude", longitude + "");
 
                         mlocationClient.stopLocation();
                     }

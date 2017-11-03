@@ -6,12 +6,20 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Poi;
+import com.amap.api.navi.AmapNaviPage;
+import com.amap.api.navi.AmapNaviParams;
+import com.amap.api.navi.AmapNaviType;
+import com.amap.api.navi.INaviInfoCallback;
+import com.amap.api.navi.model.AMapNaviLocation;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.util.AmapTTSController;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -30,7 +38,7 @@ import butterknife.OnClick;
  * Created by Botx on 2017/10/28.
  */
 
-public class GoToDeliverActivity extends BaseActivity {
+public class GoToDeliverActivity extends BaseActivity implements INaviInfoCallback {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
@@ -64,6 +72,7 @@ public class GoToDeliverActivity extends BaseActivity {
 
     private String id;
     private Freight data;
+    private AmapTTSController amapTTSController;
 
 
 
@@ -75,6 +84,9 @@ public class GoToDeliverActivity extends BaseActivity {
         initTitle("详情");
         initBack();
         initProgressDialog(false, null);
+
+        amapTTSController = AmapTTSController.getInstance(getApplicationContext());
+        amapTTSController.init();
 
         id = getIntent().getStringExtra("id");
         getData();
@@ -181,7 +193,7 @@ public class GoToDeliverActivity extends BaseActivity {
 
 
 
-    @OnClick({R.id.txtCall, R.id.txtCallDeliver})
+    @OnClick({R.id.txtCall, R.id.txtCallDeliver, R.id.txtNavi})
     public void onClick(View view) {
         if (data == null)
             return;
@@ -193,9 +205,58 @@ public class GoToDeliverActivity extends BaseActivity {
             case R.id.txtCallDeliver: //联系厂家
                 AppTool.dial(context, data.getMobile());
                 break;
+            case R.id.txtNavi: //导航去厂家
+                LatLng latLng = new LatLng(37.9779486061, 114.5299601555);
+                AmapNaviPage.getInstance().showRouteActivity(getApplicationContext(), new AmapNaviParams(null, null, new Poi("河北科技大学", latLng, ""), AmapNaviType.DRIVER), this);
+                break;
             default:
                 break;
         }
     }
 
+    @Override
+    public void onInitNaviFailure() {
+
+    }
+
+    @Override
+    public void onGetNavigationText(String s) {
+        amapTTSController.onGetNavigationText(s);
+    }
+
+    @Override
+    public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
+
+    }
+
+    @Override
+    public void onArriveDestination(boolean b) {
+
+    }
+
+    @Override
+    public void onStartNavi(int i) {
+
+    }
+
+    @Override
+    public void onCalculateRouteSuccess(int[] ints) {
+
+    }
+
+    @Override
+    public void onCalculateRouteFailure(int i) {
+
+    }
+
+    @Override
+    public void onStopSpeaking() {
+        amapTTSController.stopSpeaking();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        amapTTSController.destroy();
+    }
 }

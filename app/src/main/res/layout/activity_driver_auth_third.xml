@@ -187,25 +187,21 @@
                     android:textSize="14sp"
                     android:textColor="@color/text_black_color"/>
 
-                <EditText
-                    android:id="@+id/edtTxtWeight"
+                <TextView
+                    android:id="@+id/txtWeight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="3"
                     android:layout_marginRight="8dp"
                     android:background="@drawable/shape_item_attent_trans"
-                    android:inputType="numberDecimal"
-                    android:maxLength="5"
-                    android:imeOptions="actionNext"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:hint="请输入载重"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
+                    android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:layout_weight="3"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:drawableRight="@mipmap/icon_arrows_down"
+                    android:text="5吨"
                     android:textColor="@color/text_black_color"
-                    android:textColorHint="@color/light_gray_color"
                     android:textSize="14sp"/>
 
                 <TextView
@@ -213,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="吨"
+                    android:text=""
                     android:textSize="14sp"
                     android:textColor="@color/text_black_color"/>
             </LinearLayout>

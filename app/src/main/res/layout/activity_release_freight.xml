@@ -274,9 +274,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="18dp"
                             android:drawableRight="@mipmap/icon_home_arrows_right04"
+                            android:drawablePadding="5dp"
                             android:paddingTop="12dp"
                             android:paddingBottom="12dp"
                             android:text=""
+                            android:lineSpacingExtra="2dp"
                             android:hint="我的当前位置"
                             android:textColor="@color/text_black_color"
                             android:textColorHint="@color/light_gray_color"
@@ -354,7 +356,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginLeft="8dp"
                 android:orientation="horizontal">
 

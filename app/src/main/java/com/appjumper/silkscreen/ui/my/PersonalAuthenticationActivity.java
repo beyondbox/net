@@ -152,14 +152,20 @@ public class PersonalAuthenticationActivity extends MultiSelectPhotoActivity{
                         break;
                     }
                 }
-                if(et_name.getText().toString().length()<0){
+                if(et_name.getText().toString().length()<1){
                     showErrorToast("真实姓名不能为空");
                     return;
                 }
-                if(et_idcard.getText().toString().length()<0){
+                if(et_idcard.getText().toString().length()<1){
                     showErrorToast("身份证号不能为空");
                     return;
                 }
+
+                if (et_idcard.getText().toString().length() < 18) {
+                    showErrorToast("请输入正确的身份证号");
+                    return;
+                }
+
                 initProgressDialog();
                 progress.show();
                 progress.setMessage("正在提交认证...");

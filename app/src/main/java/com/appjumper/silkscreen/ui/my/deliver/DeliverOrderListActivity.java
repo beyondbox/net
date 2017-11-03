@@ -7,19 +7,19 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.home.logistics.ReleaseFreightActivity;
-import com.appjumper.silkscreen.ui.my.adapter.ChooseDriverAdapter;
+import com.appjumper.silkscreen.ui.my.adapter.ChooseDriverDialogAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.DeliverOrderListAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
@@ -353,44 +353,22 @@ public class DeliverOrderListActivity extends BaseActivity {
         dialog.setView(view);
 
         ListView lvRecord = (ListView) view.findViewById(R.id.lvRecord);
-        ChooseDriverAdapter recordAdapter = new ChooseDriverAdapter(context, offerList);
+        TextView txtConfirm = (TextView) view.findViewById(R.id.txtConfirm);
+        final ChooseDriverDialogAdapter recordAdapter = new ChooseDriverDialogAdapter(context, offerList);
         lvRecord.setAdapter(recordAdapter);
 
-        recordAdapter.setOnWhichClickListener(new MyBaseAdapter.OnWhichClickListener() {
+        lvRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onWhichClick(View view, int position, int tag) {
-                switch (view.getId()) {
-                    case R.id.txtHandle:
-                        dialog.dismiss();
-                        showConfirmDialog(offerList.get(position));
-                        break;
-                }
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                recordAdapter.changeSelected(i);
             }
         });
 
-        dialog.show();
-    }
-
-
-    /**
-     * 确认选择司机对话框
-     */
-    private void showConfirmDialog(final FreightOffer selectedOffer) {
-        final AlertDialog dialog = new AlertDialog.Builder(context).create();
-        View view = LayoutInflater.from(context).inflate(R.layout.dialog_confirm_choose_driver, null);
-        dialog.setView(view);
-
-        TextView txtName = (TextView) view.findViewById(R.id.txtName);
-        TextView txtPrice = (TextView) view.findViewById(R.id.txtPrice);
-        TextView txtConfirm = (TextView) view.findViewById(R.id.txtConfirm);
-
-        txtName.setText(selectedOffer.getName().substring(0, 1) + "司机");
-        txtPrice.setText(selectedOffer.getMoney() + selectedOffer.getMoney_unit());
         txtConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
-                getDriverState(selectedOffer);
+                getDriverState(offerList.get(recordAdapter.selectedPosition));
             }
         });
 

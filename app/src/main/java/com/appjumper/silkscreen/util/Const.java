@@ -65,6 +65,10 @@ public class Const {
      * 请求权限
      */
     public static final int REQUEST_CODE_PERMISSION = 2011;
+    /**
+     * 地图选点
+     */
+    public static final int REQUEST_CODE_MAP_CHOOSE = 2012;
 
 
 
@@ -194,6 +198,8 @@ public class Const {
     public static final int FREIGHT_TRANSPORTING = 6; //空车配货-运输中
     public static final int FREIGHT_TRANSPORT_FINISH = 7; //空车配货-运输完成
     public static final int FREIGHT_ORDER_FINISH = 8; //空车配货-订单完成
+    public static final int FREIGHT_APPLY_AHEAD_CHARGE = 9; //空车配货-司机申请运费垫付
+    public static final int FREIGHT_INVALID = 10; //空车配货-订单已失效
 
 
     public static final String KEY_MOBILE = "mobile";
@@ -220,6 +226,9 @@ public class Const {
     public static final String KEY_ADDRESS_LEVEL = "addressLevel";
     public static final String KEY_TYPE = "type";
     public static final String KEY_IS_READ_MODE = "isReadMode";
+    public static final String KEY_POI = "poi";
+    public static final String KEY_LATLNG = "latLng";
+    public static final String KEY_POSITION = "position";
 
 
 

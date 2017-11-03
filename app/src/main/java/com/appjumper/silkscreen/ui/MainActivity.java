@@ -525,6 +525,7 @@ public class MainActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         instance = null;
+        ButterKnife.unbind(this);
     }
 }
 

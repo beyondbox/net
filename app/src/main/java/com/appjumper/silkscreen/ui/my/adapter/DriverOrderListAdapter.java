@@ -80,7 +80,8 @@ public class DriverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewHo
                 break;
             case Const.FREIGHT_TRANSPORT_FINISH:
                 txtState.setText("运输完成");
-                txtContent.setText("运费\n" + item.getOffer_list().get(0).getMoney());
+                if (item.getOffer_list() != null && item.getOffer_list().size() > 0)
+                    txtContent.setText("运费\n" + item.getOffer_list().get(0).getMoney());
                 setButtonVisibility(helper, true, true, true);
                 setButtonName(helper, "联系厂家", "联系客服", "确认收到运费");
                 break;
@@ -88,6 +89,18 @@ public class DriverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewHo
                 txtState.setText("订单完成");
                 txtContent.setText("");
                setButtonVisibility(helper, false, false, false);
+                setButtonName(helper, "", "", "");
+                break;
+            case Const.FREIGHT_APPLY_AHEAD_CHARGE:
+                txtState.setText("正在申请运费垫付");
+                txtContent.setText("");
+                setButtonVisibility(helper, false, false, false);
+                setButtonName(helper, "", "", "");
+                break;
+            case Const.FREIGHT_INVALID:
+                txtState.setText("已失效");
+                txtContent.setText("");
+                setButtonVisibility(helper, false, false, false);
                 setButtonName(helper, "", "", "");
                 break;
         }

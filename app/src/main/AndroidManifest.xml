@@ -16,6 +16,10 @@
             android:value="30cab7aa898e7eb3be742307a19a534d" />
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService"></service>
+        <!--高德导航-->
+        <activity android:name="com.amap.api.navi.AmapRouteActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
 
         <provider
@@ -194,6 +198,8 @@
         <activity android:name=".ui.common.MapviewActivity" />
         <!--帮助-->
         <activity android:name=".ui.my.HelpWebViewActivity" />
+        <!--地图选点-->
+        <activity android:name=".ui.common.MapChooseActivity" />
 
 
         <!--产品选择列表-->

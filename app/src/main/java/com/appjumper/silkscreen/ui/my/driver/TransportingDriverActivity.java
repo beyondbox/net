@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -78,6 +79,7 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
     private Freight data;
     private AlertDialog arriveDialog;
     private ImageView imgViUpload;
+    private TextView txtConfirm;
     private File tempImageFile;
     private String arriveImgUrl = "";
 
@@ -109,10 +111,22 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
         arriveDialog.setView(view);
 
         imgViUpload = (ImageView) view.findViewById(R.id.imgViUpload);
+        txtConfirm = (TextView) view.findViewById(R.id.txtConfirm);
         imgViUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showWindowSelectList(view);
+            }
+        });
+        txtConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (TextUtils.isEmpty(arriveImgUrl)) {
+                    showErrorToast("请上传货主签字照片");
+                    return;
+                }
+                arriveDialog.dismiss();
+                confirmArrived();
             }
         });
     }
@@ -166,20 +180,18 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
             if (isDestroyed())
                 return;
 
+            progress.dismiss();
             switch (msg.what) {
                 case 3://上传图片
                     ImageResponse imgResponse = (ImageResponse) msg.obj;
                     if (imgResponse.isSuccess()) {
                         arriveImgUrl = imgResponse.getData().get(0).getOrigin();
                         Glide.with(context).load(arriveImgUrl).placeholder(R.mipmap.img_error).into(imgViUpload);
-                        confirmArrived();
                     } else {
-                        progress.dismiss();
                         showErrorToast(imgResponse.getError_desc());
                     }
                     break;
                 case NETWORK_SUCCESS_DATA_ERROR:
-                    progress.dismiss();
                     showErrorToast("网络超时，请稍候");
                     break;
             }
@@ -297,13 +309,18 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
 
             @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String jsonStr = new String(responseBody);
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        arriveDialog.dismiss();
                         Intent intent = new Intent(context, TransportFinishDriverActivity.class);
                         intent.putExtra("id", id);
                         startActivity(intent);

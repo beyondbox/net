@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -54,8 +55,8 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
     EditText edtTxtYear;
     @Bind(R.id.edtTxtMileage)
     EditText edtTxtMileage;
-    @Bind(R.id.edtTxtWeight)
-    EditText edtTxtWeight;
+    @Bind(R.id.txtWeight)
+    TextView txtWeight;
     @Bind(R.id.txtCarLength)
     TextView txtCarLength;
     @Bind(R.id.txtCarModel)
@@ -74,6 +75,9 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
     private List<CarModel> modelList;
     private DriverAuth driverAuth;
 
+    private List<String> weightList; //载重
+    private OptionsPickerView pvWeight;
+
     private OptionsPickerView pvLength;
     private OptionsPickerView pvModel;
     private int lengthIndex = 0; //选择的车长位置
@@ -89,6 +93,7 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
         initLocation();
         initBack();
         initProgressDialog(false, null);
+        initPickerWeight();
 
         setCropSingleImage(false);
         setSingleImage(true);
@@ -184,6 +189,21 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
     }
 
 
+    private void initPickerWeight() {
+        weightList = new ArrayList<>();
+        for (int i = 5; i < 51; i++) {
+            weightList.add(i + "吨");
+        }
+
+        pvWeight = new OptionsPickerView.Builder(context, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                txtWeight.setText(weightList.get(options1));
+            }
+        }).build();
+        pvWeight.setPicker(weightList);
+    }
+
     /**
      * 提交认证
      */
@@ -193,7 +213,7 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
         params.put("vehicle_brand", edtTxtBrand.getText().toString().trim());
         params.put("license_years", edtTxtYear.getText().toString().trim() + "年");
         params.put("license_kilometers", edtTxtMileage.getText().toString().trim() + "万公里");
-        params.put("weight", edtTxtWeight.getText().toString().trim());
+        params.put("weight", txtWeight.getText().toString());
         params.put("car_model_id", modelList.get(modelIndex).getId());
         params.put("car_model_name", modelList.get(modelIndex).getCar_models_name());
         params.put("car_length_id", lengthList.get(lengthIndex).getId());
@@ -343,7 +363,7 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
     };
 
 
-    @OnClick({R.id.imgVi0, R.id.imgVi1, R.id.imgVi2, R.id.txtPrevious, R.id.txtConfirm, R.id.txtCarLength, R.id.txtCarModel})
+    @OnClick({R.id.imgVi0, R.id.imgVi1, R.id.imgVi2, R.id.txtPrevious, R.id.txtConfirm, R.id.txtCarLength, R.id.txtCarModel, R.id.txtWeight})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.imgVi0:
@@ -360,6 +380,9 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
                 break;
             case R.id.txtPrevious:
                 finish();
+                break;
+            case R.id.txtWeight:
+                pvWeight.show();
                 break;
             case R.id.txtCarLength:
                 if (pvLength != null)
@@ -380,10 +403,6 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
                 }
                 if (TextUtils.isEmpty(edtTxtMileage.getText().toString().trim())) {
                     showErrorToast("请输入行驶公里数");
-                    return;
-                }
-                if (TextUtils.isEmpty(edtTxtWeight.getText().toString().trim())) {
-                    showErrorToast("请输入载重");
                     return;
                 }
                 if (TextUtils.isEmpty(txtCarLength.getText().toString().trim())) {
