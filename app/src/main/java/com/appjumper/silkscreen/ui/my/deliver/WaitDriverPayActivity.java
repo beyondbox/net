@@ -162,7 +162,7 @@ public class WaitDriverPayActivity extends BaseActivity {
         txtTitle.setText(data.getFrom_name() + " - " + data.getTo_name());
         txtTime.setText(data.getCreate_time().substring(5, 16));
         txtOrderId.setText("订单编号 : " + data.getOrder_id());
-        txtCarNum.setText("已发车" + data.getCar_num() + "次");
+        txtCarNum.setText("已发车" + data.getDepart_num() + "次");
         txtCarModel.setText(data.getLengths_name() + "/" + data.getModels_name());
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");

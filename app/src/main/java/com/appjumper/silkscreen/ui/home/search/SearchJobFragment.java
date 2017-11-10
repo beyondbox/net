@@ -237,8 +237,8 @@ public class SearchJobFragment extends BaseFragment {
         params.put("type", 7);
         params.put("keyworks", activity.keyworks);
         params.put("uid", getUserID());
-        params.put("lat", activity.latitude + "");
-        params.put("lng", activity.longitude + "");
+        params.put("lat", getLat());
+        params.put("lng", getLng());
         params.put("name", name);
         params.put("location", from_id);
 

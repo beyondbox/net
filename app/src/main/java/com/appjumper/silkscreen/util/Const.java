@@ -9,6 +9,8 @@ public class Const {
 
     //app分享链接
     public static String SHARE_APP_URL = "https://siwangjia.kuaizhan.com/";
+    //求购分享链接
+    public static String SHARE_ASKBUY_URL = "http://www.siwangjia.com/data/upload/web/want_buy.html";
 
     //空车配货版块客服电话
     public static final String SERVICE_PHONE_FREIGHT = "18531881233";

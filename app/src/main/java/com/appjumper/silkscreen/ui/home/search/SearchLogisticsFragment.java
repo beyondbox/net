@@ -175,8 +175,8 @@ public class SearchLogisticsFragment extends BaseFragment {
         params.put("type", 4);
         params.put("keyworks", activity.keyworks);
         params.put("uid", getUserID());
-        params.put("lat", activity.latitude + "");
-        params.put("lng", activity.longitude + "");
+        params.put("lat", getLat());
+        params.put("lng", getLng());
         params.put("from", start_id);
         params.put("to", end_id);
 

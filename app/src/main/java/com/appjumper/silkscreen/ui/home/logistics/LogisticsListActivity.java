@@ -11,6 +11,7 @@ import android.widget.RadioGroup;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.util.Const;
@@ -37,6 +38,7 @@ public class LogisticsListActivity extends BaseActivity {
     @Bind(R.id.rdoGroup)
     RadioGroup rdoGroup;
 
+    public static LogisticsListActivity instance = null;
     private SureOrCancelDialog comCreateDialog;
 
     private List<Fragment> fragList;
@@ -49,6 +51,7 @@ public class LogisticsListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logistics_list);
         ButterKnife.bind(context);
+        instance = this;
 
         initData();
         initBack();
@@ -151,6 +154,8 @@ public class LogisticsListActivity extends BaseActivity {
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
                         break;
                     case "2":
+                        if (!MyApplication.appContext.checkMobile(context)) return;
+                        if (!MyApplication.appContext.checkCertifyPer(context)) return;
                         start_Activity(context, ReleaseFreightActivity.class);
                         break;
                 }
@@ -160,4 +165,10 @@ public class LogisticsListActivity extends BaseActivity {
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 }

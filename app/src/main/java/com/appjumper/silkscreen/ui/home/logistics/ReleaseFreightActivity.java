@@ -29,7 +29,6 @@ import com.appjumper.silkscreen.ui.common.AddressSelectActivity;
 import com.appjumper.silkscreen.ui.common.MapChooseActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.util.LogHelper;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -121,9 +120,6 @@ public class ReleaseFreightActivity extends BaseActivity {
                         accuracy = aMapLocation.getAccuracy();//获取精度信息
                         mlocationClient.stopLocation();
                         txtLocation.setText(aMapLocation.getAddress());
-
-                        LogHelper.e("latitude", latitude + "");
-                        LogHelper.e("longitude", longitude + "");
                     }
                 }
 
@@ -277,6 +273,9 @@ public class ReleaseFreightActivity extends BaseActivity {
     }
 
     private void initPickerTime() {
+        Calendar endTime = Calendar.getInstance();
+        endTime.add(Calendar.DATE, 3);
+
         pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
@@ -285,6 +284,7 @@ public class ReleaseFreightActivity extends BaseActivity {
         })
                 .setContentSize(17)
                 .setType(new boolean[]{true, true, true, true, true, false})
+                .setRangDate(Calendar.getInstance(), endTime)
                 .build();
     }
 
@@ -329,7 +329,7 @@ public class ReleaseFreightActivity extends BaseActivity {
         txtEnd.setText(freight.getTo_name());
 
         edtTxtName.setText(freight.getProduct_name());
-        edtTxtName.setSelection(freight.getProduct_name().length());
+        //edtTxtName.setSelection(freight.getProduct_name().length());
         txtWeight.setText(freight.getWeight());
         lengthId = freight.getLengths_id();
         modelId = freight.getModels_id();
@@ -468,7 +468,7 @@ public class ReleaseFreightActivity extends BaseActivity {
                     pvModel.show();
                 break;
             case R.id.txtTime: //装车时间
-                pvTime.setDate(Calendar.getInstance());
+                //pvTime.setDate(Calendar.getInstance());
                 pvTime.show();
                 break;
             case R.id.txtLocation: //地图选点

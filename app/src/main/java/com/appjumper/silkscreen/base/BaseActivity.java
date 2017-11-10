@@ -21,16 +21,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.util.AppToast;
-import com.appjumper.silkscreen.util.LogHelper;
 import com.appjumper.silkscreen.util.MProgressDialog;
+import com.appjumper.silkscreen.util.SPUtil;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -75,7 +73,7 @@ public class BaseActivity extends FragmentActivity {
 //启动定位
         mlocationClient.startLocation();
 //设置定位监听
-        mlocationClient.setLocationListener(new AMapLocationListener() {
+        /*mlocationClient.setLocationListener(new AMapLocationListener() {
             @Override
             public void onLocationChanged(AMapLocation aMapLocation) {
                 if (aMapLocation != null) {
@@ -92,7 +90,7 @@ public class BaseActivity extends FragmentActivity {
                 }
 
             }
-        });
+        });*/
 
     }
 
@@ -444,6 +442,14 @@ public class BaseActivity extends FragmentActivity {
         return false;
     }
 
+
+    public String getLat() {
+        return SPUtil.getString(null, "lat", "0.0");
+    }
+
+    public String getLng() {
+        return SPUtil.getString(null, "lng", "0.0");
+    }
 
 
 }

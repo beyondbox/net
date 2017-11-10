@@ -32,6 +32,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,7 +59,7 @@ public class DeliverOrderListActivity extends BaseActivity {
     private Freight item; //当前操作的订单
 
     private int page = 1;
-    private int pageSize = 20;
+    private int pageSize = 30;
     private int totalSize;
 
     @Override
@@ -155,7 +156,7 @@ public class DeliverOrderListActivity extends BaseActivity {
                                 start_Activity(context, ReleaseFreightActivity.class);
                                 break;
                             case Const.FREIGHT_TRANSPORTING:
-
+                                start_Activity(context, TransportingDeliverActivity.class, new BasicNameValuePair("id", item.getId()));
                                 break;
                             default:
                                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
@@ -179,12 +180,7 @@ public class DeliverOrderListActivity extends BaseActivity {
                                 }).show();
                                 break;
                             case Const.FREIGHT_LOADING:
-                                new SureOrCancelDialog(context, "提示", "是否确认装货完成？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
-                                    @Override
-                                    public void onSureButtonClick() {
-                                        confirmLoaded();
-                                    }
-                                }).show();
+                                start_Activity(context, LoadingDeliverActivity.class, new BasicNameValuePair("id", item.getId()));
                                 break;
                             case Const.FREIGHT_TRANSPORTING:
                                 new SureOrCancelDialog(context, "提示", "是否确认送达？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
@@ -195,7 +191,7 @@ public class DeliverOrderListActivity extends BaseActivity {
                                 }).show();
                                 break;
                             case Const.FREIGHT_TRANSPORT_FINISH:
-
+                                start_Activity(context, TransportFinishDeliverActivity.class, new BasicNameValuePair("id", item.getId()));
                                 break;
                             case Const.FREIGHT_ORDER_FINISH:
                                 start_Activity(context, ReleaseFreightActivity.class);
@@ -355,6 +351,7 @@ public class DeliverOrderListActivity extends BaseActivity {
         ListView lvRecord = (ListView) view.findViewById(R.id.lvRecord);
         TextView txtConfirm = (TextView) view.findViewById(R.id.txtConfirm);
         final ChooseDriverDialogAdapter recordAdapter = new ChooseDriverDialogAdapter(context, offerList);
+        lvRecord.setDividerHeight(0);
         lvRecord.setAdapter(recordAdapter);
 
         lvRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -510,52 +507,6 @@ public class DeliverOrderListActivity extends BaseActivity {
     }
 
 
-    /**
-     * 确认装货完毕
-     */
-    private void confirmLoaded() {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "enterprise_loading_finished");
-        params.put("car_product_id", item.getId());
-        params.put("uid", getUserID());
-
-        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                progress.show();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String jsonStr = new String(responseBody);
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
-                    if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, TransportingDeliverActivity.class);
-                        intent.putExtra("id", item.getId());
-                        startActivity(intent);
-                    } else {
-                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                showFailTips(getResources().getString(R.string.requst_fail));
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                progress.dismiss();
-            }
-        });
-    }
-
 
     /**
      * 确认送达
@@ -579,9 +530,7 @@ public class DeliverOrderListActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, TransportFinishDeliverActivity.class);
-                        intent.putExtra("id", item.getId());
-                        startActivity(intent);
+                        showErrorToast("提交成功，请等待官方确认");
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }

@@ -1,10 +1,13 @@
 package com.appjumper.silkscreen.ui.my.driver;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,6 +17,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Poi;
+import com.amap.api.navi.AmapNaviPage;
+import com.amap.api.navi.AmapNaviParams;
+import com.amap.api.navi.AmapNaviType;
+import com.amap.api.navi.INaviInfoCallback;
+import com.amap.api.navi.model.AMapNaviLocation;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.bean.FreightOffer;
@@ -23,10 +35,13 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
 import com.appjumper.silkscreen.ui.my.adapter.DriverOrderListAdapter;
+import com.appjumper.silkscreen.util.AmapTTSController;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Applibrary;
+import com.appjumper.silkscreen.util.CommonUtil;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.ImageUtil;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
@@ -39,6 +54,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,7 +70,7 @@ import butterknife.ButterKnife;
  * Created by Botx on 2017/10/27.
  */
 
-public class DriverOrderListActivity extends MultiSelectPhotoActivity {
+public class DriverOrderListActivity extends MultiSelectPhotoActivity implements INaviInfoCallback {
 
     @Bind(R.id.ptrLayt)
     PtrClassicFrameLayout ptrLayt;
@@ -65,14 +81,18 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
     private DriverOrderListAdapter adapter;
     private Freight item; //当前操作的订单
 
+    private AmapTTSController amapTTSController;
     private AlertDialog arriveDialog;
+    private SureOrCancelDialog gpsDialog;
     private ImageView imgViUpload;
     private TextView txtConfirm;
     private File tempImageFile;
     private String arriveImgUrl = "";
 
+    private String pushId = ""; //推送过来的信息id
+
     private int page = 1;
-    private int pageSize = 20;
+    private int pageSize = 30;
     private int totalSize;
 
     @Override
@@ -86,9 +106,15 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
         initProgressDialog(false, null);
         initDialog();
 
+        amapTTSController = AmapTTSController.getInstance(getApplicationContext());
+        amapTTSController.init();
         setCropSingleImage(false);
         setSingleImage(true);
         setCropTaskPhoto(false);
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("id"))
+            pushId = intent.getStringExtra("id");
 
         initRecyclerView();
         initRefreshLayout();
@@ -100,11 +126,23 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
         }, 50);
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
         page = 1;
         getData();
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        /*if (intent.hasExtra("id")) {
+            pushId = intent.getStringExtra("id");
+            ptrLayt.autoRefresh();
+        }*/
     }
 
 
@@ -165,7 +203,10 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
                 int state = Integer.valueOf(item.getExamine_status());
                 switch (view.getId()) {
                     case R.id.txtHandle0: //第一个按钮
-                        AppTool.dial(context, item.getMobile());
+                        if (item.getCar_product_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
+                            AppTool.dial(context, item.getEnterprise_mobile());
+                        else
+                            AppTool.dial(context, item.getMobile());
                         break;
                     case R.id.txtHandle1: //第二个按钮
                         switch (state) {
@@ -186,13 +227,25 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
                                 }).show();
                                 break;
                             case Const.FREIGHT_TRANSPORTING:
-
+                                CommonUtil.getLocation(new AMapLocationListener() {
+                                    @Override
+                                    public void onLocationChanged(AMapLocation aMapLocation) {
+                                        if (aMapLocation.getErrorCode() == 0) {
+                                            updateLocation(aMapLocation.getLatitude(), aMapLocation.getLongitude(), aMapLocation.getAddress());
+                                        } else {
+                                            showErrorToast("定位失败: " + aMapLocation.getErrorInfo());
+                                        }
+                                    }
+                                });
                                 break;
                             case Const.FREIGHT_TRANSPORT_FINISH:
                                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                                 break;
                             default:
-                                AppTool.dial(context, item.getMobile());
+                                if (item.getCar_product_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
+                                    AppTool.dial(context, item.getEnterprise_mobile());
+                                else
+                                    AppTool.dial(context, item.getMobile());
                                 break;
                         }
                         break;
@@ -206,10 +259,18 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
                                     showOfferDialog();
                                 break;
                             case Const.FREIGHT_DRIVER_PAYING:
-                                pay();
+                                long endTime = HttpUtil.getTimeLong(item.getExpiry_driver_pay_date());
+                                if (System.currentTimeMillis() < endTime)
+                                    pay();
                                 break;
                             case Const.FREIGHT_GOTO_LOAD:
-
+                                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                                if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+                                    gpsDialog.show();
+                                    return;
+                                }
+                                LatLng latLng = new LatLng(Double.valueOf(item.getConsignor_lat()), Double.valueOf(item.getConsignor_lng()));
+                                AmapNaviPage.getInstance().showRouteActivity(getApplicationContext(), new AmapNaviParams(null, null, new Poi(item.getConsignor_place(), latLng, ""), AmapNaviType.DRIVER), DriverOrderListActivity.this);
                                 break;
                             case Const.FREIGHT_LOADING:
                                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
@@ -308,6 +369,14 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
 
                         if (dataList.size() < totalSize)
                             adapter.setEnableLoadMore(true);
+
+                        //处理推送，跳转到详情
+                        if (page == 1) {
+                            if (!TextUtils.isEmpty(pushId)) {
+                                start_Activity(context, ReceiveInquiryActivity.class, new BasicNameValuePair("id", pushId));
+                                pushId = "";
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -561,7 +630,7 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
 
 
     /**
-     * 确认送达对话框
+     * 初始化对话框
      */
     private void initDialog() {
         arriveDialog = new AlertDialog.Builder(context).create();
@@ -587,6 +656,20 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
                 confirmArrived();
             }
         });
+
+
+        gpsDialog = new SureOrCancelDialog(context,
+                "提示",
+                "您尚未开启GPS，点击确定前往设置",
+                "确定",
+                "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
     }
 
 
@@ -664,9 +747,7 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, TransportFinishDriverActivity.class);
-                        intent.putExtra("id", item.getId());
-                        startActivity(intent);
+                        showErrorToast("提交成功，请等待官方确认");
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -701,6 +782,12 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
 
             @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String jsonStr = new String(responseBody);
                 try {
@@ -731,10 +818,103 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity {
         });
     }
 
+    /**
+     * 更新位置
+     */
+    private void updateLocation(double lat, double lng, String address) {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "driver_position");
+        params.put("uid", getUserID());
+        params.put("driver_lat", lat + "");
+        params.put("driver_lng", lng + "");
+        params.put("place_name", address);
+        params.put("car_product_id", item.getId());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        showErrorToast("更新成功");
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+    @Override
+    public void onInitNaviFailure() {
+
+    }
+
+    @Override
+    public void onGetNavigationText(String s) {
+        amapTTSController.onGetNavigationText(s);
+    }
+
+    @Override
+    public void onLocationChange(AMapNaviLocation aMapNaviLocation) {
+
+    }
+
+    @Override
+    public void onArriveDestination(boolean b) {
+
+    }
+
+    @Override
+    public void onStartNavi(int i) {
+
+    }
+
+    @Override
+    public void onCalculateRouteSuccess(int[] ints) {
+
+    }
+
+    @Override
+    public void onCalculateRouteFailure(int i) {
+
+    }
+
+    @Override
+    public void onStopSpeaking() {
+        amapTTSController.stopSpeaking();
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (MainActivity.instance == null)
+            startActivity(new Intent(context, MainActivity.class));
+    }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        amapTTSController.destroy();
+        adapter.cancelAllTimers();
         if (tempImageFile != null) {
             if (tempImageFile.exists())
                 tempImageFile.delete();

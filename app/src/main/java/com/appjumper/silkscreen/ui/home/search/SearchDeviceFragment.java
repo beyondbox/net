@@ -231,8 +231,8 @@ public class SearchDeviceFragment extends BaseFragment {
         params.put("type", 5);
         params.put("keyworks", activity.keyworks);
         params.put("uid", getUserID());
-        params.put("lat", activity.latitude + "");
-        params.put("lng", activity.longitude + "");
+        params.put("lat", getLat());
+        params.put("lng", getLng());
         params.put("name", name);
         params.put("new_old_rate", new_old_rate);
 

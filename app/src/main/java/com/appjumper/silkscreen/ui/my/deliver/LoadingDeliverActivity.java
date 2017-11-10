@@ -3,8 +3,10 @@ package com.appjumper.silkscreen.ui.my.deliver;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
@@ -14,9 +16,11 @@ import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.my.adapter.TransportListAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
+import com.bigkoo.pickerview.TimePickerView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -24,6 +28,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -72,10 +77,13 @@ public class LoadingDeliverActivity extends BaseActivity {
 
     @Bind(R.id.txtPremium)
     TextView txtPremium;
+    @Bind(R.id.txtExpectDate)
+    TextView txtExpectDate;
 
 
     private String id;
     private Freight data;
+    private TimePickerView pvTime;
 
 
     @Override
@@ -86,11 +94,24 @@ public class LoadingDeliverActivity extends BaseActivity {
         initTitle("详情");
         initBack();
         initProgressDialog(false, null);
+        initPickerTime();
 
         id = getIntent().getStringExtra("id");
         getData();
     }
 
+
+    private void initPickerTime() {
+        pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
+            @Override
+            public void onTimeSelect(Date date, View v) {
+                txtExpectDate.setText(AppTool.dateFormat(date.getTime(), "yyyy-MM-dd"));
+            }
+        })
+                .setContentSize(17)
+                .setType(new boolean[]{true, true, true, false, false, false})
+                .build();
+    }
 
 
     /**
@@ -149,7 +170,7 @@ public class LoadingDeliverActivity extends BaseActivity {
         txtTitle.setText(data.getFrom_name() + " - " + data.getTo_name());
         txtTime.setText(data.getCreate_time().substring(5, 16));
         txtOrderId.setText("订单编号 : " + data.getOrder_id());
-        txtCarNum.setText("已发车" + data.getCar_num() + "次");
+        txtCarNum.setText("已发车" + data.getDepart_num() + "次");
         txtCarModel.setText(data.getLengths_name() + "/" + data.getModels_name());
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
@@ -204,6 +225,10 @@ public class LoadingDeliverActivity extends BaseActivity {
         txtPayState.setText("已支付信息费、保险费");
         txtPayState.setTextColor(getResources().getColor(R.color.green_color));
 
+        ListView lvTransport = (ListView) findViewById(R.id.lvTransport);
+        lvTransport.setFocusable(false);
+        TransportListAdapter transportAdapter = new TransportListAdapter(context, data.getTransport_list());
+        lvTransport.setAdapter(transportAdapter);
     }
 
 
@@ -214,6 +239,7 @@ public class LoadingDeliverActivity extends BaseActivity {
         RequestParams params = MyHttpClient.getApiParam("purchase", "enterprise_loading_finished");
         params.put("car_product_id", id);
         params.put("uid", getUserID());
+        params.put("enterprise_expect_date", txtExpectDate.getText().toString().trim() + " 23:59:59");
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
@@ -258,7 +284,7 @@ public class LoadingDeliverActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.txtCall, R.id.btn0, R.id.btn1})
+    @OnClick({R.id.txtCall, R.id.btn0, R.id.btn1, R.id.txtExpectDate})
     public void onClick(View view) {
         if (data == null)
             return;
@@ -271,12 +297,19 @@ public class LoadingDeliverActivity extends BaseActivity {
                 AppTool.dial(context, data.getConfirm_driver_mobile());
                 break;
             case R.id.btn1: //确认装货完毕
+                if (TextUtils.isEmpty(txtExpectDate.getText().toString().trim())) {
+                    showErrorToast("请选择预计运达时间");
+                    return;
+                }
                 new SureOrCancelDialog(context, "提示", "是否确认装货完成？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
                     @Override
                     public void onSureButtonClick() {
                         confirmLoaded();
                     }
                 }).show();
+                break;
+            case R.id.txtExpectDate: //预计运达时间
+                pvTime.show();
                 break;
             default:
                 break;

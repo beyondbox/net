@@ -127,4 +127,34 @@ public class MyApplication extends Application{
         return true;
     }
 
+
+    /**
+     * 验证用户是否完成了司机认证
+     * @param context
+     */
+    public boolean checkCertifyDriver(final Context context) {
+        User user = myUserBeanManager.getInstance();
+        if (user != null) {
+            if (!user.getDriver_status().equals("2")) {
+                SureOrCancelDialog dialog = new SureOrCancelDialog(context,
+                        "提示",
+                        "您尚未完成司机认证，是否前往认证？",
+                        "是",
+                        "否",
+                        new SureOrCancelDialog.SureButtonClick() {
+                            @Override
+                            public void onSureButtonClick() {
+                                Intent intent = new Intent(context, CertifyManageActivity.class);
+                                context.startActivity(intent);
+                            }
+                        });
+
+                dialog.show();
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 }

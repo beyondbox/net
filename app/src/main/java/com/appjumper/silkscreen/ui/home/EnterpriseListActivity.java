@@ -89,7 +89,6 @@ public class EnterpriseListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enterprise_list);
-        initLocation();
         ButterKnife.bind(this);
         initBack();
 
@@ -301,8 +300,8 @@ public class EnterpriseListActivity extends BaseActivity {
                 map.put("pagesize", pagesize);
                 map.put("type", service_id);
                 map.put("uid", getUserID());
-                map.put("lat", latitude+"");
-                map.put("lng", longitude+"");
+                map.put("lat", getLat());
+                map.put("lng", getLng());
                 map.put("product_id", product_id);
                 map.put("auth", auth_id);
                 response = JsonParser.getEnterpriseResponse(HttpUtil.postMsg(HttpUtil.getData(map), Url.ENTERPRISELIST));
@@ -329,8 +328,8 @@ public class EnterpriseListActivity extends BaseActivity {
                 map.put("pagesize", pagesize);
                 map.put("type", service_id);
                 map.put("uid", getUserID());
-                map.put("lat", latitude+"");
-                map.put("lng", longitude+"");
+                map.put("lat", getLat());
+                map.put("lng", getLng());
                 map.put("product_id", product_id);
                 map.put("auth", auth_id);
                 response = JsonParser.getEnterpriseResponse(HttpUtil.postMsg(HttpUtil.getData(map), Url.ENTERPRISELIST));

@@ -1,12 +1,22 @@
 package com.appjumper.silkscreen.ui.my.driver;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Poi;
 import com.amap.api.navi.AmapNaviPage;
 import com.amap.api.navi.AmapNaviParams;
@@ -22,6 +32,8 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.util.AmapTTSController;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.view.MapContainer;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -69,10 +81,19 @@ public class GoToDeliverActivity extends BaseActivity implements INaviInfoCallba
     @Bind(R.id.txtPremium)
     TextView txtPremium;
 
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
+    @Bind(R.id.mapContainer)
+    MapContainer mapContainer;
+    @Bind(R.id.map)
+    MapView mMapView;
+    private AMap aMap;
+
 
     private String id;
     private Freight data;
     private AmapTTSController amapTTSController;
+    private SureOrCancelDialog gpsDialog;
 
 
 
@@ -84,14 +105,38 @@ public class GoToDeliverActivity extends BaseActivity implements INaviInfoCallba
         initTitle("详情");
         initBack();
         initProgressDialog(false, null);
+        initDialog();
 
         amapTTSController = AmapTTSController.getInstance(getApplicationContext());
         amapTTSController.init();
+
+        mMapView.onCreate(savedInstanceState);
+        if (aMap == null) {
+            aMap = mMapView.getMap();
+            aMap.getUiSettings().setCompassEnabled(true);
+        }
+        mapContainer.setScrollView(scrollView);
+
 
         id = getIntent().getStringExtra("id");
         getData();
     }
 
+
+    private void initDialog() {
+        gpsDialog = new SureOrCancelDialog(context,
+                "提示",
+                "您尚未开启GPS，点击确定前往设置",
+                "确定",
+                "取消",
+                new SureOrCancelDialog.SureButtonClick() {
+                    @Override
+                    public void onSureButtonClick() {
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                    }
+                });
+    }
 
 
     /**
@@ -150,7 +195,7 @@ public class GoToDeliverActivity extends BaseActivity implements INaviInfoCallba
         txtTitle.setText(data.getFrom_name() + " - " + data.getTo_name());
         txtTime.setText(data.getCreate_time().substring(5, 16));
         txtOrderId.setText("订单编号 : " + data.getOrder_id());
-        txtCarNum.setText("已发车" + data.getCar_num() + "次");
+        txtCarNum.setText("已发车" + data.getDepart_num() + "次");
         txtCarModel.setText(data.getLengths_name() + "/" + data.getModels_name());
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
@@ -185,8 +230,33 @@ public class GoToDeliverActivity extends BaseActivity implements INaviInfoCallba
             txtPayedType.setText("货主支付运费");
 
 
+        if (data.getCar_product_type().equals(Const.INFO_TYPE_OFFICIAL + "")) {
+            String endName = "";
+            String fullName = data.getTo_name();
+            String [] arr = fullName.split(",");
+            String province = arr[1];
+            if (province.contains("省"))
+                endName = province.substring(0, province.length() - 1) + arr[2];
+            else
+                endName = province + arr[2];
+
+            if (endName.contains("市"))
+                endName = endName.substring(0, endName.length() - 1);
+
+            txtTitle.setText(data.getFrom_name() + " - " + endName);
+            txtName.setText("来自 : 丝网加物流专员-" + data.getAdmin_name());
+        }
+
+
         txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         txtPremium.getPaint().setAntiAlias(true);
+
+        LatLng latLng = new LatLng(Double.valueOf(data.getConsignor_lat()), Double.valueOf(data.getConsignor_lng()));
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+        Marker marker = aMap.addMarker(new MarkerOptions().
+                position(latLng).
+                snippet(data.getConsignor_place()));
+        marker.showInfoWindow();
 
     }
 
@@ -203,11 +273,19 @@ public class GoToDeliverActivity extends BaseActivity implements INaviInfoCallba
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
             case R.id.txtCallDeliver: //联系厂家
-                AppTool.dial(context, data.getMobile());
+                if (data.getCar_product_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
+                    AppTool.dial(context, data.getEnterprise_mobile());
+                else
+                    AppTool.dial(context, data.getMobile());
                 break;
             case R.id.txtNavi: //导航去厂家
-                LatLng latLng = new LatLng(37.9779486061, 114.5299601555);
-                AmapNaviPage.getInstance().showRouteActivity(getApplicationContext(), new AmapNaviParams(null, null, new Poi("河北科技大学", latLng, ""), AmapNaviType.DRIVER), this);
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+                    gpsDialog.show();
+                    return;
+                }
+                LatLng latLng = new LatLng(Double.valueOf(data.getConsignor_lat()), Double.valueOf(data.getConsignor_lng()));
+                AmapNaviPage.getInstance().showRouteActivity(getApplicationContext(), new AmapNaviParams(null, null, new Poi(data.getConsignor_place(), latLng, ""), AmapNaviType.DRIVER), this);
                 break;
             default:
                 break;
@@ -254,9 +332,30 @@ public class GoToDeliverActivity extends BaseActivity implements INaviInfoCallba
         amapTTSController.stopSpeaking();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mMapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mMapView.onPause();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mMapView.onSaveInstanceState(outState);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         amapTTSController.destroy();
+        if (mMapView != null)
+            mMapView.onDestroy();
     }
 }

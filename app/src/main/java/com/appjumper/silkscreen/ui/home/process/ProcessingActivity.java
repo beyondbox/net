@@ -122,7 +122,6 @@ public class ProcessingActivity extends BaseActivity {
         initTitle("丝网加工");
         initProgressDialog();
         //new Thread(serviceTypelistRun).start();
-//        initLocation();
         initView();
 
         initDialog();
@@ -502,8 +501,8 @@ public class ProcessingActivity extends BaseActivity {
                 fieldmap.put("pagesize", pagesize);
                 fieldmap.put("type", type);
                 fieldmap.put("uid", getUserID());
-                fieldmap.put("lat", latitude + "");
-                fieldmap.put("lng", longitude + "");
+                fieldmap.put("lat", getLat());
+                fieldmap.put("lng", getLng());
                 fieldmap.put("product_id", product_id);
                 fieldmap.put("auth", auth);
                 response = JsonParser.getProductResponse(HttpUtil.postMsg(HttpUtil.getData(fieldmap), Url.SERVICELIST));
@@ -529,8 +528,8 @@ public class ProcessingActivity extends BaseActivity {
                 fieldmap.put("page", "" + pageNumber);
                 fieldmap.put("type", type);
                 fieldmap.put("uid", getUserID());
-                fieldmap.put("lat", latitude + "");
-                fieldmap.put("lng", longitude + "");
+                fieldmap.put("lat", getLat());
+                fieldmap.put("lng", getLng());
                 fieldmap.put("product_id", product_id);
                 fieldmap.put("auth", auth);
                 response = JsonParser.getProductResponse(HttpUtil.postMsg(HttpUtil.getData(fieldmap), Url.SERVICELIST));

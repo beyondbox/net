@@ -90,7 +90,6 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
         setContentView(R.layout.activity_driver_auth_third);
         ButterKnife.bind(this);
         initTitle("司机认证-车辆信息");
-        initLocation();
         initBack();
         initProgressDialog(false, null);
         initPickerWeight();
@@ -223,8 +222,8 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
         params.put("driving_license_img", driverAuth.getImgDriving());
         params.put("driving_license_img_back", driverAuth.getImgDrivingBack());
         params.put("driver_car_img", driverAuth.getImgGroup());
-        params.put("driver_lng", longitude);
-        params.put("driver_lat", latitude);
+        params.put("driver_lng", getLng());
+        params.put("driver_lat", getLat());
         params.put("name", driverAuth.getName());
         params.put("idcard", driverAuth.getID());
         params.put("idcard_img", driverAuth.getImgIDCard());

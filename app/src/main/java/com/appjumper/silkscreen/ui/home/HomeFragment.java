@@ -407,6 +407,8 @@ public class HomeFragment extends BaseFragment {
             if (enterprise.getEnterprise_productivity_auth_status().equals("2"))
                 score += 20;
         }
+        if (user.getDriver_status().equals("2"))
+            score += 5;
 
         txtScore.setText("+" + score);
     }

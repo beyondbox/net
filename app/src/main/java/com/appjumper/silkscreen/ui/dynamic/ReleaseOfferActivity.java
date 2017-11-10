@@ -113,8 +113,13 @@ public class ReleaseOfferActivity extends BaseActivity {
         params.put("money", df.format(Double.valueOf(edtTxtPrice.getText().toString().trim())));
         params.put("price_unit", txtUnit.getText().toString().trim());
         params.put("offer_content", edtTxtContent.getText().toString().trim());
-        params.put("offer_user_type", 1);
         params.put("offer_type", 1);
+
+        //平台业务员报价
+        if (getUser().getMobile().equals("18531881110"))
+            params.put("offer_user_type", 0);
+        else
+            params.put("offer_user_type", 1);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

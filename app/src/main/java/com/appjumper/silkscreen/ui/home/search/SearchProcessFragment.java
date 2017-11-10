@@ -206,8 +206,8 @@ public class SearchProcessFragment extends BaseFragment {
         params.put("type", Const.SERVICE_TYPE_PROCESS);
         params.put("keyworks", activity.keyworks);
         params.put("uid", getUserID());
-        params.put("lat", activity.latitude + "");
-        params.put("lng", activity.longitude + "");
+        params.put("lat", getLat());
+        params.put("lng", getLng());
         params.put("auth", auth);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {

@@ -7,12 +7,13 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.my.driver.DriverAuthFirstActivity;
+import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -156,12 +157,13 @@ public class FreightDetailUnderwayActivity extends BaseActivity {
         txtTitle.setText(data.getFrom_name() + " - " + data.getTo_name());
         txtTime.setText(data.getCreate_time().substring(5, 16));
         txtOrderId.setText("订单编号 : " + data.getOrder_id());
-        txtCarNum.setText("已发车" + data.getCar_num() + "次");
+        txtCarNum.setText("已发车" + data.getDepart_num() + "次");
         txtCarModel.setText(data.getLengths_name() + "/" + data.getModels_name());
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
 
         txtState.setText("已调车");
+        txtState.setTextColor(getResources().getColor(R.color.green_color));
 
         String uid = data.getUser_id();
         String newName = "";
@@ -191,6 +193,24 @@ public class FreightDetailUnderwayActivity extends BaseActivity {
             txtPayedType.setText("货主支付运费");
 
 
+        if (data.getCar_product_type().equals(Const.INFO_TYPE_OFFICIAL + "")) {
+            String endName = "";
+            String fullName = data.getTo_name();
+            String [] arr = fullName.split(",");
+            String province = arr[1];
+            if (province.contains("省"))
+                endName = province.substring(0, province.length() - 1) + arr[2];
+            else
+                endName = province + arr[2];
+
+            if (endName.contains("市"))
+                endName = endName.substring(0, endName.length() - 1);
+
+            txtTitle.setText(data.getFrom_name() + " - " + endName);
+            txtName.setText("来自 : 丝网加物流专员-" + data.getAdmin_name());
+        }
+
+
         final List<FreightOffer> offerList = data.getOffer_list();
         String selectedDriverId = data.getConfirm_driver_id();
         FreightOffer selectedOffer = null;
@@ -204,9 +224,14 @@ public class FreightDetailUnderwayActivity extends BaseActivity {
         txtDriverName.setText(selectedOffer.getName().substring(0, 1) + "司机报价");
         txtDriverPrice.setText("***元");
         txtDriverTime.setText(selectedOffer.getCreate_time().substring(5, 16));
-        txtPayState.setText("已支付信息费、保险费");
-        txtPayState.setTextColor(getResources().getColor(R.color.green_color));
 
+        if (data.getExamine_status().equals(Const.FREIGHT_DRIVER_PAYING + "")) {
+            txtPayState.setText("尚未支付信息费、保险费");
+            txtPayState.setTextColor(getResources().getColor(R.color.red_color));
+        } else {
+            txtPayState.setText("已支付信息费、保险费");
+            txtPayState.setTextColor(getResources().getColor(R.color.green_color));
+        }
     }
 
 
@@ -224,10 +249,12 @@ public class FreightDetailUnderwayActivity extends BaseActivity {
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
             case R.id.btn0: //我要发货
+                if (!MyApplication.appContext.checkMobile(context)) return;
+                if (!MyApplication.appContext.checkCertifyPer(context)) return;
                 start_Activity(context, ReleaseFreightActivity.class);
                 break;
             case R.id.btn1: //成为司机
-                start_Activity(context, DriverAuthFirstActivity.class);
+                start_Activity(context, CertifyManageActivity.class);
                 break;
             default:
                 break;

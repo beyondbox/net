@@ -268,7 +268,7 @@
                 android:id="@+id/llDeliver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -285,6 +285,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/txtDeliverNum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="12dp"
@@ -309,6 +310,12 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerDeliver"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"/>
+
 
                 <View style="@style/LineStyle" />
 
@@ -324,7 +331,7 @@
                 android:id="@+id/llDriver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:orientation="vertical">
 
                 <LinearLayout

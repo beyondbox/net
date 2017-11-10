@@ -34,7 +34,7 @@
                 android:textSize="13sp"
                 android:textColor="@color/theme_color"/>
 
-            <include layout="@layout/layout_freight_logistics_data"/>
+            <include layout="@layout/layout_freight_transport"/>
 
 
         </LinearLayout>

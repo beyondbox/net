@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="12dp"
-        android:paddingTop="10dp"
+        android:paddingTop="20dp"
         android:paddingBottom="10dp"
         android:text="运输情况"
         android:textColor="@color/text_black_color"
@@ -17,9 +17,11 @@
     <View style="@style/LineStyle"/>
 
     <com.appjumper.silkscreen.view.MyListView
-        android:id="@+id/lvLogistics"
+        android:id="@+id/lvTransport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"/>
+        android:layout_marginBottom="40dp"
+        android:dividerHeight="0dp"
+        android:divider="@color/transparent_color"/>
 
 </LinearLayout>

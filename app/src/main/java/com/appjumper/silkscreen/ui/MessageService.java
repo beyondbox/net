@@ -6,12 +6,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
+import com.appjumper.silkscreen.ui.my.driver.DriverOrderListActivity;
 import com.appjumper.silkscreen.util.LogHelper;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
@@ -102,7 +100,9 @@ public class MessageService extends XGPushBaseReceiver {
 							intent = new Intent(context, MessageActivity.class);
 							intent.putExtra("id", jsonObj.optInt("id") + "");
 							break;
-						default:
+						case 3: //空车配货--司机收到发货厂家的询价
+							intent = new Intent(context, DriverOrderListActivity.class);
+							intent.putExtra("id", jsonObj.optInt("id") + "");
 							break;
 					}
 				}

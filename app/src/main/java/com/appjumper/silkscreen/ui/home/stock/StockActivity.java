@@ -130,7 +130,6 @@ public class StockActivity extends BaseActivity {
         initBack();
         initTitle("丝网现货");
         initProgressDialog();
-        initLocation();
         //new Thread(serviceTypelistRun).start();
         initView();
 
@@ -571,8 +570,8 @@ public class StockActivity extends BaseActivity {
                 fieldmap.put("pagesize", pagesize);
                 fieldmap.put("type", type);
                 fieldmap.put("uid", getUserID());
-                fieldmap.put("lat", latitude + "");
-                fieldmap.put("lng", longitude + "");
+                fieldmap.put("lat", getLat());
+                fieldmap.put("lng", getLng());
                 fieldmap.put("product_id", product_id);
                 fieldmap.put("auth", auth);
 
@@ -600,8 +599,8 @@ public class StockActivity extends BaseActivity {
                 fieldmap.put("page", "" + pageNumber);
                 fieldmap.put("type", type);
                 fieldmap.put("uid", getUserID());
-                fieldmap.put("lat", latitude + "");
-                fieldmap.put("lng", longitude + "");
+                fieldmap.put("lat", getLat());
+                fieldmap.put("lng", getLng());
                 fieldmap.put("product_id", product_id);
                 fieldmap.put("auth", auth);
                 response = JsonParser.getProductResponse(HttpUtil.postMsg(HttpUtil.getData(fieldmap), Url.SERVICELIST));

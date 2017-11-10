@@ -22,7 +22,7 @@
 
             <include layout="@layout/layout_driver_paystate"/>
 
-            <include layout="@layout/layout_freight_logistics_data"/>
+            <include layout="@layout/layout_freight_transport"/>
 
             <TextView
                 android:id="@+id/txtCallDeliver"
@@ -38,7 +38,7 @@
                 android:paddingRight="40dp"
                 android:text="联系厂家"
                 android:textColor="@color/while_color"
-                android:textSize="14sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
     </ScrollView>

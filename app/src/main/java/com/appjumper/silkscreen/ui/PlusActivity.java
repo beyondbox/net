@@ -53,10 +53,9 @@ public class PlusActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.llReleaseProcess, R.id.llReleaseOrder, R.id.llReleaseStock, R.id.llReleaseStation, R.id.llReleaseWorkshop, R.id.llReleasePost, R.id.llReleaseDevice, R.id.txtInquiryOrder, R.id.txtInquiryStock})
+    @OnClick({R.id.llReleaseProcess, R.id.llReleaseOrder, R.id.llReleaseStock, R.id.llReleaseStation, R.id.llReleaseWorkshop, R.id.llReleasePost, R.id.llReleaseDevice, R.id.rlAskBuy, R.id.rlFreight})
     public void onClick(View view) {
-        if (!MyApplication.appContext.checkMobile(context))
-            return;
+        if (!MyApplication.appContext.checkMobile(context)) return;
 
         switch (view.getId()) {
             case R.id.llReleaseProcess: //提供代加工
@@ -64,7 +63,6 @@ public class PlusActivity extends BaseActivity {
                     comCreateDialog.show();
                     return;
                 }
-                //goToProductSelect(Const.SERVICE_TYPE_PROCESS, ProductSelectActivity.MOTION_RELEASE_SERVICE);
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_PROCESS);
                 break;
 
@@ -73,7 +71,6 @@ public class PlusActivity extends BaseActivity {
                     comCreateDialog.show();
                     return;
                 }
-                //goToProductSelect(Const.SERVICE_TYPE_ORDER, ProductSelectActivity.MOTION_RELEASE_SERVICE);
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_ORDER);
                 break;
 
@@ -90,7 +87,6 @@ public class PlusActivity extends BaseActivity {
                     certifyComDialog.show();
                     return;
                 }
-                //goToProductSelect(Const.SERVICE_TYPE_STOCK, ProductSelectActivity.MOTION_RELEASE_SERVICE);
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_STOCK);
                 break;
 
@@ -99,40 +95,31 @@ public class PlusActivity extends BaseActivity {
                     comCreateDialog.show();
                     return;
                 }
-                //start_Activity(context, PersonalReleaseActivity.class, new BasicNameValuePair("type", "1"));
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
                 break;
 
             case R.id.llReleaseWorkshop: //厂房出租
-                //start_Activity(context, WorkshopReleaseActivity.class);
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_WORKSHOP);
                 break;
 
             case R.id.llReleasePost: //招聘
-                //start_Activity(context, RecruitReleaseActivity.class);
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_JOB);
                 break;
 
             case R.id.llReleaseDevice: //机器出售
-                //start_Activity(context, EquipmentReleaseActivity.class);
                 CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_DEVICE);
                 break;
 
-            case R.id.txtInquiryOrder: //发布求购
-                if (!MyApplication.appContext.checkMobile(context))
-                    return;
-
-                if (!MyApplication.appContext.checkCertifyPer(context))
-                    return;
+            case R.id.rlAskBuy: //发布求购
+                if (!MyApplication.appContext.checkCertifyPer(context)) return;
                 Intent intent = new Intent(context, ProductSelectActivity.class);
                 intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
                 intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
                 startActivity(intent);
                 break;
 
-            case R.id.txtInquiryStock: //发布空车配货
-                if (!MyApplication.appContext.checkMobile(context))
-                    return;
+            case R.id.rlFreight: //发布空车配货
+                if (!MyApplication.appContext.checkCertifyPer(context)) return;
                 start_Activity(context, ReleaseFreightActivity.class);
                 break;
 

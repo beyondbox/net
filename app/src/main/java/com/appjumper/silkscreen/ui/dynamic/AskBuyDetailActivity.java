@@ -24,6 +24,7 @@ import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyImageAdapter;
 import com.appjumper.silkscreen.ui.dynamic.adapter.OfferRecordAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.ShareUtil;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -52,6 +53,8 @@ public class AskBuyDetailActivity extends BaseActivity {
 
     @Bind(R.id.llContent)
     LinearLayout llContent;
+    @Bind(R.id.right)
+    ImageView right;
     @Bind(R.id.imgViHead)
     ImageView imgViHead;
     @Bind(R.id.txtName)
@@ -142,6 +145,7 @@ public class AskBuyDetailActivity extends BaseActivity {
      */
     private void setData() {
         initTitle("求购" + data.getProduct_name());
+        right.setImageResource(R.mipmap.icon_share);
         int state = Integer.valueOf(data.getPurchase_status());
         if (state == Const.OFFER_DEAL) {
             txtOffer.setText("已交易");
@@ -161,25 +165,6 @@ public class AskBuyDetailActivity extends BaseActivity {
             }
         }
 
-        /*switch (state) {
-            case Const.OFFER_NOT_YET:
-                txtOffer.setText("报价");
-                if (data.getUser_id().equals(getUserID()))
-                    txtOffer.setEnabled(false);
-                else
-                    txtOffer.setEnabled(true);
-                break;
-            case Const.OFFER_DEAL:
-                txtOffer.setText("已交易");
-                txtOffer.setEnabled(false);
-                break;
-            case Const.OFFER_OFFERED:
-                txtOffer.setText("报价结束");
-                txtOffer.setEnabled(false);
-                break;
-            default:
-                break;
-        }*/
 
         Picasso.with(mContext)
                 .load(data.getImg())
@@ -275,7 +260,7 @@ public class AskBuyDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.txtOffer, R.id.txtCall})
+    @OnClick({R.id.txtOffer, R.id.txtCall, R.id.right})
     public void onClick(View view) {
         if (data == null)
             return;
@@ -295,6 +280,9 @@ public class AskBuyDetailActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data.getAdviser_mobile())) {
                     AppTool.dial(context, data.getAdviser_mobile());
                 }
+                break;
+            case R.id.right: //分享
+                ShareUtil.intShare(context, view, data.getPurchase_content(), "求购" + data.getProduct_name(), Const.SHARE_ASKBUY_URL + "?id=" + id);
                 break;
             default:
                 break;

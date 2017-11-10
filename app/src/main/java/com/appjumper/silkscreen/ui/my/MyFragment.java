@@ -1,8 +1,11 @@
 package com.appjumper.silkscreen.ui.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +14,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.bean.Enterprise;
+import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.bean.UserResponse;
+import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
@@ -24,12 +31,24 @@ import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.stockshop.ReleaseGoodsSelectActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
+import com.appjumper.silkscreen.ui.my.adapter.FreightMyAdapter;
+import com.appjumper.silkscreen.ui.my.deliver.AuditRefuseActivity;
+import com.appjumper.silkscreen.ui.my.deliver.AuditingDeliverActivity;
+import com.appjumper.silkscreen.ui.my.deliver.ChooseDriverActivity;
 import com.appjumper.silkscreen.ui.my.deliver.DeliverOrderListActivity;
+import com.appjumper.silkscreen.ui.my.deliver.DriverComingActivity;
+import com.appjumper.silkscreen.ui.my.deliver.LoadingDeliverActivity;
+import com.appjumper.silkscreen.ui.my.deliver.OrderFinishDeliverActivity;
+import com.appjumper.silkscreen.ui.my.deliver.TransportFinishDeliverActivity;
+import com.appjumper.silkscreen.ui.my.deliver.TransportingDeliverActivity;
+import com.appjumper.silkscreen.ui.my.deliver.WaitDriverPayActivity;
 import com.appjumper.silkscreen.ui.my.driver.DriverOrderListActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
+import com.appjumper.silkscreen.util.CommonUtil;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.ShareUtil;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
@@ -39,13 +58,14 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 
 
 /**
@@ -71,6 +91,14 @@ public class MyFragment extends BaseFragment {
 
     @Bind(R.id.txtDriverState)
     TextView txtDriverState;
+
+    @Bind(R.id.txtDeliverNum)
+    TextView txtDeliverNum;
+    @Bind(R.id.recyclerDeliver)
+    RecyclerView recyclerDeliver;
+
+    private List<Freight> deliverList;
+    private FreightMyAdapter deliverAdapter;
 
 
 
@@ -112,16 +140,17 @@ public class MyFragment extends BaseFragment {
 
             if (user.getDriver_status().equals(Const.AUTH_SUCCESS + "")) {
                 llDriver.setVisibility(View.VISIBLE);
+                llDeliver.setVisibility(View.GONE);
+                txtDriverState.setText(user.getDriver_car_status().equals("0") ? "更改为运输中" : "更改为空闲");
             } else {
                 llDriver.setVisibility(View.GONE);
+                if (user.getIs_vender().equals("1")) {
+                    llDeliver.setVisibility(View.VISIBLE);
+                    getDeliverOrder();
+                } else {
+                    llDeliver.setVisibility(View.GONE);
+                }
             }
-
-            if (user.getIs_vender().equals("1"))
-                llDeliver.setVisibility(View.VISIBLE);
-            else
-                llDeliver.setVisibility(View.GONE);
-
-            txtDriverState.setText(user.getDriver_car_status().equals("0") ? "更改为运输中" : "更改为空闲");
 
         } else {
             txtCompanyName.setVisibility(View.GONE);
@@ -140,7 +169,61 @@ public class MyFragment extends BaseFragment {
             initView();
         }*/
 
+        initOrderView();
         initView();
+    }
+
+
+    private void initOrderView() {
+        deliverList = new ArrayList<>();
+
+        deliverAdapter = new FreightMyAdapter(R.layout.item_recycler_freight_my, deliverList);
+        recyclerDeliver.setLayoutManager(new LinearLayoutManager(context));
+        deliverAdapter.bindToRecyclerView(recyclerDeliver);
+        deliverAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+
+        deliverAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Freight freight = deliverList.get(position);
+                int state = Integer.valueOf(freight.getExamine_status());
+                Intent intent = null;
+                switch (state) {
+                    case Const.FREIGHT_AUDITING: //审核中
+                        intent = new Intent(context, AuditingDeliverActivity.class);
+                        break;
+                    case Const.FREIGHT_AUDIT_REFUSE: //审核不通过
+                        intent = new Intent(context, AuditRefuseActivity.class);
+                        break;
+                    case Const.FREIGHT_AUDIT_PASS: //司机报价中
+                        intent = new Intent(context, ChooseDriverActivity.class);
+                        break;
+                    case Const.FREIGHT_DRIVER_PAYING: //等待司机支付
+                        intent = new Intent(context, WaitDriverPayActivity.class);
+                        break;
+                    case Const.FREIGHT_GOTO_LOAD: //司机正在赶来
+                        intent = new Intent(context, DriverComingActivity.class);
+                        break;
+                    case Const.FREIGHT_LOADING: //装货中
+                        intent = new Intent(context, LoadingDeliverActivity.class);
+                        break;
+                    case Const.FREIGHT_TRANSPORTING: //运输途中
+                        intent = new Intent(context, TransportingDeliverActivity.class);
+                        break;
+                    case Const.FREIGHT_TRANSPORT_FINISH: //运输完成
+                        intent = new Intent(context, TransportFinishDeliverActivity.class);
+                        break;
+                    case Const.FREIGHT_ORDER_FINISH: //订单完成
+                        intent = new Intent(context, OrderFinishDeliverActivity.class);
+                        break;
+                }
+
+                if (intent != null) {
+                    intent.putExtra("id", freight.getId());
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
 
@@ -155,7 +238,7 @@ public class MyFragment extends BaseFragment {
 
 
     @OnClick({R.id.llCompany, R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rlHelp, R.id.txtMoreDeliver, R.id.txtMoreDriver,
-            R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal, R.id.rlReleaseStockGoods, R.id.txtDriverState})
+            R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal, R.id.rlReleaseStockGoods, R.id.txtDriverState, R.id.txtUpdateLocation})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.llCompany: //企业信息
@@ -183,7 +266,6 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.rl_system_setting://系统设置
                 start_Activity(getActivity(), SystemSettingActivity.class);
-                //start_Activity(context, InquiryCiShengActivity.class);
                 break;
             case R.id.ll_certify://查看认证
                 if (checkLogined()) {
@@ -214,6 +296,18 @@ public class MyFragment extends BaseFragment {
                 break;
             case R.id.txtDriverState: //更改司机状态
                 changeDriverState();
+                break;
+            case R.id.txtUpdateLocation: //更新位置
+                CommonUtil.getLocation(new AMapLocationListener() {
+                    @Override
+                    public void onLocationChanged(AMapLocation aMapLocation) {
+                        if (aMapLocation.getErrorCode() == 0) {
+                            updateLocation(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+                        } else {
+                            showErrorToast("定位失败: " + aMapLocation.getErrorInfo());
+                        }
+                    }
+                });
                 break;
             default:
                 break;
@@ -256,13 +350,18 @@ public class MyFragment extends BaseFragment {
     private class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
+            if (isDetached()) return;
+
             switch (msg.what) {
                 case NETWORK_SUCCESS_PAGER_RIGHT://用户信息
                     UserResponse userResponse = (UserResponse) msg.obj;
                     if (userResponse.isSuccess()) {
                         User user = userResponse.getData();
-                        getMyApplication().getMyUserManager()
-                                .storeUserInfo(user);
+                        getMyApplication().getMyUserManager().storeUserInfo(user);
+
+                        if (user.getDriver_status().equals(Const.AUTH_SUCCESS + ""))
+                            updateLocationSilent(getLat(), getLng());
+
                         if (isViewCreated && isDataInited)
                             initView();
                     } else {
@@ -278,6 +377,44 @@ public class MyFragment extends BaseFragment {
             }
         }
     };
+
+
+    /**
+     * 获取发货厂家订单
+     */
+    private void getDeliverOrder() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "car_product_list");
+        params.put("page", 1);
+        params.put("pagesize", 1);
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                if (isDetached()) return;
+
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        List<Freight> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), Freight.class);
+                        deliverList.clear();
+                        deliverList.addAll(list);
+                        deliverAdapter.notifyDataSetChanged();
+                        txtDeliverNum.setText("我的发货订单（" + dataObj.getString("total") + "）");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
 
 
     /**
@@ -323,6 +460,62 @@ public class MyFragment extends BaseFragment {
                     return;
 
                 progress.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 更新位置
+     */
+    private void updateLocation(double lat, double lng) {
+        RequestParams params = MyHttpClient.getApiParam("user", "driver_position");
+        params.put("uid", getUserID());
+        params.put("driver_lat", lat + "");
+        params.put("driver_lng", lng + "");
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        showErrorToast("更新位置成功");
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+        });
+    }
+
+
+    /**
+     * 更新位置，静默模式
+     */
+    private void updateLocationSilent(String lat, String lng) {
+        RequestParams params = MyHttpClient.getApiParam("user", "driver_position");
+        params.put("uid", getUserID());
+        params.put("driver_lat", lat);
+        params.put("driver_lng", lng);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
             }
         });
     }

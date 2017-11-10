@@ -30,7 +30,6 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Exhibition;
-import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -101,7 +100,7 @@ public class ExhibitionListViewAdapter extends BaseAdapter {
 
 
         viewHolder.tv_title.setText(item.getTitle());
-        viewHolder.tv_time.setText(item.getTime());
+        viewHolder.tv_time.setText(item.getCreate_time());
         viewHolder.tv_distance.setText(item.getLocation()+"|"+item.getDistance()+"km");
         if(item.getImg()!=null){
             Picasso.with(mContext).load(item.getImg().getOrigin()).placeholder(R.mipmap.img_error).error(R.mipmap.img_error).into(viewHolder.iv_img);

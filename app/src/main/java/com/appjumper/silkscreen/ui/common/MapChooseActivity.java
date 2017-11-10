@@ -243,7 +243,8 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
      * 设置一些amap的属性
      */
     private void setUpMap() {
-        aMap.getUiSettings().setZoomControlsEnabled(false);
+        aMap.getUiSettings().setZoomControlsEnabled(true);
+        aMap.getUiSettings().setCompassEnabled(true);
         aMap.setLocationSource(this);// 设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
         aMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
@@ -428,11 +429,13 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
                     if (poiItems != null && poiItems.size() > 0) {
                         updateListview(poiItems);
                     } else {
-                        Toast.makeText(MapChooseActivity.this, "无搜索结果", Toast.LENGTH_SHORT).show();
+                        updateFirstItem();
+                        //Toast.makeText(MapChooseActivity.this, "无搜索结果", Toast.LENGTH_SHORT).show();
                     }
                 }
             } else {
-                Toast.makeText(MapChooseActivity.this, "无搜索结果", Toast.LENGTH_SHORT).show();
+                updateFirstItem();
+                //Toast.makeText(MapChooseActivity.this, "无搜索结果", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -446,6 +449,16 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
         searchResultAdapter.setSelectedPosition(0);
         resultData.add(firstItem);
         resultData.addAll(poiItems);
+
+        searchResultAdapter.setData(resultData);
+        searchResultAdapter.notifyDataSetChanged();
+    }
+
+
+    private void updateFirstItem() {
+        resultData.clear();
+        searchResultAdapter.setSelectedPosition(0);
+        resultData.add(firstItem);
 
         searchResultAdapter.setData(resultData);
         searchResultAdapter.notifyDataSetChanged();

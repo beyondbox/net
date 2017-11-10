@@ -15,8 +15,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.net.CommonApi;
@@ -101,24 +99,6 @@ public class SearchResultsActivity extends BaseActivity {
 
         initViewPager();
         getModules();
-
-        initLocation();
-        mlocationClient.setLocationListener(new AMapLocationListener() {
-            @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        latitude = aMapLocation.getLatitude();//获取纬度
-                        longitude = aMapLocation.getLongitude();//获取经度
-                        accuracy = aMapLocation.getAccuracy();//获取精度信息
-                        mlocationClient.stopLocation();
-                        if (fragList.size() > 0)
-                            broadcastManager.sendBroadcast(new Intent(Const.ACTION_SEARCHING_REFRESH));
-                    }
-                }
-            }
-        });
-
     }
 
 

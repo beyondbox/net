@@ -226,7 +226,7 @@
     <ImageView
         android:id="@+id/imgViSecurity"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="105dp"
         android:layout_marginTop="15dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/ask_buy_security"/>

@@ -85,8 +85,14 @@ public class Freight {
     private String is_ignore_order;
     private String min_money;
     private String mobile;
+    private String consignor_place;
+    private String admin_name;
+    private String enterprise_mobile;
+    private String enterprise_expect_date;
+    private String depart_num;
 
     private List<FreightOffer> offer_list;
+    private List<Transport> transport_list;
 
 
 
@@ -401,5 +407,53 @@ public class Freight {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getConsignor_place() {
+        return consignor_place;
+    }
+
+    public void setConsignor_place(String consignor_place) {
+        this.consignor_place = consignor_place;
+    }
+
+    public String getAdmin_name() {
+        return admin_name;
+    }
+
+    public void setAdmin_name(String admin_name) {
+        this.admin_name = admin_name;
+    }
+
+    public String getEnterprise_mobile() {
+        return enterprise_mobile;
+    }
+
+    public void setEnterprise_mobile(String enterprise_mobile) {
+        this.enterprise_mobile = enterprise_mobile;
+    }
+
+    public String getEnterprise_expect_date() {
+        return enterprise_expect_date;
+    }
+
+    public void setEnterprise_expect_date(String enterprise_expect_date) {
+        this.enterprise_expect_date = enterprise_expect_date;
+    }
+
+    public List<Transport> getTransport_list() {
+        return transport_list;
+    }
+
+    public void setTransport_list(List<Transport> transport_list) {
+        this.transport_list = transport_list;
+    }
+
+    public String getDepart_num() {
+        return depart_num;
+    }
+
+    public void setDepart_num(String depart_num) {
+        this.depart_num = depart_num;
     }
 }

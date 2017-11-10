@@ -79,15 +79,19 @@ public class AskBuyOrderDetailActivity extends BaseActivity {
     @Bind(R.id.txtSurplus)
     TextView txtSurplus;
 
+    public static AskBuyOrderDetailActivity instance = null;
     private String id;
     private AskBuy data;
     private boolean isReadMode = false; //只读模式
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ask_buy_order_detail);
         ButterKnife.bind(context);
+        instance = this;
         initBack();
         initProgressDialog();
 
@@ -231,16 +235,36 @@ public class AskBuyOrderDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.txtCall})
+    @OnClick({R.id.txtCall, R.id.txtConfirm})
     public void onClick(View view) {
+        if (data == null)
+            return;
+
         switch (view.getId()) {
             case R.id.txtCall:
                 if (data != null && !TextUtils.isEmpty(data.getAdviser_mobile()))
                     AppTool.dial(context, data.getAdviser_mobile());
+                break;
+            case R.id.txtConfirm:
+                Intent intent = new Intent(context, PayConfirmActivity.class);
+                intent.putExtra(Const.KEY_OBJECT, data);
+                intent.putExtra("pay_money", data.getSurplus_money());
+                intent.putExtra("pay_type", Const.PAY_TYPE_ALL);
+                intent.putExtra("purchase_num", data.getPurchase_num());
+                intent.putExtra("offer_money", data.getOffer_money());
+                intent.putExtra("purchase_unit", data.getPurchase_unit());
+                intent.putExtra("surplus_money", "0");
+                startActivity(intent);
                 break;
             default:
                 break;
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 }

@@ -1,7 +1,6 @@
 package com.appjumper.silkscreen.ui.my.driver;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,8 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.bean.ImageResponse;
@@ -22,8 +24,10 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
+import com.appjumper.silkscreen.ui.my.adapter.TransportListAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Applibrary;
+import com.appjumper.silkscreen.util.CommonUtil;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.ImageUtil;
 import com.bumptech.glide.Glide;
@@ -256,7 +260,7 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
         txtTitle.setText(data.getFrom_name() + " - " + data.getTo_name());
         txtTime.setText(data.getCreate_time().substring(5, 16));
         txtOrderId.setText("订单编号 : " + data.getOrder_id());
-        txtCarNum.setText("已发车" + data.getCar_num() + "次");
+        txtCarNum.setText("已发车" + data.getDepart_num() + "次");
         txtCarModel.setText(data.getLengths_name() + "/" + data.getModels_name());
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
@@ -291,9 +295,30 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
             txtPayedType.setText("货主支付运费");
 
 
+        if (data.getCar_product_type().equals(Const.INFO_TYPE_OFFICIAL + "")) {
+            String endName = "";
+            String fullName = data.getTo_name();
+            String [] arr = fullName.split(",");
+            String province = arr[1];
+            if (province.contains("省"))
+                endName = province.substring(0, province.length() - 1) + arr[2];
+            else
+                endName = province + arr[2];
+
+            if (endName.contains("市"))
+                endName = endName.substring(0, endName.length() - 1);
+
+            txtTitle.setText(data.getFrom_name() + " - " + endName);
+            txtName.setText("来自 : 丝网加物流专员-" + data.getAdmin_name());
+        }
+
         txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         txtPremium.getPaint().setAntiAlias(true);
 
+        ListView lvTransport = (ListView) findViewById(R.id.lvTransport);
+        lvTransport.setFocusable(false);
+        TransportListAdapter transportAdapter = new TransportListAdapter(context, data.getTransport_list());
+        lvTransport.setAdapter(transportAdapter);
     }
 
 
@@ -321,9 +346,7 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, TransportFinishDriverActivity.class);
-                        intent.putExtra("id", id);
-                        startActivity(intent);
+                        showErrorToast("提交成功，请等待官方确认");
                         finish();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
@@ -351,6 +374,45 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
 
 
 
+    /**
+     * 更新位置
+     */
+    private void updateLocation(double lat, double lng, String address) {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "driver_position");
+        params.put("uid", getUserID());
+        params.put("driver_lat", lat + "");
+        params.put("driver_lng", lng + "");
+        params.put("place_name", address);
+        params.put("car_product_id", id);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        showErrorToast("更新成功");
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+        });
+    }
+
+
+
+
     @OnClick({R.id.txtCall, R.id.btn0, R.id.btn1, R.id.btn2})
     public void onClick(View view) {
         if (data == null)
@@ -361,10 +423,22 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
             case R.id.btn0: //联系厂家
-                AppTool.dial(context, data.getMobile());
+                if (data.getCar_product_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
+                    AppTool.dial(context, data.getEnterprise_mobile());
+                else
+                    AppTool.dial(context, data.getMobile());
                 break;
             case R.id.btn1: //更新位置
-
+                CommonUtil.getLocation(new AMapLocationListener() {
+                    @Override
+                    public void onLocationChanged(AMapLocation aMapLocation) {
+                        if (aMapLocation.getErrorCode() == 0) {
+                            updateLocation(aMapLocation.getLatitude(), aMapLocation.getLongitude(), aMapLocation.getAddress());
+                        } else {
+                            showErrorToast("定位失败: " + aMapLocation.getErrorInfo());
+                        }
+                    }
+                });
                 break;
             case R.id.btn2: //确认送达
                 arriveDialog.show();

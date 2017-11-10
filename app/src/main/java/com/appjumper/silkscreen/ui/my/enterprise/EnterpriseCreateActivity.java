@@ -128,7 +128,6 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         initBack();
         initView();
-        initLocation();
 
         type = getIntent().getStringExtra("type");
         if (type.equals("1")) {
@@ -407,8 +406,8 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
                 data.put("enterprise_contacts", enterprise_contacts);
                 data.put("enterprise_tel", enterprise_tel);
                 data.put("enterprise_address", enterprise_address);
-                data.put("lng", longitude + "");
-                data.put("lat", latitude + "");
+                data.put("lng", getLng());
+                data.put("lat", getLat());
 
                 // 一次http请求将所有图片+参数上传
                 String url;

@@ -15,8 +15,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.AreaBean;
@@ -104,25 +102,7 @@ public class WorkshopActivity extends BaseActivity {
         initView();
 
         refresh();
-
         initListener();
-        initLocation();
-        mlocationClient.setLocationListener(new AMapLocationListener() {
-            @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        latitude = aMapLocation.getLatitude();//获取纬度
-                        longitude = aMapLocation.getLongitude();//获取经度
-                        accuracy = aMapLocation.getAccuracy();//获取精度信息
-                        refresh();
-                        if(mlocationClient!=null){
-                            mlocationClient.stopLocation();
-                        }
-                    }
-                }
-            }
-        });
     }
 
 
@@ -332,8 +312,8 @@ public class WorkshopActivity extends BaseActivity {
             EquipmentListResponse response = null;
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
-                data.put("lat",  latitude+"");
-                data.put("lng", longitude+"");
+                data.put("lat",  getLat());
+                data.put("lng", getLng());
                 data.put("min_area", min_area);
                 data.put("max_area", max_area);
                 data.put("min_price", min_price);
@@ -361,8 +341,8 @@ public class WorkshopActivity extends BaseActivity {
             EquipmentListResponse response = null;
             try {
                 HashMap<String, String> data = new HashMap<String, String>();
-                data.put("lat", latitude+"");
-                data.put("lng", longitude+"");
+                data.put("lat", getLat());
+                data.put("lng", getLng());
                 data.put("min_area", min_area);
                 data.put("max_area", max_area);
                 data.put("min_price", min_price);

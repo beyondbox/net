@@ -15,6 +15,7 @@ public class Exhibition implements Serializable{
     private String distance;
     private String url;
     private boolean is_read = true;
+    private String create_time;
 
     public String getUrl() {
         return url;
@@ -78,5 +79,13 @@ public class Exhibition implements Serializable{
 
     public void setIs_read(boolean is_read) {
         this.is_read = is_read;
+    }
+
+    public String getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(String create_time) {
+        this.create_time = create_time;
     }
 }

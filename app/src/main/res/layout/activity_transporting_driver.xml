@@ -16,14 +16,14 @@
             android:id="@+id/llContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <include layout="@layout/layout_freight_detail"/>
 
             <include layout="@layout/layout_driver_paystate"/>
 
-            <include layout="@layout/layout_freight_logistics_data"/>
+            <include layout="@layout/layout_freight_transport"/>
 
         </LinearLayout>
     </ScrollView>

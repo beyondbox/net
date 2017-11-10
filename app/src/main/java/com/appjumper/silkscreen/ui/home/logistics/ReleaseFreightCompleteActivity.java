@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.ui.home.logistics;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -38,6 +39,12 @@ public class ReleaseFreightCompleteActivity extends BaseActivity {
             case R.id.txtFreightList:
                 if (ReleaseFreightActivity.instance != null)
                     ReleaseFreightActivity.instance.finish();
+
+                if (LogisticsListActivity.instance == null) {
+                    Intent intent = new Intent(context, LogisticsListActivity.class);
+                    intent.putExtra(Const.KEY_TYPE, 2);
+                    startActivity(intent);
+                }
                 finish();
                 break;
             case R.id.txtCall:

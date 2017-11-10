@@ -10,8 +10,8 @@ android {
         applicationId "com.appjumper.silkscreen"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 30
-        versionName "3.0.4"
+        versionCode 31
+        versionName "3.1.4"
         multiDexEnabled true
 
         ndk {  abiFilters "armeabi","x86" }

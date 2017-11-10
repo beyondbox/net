@@ -27,34 +27,13 @@ public class FreightListAdapter extends BaseQuickAdapter<Freight, BaseViewHolder
 
     @Override
     protected void convert(BaseViewHolder helper, Freight item) {
-        TextView txtMark = helper.getView(R.id.txtMark);
-        if (!TextUtils.isEmpty(item.getCar_product_type())) {
-            int infoType = Integer.valueOf(item.getCar_product_type());
-            switch (infoType) {
-                case Const.INFO_TYPE_PER:
-                    txtMark.setText("个人");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
-                    break;
-                case Const.INFO_TYPE_COM:
-                    txtMark.setText("企业");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
-                    break;
-                case Const.INFO_TYPE_OFFICIAL:
-                    txtMark.setText("官方");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
-                    break;
-                default:
-                    break;
-            }
-        }
-
         helper.setText(R.id.txtTitle, item.getFrom_name() + " - " + item.getTo_name())
                 .setText(R.id.txtCarModel, item.getLengths_name() + "/" + item.getModels_name())
                 .setText(R.id.txtProduct, item.getWeight() + item.getProduct_name())
                 .setText(R.id.txtTime, item.getExpiry_date().substring(5, 16) + "装车");
 
         TextView txtName = helper.getView(R.id.txtName);
-        String carNum = "/发车 " + item.getCar_num() + "次";
+        String carNum = "/发车 " + item.getDepart_num() + "次";
         String uid = item.getUser_id();
         String newName = "";
         switch (uid.length()) {
@@ -99,6 +78,43 @@ public class FreightListAdapter extends BaseQuickAdapter<Freight, BaseViewHolder
                 txtState.setText("已调车");
                 txtState.setTextColor(mContext.getResources().getColor(R.color.green_color));
                 break;
+        }
+
+
+        TextView txtMark = helper.getView(R.id.txtMark);
+        if (!TextUtils.isEmpty(item.getCar_product_type())) {
+            int infoType = Integer.valueOf(item.getCar_product_type());
+            switch (infoType) {
+                case Const.INFO_TYPE_PER:
+                    txtMark.setText("个人");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                    break;
+                case Const.INFO_TYPE_COM:
+                    txtMark.setText("企业");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                    break;
+                case Const.INFO_TYPE_OFFICIAL:
+                    txtMark.setText("官方");
+                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+
+                    String endName = "";
+                    String fullName = item.getTo_name();
+                    String [] arr = fullName.split(",");
+                    String province = arr[1];
+                    if (province.contains("省"))
+                        endName = province.substring(0, province.length() - 1) + arr[2];
+                    else
+                        endName = province + arr[2];
+
+                    if (endName.contains("市"))
+                        endName = endName.substring(0, endName.length() - 1);
+
+                    helper.setText(R.id.txtName, "丝网加物流专员-" + item.getAdmin_name() + carNum)
+                            .setText(R.id.txtTitle, item.getFrom_name() + " - " + endName);
+                    break;
+                default:
+                    break;
+            }
         }
 
     }

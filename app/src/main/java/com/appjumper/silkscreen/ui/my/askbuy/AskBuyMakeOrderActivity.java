@@ -78,6 +78,7 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
     @Bind(R.id.txtTotal)
     TextView txtTotal;
 
+    public static AskBuyMakeOrderActivity instance = null;
     private String id;
     private AskBuy data;
     private AskBuyOffer offer;
@@ -95,6 +96,7 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_askbuy_make_order);
         ButterKnife.bind(context);
+        instance = this;
         initBack();
         initProgressDialog(false, null);
         initPickerView();
@@ -357,11 +359,34 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
                 pvPayType.show();
                 break;
             case R.id.txtConfirm:
-                makeOrder();
+                Intent intent = new Intent(context, PayConfirmActivity.class);
+                intent.putExtra(Const.KEY_OBJECT, data);
+                intent.putExtra("pay_money", AppTool.df.format(payMoney));
+                intent.putExtra("pay_type", payType);
+                intent.putExtra("purchase_num", buyNum + "");
+                intent.putExtra("offer_money", offer.getMoney());
+                intent.putExtra("purchase_unit", offer.getPrice_unit().substring(2, offer.getPrice_unit().length()));
+
+                double surplusMoney;
+                if (payType.equals(Const.PAY_TYPE_ALL)) {
+                    surplusMoney = 0;
+                } else {
+                    surplusMoney = Double.valueOf(offer.getMoney()) * buyNum - payMoney;
+                }
+
+                intent.putExtra("surplus_money", AppTool.df.format(surplusMoney));
+
+                startActivity(intent);
                 break;
             default:
                 break;
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
+    }
 }

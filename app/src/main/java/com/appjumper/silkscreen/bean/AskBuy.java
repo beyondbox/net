@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by Botx on 2017/10/19.
  */
 
-public class AskBuy {
+public class AskBuy implements Serializable{
 
 
     /**

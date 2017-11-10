@@ -308,8 +308,8 @@ public class SearchWorkshopFragment extends BaseFragment {
         params.put("type", 6);
         params.put("keyworks", activity.keyworks);
         params.put("uid", getUserID());
-        params.put("lat", activity.latitude + "");
-        params.put("lng", activity.longitude + "");
+        params.put("lat", getLat());
+        params.put("lng", getLng());
         params.put("min_area", min_area);
         params.put("max_area", max_area);
         params.put("min_price", min_price);

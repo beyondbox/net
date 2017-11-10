@@ -23,7 +23,7 @@
 
             <include layout="@layout/layout_driver_paystate"/>
 
-            <include layout="@layout/layout_freight_logistics_data"/>
+            <include layout="@layout/layout_freight_transport"/>
 
         </LinearLayout>
     </ScrollView>

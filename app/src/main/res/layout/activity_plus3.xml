@@ -258,6 +258,20 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingTop="7dp"
+                        android:paddingBottom="7dp"
+                        android:background="@drawable/select_white_background"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
                         android:id="@+id/llReleaseDevice"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -297,19 +311,6 @@
 
                     </LinearLayout>
 
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingTop="7dp"
-                        android:paddingBottom="7dp"
-                        android:background="@drawable/select_white_background"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
-
                 </LinearLayout>
 
 
@@ -318,7 +319,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="5dp"
+            android:layout_height="10dp"
             android:background="@color/view_background_gray_color"/>
 
 
@@ -332,86 +333,93 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp">
+                android:layout_marginTop="40dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:orientation="horizontal">
 
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/rlAskBuy"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_plus_inquiry_bg"
-                    android:orientation="vertical"
+                    android:background="@drawable/select_white_background"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="15dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp">
+                    android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/txtInquiryOrder"
-                        android:layout_width="match_parent"
+                        android:id="@+id/txtAskBuy"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="13dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/selector_btn_blue_plus"
-                        android:paddingTop="7dp"
-                        android:paddingBottom="7dp"
-                        android:gravity="center"
                         android:text="发布求购"
-                        android:textSize="14sp"
-                        android:textColor="@color/while_color"/>
+                        android:textSize="16sp"
+                        android:textColor="@color/black_color"/>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/txtAskBuy"
                         android:layout_marginTop="10dp"
-                        android:paddingLeft="15dp"
                         android:lineSpacingExtra="6dp"
-                        android:textColor="@color/text_black_color"
+                        android:textColor="@color/text_black_color2"
                         android:textSize="13sp"
                         android:text="报价快\n价廉\n底价"/>
+                    
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/cart"/>
 
-                </LinearLayout>
+                </RelativeLayout>
 
 
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="match_parent"
+                    android:background="#DEDFE0"/>
 
-                <LinearLayout
+
+                <RelativeLayout
+                    android:id="@+id/rlFreight"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_plus_inquiry_bg"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/select_white_background"
+                    android:paddingLeft="15dp"
                     android:paddingTop="10dp"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp">
+                    android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/txtInquiryStock"
-                        android:layout_width="match_parent"
+                        android:id="@+id/txtFreight"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="13dp"
-                        android:layout_marginRight="13dp"
-                        android:background="@drawable/selector_btn_blue_plus"
-                        android:paddingTop="7dp"
-                        android:paddingBottom="7dp"
-                        android:gravity="center"
                         android:text="空车配货"
-                        android:textSize="14sp"
-                        android:textColor="@color/while_color"/>
+                        android:textSize="16sp"
+                        android:textColor="@color/black_color"/>
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/txtFreight"
                         android:layout_marginTop="10dp"
-                        android:paddingLeft="15dp"
                         android:lineSpacingExtra="6dp"
-                        android:textColor="@color/text_black_color"
+                        android:textColor="@color/text_black_color2"
                         android:textSize="13sp"
                         android:text="资源丰富\n找车快速\n运输安全放心"/>
 
-                </LinearLayout>
+                    <ImageView
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/icon_depart"/>
+
+                </RelativeLayout>
+
 
 
             </LinearLayout>

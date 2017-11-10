@@ -23,6 +23,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.base.MyApplication;
@@ -41,6 +45,7 @@ import com.appjumper.silkscreen.ui.my.MyFragment;
 import com.appjumper.silkscreen.ui.trend.TrendFragment;
 import com.appjumper.silkscreen.util.Configure;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.SPUtil;
 import com.appjumper.silkscreen.util.morewindow.MoreWindow;
 import com.appjumper.silkscreen.view.SureOrCancelVersionDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -87,6 +92,7 @@ public class MainActivity extends FragmentActivity {
     private QBadgeView badgeDynamic; //动态小红点
 
     private MoreWindow mMoreWindow;
+    private AMapLocationClient mLocationClient;
 
     private long lastClickTime = 0;
 
@@ -113,6 +119,13 @@ public class MainActivity extends FragmentActivity {
             XGPushManager.registerPush(getApplicationContext(), getUser().getMobile());
 
 
+        mLocationClient = new AMapLocationClient(this);
+        AMapLocationClientOption mLocationOption = new AMapLocationClientOption();
+        mLocationOption.setOnceLocation(true);
+        mLocationClient.setLocationOption(mLocationOption);
+        mLocationClient.setLocationListener(new LocationListener());
+
+
         //安卓6.0以后需要手动请求写入权限，才能在存储设备上创建文件夹
         //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         ActivityCompat.requestPermissions(this, new String[] {
@@ -123,6 +136,14 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mLocationClient.isStarted())
+            mLocationClient.stopLocation();
+        mLocationClient.startLocation();
+    }
+
     /**
      * 初始化未读小红点
      */
@@ -132,6 +153,21 @@ public class MainActivity extends FragmentActivity {
 
         badgeTrend.bindTarget(markTrend).setBadgePadding(4.3f, true).setGravityOffset(12, 1, true);
         badgeDynamic.bindTarget(markDynamic).setBadgePadding(4.3f, true).setGravityOffset(13, 1, true);
+    }
+
+
+    /**
+     * 定位监听
+     */
+    private class LocationListener implements AMapLocationListener {
+
+        @Override
+        public void onLocationChanged(AMapLocation aMapLocation) {
+            if (aMapLocation.getErrorCode() == 0) {
+                SPUtil.putString(null, "lat", aMapLocation.getLatitude() + "");
+                SPUtil.putString(null, "lng", aMapLocation.getLongitude() + "");
+            }
+        }
     }
 
 
@@ -505,6 +541,10 @@ public class MainActivity extends FragmentActivity {
             default:
                 break;
         }
+
+        if (mLocationClient.isStarted())
+            mLocationClient.stopLocation();
+        mLocationClient.startLocation();
     }
 
 
@@ -526,6 +566,7 @@ public class MainActivity extends FragmentActivity {
         super.onDestroy();
         instance = null;
         ButterKnife.unbind(this);
+        mLocationClient.onDestroy();
     }
 }
 

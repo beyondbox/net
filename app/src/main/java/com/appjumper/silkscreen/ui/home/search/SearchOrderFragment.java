@@ -205,8 +205,8 @@ public class SearchOrderFragment extends BaseFragment {
         params.put("type", Const.SERVICE_TYPE_ORDER);
         params.put("keyworks", activity.keyworks);
         params.put("uid", getUserID());
-        params.put("lat", activity.latitude + "");
-        params.put("lng", activity.longitude + "");
+        params.put("lat", getLat());
+        params.put("lng", getLng());
         params.put("auth", auth);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {

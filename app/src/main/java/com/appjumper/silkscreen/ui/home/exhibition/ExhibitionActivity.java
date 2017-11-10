@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Exhibition;
@@ -67,27 +65,7 @@ public class ExhibitionActivity extends BaseActivity {
         pullToRefreshView.setEmptyView(mEmptyLayout);
 
         refresh();
-
-        initLocation();
-        mlocationClient.setLocationListener(new AMapLocationListener() {
-            @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        latitude = aMapLocation.getLatitude();//获取纬度
-                        longitude = aMapLocation.getLongitude();//获取经度
-                        accuracy = aMapLocation.getAccuracy();//获取精度信息
-                        refresh();
-                        if(mlocationClient!=null){
-                            mlocationClient.stopLocation();
-                        }
-                    }
-                }
-
-            }
-        });
         initListener();
-
     }
 
     private void refresh() {
@@ -140,8 +118,8 @@ public class ExhibitionActivity extends BaseActivity {
                 data.put("uid", getUserID());
                 data.put("pagesize", pagesize);
                 data.put("page", "1");
-                data.put("lat", latitude+"");
-                data.put("lng", longitude+"");
+                data.put("lat", getLat());
+                data.put("lng", getLng());
                 response = JsonParser.getExhibitionListResponse(HttpUtil.getMsg(Url.EXPOLIST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -165,8 +143,8 @@ public class ExhibitionActivity extends BaseActivity {
                 data.put("uid", getUserID());
                 data.put("pagesize", pagesize);
                 data.put("page", "" + pageNumber);
-                data.put("lat", latitude+"");
-                data.put("lng", longitude+"");
+                data.put("lat", getLat());
+                data.put("lng", getLng());
                 response = JsonParser.getExhibitionListResponse(HttpUtil.getMsg(Url.EXPOLIST + "?" + HttpUtil.getData(data)));
             } catch (Exception e) {
                 e.printStackTrace();

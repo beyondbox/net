@@ -21,6 +21,7 @@ import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.util.AppToast;
 import com.appjumper.silkscreen.util.MProgressDialog;
+import com.appjumper.silkscreen.util.SPUtil;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -289,4 +290,13 @@ public abstract class BaseFragment extends Fragment {
     public int dip(Context context, int pxValue) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, pxValue, context.getResources().getDisplayMetrics());
     }
+
+    public String getLat() {
+        return SPUtil.getString(null, "lat", "0.0");
+    }
+
+    public String getLng() {
+        return SPUtil.getString(null, "lng", "0.0");
+    }
+
 }

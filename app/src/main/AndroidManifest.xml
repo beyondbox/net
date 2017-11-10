@@ -286,6 +286,8 @@
         <activity android:name=".ui.my.askbuy.AskBuyMakeOrderActivity" />
         <!--订单详情-->
         <activity android:name=".ui.my.askbuy.AskBuyOrderDetailActivity" />
+        <!--确认付款-->
+        <activity android:name=".ui.my.askbuy.PayConfirmActivity" />
 
 
         <!--司机认证第一步-->

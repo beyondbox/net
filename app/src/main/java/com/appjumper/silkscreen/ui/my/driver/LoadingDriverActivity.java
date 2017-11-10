@@ -4,6 +4,7 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
@@ -12,6 +13,7 @@ import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.my.adapter.TransportListAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -136,7 +138,7 @@ public class LoadingDriverActivity extends BaseActivity {
         txtTitle.setText(data.getFrom_name() + " - " + data.getTo_name());
         txtTime.setText(data.getCreate_time().substring(5, 16));
         txtOrderId.setText("订单编号 : " + data.getOrder_id());
-        txtCarNum.setText("已发车" + data.getCar_num() + "次");
+        txtCarNum.setText("已发车" + data.getDepart_num() + "次");
         txtCarModel.setText(data.getLengths_name() + "/" + data.getModels_name());
         txtProduct.setText(data.getWeight() + data.getProduct_name());
         txtLoadTime.setText(data.getExpiry_date().substring(5, 16) + "装车");
@@ -171,9 +173,30 @@ public class LoadingDriverActivity extends BaseActivity {
             txtPayedType.setText("货主支付运费");
 
 
+        if (data.getCar_product_type().equals(Const.INFO_TYPE_OFFICIAL + "")) {
+            String endName = "";
+            String fullName = data.getTo_name();
+            String [] arr = fullName.split(",");
+            String province = arr[1];
+            if (province.contains("省"))
+                endName = province.substring(0, province.length() - 1) + arr[2];
+            else
+                endName = province + arr[2];
+
+            if (endName.contains("市"))
+                endName = endName.substring(0, endName.length() - 1);
+
+            txtTitle.setText(data.getFrom_name() + " - " + endName);
+            txtName.setText("来自 : 丝网加物流专员-" + data.getAdmin_name());
+        }
+
         txtPremium.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         txtPremium.getPaint().setAntiAlias(true);
 
+        ListView lvTransport = (ListView) findViewById(R.id.lvTransport);
+        lvTransport.setFocusable(false);
+        TransportListAdapter transportAdapter = new TransportListAdapter(context, data.getTransport_list());
+        lvTransport.setAdapter(transportAdapter);
     }
 
 
@@ -189,7 +212,10 @@ public class LoadingDriverActivity extends BaseActivity {
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
             case R.id.txtCallDeliver: //联系厂家
-                AppTool.dial(context, data.getMobile());
+                if (data.getCar_product_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
+                    AppTool.dial(context, data.getEnterprise_mobile());
+                else
+                    AppTool.dial(context, data.getMobile());
                 break;
             default:
                 break;
