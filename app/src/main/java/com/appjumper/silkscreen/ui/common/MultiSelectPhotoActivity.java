@@ -277,7 +277,7 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
                         }
 
                     }else{
-                        saveRequestImage();
+                        saveRequestImageCamera();
                     }
                     break;
                 case REQUEST_SELECT_PHOTO: // 多选
@@ -320,6 +320,15 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
             requestImage(new String[]{path});
         }
     }
+
+
+    private void saveRequestImageCamera() {
+        if (cameraFile != null && cameraFile.exists()) {
+            String path = cameraFile.getAbsolutePath();
+            requestImage(new String[]{path});
+        }
+    }
+
 
     private void bitmapToJpg(Intent data){
         String path = saveBitmapToJPG(data);

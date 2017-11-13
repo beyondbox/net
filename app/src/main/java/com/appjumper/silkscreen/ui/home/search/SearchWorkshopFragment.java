@@ -437,8 +437,7 @@ public class SearchWorkshopFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (isDetached())
-                return;
+            if (!isViewCreated) return;
 
             switch (msg.what) {
                 case  7://市选择

@@ -172,8 +172,7 @@ public class PersonalFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (isDetached())
-                return;
+            if (!isViewCreated) return;
 
             pullToRefreshView.onRefreshComplete();
             switch (msg.what) {

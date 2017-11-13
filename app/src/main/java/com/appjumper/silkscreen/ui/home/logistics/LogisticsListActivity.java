@@ -1,10 +1,12 @@
 package com.appjumper.silkscreen.ui.home.logistics;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.PermissionChecker;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
@@ -156,6 +158,10 @@ public class LogisticsListActivity extends BaseActivity {
                     case "2":
                         if (!MyApplication.appContext.checkMobile(context)) return;
                         if (!MyApplication.appContext.checkCertifyPer(context)) return;
+                        if (PermissionChecker.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
+                            showErrorToast("您尚未开启本应用的定位权限");
+                            return;
+                        }
                         start_Activity(context, ReleaseFreightActivity.class);
                         break;
                 }

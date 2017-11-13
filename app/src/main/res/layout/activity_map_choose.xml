@@ -54,12 +54,13 @@
         android:id="@+id/map"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1.2"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/while_color"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -70,6 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="gone"
             android:padding="4dp"
             segmentedgroup:sc_border_width="1dp"
             segmentedgroup:sc_corner_radius="2dp">
@@ -109,6 +111,9 @@
 
         </com.appjumper.silkscreen.view.SegmentedGroup>
 
+        <View
+            style="@style/LineStyle"
+            android:layout_height="0.7dp"/>
 
         <ListView
             android:id="@+id/listview"
@@ -117,8 +122,8 @@
             android:layout_below="@id/map"
             android:layout_weight="1"
             android:cacheColorHint="#00000000"
-            android:dividerHeight="1px"
-            android:divider="@android:color/darker_gray"/>
+            android:dividerHeight="0.7dp"
+            android:divider="#DEDFE0"/>
 
     </LinearLayout>
 

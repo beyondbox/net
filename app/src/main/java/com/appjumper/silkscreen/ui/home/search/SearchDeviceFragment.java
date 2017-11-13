@@ -340,8 +340,7 @@ public class SearchDeviceFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (isDetached())
-                return;
+            if (!isViewCreated) return;
 
             switch (msg.what) {
                 case NETWORK_SUCCESS_DATA_ERROR:

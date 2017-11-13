@@ -253,9 +253,10 @@ public class GoToDeliverActivity extends BaseActivity implements INaviInfoCallba
 
         LatLng latLng = new LatLng(Double.valueOf(data.getConsignor_lat()), Double.valueOf(data.getConsignor_lng()));
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
-        Marker marker = aMap.addMarker(new MarkerOptions().
-                position(latLng).
-                snippet(data.getConsignor_place()));
+        Marker marker = aMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title(data.getConsignor_place())
+                .snippet(""));
         marker.showInfoWindow();
 
     }

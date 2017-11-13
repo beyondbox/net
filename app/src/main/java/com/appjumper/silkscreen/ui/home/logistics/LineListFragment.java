@@ -133,8 +133,7 @@ public class LineListFragment extends BaseFragment {
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                if (isDetached())
-                    return;
+                if (!isViewCreated) return;
 
                 String jsonStr = new String(responseBody);
                 try {
@@ -162,8 +161,7 @@ public class LineListFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                if (isDetached())
-                    return;
+                if (!isViewCreated) return;
                 showFailTips(getResources().getString(R.string.requst_fail));
                 if (page > 1)
                     page--;
@@ -172,8 +170,7 @@ public class LineListFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                if (isDetached())
-                    return;
+                if (!isViewCreated) return;
 
                 ptrLayt.refreshComplete();
                 adapter.loadMoreComplete();

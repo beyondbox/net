@@ -281,8 +281,7 @@ public class TruckFragment extends BaseFragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (isDetached())
-                return;
+            if (!isViewCreated) return;
 
             switch (msg.what) {
                 case NETWORK_OTHER:

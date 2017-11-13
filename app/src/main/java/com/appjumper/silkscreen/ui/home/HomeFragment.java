@@ -533,14 +533,9 @@ public class HomeFragment extends BaseFragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(Const.ACTION_UNREAD_REFRESH)) {
-                if (getUser() == null)
-                    return;
-
-                if (!isDataInited)
-                    return;
-
-                if (isDetached())
-                    return;
+                if (getUser() == null) return;
+                if (!isDataInited) return;
+                if (!isViewCreated) return;
 
                 UnRead unRead = (UnRead) intent.getSerializableExtra(Const.KEY_OBJECT);
 

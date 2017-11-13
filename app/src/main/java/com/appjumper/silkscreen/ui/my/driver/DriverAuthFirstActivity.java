@@ -111,6 +111,19 @@ public class DriverAuthFirstActivity extends MultiSelectPhotoActivity{
                 showWindowSelectList(v);
                 break;
             case R.id.txtNext://下一步
+                if(et_name.getText().toString().length()<1){
+                    showErrorToast("请输入您的真实姓名");
+                    return;
+                }
+                if(et_idcard.getText().toString().length()<1){
+                    showErrorToast("请输入您的身份证号");
+                    return;
+                }
+
+                if (et_idcard.getText().toString().length() < 18) {
+                    showErrorToast("请输入正确的身份证号");
+                    return;
+                }
                 if (iv_id_card_one_url.equals("")) {
                     showErrorToast("请上传身份证正面照");
                     return;
@@ -118,19 +131,6 @@ public class DriverAuthFirstActivity extends MultiSelectPhotoActivity{
                 if (iv_id_card_two_url.equals("")) {
                     showErrorToast("请上传身份证反面照");
                     break;
-                }
-                if(et_name.getText().toString().length()<1){
-                    showErrorToast("真实姓名不能为空");
-                    return;
-                }
-                if(et_idcard.getText().toString().length()<1){
-                    showErrorToast("身份证号不能为空");
-                    return;
-                }
-
-                if (et_idcard.getText().toString().length() < 18) {
-                    showErrorToast("请输入正确的身份证号");
-                    return;
                 }
 
                 DriverAuth driverAuth = new DriverAuth();

@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.animation.Interpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -108,7 +108,7 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_map_choose);
         ButterKnife.bind(this);
 
@@ -304,15 +304,19 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
                     && amapLocation.getErrorCode() == 0) {
                 mListener.onLocationChanged(amapLocation);
 
-                LatLng curLatlng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
+                final LatLng curLatlng = new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude());
 
                 searchLatlonPoint = new LatLonPoint(curLatlng.latitude, curLatlng.longitude);
 
-                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLatlng, 16f));
-
                 isInputKeySearch = false;
-
                 searchText.setText("");
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLatlng, 15f));
+                    }
+                }, 300);
 
             } else {
                 String errText = "定位失败," + amapLocation.getErrorCode()+ ": " + amapLocation.getErrorInfo();
@@ -381,9 +385,10 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
     protected void doSearchQuery() {
 //        Log.i("MY", "doSearchQuery");
         currentPage = 0;
-        query = new PoiSearch.Query(searchKey, searchType, "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+        //query = new PoiSearch.Query(searchKey, searchType, "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+        query = new PoiSearch.Query(searchKey, "公司企业|商务住宅|生活服务", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query.setCityLimit(true);
-        query.setPageSize(20);
+        query.setPageSize(30);
         query.setPageNum(currentPage);
 
         if (searchLatlonPoint != null) {
@@ -452,6 +457,7 @@ public class MapChooseActivity extends AppCompatActivity implements LocationSour
 
         searchResultAdapter.setData(resultData);
         searchResultAdapter.notifyDataSetChanged();
+        listView.smoothScrollToPosition(0);
     }
 
 

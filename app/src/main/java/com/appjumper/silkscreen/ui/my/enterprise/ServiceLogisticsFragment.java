@@ -173,8 +173,7 @@ public class ServiceLogisticsFragment extends BaseFragment {
 
         @Override
         public void handleMessage(Message msg) {
-            if (isDetached())
-                return;
+            if (!isViewCreated) return;
 
             pullToRefreshView.onRefreshComplete();
             switch (msg.what) {

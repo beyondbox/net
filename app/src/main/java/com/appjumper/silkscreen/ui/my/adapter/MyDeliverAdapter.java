@@ -14,13 +14,13 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import java.util.List;
 
 /**
- * 发货厂家订单列表adapter
+ * 我的界面发货厂家订单adapter
  * Created by Botx on 2017/10/27.
  */
 
-public class FreightMyAdapter extends BaseQuickAdapter<Freight, BaseViewHolder> {
+public class MyDeliverAdapter extends BaseQuickAdapter<Freight, BaseViewHolder> {
 
-    public FreightMyAdapter(@LayoutRes int layoutResId, @Nullable List<Freight> data) {
+    public MyDeliverAdapter(@LayoutRes int layoutResId, @Nullable List<Freight> data) {
         super(layoutResId, data);
     }
 

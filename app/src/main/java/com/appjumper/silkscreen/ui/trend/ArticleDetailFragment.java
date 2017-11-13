@@ -122,8 +122,7 @@ public class ArticleDetailFragment extends BaseFragment {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                if (isDetached())
-                    return;
+                if (!isViewCreated) return;
 
                 String jsonStr = new String(responseBody);
                 try {
@@ -149,8 +148,7 @@ public class ArticleDetailFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                if (isDetached())
-                    return;
+                if (!isViewCreated) return;
                 progress.dismiss();
             }
         });

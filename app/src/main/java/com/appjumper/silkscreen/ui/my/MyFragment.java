@@ -20,6 +20,7 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.Freight;
+import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.bean.UserResponse;
 import com.appjumper.silkscreen.net.GsonUtil;
@@ -31,7 +32,8 @@ import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.stockshop.ReleaseGoodsSelectActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
-import com.appjumper.silkscreen.ui.my.adapter.FreightMyAdapter;
+import com.appjumper.silkscreen.ui.my.adapter.MyDeliverAdapter;
+import com.appjumper.silkscreen.ui.my.adapter.MyDriverAdapter;
 import com.appjumper.silkscreen.ui.my.deliver.AuditRefuseActivity;
 import com.appjumper.silkscreen.ui.my.deliver.AuditingDeliverActivity;
 import com.appjumper.silkscreen.ui.my.deliver.ChooseDriverActivity;
@@ -43,6 +45,14 @@ import com.appjumper.silkscreen.ui.my.deliver.TransportFinishDeliverActivity;
 import com.appjumper.silkscreen.ui.my.deliver.TransportingDeliverActivity;
 import com.appjumper.silkscreen.ui.my.deliver.WaitDriverPayActivity;
 import com.appjumper.silkscreen.ui.my.driver.DriverOrderListActivity;
+import com.appjumper.silkscreen.ui.my.driver.DriverPayActivity;
+import com.appjumper.silkscreen.ui.my.driver.GoToDeliverActivity;
+import com.appjumper.silkscreen.ui.my.driver.LoadingDriverActivity;
+import com.appjumper.silkscreen.ui.my.driver.OfferedActivity;
+import com.appjumper.silkscreen.ui.my.driver.OrderFinishDriverActivity;
+import com.appjumper.silkscreen.ui.my.driver.ReceiveInquiryActivity;
+import com.appjumper.silkscreen.ui.my.driver.TransportFinishDriverActivity;
+import com.appjumper.silkscreen.ui.my.driver.TransportingDriverActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.util.CommonUtil;
@@ -97,8 +107,17 @@ public class MyFragment extends BaseFragment {
     @Bind(R.id.recyclerDeliver)
     RecyclerView recyclerDeliver;
 
+    @Bind(R.id.txtDriverNum)
+    TextView txtDriverNum;
+    @Bind(R.id.recyclerDriver)
+    RecyclerView recyclerDriver;
+    @Bind(R.id.llChangeState)
+    LinearLayout llChangeState;
+
     private List<Freight> deliverList;
-    private FreightMyAdapter deliverAdapter;
+    private MyDeliverAdapter deliverAdapter;
+    private List<Freight> driverList;
+    private MyDriverAdapter driverAdapter;
 
 
 
@@ -138,13 +157,14 @@ public class MyFragment extends BaseFragment {
                 llReleaseStockGoods.setVisibility(View.GONE);
 
 
-            if (user.getDriver_status().equals(Const.AUTH_SUCCESS + "")) {
+            if (user.getDriver_status().equals(Const.AUTH_SUCCESS + "")) { //司机
                 llDriver.setVisibility(View.VISIBLE);
                 llDeliver.setVisibility(View.GONE);
                 txtDriverState.setText(user.getDriver_car_status().equals("0") ? "更改为运输中" : "更改为空闲");
+                getDriverOrder();
             } else {
                 llDriver.setVisibility(View.GONE);
-                if (user.getIs_vender().equals("1")) {
+                if (user.getIs_vender().equals("1")) { //发货厂家
                     llDeliver.setVisibility(View.VISIBLE);
                     getDeliverOrder();
                 } else {
@@ -171,13 +191,19 @@ public class MyFragment extends BaseFragment {
 
         initOrderView();
         initView();
+        if (getUser() != null) {
+            new Thread(new UserInfoRun()).start();
+        }
     }
 
 
     private void initOrderView() {
+        /**
+         * 发货厂家订单
+         */
         deliverList = new ArrayList<>();
 
-        deliverAdapter = new FreightMyAdapter(R.layout.item_recycler_freight_my, deliverList);
+        deliverAdapter = new MyDeliverAdapter(R.layout.item_recycler_freight_my, deliverList);
         recyclerDeliver.setLayoutManager(new LinearLayoutManager(context));
         deliverAdapter.bindToRecyclerView(recyclerDeliver);
         deliverAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
@@ -215,6 +241,58 @@ public class MyFragment extends BaseFragment {
                         break;
                     case Const.FREIGHT_ORDER_FINISH: //订单完成
                         intent = new Intent(context, OrderFinishDeliverActivity.class);
+                        break;
+                }
+
+                if (intent != null) {
+                    intent.putExtra("id", freight.getId());
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+        /**
+         * 司机订单
+         */
+        driverList = new ArrayList<>();
+
+        driverAdapter = new MyDriverAdapter(R.layout.item_recycler_freight_my, driverList);
+        recyclerDriver.setLayoutManager(new LinearLayoutManager(context));
+        driverAdapter.bindToRecyclerView(recyclerDriver);
+        driverAdapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+
+        driverAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Freight freight = driverList.get(position);
+                int state = Integer.valueOf(freight.getExamine_status());
+                Intent intent = null;
+                switch (state) {
+                    case Const.FREIGHT_AUDIT_PASS: // 收到询价或者已报价
+                        List<FreightOffer> offerList = freight.getOffer_list();
+                        if (offerList != null && offerList.size() > 0)
+                            intent = new Intent(context, OfferedActivity.class);
+                        else
+                            intent = new Intent(context, ReceiveInquiryActivity.class);
+                        break;
+                    case Const.FREIGHT_DRIVER_PAYING: //等待支付
+                        intent = new Intent(context, DriverPayActivity.class);
+                        break;
+                    case Const.FREIGHT_GOTO_LOAD: //前往厂家
+                        intent = new Intent(context, GoToDeliverActivity.class);
+                        break;
+                    case Const.FREIGHT_LOADING: //装货中
+                        intent = new Intent(context, LoadingDriverActivity.class);
+                        break;
+                    case Const.FREIGHT_TRANSPORTING: //运输途中
+                        intent = new Intent(context, TransportingDriverActivity.class);
+                        break;
+                    case Const.FREIGHT_TRANSPORT_FINISH: //运输完成
+                        intent = new Intent(context, TransportFinishDriverActivity.class);
+                        break;
+                    case Const.FREIGHT_ORDER_FINISH: //订单完成
+                        intent = new Intent(context, OrderFinishDriverActivity.class);
                         break;
                 }
 
@@ -364,8 +442,6 @@ public class MyFragment extends BaseFragment {
 
                         if (isViewCreated && isDataInited)
                             initView();
-                    } else {
-                        showErrorToast(userResponse.getError_desc());
                     }
                     break;
                 case NETWORK_SUCCESS_DATA_ERROR:
@@ -391,8 +467,6 @@ public class MyFragment extends BaseFragment {
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                if (isDetached()) return;
-
                 String jsonStr = new String(responseBody);
                 try {
                     JSONObject jsonObj = new JSONObject(jsonStr);
@@ -403,7 +477,61 @@ public class MyFragment extends BaseFragment {
                         deliverList.clear();
                         deliverList.addAll(list);
                         deliverAdapter.notifyDataSetChanged();
+                        if (!isViewCreated) return;
                         txtDeliverNum.setText("我的发货订单（" + dataObj.getString("total") + "）");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+
+    /**
+     * 获取司机订单
+     */
+    private void getDriverOrder() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "car_driver_list");
+        params.put("page", 1);
+        params.put("pagesize", 1);
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        List<Freight> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), Freight.class);
+                        driverList.clear();
+                        driverList.addAll(list);
+                        driverAdapter.notifyDataSetChanged();
+                        if (!isViewCreated) return;
+                        txtDriverNum.setText("我的运输订单（" + dataObj.getString("total") + "）");
+
+                        if (getUser().getDriver_car_status().equals("0")) {
+                            recyclerDriver.setVisibility(View.VISIBLE);
+                            llChangeState.setVisibility(View.GONE);
+                        } else {
+                            int orderState = Integer.valueOf(driverList.get(0).getExamine_status());
+                            if (orderState == Const.FREIGHT_INVALID || orderState == Const.FREIGHT_ORDER_FINISH) {
+                                txtDriverNum.setText("暂无订单");
+                                recyclerDriver.setVisibility(View.GONE);
+                                llChangeState.setVisibility(View.VISIBLE);
+                            } else {
+                                recyclerDriver.setVisibility(View.VISIBLE);
+                                llChangeState.setVisibility(View.GONE);
+                            }
+                        }
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -456,8 +584,7 @@ public class MyFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                if (isDetached())
-                    return;
+                if (!isViewCreated) return;
 
                 progress.dismiss();
             }

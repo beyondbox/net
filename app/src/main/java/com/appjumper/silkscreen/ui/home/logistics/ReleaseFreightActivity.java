@@ -500,6 +500,10 @@ public class ReleaseFreightActivity extends BaseActivity {
                     showErrorToast("请选择装车时间");
                     return;
                 }
+                if (latitude == 0 && longitude == 0) {
+                    showErrorToast("无法定位您的位置");
+                    return;
+                }
                 submit();
                 break;
         }

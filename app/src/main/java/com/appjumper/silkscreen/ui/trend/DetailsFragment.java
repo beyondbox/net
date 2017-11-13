@@ -356,8 +356,7 @@ public class DetailsFragment extends BaseFragment {
 
         @Override
         public void handleMessage(Message msg) {
-            if (isDetached())
-                return;
+            if (!isViewCreated) return;
 
             if (mPullRefreshScrollView != null)
                 mPullRefreshScrollView.onRefreshComplete();
@@ -419,11 +418,8 @@ public class DetailsFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                if (isDetached())
-                    return;
-
-                if (context.isDestroyed())
-                    return;
+                if (!isViewCreated) return;
+                if (context.isDestroyed()) return;
 
                 if (articleList.size() == 0)
                     recyclerArticle.setVisibility(View.GONE);

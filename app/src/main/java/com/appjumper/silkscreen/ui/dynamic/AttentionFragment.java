@@ -266,8 +266,7 @@ public class AttentionFragment extends BaseFragment {
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                if (isDetached())
-                    return;
+                if (!isViewCreated) return;
 
                 String jsonStr = new String(responseBody);
                 try {
