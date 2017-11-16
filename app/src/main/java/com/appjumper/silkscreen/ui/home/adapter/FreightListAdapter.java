@@ -30,7 +30,10 @@ public class FreightListAdapter extends BaseQuickAdapter<Freight, BaseViewHolder
         helper.setText(R.id.txtTitle, item.getFrom_name() + " - " + item.getTo_name())
                 .setText(R.id.txtCarModel, item.getLengths_name() + "/" + item.getModels_name())
                 .setText(R.id.txtProduct, item.getWeight() + item.getProduct_name())
-                .setText(R.id.txtTime, item.getExpiry_date().substring(5, 16) + "装车");
+                .setText(R.id.txtTime, item.getExpiry_date().substring(5, 16) + "装车")
+                .setVisible(R.id.imgViCertiGreen, item.getAuth_status().equals("2"))
+                .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
+                .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"));
 
         TextView txtName = helper.getView(R.id.txtName);
         String carNum = "/发车 " + item.getDepart_num() + "次";

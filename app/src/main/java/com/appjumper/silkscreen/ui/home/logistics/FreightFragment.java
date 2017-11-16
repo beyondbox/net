@@ -1,5 +1,7 @@
 package com.appjumper.silkscreen.ui.home.logistics;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -61,9 +64,18 @@ public class FreightFragment extends BaseFragment {
     DropDownMenu dropDownMenu;
     @Bind(R.id.txtNum)
     TextView txtNum;
+    @Bind(R.id.llFreightNum)
+    LinearLayout llFreightNum;
 
     private PtrClassicFrameLayout ptrLayt;
     private RecyclerView recyclerData;
+
+    private boolean isNumVisible = true;
+    private int numHeight;
+    private ObjectAnimator animHide;
+    private ObjectAnimator animShow;
+    private ObjectAnimator animUp;
+    private ObjectAnimator animDown;
 
     private List<Freight> dataList;
     private FreightListAdapter adapter;
@@ -100,11 +112,11 @@ public class FreightFragment extends BaseFragment {
         initRecyclerView();
         initRefreshLayout();
 
-        getSuccessNum();
         getStartPlace();
         getEndPlace();
         getCarLength();
         getCarModel();
+        getSuccessNum();
         ptrLayt.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -280,6 +292,36 @@ public class FreightFragment extends BaseFragment {
         }, recyclerData);
 
         adapter.setEnableLoadMore(false);
+
+
+        recyclerData.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            private int HIDE_THRESHOLD = 150;
+            private int scrolledDistance = 0;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (scrolledDistance > HIDE_THRESHOLD && isNumVisible) {
+                    animHide.start();
+                    animUp.start();
+                    isNumVisible = false;
+                    scrolledDistance = 0;
+                }
+                else if (scrolledDistance < -HIDE_THRESHOLD && !isNumVisible) {
+                    llFreightNum.setVisibility(View.VISIBLE);
+                    dropDownMenu.setTranslationY(-numHeight);
+                    animShow.start();
+                    animDown.start();
+                    isNumVisible = true;
+                    scrolledDistance = 0;
+                }
+                if ((isNumVisible && dy > 0) || (!isNumVisible && dy < 0)) {
+                    scrolledDistance += dy;
+                }
+            }
+        });
+
     }
 
 
@@ -376,6 +418,32 @@ public class FreightFragment extends BaseFragment {
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         String number = jsonObj.getJSONArray("data").getJSONObject(0).getString("car_num");
                         txtNum.setText(number + "车次");
+
+                        numHeight = llFreightNum.getHeight();
+                        animHide = ObjectAnimator.ofFloat(llFreightNum, "translationY", -numHeight);
+                        animShow = ObjectAnimator.ofFloat(llFreightNum, "translationY", 0);
+                        animUp = ObjectAnimator.ofFloat(dropDownMenu, "translationY", -numHeight);
+                        animDown = ObjectAnimator.ofFloat(dropDownMenu, "translationY", 0);
+
+                        animHide.addListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animator) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animator) {
+                                llFreightNum.setVisibility(View.GONE);
+                                dropDownMenu.setTranslationY(0);
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animator) {
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animator) {
+                            }
+                        });
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

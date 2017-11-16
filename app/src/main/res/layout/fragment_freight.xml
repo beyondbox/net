@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/view_background_gray_color"
+    android:background="@color/while_color"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/llFreightNum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/view_background_gray_color"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:gravity="center_horizontal"
@@ -35,6 +37,7 @@
         android:id="@+id/dropDownMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/view_background_gray_color"
         app:dddividerColor="@color/view_background_gray_color"
         app:ddmaskColor="#20000000"
         app:ddmenuBackgroundColor="@color/while_color"

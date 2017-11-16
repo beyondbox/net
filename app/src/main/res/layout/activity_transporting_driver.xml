@@ -35,8 +35,7 @@
         android:orientation="horizontal"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="6dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp">
+        android:gravity="center_horizontal">
 
         <TextView
             android:id="@+id/btn0"
@@ -50,27 +49,19 @@
             android:textColor="@color/while_color"
             android:textSize="15sp" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
         <TextView
             android:id="@+id/btn1"
             android:layout_width="95dp"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_btn_blue"
             android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginLeft="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="更新状态"
             android:textColor="@color/while_color"
             android:textSize="15sp" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/btn2"
@@ -78,6 +69,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/selector_btn_blue"
             android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginLeft="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:text="确认送达"

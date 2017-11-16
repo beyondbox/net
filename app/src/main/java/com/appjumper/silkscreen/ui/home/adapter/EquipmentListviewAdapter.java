@@ -162,7 +162,7 @@ public class EquipmentListviewAdapter extends BaseAdapter {
                     viewHolder.txtMark.setText("官方");
                     viewHolder.txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
                     viewHolder.tvCompanyName.setText(item.getOfficial_name());
-                    viewHolder.tv_price.setText(item.getPrice() + "元");
+                    viewHolder.tv_price.setText(item.getPrice());
                     break;
                 default:
                     break;

@@ -437,8 +437,12 @@ public class MyFragment extends BaseFragment {
                         User user = userResponse.getData();
                         getMyApplication().getMyUserManager().storeUserInfo(user);
 
-                        if (user.getDriver_status().equals(Const.AUTH_SUCCESS + ""))
-                            updateLocationSilent(getLat(), getLng());
+                        if (user.getDriver_status().equals(Const.AUTH_SUCCESS + "")) {
+                            double lat = Double.valueOf(getLat());
+                            double lng = Double.valueOf(getLng());
+                            if (lat != 0 || lng != 0)
+                                updateLocationSilent(getLat(), getLng());
+                        }
 
                         if (isViewCreated && isDataInited)
                             initView();

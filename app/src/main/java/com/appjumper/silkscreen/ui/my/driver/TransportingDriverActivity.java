@@ -77,6 +77,10 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
 
     @Bind(R.id.txtPremium)
     TextView txtPremium;
+    @Bind(R.id.btn1)
+    TextView btn1;
+    @Bind(R.id.btn2)
+    TextView btn2;
 
 
     private String id;
@@ -105,6 +109,7 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
         initDialog();
 
         id = getIntent().getStringExtra("id");
+        progress.show();
         getData();
     }
 
@@ -212,11 +217,6 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
         params.put("id", id);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                progress.show();
-            }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -257,6 +257,15 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
      * 渲染数据
      */
     private void setData() {
+        String arriveState = data.getConfirm_arrive();
+        if (arriveState.equals("0") || arriveState.equals("1") || arriveState.equals("2")) {
+            btn1.setVisibility(View.GONE);
+            btn2.setVisibility(View.GONE);
+        } else {
+            btn1.setVisibility(View.VISIBLE);
+            btn2.setVisibility(View.VISIBLE);
+        }
+
         txtTitle.setText(data.getFrom_name() + " - " + data.getTo_name());
         txtTime.setText(data.getCreate_time().substring(5, 16));
         txtOrderId.setText("订单编号 : " + data.getOrder_id());
@@ -347,7 +356,7 @@ public class TransportingDriverActivity extends MultiSelectPhotoActivity {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         showErrorToast("提交成功，请等待官方确认");
-                        finish();
+                        getData();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }

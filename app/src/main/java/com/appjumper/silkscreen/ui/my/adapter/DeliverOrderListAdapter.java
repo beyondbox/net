@@ -85,8 +85,14 @@ public class DeliverOrderListAdapter extends BaseQuickAdapter<Freight, BaseViewH
             case Const.FREIGHT_TRANSPORTING:
                 txtState.setText("运输途中");
                 txtContent.setText("");
-                setButtonVisibility(helper, true, true, true);
-                setButtonName(helper, "联系司机", "查看司机位置", "确认送达");
+                String arriveState = item.getConfirm_arrive();
+                if (arriveState.equals("1") || arriveState.equals("2")) {
+                    setButtonVisibility(helper, true, true, false);
+                    setButtonName(helper, "联系司机", "查看司机位置", "");
+                } else {
+                    setButtonVisibility(helper, true, true, true);
+                    setButtonName(helper, "联系司机", "查看司机位置", "确认送达");
+                }
                 break;
             case Const.FREIGHT_TRANSPORT_FINISH:
                 txtState.setText("运输完成");

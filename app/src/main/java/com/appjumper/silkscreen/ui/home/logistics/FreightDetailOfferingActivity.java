@@ -14,12 +14,13 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.base.MyApplication;
+import com.appjumper.silkscreen.bean.CarInfo;
 import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.home.adapter.FreightOfferRecordAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.FreightOfferPublicAdapter;
 import com.appjumper.silkscreen.ui.my.driver.OfferedActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
@@ -119,8 +120,6 @@ public class FreightDetailOfferingActivity extends BaseActivity {
                 offer(money);
             }
         });
-
-
 
     }
 
@@ -236,16 +235,80 @@ public class FreightDetailOfferingActivity extends BaseActivity {
         List<FreightOffer> offerList = data.getOffer_list();
         if (offerList != null && offerList.size() > 0) {
             llRecord.setVisibility(View.VISIBLE);
-            FreightOfferRecordAdapter recordAdapter = new FreightOfferRecordAdapter(context, offerList);
+            FreightOfferPublicAdapter recordAdapter = new FreightOfferPublicAdapter(context, offerList, getUserID());
+            if (getUserID().equals(data.getUser_id())) {
+                recordAdapter.setPrivateMode(false);
+                txtOffer.setVisibility(View.GONE);
+            }
+
             lvRecord.setAdapter(recordAdapter);
             txtRecord.setText("报价列表（" + offerList.size() + "）");
+
+            if (getUser().getDriver_status().equals(Const.AUTH_SUCCESS + "")) {
+                for (FreightOffer offer : offerList) {
+                    if (offer.getUser_id().equals(getUserID())) {
+                        txtOffer.setText("您已报价");
+                        txtOffer.setEnabled(false);
+                        break;
+                    }
+                }
+            }
         } else {
             llRecord.setVisibility(View.GONE);
         }
 
-        if (data.getUser_id().equals(getUserID()))
-            txtOffer.setEnabled(false);
+    }
 
+
+    /**
+     * 获取司机车辆信息
+     */
+    private void getCarInfo() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "car_info");
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        CarInfo carInfo = GsonUtil.getEntity(jsonObj.getJSONArray("data").getJSONObject(0).toString(), CarInfo.class);
+                        if (carInfo.getCar_length_id().equals(data.getLengths_id()) && carInfo.getCar_model_id().equals(data.getModels_id())) {
+                            offerDialog.show();
+                        } else {
+                            showErrorToast("您的车长车型不符合该订单的要求");
+                        }
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (isDestroyed())
+                    return;
+
+                progress.dismiss();
+            }
+        });
     }
 
 
@@ -314,7 +377,7 @@ public class FreightDetailOfferingActivity extends BaseActivity {
             case R.id.txtOffer: //报价
                 if (!MyApplication.appContext.checkMobile(context)) return;
                 if (!MyApplication.appContext.checkCertifyDriver(context)) return;
-                offerDialog.show();
+                getCarInfo();
                 break;
             case R.id.txtCall: //联系客服
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);

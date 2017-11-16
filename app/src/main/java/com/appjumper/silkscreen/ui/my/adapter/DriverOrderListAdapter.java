@@ -124,8 +124,15 @@ public class DriverOrderListAdapter extends BaseQuickAdapter<Freight, CountDownV
                 break;
             case Const.FREIGHT_TRANSPORTING:
                 txtState.setText("运输途中");
-                setButtonVisibility(helper, false, true, true);
-                setButtonName(helper, "", "更新位置", "确认送达");
+                String arriveState = item.getConfirm_arrive();
+                if (arriveState.equals("0") || arriveState.equals("1") || arriveState.equals("2")) {
+                    setButtonVisibility(helper, false, false, false);
+                    setButtonName(helper, "", "", "");
+                } else {
+                    setButtonVisibility(helper, false, true, true);
+                    setButtonName(helper, "", "更新位置", "确认送达");
+                }
+
                 long endTime3 = HttpUtil.getTimeLong(item.getEnterprise_expect_date());
                 if (System.currentTimeMillis() < endTime3) {
                     startCountDown(helper, endTime3, state);

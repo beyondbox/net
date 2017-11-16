@@ -44,17 +44,17 @@ import java.util.Locale;
  */
 public class BasePhotoGridActivity extends BaseActivity implements PhotoPopupWindow.SelectPhotoListener {
 	/** 从媒体库选择图片 */
-	private static final int PHOTO_PICKED_WITH_DATA = 0x10;
+	public final int PHOTO_PICKED_WITH_DATA = 0x10;
 	/** 照相选择图片 */
-	public static final int PHOTO_CAMERA_WITH_DATA = 0x17;
+	public final int PHOTO_CAMERA_WITH_DATA = 0x17;
 	/** 剪切图片 */
-	private static final int PHOTO_CROP_PATH = 0x18;
-	public static final String SAVEPATH = Environment
+	public final int PHOTO_CROP_PATH = 0x18;
+	public final String SAVEPATH = Environment
 			.getExternalStorageDirectory().getPath() + "/" + "picture";
-	public final static int PICTURE_UPDATE_ICON = R.drawable.icon_uploading;
+	public static final int PICTURE_UPDATE_ICON = R.drawable.icon_uploading;
 
 
-	private static final int REQUEST_PICK = 0;
+	private final int REQUEST_PICK = 0;
 	private MyGridView gridView;
 
 	//调用拍照，拍出来的原图的url
@@ -331,11 +331,11 @@ public class BasePhotoGridActivity extends BaseActivity implements PhotoPopupWin
 				viewHolder = (MyGridViewHolder) convertView.getTag();
 			}
 			String photoRecourse = bitmapPathList.get(position).equals(
-					"" + BasePhotoGridActivity.PICTURE_UPDATE_ICON) ? "drawable://" : "file://";
+					"" + BasePhotoGridActivity.this.PICTURE_UPDATE_ICON) ? "drawable://" : "file://";
 
 			//加号图片 去掉删除按钮
 			viewHolder.delete_btn.setVisibility((bitmapPathList.get(position).equals(
-					"" + BasePhotoGridActivity.PICTURE_UPDATE_ICON))?View.GONE:View.VISIBLE);
+					"" + BasePhotoGridActivity.this.PICTURE_UPDATE_ICON))?View.GONE:View.VISIBLE);
 
 			viewHolder.delete_btn.setOnClickListener(new View.OnClickListener() {
 

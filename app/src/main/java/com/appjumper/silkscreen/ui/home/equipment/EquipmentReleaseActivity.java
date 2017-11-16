@@ -159,7 +159,7 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
                         8, retMap));
             } else {
                 handler.sendMessage(handler
-                        .obtainMessage(NETWORK_SUCCESS_DATA_ERROR));
+                        .obtainMessage(NETWORK_FAIL));
             }
         }
     }

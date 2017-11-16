@@ -41,10 +41,10 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
     /**
      * 拍照
      */
-    public static final int REQUEST_TAKE_PHOTO = 12;
-    public static final int REQUEST_SELECT_PHOTO = 13;
-    private static final int REQUESTCODE_CUTTING = 15;
-    private static final int REQUEST_CODE_PICK_IMAGE = 16;
+    public final int REQUEST_TAKE_PHOTO = 12;
+    public final int REQUEST_SELECT_PHOTO = 13;
+    public final int REQUESTCODE_CUTTING = 15;
+    public final int REQUEST_CODE_PICK_IMAGE = 16;
     protected int mMaxImageNum = 8;
     public ArrayList<String> mPhotoList = new ArrayList<>();
     public static final int MAX_IMAGE_NUM = 8;
@@ -264,6 +264,7 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {// 单张 图片 ，拍照后返回
             switch (requestCode) {
@@ -298,8 +299,6 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
                     break;
             }
         }
-
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public String getRealPathFromURI(Uri contentUri) {

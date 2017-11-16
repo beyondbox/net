@@ -765,9 +765,9 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
     }
 
 
-    private static final int REQUEST_CODE_PICK_IMAGE = 160;
-    private static final int REQUESTCODE_CUTTING = 150;
-    public static final int REQUEST_TAKE_PHOTO = 120;
+    private final int REQUEST_CODE_PICK_IMAGE = 160;
+    private final int REQUESTCODE_CUTTING = 150;
+    public final int REQUEST_TAKE_PHOTO = 120;
 
     private File file;
 

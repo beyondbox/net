@@ -90,6 +90,9 @@ public class Freight {
     private String enterprise_mobile;
     private String enterprise_expect_date;
     private String depart_num;
+    private String auth_status;
+    private String enterprise_auth_status;
+    private String enterprise_productivity_auth_status;
 
     private List<FreightOffer> offer_list;
     private List<Transport> transport_list;
@@ -455,5 +458,29 @@ public class Freight {
 
     public void setDepart_num(String depart_num) {
         this.depart_num = depart_num;
+    }
+
+    public String getAuth_status() {
+        return auth_status;
+    }
+
+    public void setAuth_status(String auth_status) {
+        this.auth_status = auth_status;
+    }
+
+    public String getEnterprise_auth_status() {
+        return enterprise_auth_status;
+    }
+
+    public void setEnterprise_auth_status(String enterprise_auth_status) {
+        this.enterprise_auth_status = enterprise_auth_status;
+    }
+
+    public String getEnterprise_productivity_auth_status() {
+        return enterprise_productivity_auth_status;
+    }
+
+    public void setEnterprise_productivity_auth_status(String enterprise_productivity_auth_status) {
+        this.enterprise_productivity_auth_status = enterprise_productivity_auth_status;
     }
 }

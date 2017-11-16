@@ -222,8 +222,11 @@ public class FreightDetailUnderwayActivity extends BaseActivity {
         }
 
         txtDriverName.setText(selectedOffer.getName().substring(0, 1) + "司机报价");
-        txtDriverPrice.setText("***元");
         txtDriverTime.setText(selectedOffer.getCreate_time().substring(5, 16));
+        if (selectedOffer.getUser_id().equals(getUserID()))
+            txtDriverPrice.setText(selectedOffer.getMoney() + selectedOffer.getMoney_unit());
+        else
+            txtDriverPrice.setText("***" + selectedOffer.getMoney_unit());
 
         if (data.getExamine_status().equals(Const.FREIGHT_DRIVER_PAYING + "")) {
             txtPayState.setText("尚未支付信息费、保险费");
