@@ -75,6 +75,8 @@ public class ReleaseFreightActivity extends BaseActivity {
     TextView txtConfirm;
     @Bind(R.id.txtLocation)
     TextView txtLocation;
+    @Bind(R.id.edtTxtRemark)
+    EditText edtTxtRemark;
     @Bind(R.id.rdoGroupPayType)
     RadioGroup rdoGroupPayType;
 
@@ -366,6 +368,7 @@ public class ReleaseFreightActivity extends BaseActivity {
         params.put("consignor_lng", longitude);
         params.put("consignor_lat", latitude);
         params.put("consignor_place", txtLocation.getText().toString().trim());
+        params.put("remark", edtTxtRemark.getText().toString().trim());
 
         int infoType;
         Enterprise enterprise = getUser().getEnterprise();

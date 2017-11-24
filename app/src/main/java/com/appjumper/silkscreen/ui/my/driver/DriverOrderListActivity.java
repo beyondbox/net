@@ -1,8 +1,11 @@
 package com.appjumper.silkscreen.ui.my.driver;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,10 +14,13 @@ import android.provider.Settings;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -38,6 +44,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.common.MultiSelectPhotoActivity;
 import com.appjumper.silkscreen.ui.my.adapter.DriverOrderListAdapter;
+import com.appjumper.silkscreen.util.AlipayHelper;
 import com.appjumper.silkscreen.util.AmapTTSController;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Applibrary;
@@ -54,7 +61,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,15 +87,20 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
     private DriverOrderListAdapter adapter;
     private Freight item; //当前操作的订单
 
-    private AmapTTSController amapTTSController;
     private AlertDialog arriveDialog;
     private SureOrCancelDialog gpsDialog;
+    private AmapTTSController amapTTSController;
     private ImageView imgViUpload;
     private TextView txtConfirm;
     private File tempImageFile;
     private String arriveImgUrl = "";
 
-    private String pushId = ""; //推送过来的信息id
+    private PopupWindow popupPay;
+    private TextView txtConfirmPay;
+    private TextView txtAccount;
+
+    private String pushId;
+    private int pushType;
 
     private int page = 1;
     private int pageSize = 30;
@@ -105,6 +116,7 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
         initBack();
         initProgressDialog(false, null);
         initDialog();
+        registerBroadcastReceiver();
 
         amapTTSController = AmapTTSController.getInstance(getApplicationContext());
         amapTTSController.init();
@@ -113,8 +125,10 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
         setCropTaskPhoto(false);
 
         Intent intent = getIntent();
-        if (intent.hasExtra("id"))
+        if (intent.hasExtra("id")) {
+            pushType = intent.getIntExtra(Const.KEY_TYPE, 0);
             pushId = intent.getStringExtra("id");
+        }
 
         initRecyclerView();
         initRefreshLayout();
@@ -260,8 +274,10 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
                                 break;
                             case Const.FREIGHT_DRIVER_PAYING:
                                 long endTime = HttpUtil.getTimeLong(item.getExpiry_driver_pay_date());
-                                if (System.currentTimeMillis() < endTime)
-                                    pay();
+                                if (System.currentTimeMillis() < endTime) {
+                                    popupPay.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+                                    AppTool.setBackgroundAlpha(context, 0.4f);
+                                }
                                 break;
                             case Const.FREIGHT_GOTO_LOAD:
                                 LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -373,7 +389,18 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
                         //处理推送，跳转到详情
                         if (page == 1) {
                             if (!TextUtils.isEmpty(pushId)) {
-                                start_Activity(context, ReceiveInquiryActivity.class, new BasicNameValuePair("id", pushId));
+                                Intent intent = null;
+                                switch (pushType) {
+                                    case Const.PUSH_FREIGHT_NEW_INQUIRY://有新的询价
+                                        intent = new Intent(context, ReceiveInquiryActivity.class);
+                                        break;
+                                    case Const.PUSH_FREIGHT_CHOOSED://司机被采纳
+                                        intent = new Intent(context, DriverPayActivity.class);
+                                        break;
+                                }
+
+                                intent.putExtra("id", pushId);
+                                startActivity(intent);
                                 pushId = "";
                             }
                         }
@@ -582,13 +609,13 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
 
 
     /**
-     * 支付
+     * 获取订单信息
      */
-    private void pay() {
+    private void getOrderInfo() {
         RequestParams params = MyHttpClient.getApiParam("purchase", "driver_pay");
         params.put("uid", getUserID());
         params.put("car_product_id", item.getId());
-        params.put("pay_money", 200);
+        params.put("pay_money", 0.01);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
@@ -604,9 +631,9 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, GoToDeliverActivity.class);
-                        intent.putExtra("id", item.getId());
-                        startActivity(intent);
+                        String orderInfo = jsonObj.getString("data");
+                        AlipayHelper alipayHelper = new AlipayHelper(context, item.getId());
+                        alipayHelper.payV2(orderInfo);
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -623,6 +650,9 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
             @Override
             public void onFinish() {
                 super.onFinish();
+                if (isDestroyed())
+                    return;
+
                 progress.dismiss();
             }
         });
@@ -670,6 +700,36 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
                         startActivity(intent);
                     }
                 });
+
+
+
+        View contentView = LayoutInflater.from(context).inflate(R.layout.dialog_pay, null);
+        popupPay = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        txtAccount = (TextView) contentView.findViewById(R.id.txtAccount);
+        txtConfirmPay = (TextView) contentView.findViewById(R.id.txtConfirm);
+
+        String account = getUser().getMobile();
+        txtAccount.setText(account.substring(0, 3) + "***" + account.substring(account.length() - 4, account.length()));
+        txtConfirmPay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupPay.dismiss();
+                getOrderInfo();
+            }
+        });
+
+        popupPay.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                AppTool.setBackgroundAlpha(context, 1.0f);
+            }
+        });
+
+        popupPay.setAnimationStyle(R.style.PopupAnimBottom);
+        popupPay.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popupPay.setOutsideTouchable(true);
+        popupPay.setFocusable(true);
     }
 
 
@@ -856,7 +916,27 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
 
 
 
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_PAY_SUCCESS);
+        filter.addAction(Const.ACTION_PAY_FAIL);
+        registerReceiver(myReceiver, filter);
+    }
 
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_PAY_SUCCESS)) {
+                showErrorToast("支付成功");
+                Intent intent2 = new Intent(context, GoToDeliverActivity.class);
+                intent2.putExtra("id", item.getId());
+                startActivity(intent2);
+            } else if (action.equals(Const.ACTION_PAY_FAIL)) {
+                showErrorToast("支付失败");
+            }
+        }
+    };
 
 
 
@@ -914,6 +994,7 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
     protected void onDestroy() {
         super.onDestroy();
         amapTTSController.destroy();
+        unregisterReceiver(myReceiver);
         adapter.cancelAllTimers();
         if (tempImageFile != null) {
             if (tempImageFile.exists())

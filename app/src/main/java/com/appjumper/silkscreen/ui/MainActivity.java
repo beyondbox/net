@@ -137,6 +137,14 @@ public class MainActivity extends FragmentActivity {
 
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if (instance == null)
+            instance = this;
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         if (mLocationClient.isStarted())

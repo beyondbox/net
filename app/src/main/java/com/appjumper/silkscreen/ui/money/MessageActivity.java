@@ -88,7 +88,8 @@ public class MessageActivity extends BaseActivity {
     private InquiryAdapter inquiryAdapter;
     private List<MyInquiry> inquiryList;
     private AskBuyOfferAdapter offerAdapter;
-    private String inquiryId = ""; //询价id
+    private String pushId;
+    private int pushType;
 
     private MyAlertDialog invalidDialog;
 
@@ -122,8 +123,10 @@ public class MessageActivity extends BaseActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra("id")) {
-            inquiryId = intent.getStringExtra("id");
-            rg.check(R.id.rd1);
+            pushId = intent.getStringExtra("id");
+            pushType = intent.getIntExtra(Const.KEY_TYPE, 0);
+            if (pushType == Const.PUSH_NEW_OFFER)
+                rg.check(R.id.rd1);
         } else {
             if (getUser() != null) {
                 refresh();
@@ -368,15 +371,15 @@ public class MessageActivity extends BaseActivity {
                         pageNumber = 2;
                         pullToRefreshView.setEmptyView(inquiryList.isEmpty() ? myEmptyLayout : null);
 
-                        //跳转到对应的询价详情（点击通知栏推送过来的）
-                        if (!TextUtils.isEmpty(inquiryId)) {
+                        //处理推送-跳转到对应的询价详情
+                        if (!TextUtils.isEmpty(pushId)) {
                             for (MyInquiry myInquiry : inquiryList) {
-                                if (myInquiry.getId().equals(inquiryId)) {
-                                    start_Activity(context, InquiryDetailsAlreadyActivity.class, new BasicNameValuePair("id", inquiryId), new BasicNameValuePair("title", myInquiry.getProduct_name()));
+                                if (myInquiry.getId().equals(pushId)) {
+                                    start_Activity(context, InquiryDetailsAlreadyActivity.class, new BasicNameValuePair("id", pushId), new BasicNameValuePair("title", myInquiry.getProduct_name()));
                                     break;
                                 }
                             }
-                            inquiryId = "";
+                            pushId = "";
                         }
                     } else {
                         listView.onFinishLoading(false);
@@ -407,6 +410,30 @@ public class MessageActivity extends BaseActivity {
                         pageNumber = 2;
                         pullToRefreshView.setEmptyView(offerList.isEmpty() ? myEmptyLayout : null);
 
+                        //处理推送
+                        if (!TextUtils.isEmpty(pushId)) {
+                            switch (pushType) {
+                                case Const.PUSH_ASKBUY_CHOOSED: //求购--报价已被采纳
+                                    for (AskBuyOffer offer : offerList) {
+                                        if (offer.getId().equals(pushId)) {
+                                            Intent intent = null;
+                                            switch (offer.getOffer_status()) {
+                                                case "1": //已付订金
+                                                    intent = new Intent(context, AskBuyOfferPayedSubActivity.class);
+                                                    break;
+                                                case "2": //已付全额
+                                                    intent = new Intent(context, AskBuyOfferPayedAllActivity.class);
+                                                    break;
+                                            }
+                                            intent.putExtra(Const.KEY_OBJECT, offer);
+                                            startActivity(intent);
+                                            break;
+                                        }
+                                    }
+                                    break;
+                            }
+                            pushId = "";
+                        }
                     } else {
                         listView.onFinishLoading(false);
                         showErrorToast(offerresponse.getError_desc());

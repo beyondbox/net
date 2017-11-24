@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -37,6 +37,7 @@
         android:id="@+id/dropDownMenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/llFreightNum"
         android:background="@color/view_background_gray_color"
         app:dddividerColor="@color/view_background_gray_color"
         app:ddmaskColor="#20000000"
@@ -48,4 +49,4 @@
         app:ddtextUnselectedColor="@color/text_black_color"
         app:ddunderlineColor="@color/view_background_gray_color" />
 
-</LinearLayout>
+</RelativeLayout>

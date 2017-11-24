@@ -12,8 +12,9 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -213,8 +214,8 @@ public class HomeFragment extends BaseFragment {
          * 商城
          */
         stockList = new ArrayList<>();
-        stockAdapter = new StockShopListAdapter(R.layout.item_recycler_line_stock_shop, stockList);
-        recyclerStockShop.setLayoutManager(new LinearLayoutManager(context));
+        stockAdapter = new StockShopListAdapter(R.layout.item_recycler_grid_stock_shop, stockList);
+        recyclerStockShop.setLayoutManager(new GridLayoutManager(context, 2));
         stockAdapter.bindToRecyclerView(recyclerStockShop);
 
         stockAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
@@ -278,6 +279,7 @@ public class HomeFragment extends BaseFragment {
 
     private void initView() {
         l_homeview.setVisibility(View.VISIBLE);
+        mScrollView.smoothScrollTo(0, 0);
 
         //公告
         List<Notice> noticeList = data.getNotice();
@@ -407,8 +409,13 @@ public class HomeFragment extends BaseFragment {
             if (enterprise.getEnterprise_productivity_auth_status().equals("2"))
                 score += 20;
         }
-        if (user.getDriver_status().equals("2"))
-            score += 5;
+
+        String driverStatus = user.getDriver_status();
+        if (!TextUtils.isEmpty(driverStatus)) {
+            if (driverStatus.equals("2"))
+                score += 5;
+        }
+
 
         txtScore.setText("+" + score);
     }

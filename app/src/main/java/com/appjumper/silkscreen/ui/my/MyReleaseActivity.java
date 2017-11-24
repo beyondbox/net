@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.PlusActivity;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentDetailsActivity;
 import com.appjumper.silkscreen.ui.home.logistics.LogisticsDetailsActivity;
@@ -81,6 +83,9 @@ public class MyReleaseActivity extends BaseActivity {
     private MyAlertDialog deleteDialog;
     private int deleteIndex = -1;
 
+    private String pushId;
+    private int pushType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +105,13 @@ public class MyReleaseActivity extends BaseActivity {
             }
         });
 
+        Intent intent = getIntent();
+        if (intent.hasExtra("id")) {
+            pushType = intent.getIntExtra(Const.KEY_TYPE, 0);
+            pushId = intent.getStringExtra("id");
+        }
+
+
         initRecyclerView();
         initRefreshLayout();
         initDeleteDialog();
@@ -114,6 +126,13 @@ public class MyReleaseActivity extends BaseActivity {
                 ptrLayt.autoRefresh();
             }
         }, 50);
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 
 
@@ -362,6 +381,22 @@ public class MyReleaseActivity extends BaseActivity {
                         if (dataList.size() < totalSize)
                             adapter.setEnableLoadMore(true);
 
+                        //处理推送
+                        if (page == 1) {
+                            if (!TextUtils.isEmpty(pushId)) {
+                                Intent intent = null;
+                                switch (pushType) {
+                                    case Const.PUSH_ASKBUY_CHOOSE_OFFER://选择报价
+                                        intent = new Intent(context, ChooseOfferActivity.class);
+                                        intent.putExtra("id", pushId);
+                                        break;
+                                }
+
+                                startActivity(intent);
+                                pushId = "";
+                            }
+                        }
+
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -487,6 +522,14 @@ public class MyReleaseActivity extends BaseActivity {
             }
         }
     };
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (MainActivity.instance == null)
+            startActivity(new Intent(context, MainActivity.class));
+    }
 
 
     @Override

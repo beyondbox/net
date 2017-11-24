@@ -196,6 +196,35 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llRemark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="备注说明"
+            android:textSize="14sp"
+            android:textColor="@color/text_black_color2"/>
+
+
+        <TextView
+            android:id="@+id/txtRemark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dp"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="@color/text_black_color2"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

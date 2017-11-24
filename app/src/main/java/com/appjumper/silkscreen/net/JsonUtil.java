@@ -1,6 +1,7 @@
 package com.appjumper.silkscreen.net;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
 
@@ -72,6 +73,8 @@ public class JsonUtil {
 	 * @return
 	 */
 	public static <T> T getObject(String json, Class<T> clazz) {
+		if (TextUtils.isEmpty(json)) return null;
+
 		T t = null;
 		try {
 			t = JSON.parseObject(json, clazz);

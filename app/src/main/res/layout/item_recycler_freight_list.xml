@@ -108,6 +108,16 @@
             android:text="4报价"/>
 
 
+        <ImageView
+            android:id="@+id/imgViMarkSelf"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@mipmap/mark_self"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/txtName"
+            android:layout_alignBottom="@id/txtName"/>
+
+
         <LinearLayout
             android:id="@+id/lLaytCerti"
             android:layout_width="wrap_content"

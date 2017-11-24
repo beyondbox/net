@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.ui.my.deliver;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -61,6 +62,10 @@ public class WaitDriverPayActivity extends BaseActivity {
     TextView txtLoadTime;
     @Bind(R.id.txtPayedType)
     TextView txtPayedType;
+    @Bind(R.id.llRemark)
+    LinearLayout llRemark;
+    @Bind(R.id.txtRemark)
+    TextView txtRemark;
 
     @Bind(R.id.txtPayState)
     TextView txtPayState;
@@ -190,6 +195,13 @@ public class WaitDriverPayActivity extends BaseActivity {
         }
         txtName.setText("来自 : " + newName);
 
+
+        if (TextUtils.isEmpty(data.getRemark())) {
+            llRemark.setVisibility(View.GONE);
+        } else {
+            txtRemark.setText(data.getRemark());
+            llRemark.setVisibility(View.VISIBLE);
+        }
 
         if (data.getPay_type().equals("0"))
             txtPayedType.setText("发货厂家支付运费");

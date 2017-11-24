@@ -1,6 +1,7 @@
 package com.appjumper.silkscreen.ui.home.logistics;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -59,6 +60,10 @@ public class FreightDetailUnderwayActivity extends BaseActivity {
     TextView txtLoadTime;
     @Bind(R.id.txtPayedType)
     TextView txtPayedType;
+    @Bind(R.id.llRemark)
+    LinearLayout llRemark;
+    @Bind(R.id.txtRemark)
+    TextView txtRemark;
 
     @Bind(R.id.txtPayState)
     TextView txtPayState;
@@ -187,6 +192,13 @@ public class FreightDetailUnderwayActivity extends BaseActivity {
         txtName.setText("来自 : " + newName);
 
 
+        if (TextUtils.isEmpty(data.getRemark())) {
+            llRemark.setVisibility(View.GONE);
+        } else {
+            txtRemark.setText(data.getRemark());
+            llRemark.setVisibility(View.VISIBLE);
+        }
+
         if (data.getPay_type().equals("0"))
             txtPayedType.setText("发货厂家支付运费");
         else
@@ -223,7 +235,7 @@ public class FreightDetailUnderwayActivity extends BaseActivity {
 
         txtDriverName.setText(selectedOffer.getName().substring(0, 1) + "司机报价");
         txtDriverTime.setText(selectedOffer.getCreate_time().substring(5, 16));
-        if (selectedOffer.getUser_id().equals(getUserID()))
+        if (selectedOffer.getUser_id().equals(getUserID()) || data.getUser_id().equals(getUserID()))
             txtDriverPrice.setText(selectedOffer.getMoney() + selectedOffer.getMoney_unit());
         else
             txtDriverPrice.setText("***" + selectedOffer.getMoney_unit());

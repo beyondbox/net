@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_white_background"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp"
+    android:orientation="vertical">
+
+    <com.appjumper.silkscreen.view.BorderRectImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView"
+        android:layout_marginTop="8dp"
+        android:lines="2"
+        android:ellipsize="end"
+        android:lineSpacingExtra="2dp"
+        android:text="厂家现货供应框架式护栏网 厂区双边丝框架护栏网"
+        android:textSize="13sp"
+        android:textColor="@color/text_gray_color"/>
+
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/llNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtTitle"
+        android:layout_marginTop="2dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtSales"
+            android:layout_width="wrap_content"
+            android:layout_height="1px"
+            android:text="销售：200套"
+            android:textSize="13sp"
+            android:textColor="@color/text_black_color"/>
+
+        <TextView
+            android:id="@+id/txtSurplus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="剩余：30套"
+            android:textSize="12sp"
+            android:textColor="@color/light_gray_color"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/llNumber"
+        android:layout_marginTop="6dp"
+        android:text="195元/套"
+        android:textSize="14sp"
+        android:textColor="@color/orange_color"/>
+
+
+
+    <TextView
+        android:id="@+id/txtCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/txtPrice"
+        android:layout_marginRight="5dp"
+        android:text="20人咨询"
+        android:textSize="12sp"
+        android:textColor="@color/light_gray_color"/>
+
+
+
+</RelativeLayout>

@@ -93,6 +93,7 @@ public class Freight {
     private String auth_status;
     private String enterprise_auth_status;
     private String enterprise_productivity_auth_status;
+    private String remark;
 
     private List<FreightOffer> offer_list;
     private List<Transport> transport_list;
@@ -482,5 +483,13 @@ public class Freight {
 
     public void setEnterprise_productivity_auth_status(String enterprise_productivity_auth_status) {
         this.enterprise_productivity_auth_status = enterprise_productivity_auth_status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

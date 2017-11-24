@@ -263,6 +263,7 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
         params.put("purchase_num", buyNum);
         params.put("offer_money", offer.getMoney());
         params.put("purchase_unit", offer.getPrice_unit().substring(2, offer.getPrice_unit().length()));
+        params.put("offer_id", offer.getUser_id());
 
         double surplusMoney;
         if (payType.equals(Const.PAY_TYPE_ALL)) {
@@ -366,6 +367,7 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
                 intent.putExtra("purchase_num", buyNum + "");
                 intent.putExtra("offer_money", offer.getMoney());
                 intent.putExtra("purchase_unit", offer.getPrice_unit().substring(2, offer.getPrice_unit().length()));
+                intent.putExtra("offer_id", offer.getUser_id());
 
                 double surplusMoney;
                 if (payType.equals(Const.PAY_TYPE_ALL)) {

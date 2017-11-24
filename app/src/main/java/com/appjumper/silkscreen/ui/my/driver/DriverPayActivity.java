@@ -1,11 +1,19 @@
 package com.appjumper.silkscreen.ui.my.driver;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
@@ -14,6 +22,7 @@ import com.appjumper.silkscreen.bean.Freight;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.util.AlipayHelper;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -59,6 +68,10 @@ public class DriverPayActivity extends BaseActivity {
     TextView txtLoadTime;
     @Bind(R.id.txtPayedType)
     TextView txtPayedType;
+    @Bind(R.id.llRemark)
+    LinearLayout llRemark;
+    @Bind(R.id.txtRemark)
+    TextView txtRemark;
 
     @Bind(R.id.txtPayState)
     TextView txtPayState;
@@ -77,6 +90,10 @@ public class DriverPayActivity extends BaseActivity {
     private Freight data;
     private CountDownTimer countDownTimer;
 
+    private PopupWindow popupPay;
+    private TextView txtAccount;
+    private TextView txtConfirm;
+
     private DecimalFormat dFormat = new DecimalFormat("00");
     private long mMs = 1000 * 60; //一分钟的毫秒数
 
@@ -89,9 +106,42 @@ public class DriverPayActivity extends BaseActivity {
         initTitle("详情");
         initBack();
         initProgressDialog(false, null);
+        initDialog();
+        registerBroadcastReceiver();
 
         id = getIntent().getStringExtra("id");
         getData();
+    }
+
+
+    private void initDialog() {
+        View contentView = LayoutInflater.from(context).inflate(R.layout.dialog_pay, null);
+        popupPay = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        txtAccount = (TextView) contentView.findViewById(R.id.txtAccount);
+        txtConfirm = (TextView) contentView.findViewById(R.id.txtConfirm);
+
+        String account = getUser().getMobile();
+        txtAccount.setText(account.substring(0, 3) + "***" + account.substring(account.length() - 4, account.length()));
+        txtConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupPay.dismiss();
+                getOrderInfo();
+            }
+        });
+
+        popupPay.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                AppTool.setBackgroundAlpha(context, 1.0f);
+            }
+        });
+
+        popupPay.setAnimationStyle(R.style.PopupAnimBottom);
+        popupPay.setBackgroundDrawable(new ColorDrawable(0x00000000));
+        popupPay.setOutsideTouchable(true);
+        popupPay.setFocusable(true);
     }
 
 
@@ -181,6 +231,13 @@ public class DriverPayActivity extends BaseActivity {
         txtName.setText("来自 : " + newName);
 
 
+        if (TextUtils.isEmpty(data.getRemark())) {
+            llRemark.setVisibility(View.GONE);
+        } else {
+            txtRemark.setText(data.getRemark());
+            llRemark.setVisibility(View.VISIBLE);
+        }
+
         if (data.getPay_type().equals("0"))
             txtPayedType.setText("发货厂家支付运费");
         else
@@ -219,6 +276,7 @@ public class DriverPayActivity extends BaseActivity {
             llCountFinish.setVisibility(View.VISIBLE);
             txtPayState.setText("已过支付期限");
         }
+
     }
 
 
@@ -248,13 +306,13 @@ public class DriverPayActivity extends BaseActivity {
 
 
     /**
-     * 支付
+     * 获取订单信息
      */
-    private void pay() {
+    private void getOrderInfo() {
         RequestParams params = MyHttpClient.getApiParam("purchase", "driver_pay");
         params.put("uid", getUserID());
         params.put("car_product_id", id);
-        params.put("pay_money", 200);
+        params.put("pay_money", 0.01);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
@@ -270,10 +328,9 @@ public class DriverPayActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        Intent intent = new Intent(context, GoToDeliverActivity.class);
-                        intent.putExtra("id", id);
-                        startActivity(intent);
-                        finish();
+                        String orderInfo = jsonObj.getString("data");
+                        AlipayHelper alipayHelper = new AlipayHelper(context, id);
+                        alipayHelper.payV2(orderInfo);
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -299,6 +356,30 @@ public class DriverPayActivity extends BaseActivity {
     }
 
 
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_PAY_SUCCESS);
+        filter.addAction(Const.ACTION_PAY_FAIL);
+        registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_PAY_SUCCESS)) {
+                showErrorToast("支付成功");
+                Intent intent2 = new Intent(context, GoToDeliverActivity.class);
+                intent2.putExtra("id", id);
+                startActivity(intent2);
+                finish();
+            } else if (action.equals(Const.ACTION_PAY_FAIL)) {
+                showErrorToast("支付失败");
+            }
+        }
+    };
+
+
     @OnClick({R.id.txtCall, R.id.txtPay})
     public void onClick(View view) {
         if (data == null)
@@ -309,7 +390,8 @@ public class DriverPayActivity extends BaseActivity {
                 AppTool.dial(context, Const.SERVICE_PHONE_FREIGHT);
                 break;
             case R.id.txtPay: //支付
-                pay();
+                popupPay.showAtLocation(view, Gravity.BOTTOM, 0, 0);
+                AppTool.setBackgroundAlpha(context, 0.4f);
                 break;
             default:
                 break;
@@ -320,6 +402,7 @@ public class DriverPayActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(myReceiver);
         if (countDownTimer != null) {
             countDownTimer.cancel();
             countDownTimer = null;

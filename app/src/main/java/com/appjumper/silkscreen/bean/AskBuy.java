@@ -84,6 +84,7 @@ public class AskBuy implements Serializable{
     private String offer_money;
     private String purchase_unit;
     private String surplus_money;
+    private String pruchase_type;
 
     public String getId() {
         return id;
@@ -395,5 +396,13 @@ public class AskBuy implements Serializable{
 
     public void setSurplus_money(String surplus_money) {
         this.surplus_money = surplus_money;
+    }
+
+    public String getPruchase_type() {
+        return pruchase_type;
+    }
+
+    public void setPruchase_type(String pruchase_type) {
+        this.pruchase_type = pruchase_type;
     }
 }

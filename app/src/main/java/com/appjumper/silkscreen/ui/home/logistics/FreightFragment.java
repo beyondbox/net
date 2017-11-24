@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.ui.home.logistics;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ import com.appjumper.silkscreen.ui.home.adapter.EndPlaceListAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.FreightListAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StartPlaceListAdapter;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -79,6 +81,7 @@ public class FreightFragment extends BaseFragment {
 
     private List<Freight> dataList;
     private FreightListAdapter adapter;
+    private LinearLayoutManager layoutManager;
 
     private int page = 1;
     private int pageSize = 20;
@@ -258,7 +261,8 @@ public class FreightFragment extends BaseFragment {
         dataList = new ArrayList<>();
 
         adapter = new FreightListAdapter(R.layout.item_recycler_freight_list, dataList);
-        recyclerData.setLayoutManager(new LinearLayoutManager(context));
+        layoutManager = new LinearLayoutManager(context);
+        recyclerData.setLayoutManager(layoutManager);
         adapter.bindToRecyclerView(recyclerData);
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
 
@@ -294,9 +298,12 @@ public class FreightFragment extends BaseFragment {
         adapter.setEnableLoadMore(false);
 
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return;
+
         recyclerData.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
-            private int HIDE_THRESHOLD = 150;
+            private int HIDE_THRESHOLD = DisplayUtil.dip2px(context, 40);
             private int scrolledDistance = 0;
 
             @Override
@@ -309,16 +316,32 @@ public class FreightFragment extends BaseFragment {
                     scrolledDistance = 0;
                 }
                 else if (scrolledDistance < -HIDE_THRESHOLD && !isNumVisible) {
-                    llFreightNum.setVisibility(View.VISIBLE);
-                    dropDownMenu.setTranslationY(-numHeight);
-                    animShow.start();
-                    animDown.start();
-                    isNumVisible = true;
-                    scrolledDistance = 0;
+                    if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                        llFreightNum.setVisibility(View.VISIBLE);
+                        dropDownMenu.setTranslationY(-numHeight);
+                        animShow.start();
+                        animDown.start();
+                        isNumVisible = true;
+                        scrolledDistance = 0;
+                    }
                 }
                 if ((isNumVisible && dy > 0) || (!isNumVisible && dy < 0)) {
                     scrolledDistance += dy;
                 }
+
+                /*if (isNumVisible && dy > 0) {
+                    animHide.start();
+                    animUp.start();
+                    isNumVisible = false;
+                } else if (!isNumVisible && dy < 0) {
+                    if (layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                        llFreightNum.setVisibility(View.VISIBLE);
+                        dropDownMenu.setTranslationY(-numHeight);
+                        animShow.start();
+                        animDown.start();
+                        isNumVisible = true;
+                    }
+                }*/
             }
         });
 
@@ -420,10 +443,10 @@ public class FreightFragment extends BaseFragment {
                         txtNum.setText(number + "车次");
 
                         numHeight = llFreightNum.getHeight();
-                        animHide = ObjectAnimator.ofFloat(llFreightNum, "translationY", -numHeight);
-                        animShow = ObjectAnimator.ofFloat(llFreightNum, "translationY", 0);
-                        animUp = ObjectAnimator.ofFloat(dropDownMenu, "translationY", -numHeight);
-                        animDown = ObjectAnimator.ofFloat(dropDownMenu, "translationY", 0);
+                        animHide = ObjectAnimator.ofFloat(llFreightNum, "translationY", -numHeight).setDuration(200);
+                        animShow = ObjectAnimator.ofFloat(llFreightNum, "translationY", 0).setDuration(200);
+                        animUp = ObjectAnimator.ofFloat(dropDownMenu, "translationY", -numHeight).setDuration(200);
+                        animDown = ObjectAnimator.ofFloat(dropDownMenu, "translationY", 0).setDuration(200);
 
                         animHide.addListener(new Animator.AnimatorListener() {
                             @Override

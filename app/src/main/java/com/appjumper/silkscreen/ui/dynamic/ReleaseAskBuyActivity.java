@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.Avatar;
+import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
@@ -156,6 +157,16 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
         params.put("product_id", product.getId());
         params.put("product_name", product.getName());
         params.put("purchase_content", edtTxtContent.getText().toString().trim());
+        params.put("mobile", getUser().getMobile());
+
+        int infoType;
+        Enterprise enterprise = getUser().getEnterprise();
+        if (enterprise != null && enterprise.getEnterprise_auth_status().equals("2"))
+            infoType = Const.INFO_TYPE_COM;
+        else
+            infoType = Const.INFO_TYPE_PER;
+
+        params.put("pruchase_type", infoType);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

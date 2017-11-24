@@ -118,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
 
 
@@ -131,10 +131,10 @@
                         android:id="@+id/llAskBuy"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
+                        android:paddingTop="13dp"
+                        android:paddingBottom="13dp"
                         android:background="@drawable/select_white_background"
-                        android:layout_weight="1"
+                        android:layout_weight="0.9"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
@@ -157,8 +157,8 @@
                         android:id="@+id/llFreight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
+                        android:paddingTop="13dp"
+                        android:paddingBottom="13dp"
                         android:background="@drawable/select_white_background"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
@@ -183,8 +183,8 @@
                         android:id="@+id/rlStockShop"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
+                        android:paddingTop="13dp"
+                        android:paddingBottom="13dp"
                         android:background="@drawable/select_white_background"
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
@@ -209,10 +209,10 @@
                         android:id="@+id/rlStockConsign"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
+                        android:paddingTop="13dp"
+                        android:paddingBottom="13dp"
                         android:background="@drawable/select_white_background"
-                        android:layout_weight="1"
+                        android:layout_weight="0.9"
                         android:gravity="center_horizontal"
                         android:orientation="vertical">
 
@@ -242,8 +242,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/while_color"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="6dp"
                     android:numColumns="5"
                     android:stretchMode="columnWidth"/>
 
@@ -328,35 +330,35 @@
                     android:background="@color/while_color"
                     android:orientation="vertical">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:drawableLeft="@mipmap/home_section_stock"
-                            android:drawablePadding="5dp"
-                            android:gravity="center_vertical"
-                            android:paddingBottom="12dp"
-                            android:paddingTop="12dp"
-                            android:text="商城"
-                            android:textColor="@color/home_section_color"
-                            android:textSize="15sp" />
+                        <View
+                            android:layout_width="30dp"
+                            android:layout_height="0.7dp"
+                            android:background="@color/text_black_color2"/>
 
                         <TextView
                             android:id="@+id/txtMoreGoods"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:padding="10dp"
-                            android:text="更多"
-                            android:textColor="@color/theme_color"
-                            android:textSize="12sp"/>
+                            android:layout_centerInParent="true"
+                            android:gravity="center_vertical"
+                            android:paddingBottom="12dp"
+                            android:paddingTop="12dp"
+                            android:text="  商城  "
+                            android:textColor="@color/text_black_color2"
+                            android:textSize="15sp" />
 
-                    </RelativeLayout>
+                        <View
+                            android:layout_width="30dp"
+                            android:layout_height="0.7dp"
+                            android:background="@color/text_black_color2"/>
+
+                    </LinearLayout>
 
                     <View style="@style/LineStyle" />
 
@@ -364,6 +366,10 @@
                         android:id="@+id/recyclerStockShop"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="7dp"
+                        android:paddingRight="7dp"
                         android:nestedScrollingEnabled="false"/>
 
                     <View style="@style/LineStyle" />
@@ -388,19 +394,35 @@
                     android:background="@color/while_color"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/txtTitleRecommend"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@mipmap/home_section_recommend"
-                        android:drawablePadding="5dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="center_vertical"
-                        android:text="推荐"
-                        android:textSize="15sp"
-                        android:textColor="@color/home_section_color"/>
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="30dp"
+                            android:layout_height="0.7dp"
+                            android:background="@color/text_black_color2"/>
+
+                        <TextView
+                            android:id="@+id/txtTitleRecommend"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center_vertical"
+                            android:paddingBottom="12dp"
+                            android:paddingTop="12dp"
+                            android:text="  推荐  "
+                            android:textColor="@color/text_black_color2"
+                            android:textSize="15sp" />
+
+                        <View
+                            android:layout_width="30dp"
+                            android:layout_height="0.7dp"
+                            android:background="@color/text_black_color2"/>
+
+                    </LinearLayout>
 
                     <View style="@style/LineStyle"/>
 

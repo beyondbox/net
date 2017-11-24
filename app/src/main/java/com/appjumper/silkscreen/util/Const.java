@@ -137,6 +137,14 @@ public class Const {
      * 求购列表
      */
     public static final String ACTION_ASKBUY_LIST = "com.appjumper.silkscreen.ASKBUY_LIST";
+    /**
+     * 支付成功
+     */
+    public static final String ACTION_PAY_SUCCESS = "com.appjumper.silkscreen.PAY_SUCCESS";
+    /**
+     * 支付失败
+     */
+    public static final String ACTION_PAY_FAIL = "com.appjumper.silkscreen.PAY_FAIL";
 
 
 
@@ -189,6 +197,17 @@ public class Const {
 
     public static final String PAY_TYPE_ALL = "0"; //支付方式-全额
     public static final String PAY_TYPE_SUB = "1"; //支付方式-订金
+
+
+    public static final int PUSH_NEW_INQUIRY = 1; //推送-有新的询价
+    public static final int PUSH_NEW_OFFER = 2; //推送-有新的报价
+    public static final int PUSH_FREIGHT_NEW_INQUIRY = 3; //推送-空车配货-司机收到询价
+    public static final int PUSH_ASKBUY_CHOOSE_OFFER = 4; //推送-求购-选择报价
+    public static final int PUSH_ASKBUY_CHOOSED = 5; //推送-求购-报价被采纳
+    public static final int PUSH_FREIGHT_NEW_OFFER = 6; //推送-空车配货-有司机给报价
+    public static final int PUSH_FREIGHT_CHOOSED = 7; //推送-空车配货-司机被采纳
+    public static final int PUSH_FREIGHT_DRIVER_PAYED = 8; //推送-空车配货-司机已支付
+    public static final int PUSH_FREIGHT_DRIVER_ARRIVED = 9; //推送-空车配货-司机已送达
 
 
     public static final int FREIGHT_AUDITING = 0; //空车配货-审核中

@@ -525,14 +525,20 @@ public class MyFragment extends BaseFragment {
                             recyclerDriver.setVisibility(View.VISIBLE);
                             llChangeState.setVisibility(View.GONE);
                         } else {
-                            int orderState = Integer.valueOf(driverList.get(0).getExamine_status());
-                            if (orderState == Const.FREIGHT_INVALID || orderState == Const.FREIGHT_ORDER_FINISH) {
+                            if (driverList.size() == 0) {
                                 txtDriverNum.setText("暂无订单");
                                 recyclerDriver.setVisibility(View.GONE);
                                 llChangeState.setVisibility(View.VISIBLE);
                             } else {
-                                recyclerDriver.setVisibility(View.VISIBLE);
-                                llChangeState.setVisibility(View.GONE);
+                                int orderState = Integer.valueOf(driverList.get(0).getExamine_status());
+                                if (orderState == Const.FREIGHT_INVALID || orderState == Const.FREIGHT_ORDER_FINISH) {
+                                    txtDriverNum.setText("暂无订单");
+                                    recyclerDriver.setVisibility(View.GONE);
+                                    llChangeState.setVisibility(View.VISIBLE);
+                                } else {
+                                    recyclerDriver.setVisibility(View.VISIBLE);
+                                    llChangeState.setVisibility(View.GONE);
+                                }
                             }
                         }
 
@@ -572,6 +578,7 @@ public class MyFragment extends BaseFragment {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         new Thread(new UserInfoRun()).start();
+                        showErrorToast("更改状态成功");
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }

@@ -9,7 +9,10 @@ import android.graphics.BitmapFactory;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
+import com.appjumper.silkscreen.ui.my.MyReleaseActivity;
+import com.appjumper.silkscreen.ui.my.deliver.DeliverOrderListActivity;
 import com.appjumper.silkscreen.ui.my.driver.DriverOrderListActivity;
+import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.LogHelper;
 import com.tencent.android.tpush.XGPushBaseReceiver;
 import com.tencent.android.tpush.XGPushClickedResult;
@@ -93,18 +96,40 @@ public class MessageService extends XGPushBaseReceiver {
 				if (jsonObj.has("type")) {
 					int type = jsonObj.optInt("type");
 					switch (type) {
-						case 1: //有新的询价
+						case Const.PUSH_NEW_INQUIRY: //有新的询价
 							intent = new Intent(context, MessageActivity.class);
 							break;
-						case 2: //有新的报价
+						case Const.PUSH_NEW_OFFER: //有新的报价
 							intent = new Intent(context, MessageActivity.class);
-							intent.putExtra("id", jsonObj.optInt("id") + "");
 							break;
-						case 3: //空车配货--司机收到发货厂家的询价
+						case Const.PUSH_FREIGHT_NEW_INQUIRY: //空车配货--司机收到发货厂家的询价
 							intent = new Intent(context, DriverOrderListActivity.class);
-							intent.putExtra("id", jsonObj.optInt("id") + "");
+							break;
+						case Const.PUSH_ASKBUY_CHOOSE_OFFER: //求购-选择报价
+							intent = new Intent(context, MyReleaseActivity.class);
+							break;
+						case Const.PUSH_ASKBUY_CHOOSED: //求购-报价被采纳
+							intent = new Intent(context, MessageActivity.class);
+							break;
+						case Const.PUSH_FREIGHT_NEW_OFFER: //空车配货-有司机报价
+							intent = new Intent(context, DeliverOrderListActivity.class);
+							break;
+						case Const.PUSH_FREIGHT_CHOOSED: //空车配货-司机被采纳
+							intent = new Intent(context, DriverOrderListActivity.class);
+							break;
+						case Const.PUSH_FREIGHT_DRIVER_PAYED: //空车配货-司机已支付
+							intent = new Intent(context, DeliverOrderListActivity.class);
+							break;
+						case Const.PUSH_FREIGHT_DRIVER_ARRIVED: //空车配货-司机已送达
+							intent = new Intent(context, DeliverOrderListActivity.class);
 							break;
 					}
+
+					if (intent != null) {
+						intent.putExtra(Const.KEY_TYPE, type);
+						intent.putExtra("id", jsonObj.optInt("id") + "");
+					}
+
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();

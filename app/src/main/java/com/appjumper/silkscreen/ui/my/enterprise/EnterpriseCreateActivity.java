@@ -690,6 +690,10 @@ public class EnterpriseCreateActivity extends BasePhotoGridActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
 
+        if(!cameraFile.getParentFile().exists()) {
+            cameraFile.getParentFile().mkdirs();
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, cameraFile);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);

@@ -56,6 +56,7 @@ public class PayConfirmActivity extends BaseActivity {
         params.put("offer_money", intent.getStringExtra("offer_money"));
         params.put("purchase_unit", intent.getStringExtra("purchase_unit"));
         params.put("surplus_money", intent.getStringExtra("surplus_money"));
+        params.put("offer_id", intent.getStringExtra("offer_id"));
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

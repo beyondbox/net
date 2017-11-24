@@ -22,8 +22,16 @@ import butterknife.ButterKnife;
 
 public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
 
-    public OfferRecordAdapter(Context context, List<AskBuyOffer> list) {
+    public boolean isPrivateMode = true;
+    private String uid = "";
+
+    public OfferRecordAdapter(Context context, List<AskBuyOffer> list, String uid) {
         super(context, list);
+        this.uid = uid;
+    }
+
+    public void setPrivateMode(boolean privateMode) {
+        isPrivateMode = privateMode;
     }
 
     @Override
@@ -40,7 +48,6 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
 
         AskBuyOffer offer = list.get(position);
         vh.txtTime.setText(offer.getCreate_time().substring(5));
-        vh.txtPrice.setText("***" + offer.getPrice_unit());
 
         if (offer.getOffer_user_type().equals("0")) {
             vh.txtName.setText("平台报价");
@@ -50,6 +57,15 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
             } else {
                 vh.txtName.setText("企业报价" + (position + 1));
             }
+        }
+
+        if (isPrivateMode) {
+            if (uid.equals(offer.getUser_id()))
+                vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
+            else
+                vh.txtPrice.setText("***" + offer.getPrice_unit());
+        } else {
+            vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
         }
 
         return convertView;

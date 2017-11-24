@@ -95,6 +95,14 @@
                 android:textColorHint="@color/light_gray_color"
                 android:textSize="13sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:text="注：交易成功，平台将收取0.5%的服务费"
+                android:textColor="@color/red_color"
+                android:textSize="12sp"/>
+
         </LinearLayout>
     </ScrollView>
 

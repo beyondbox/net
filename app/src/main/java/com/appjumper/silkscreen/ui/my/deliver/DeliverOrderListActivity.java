@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,6 +19,7 @@ import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.home.logistics.ReleaseFreightActivity;
 import com.appjumper.silkscreen.ui.my.adapter.ChooseDriverDialogAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.DeliverOrderListAdapter;
@@ -62,11 +64,22 @@ public class DeliverOrderListActivity extends BaseActivity {
     private int pageSize = 30;
     private int totalSize;
 
+    private String pushId;
+    private int pushType;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deliver_orderlist);
         ButterKnife.bind(context);
+
+        Intent intent = getIntent();
+        if (intent.hasExtra("id")) {
+            pushType = intent.getIntExtra(Const.KEY_TYPE, 0);
+            pushId = intent.getStringExtra("id");
+        }
 
         initTitle("订单列表");
         initBack();
@@ -264,6 +277,28 @@ public class DeliverOrderListActivity extends BaseActivity {
 
                         if (dataList.size() < totalSize)
                             adapter.setEnableLoadMore(true);
+
+                        //处理推送
+                        if (page == 1) {
+                            if (!TextUtils.isEmpty(pushId)) {
+                                Intent intent = null;
+                                switch (pushType) {
+                                    case Const.PUSH_FREIGHT_NEW_OFFER://有司机给报价
+                                        intent = new Intent(context, ChooseDriverActivity.class);
+                                        break;
+                                    case Const.PUSH_FREIGHT_DRIVER_PAYED://司机已支付
+                                        intent = new Intent(context, DriverComingActivity.class);
+                                        break;
+                                    case Const.PUSH_FREIGHT_DRIVER_ARRIVED://司机已送达
+                                        intent = new Intent(context, TransportingDeliverActivity.class);
+                                        break;
+                                }
+
+                                intent.putExtra("id", pushId);
+                                startActivity(intent);
+                                pushId = "";
+                            }
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -552,5 +587,12 @@ public class DeliverOrderListActivity extends BaseActivity {
         });
     }
 
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (MainActivity.instance == null)
+            startActivity(new Intent(context, MainActivity.class));
+    }
 
 }

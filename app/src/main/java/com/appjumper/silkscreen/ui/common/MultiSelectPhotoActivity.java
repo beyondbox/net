@@ -105,6 +105,10 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0);
 
+        if(!cameraFile.getParentFile().exists()) {
+            cameraFile.getParentFile().mkdirs();
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Uri uri = FileProvider.getUriForFile(this, Const.FILE_PROVIDER, cameraFile);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -265,6 +269,7 @@ public abstract class MultiSelectPhotoActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //LogHelper.e("hahahahahahahah", "hahahahahahahahaha");
 
         if (resultCode == RESULT_OK) {// 单张 图片 ，拍照后返回
             switch (requestCode) {

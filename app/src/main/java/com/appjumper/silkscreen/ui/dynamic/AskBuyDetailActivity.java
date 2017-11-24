@@ -221,7 +221,9 @@ public class AskBuyDetailActivity extends BaseActivity {
         List<AskBuyOffer> offerList = data.getOffer_list();
         if (offerList != null && offerList.size() > 0) {
             llRecord.setVisibility(View.VISIBLE);
-            OfferRecordAdapter recordAdapter = new OfferRecordAdapter(context, offerList);
+            OfferRecordAdapter recordAdapter = new OfferRecordAdapter(context, offerList, getUserID());
+            if (getUserID().equals(data.getUser_id()))
+                recordAdapter.setPrivateMode(false);
             lvRecord.setAdapter(recordAdapter);
         } else {
             llRecord.setVisibility(View.GONE);
