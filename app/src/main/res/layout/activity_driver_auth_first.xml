@@ -68,18 +68,21 @@
                     android:textColor="@color/black_color"
                     android:textSize="14sp" />
             </RelativeLayout>
-            <View
-                style="@style/LineStyle"
-                android:layout_marginLeft="12dp" />
+
+            <View style="@style/LineStyle"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="12dp"
-                >
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="12dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="6dp"
                     android:text="真实姓名："
                     android:textColor="@color/text_gray_color"
                     android:textSize="13sp"
@@ -94,52 +97,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="6dp"
                         android:hint="请输入真实姓名"
-                        android:textColor="@color/black_color"
-                        android:textSize="13sp"
-                        />
-                    <View
-                        style="@style/LineStyle"
-                        android:layout_marginTop="6dp"
-                         />
+                        android:textColor="@color/text_black_color"
+                        android:textColorHint="@color/light_gray_color"
+                        android:textSize="13sp" />
+
+                    <View style="@style/LineStyle"/>
                 </LinearLayout>
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginBottom="12dp"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="身份证号："
-                    android:textColor="@color/text_gray_color"
-                    android:textSize="13sp"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    >
-                    <EditText
-                        android:id="@+id/et_idcard"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:maxLength="18"
-                        android:hint="请输入身份证号"
-                        android:textColor="@color/black_color"
-                        android:textSize="13sp"
-                        />
-                    <View
-                        style="@style/LineStyle"
-                        android:layout_marginTop="6dp"
-                        />
-                </LinearLayout>
-            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
@@ -155,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="12dp"
-                    android:text="身份证信息"
+                    android:text="驾驶证信息"
                     android:textColor="@color/black_color"
                     android:textSize="14sp" />
                 <TextView
@@ -173,8 +141,7 @@
 
 
             <View
-                style="@style/LineStyle"
-                android:layout_marginLeft="12dp" />
+                style="@style/LineStyle"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -187,11 +154,10 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/iv_idcard1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:src="@mipmap/icon_front_01" />
+                        android:src="@mipmap/front_driver" />
 
                     <ImageView
                         android:id="@+id/iv_id_card_one"
@@ -200,7 +166,7 @@
                         android:layout_marginLeft="12dp"
                         android:layout_weight="1"
                         android:scaleType="centerInside"
-                        android:src="@mipmap/icon_uploading_01" />
+                        android:src="@mipmap/upload_driver_front" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -209,11 +175,10 @@
                     android:layout_marginTop="18dp">
 
                     <ImageView
-                        android:id="@+id/iv_idcard2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:src="@mipmap/icon_contrary_02" />
+                        android:src="@mipmap/back_driver" />
 
                     <ImageView
                         android:id="@+id/iv_id_card_two"
@@ -222,7 +187,7 @@
                         android:layout_marginLeft="12dp"
                         android:layout_weight="1"
                         android:scaleType="centerInside"
-                        android:src="@mipmap/icon_uploading_02" />
+                        android:src="@mipmap/upload_driver_back" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -241,10 +206,10 @@
                 android:layout_marginBottom="15dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="10dp"
-                android:text="2.请参照左图的样式上传个人身份证相片；"
+                android:text="2.请参照左图的样式上传个人驾驶证相片；"
                 android:textColor="@color/text_gray_color" />
 
-            <View style="@style/LineStyle" />
+            <View style="@style/LineStyle"/>
 
 
         </LinearLayout>

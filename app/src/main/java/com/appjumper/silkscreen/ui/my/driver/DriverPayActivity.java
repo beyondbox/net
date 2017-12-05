@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Freight;
+import com.appjumper.silkscreen.bean.FreightOffer;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
@@ -275,6 +276,7 @@ public class DriverPayActivity extends BaseActivity {
             llCounting.setVisibility(View.GONE);
             llCountFinish.setVisibility(View.VISIBLE);
             txtPayState.setText("已过支付期限");
+            giveupOrder();
         }
 
     }
@@ -300,6 +302,7 @@ public class DriverPayActivity extends BaseActivity {
                 llCounting.setVisibility(View.GONE);
                 llCountFinish.setVisibility(View.VISIBLE);
                 txtPayState.setText("已过支付期限");
+                giveupOrder();
             }
         }.start();
     }
@@ -312,7 +315,7 @@ public class DriverPayActivity extends BaseActivity {
         RequestParams params = MyHttpClient.getApiParam("purchase", "driver_pay");
         params.put("uid", getUserID());
         params.put("car_product_id", id);
-        params.put("pay_money", 0.01);
+        params.put("pay_money", 200.00);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
@@ -351,6 +354,47 @@ public class DriverPayActivity extends BaseActivity {
                     return;
 
                 progress.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 放弃订单
+     */
+    private void giveupOrder() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "give_up_order");
+        params.put("id", id);
+
+        String offerId = "";
+        for (FreightOffer offer : data.getOffer_list()) {
+            if (getUserID().equals(offer.getUser_id())) {
+                offerId = offer.getId();
+                break;
+            }
+        }
+        params.put("offer_id", offerId);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+
+                    } else {
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
             }
         });
     }

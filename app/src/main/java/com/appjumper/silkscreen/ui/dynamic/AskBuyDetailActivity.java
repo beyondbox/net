@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.AskBuyOffer;
 import com.appjumper.silkscreen.bean.Avatar;
@@ -42,8 +41,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.appjumper.silkscreen.util.Applibrary.mContext;
-
 /**
  * 求购详情
  * Created by Botx on 2017/10/19.
@@ -71,6 +68,13 @@ public class AskBuyDetailActivity extends BaseActivity {
     ListView lvRecord;
     @Bind(R.id.txtOffer)
     TextView txtOffer;
+
+    @Bind(R.id.imgViMarkSelf)
+    ImageView imgViMarkSelf;
+    @Bind(R.id.txtMark)
+    TextView txtMark;
+    @Bind(R.id.txtTitle)
+    TextView txtTitle;
 
     public static AskBuyDetailActivity instance = null;
     private String id;
@@ -166,52 +170,95 @@ public class AskBuyDetailActivity extends BaseActivity {
         }
 
 
-        Picasso.with(mContext)
+        Picasso.with(context)
                 .load(data.getImg())
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(imgViHead);
 
-        String newName = "";
-        if (TextUtils.isEmpty(data.getNickname())) {
-            String mobile = data.getMobile();
-            newName = mobile.substring(0, 3) + "***" + mobile.substring(8, 11);
+        if (data.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + "")) {
+            txtName.setText("丝网+官方");
         } else {
-            String nickName = data.getNickname();
-            int length = nickName.length();
-            switch (length) {
-                case 1:
-                    newName = nickName + "***" + nickName;
-                    break;
-                case 2:
-                    newName = nickName.substring(0, 1) + "***" + nickName.substring(1, 2);
-                    break;
-                default:
-                    newName = nickName.substring(0, 1) + "***" + nickName.substring(length - 1, length);
-                    break;
+            String newName = "";
+            if (TextUtils.isEmpty(data.getNickname())) {
+                String mobile = data.getMobile();
+                newName = mobile.substring(0, 3) + "***" + mobile.substring(8, 11);
+            } else {
+                String nickName = data.getNickname();
+                int length = nickName.length();
+                switch (length) {
+                    case 1:
+                        newName = nickName + "***" + nickName;
+                        break;
+                    case 2:
+                        newName = nickName.substring(0, 1) + "***" + nickName.substring(1, 2);
+                        break;
+                    default:
+                        newName = nickName.substring(0, 1) + "***" + nickName.substring(length - 1, length);
+                        break;
+                }
+            }
+
+            txtName.setText(newName);
+        }
+
+
+        if (data.getUser_id().equals(getUserID()))
+            imgViMarkSelf.setVisibility(View.VISIBLE);
+        else
+            imgViMarkSelf.setVisibility(View.GONE);
+
+
+        int infoType = Integer.valueOf(data.getPruchase_type());
+        switch (infoType) {
+            case Const.INFO_TYPE_PER:
+                txtMark.setText("个人");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                break;
+            case Const.INFO_TYPE_COM:
+                txtMark.setText("企业");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                break;
+            case Const.INFO_TYPE_OFFICIAL:
+                txtMark.setText("官方");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                break;
+            default:
+                break;
+        }
+
+        if (infoType != Const.INFO_TYPE_OFFICIAL) {
+            String authState = data.getEnterprise_auth_status();
+            if (!TextUtils.isEmpty(authState) && authState.equals("2")) {
+                txtMark.setText("企业");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+            } else {
+                txtMark.setText("个人");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
             }
         }
 
-        txtName.setText(newName);
+
         txtTime.setText(data.getCreate_time().substring(5, 16));
+        txtTitle.setText("求购" + data.getProduct_name());
         txtContent.setText(data.getPurchase_content());
 
         final List<Avatar> imgList = data.getImg_list();
         if (imgList != null && imgList.size() > 0) {
             gridImg.setVisibility(View.VISIBLE);
-            AskBuyImageAdapter imgAdapter = new AskBuyImageAdapter(mContext, imgList);
+            AskBuyImageAdapter imgAdapter = new AskBuyImageAdapter(context, imgList);
             gridImg.setAdapter(imgAdapter);
             gridImg.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(mContext, GalleryActivity.class);
+                    Intent intent = new Intent(context, GalleryActivity.class);
                     ArrayList<String> urls = new ArrayList<String>();
                     for (Avatar avatar : imgList) {
                         urls.add(avatar.getOrigin());
                     }
                     intent.putExtra(GalleryActivity.EXTRA_IMAGE_URLS, urls);
                     intent.putExtra(GalleryActivity.EXTRA_IMAGE_INDEX, i);
-                    mContext.startActivity(intent);
+                    context.startActivity(intent);
                 }
             });
         } else {
@@ -225,6 +272,14 @@ public class AskBuyDetailActivity extends BaseActivity {
             if (getUserID().equals(data.getUser_id()))
                 recordAdapter.setPrivateMode(false);
             lvRecord.setAdapter(recordAdapter);
+
+            for (AskBuyOffer offer : offerList) {
+                if (getUserID().equals(offer.getUser_id())) {
+                    txtOffer.setText("您已报价");
+                    txtOffer.setEnabled(false);
+                    break;
+                }
+            }
         } else {
             llRecord.setVisibility(View.GONE);
         }
@@ -273,8 +328,6 @@ public class AskBuyDetailActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.txtOffer: //报价
                 if (txtOffer.getText().toString().equals("报价")) {
-                    if (!MyApplication.appContext.checkCertifyPer(context))
-                        return;
                     start_Activity(context, ReleaseOfferActivity.class, new BasicNameValuePair("id", id));
                 }
                 break;

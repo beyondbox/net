@@ -98,24 +98,33 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
 
 
         TextView txtMark = helper.getView(R.id.txtMark);
-        if (!TextUtils.isEmpty(item.getPruchase_type())) {
-            int infoType = Integer.valueOf(item.getPruchase_type());
-            switch (infoType) {
-                case Const.INFO_TYPE_PER:
-                    txtMark.setText("个人");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
-                    break;
-                case Const.INFO_TYPE_COM:
-                    txtMark.setText("企业");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
-                    break;
-                case Const.INFO_TYPE_OFFICIAL:
-                    txtMark.setText("官方");
-                    txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
-                    helper.setText(R.id.txtName, "丝网+官方");
-                    break;
-                default:
-                    break;
+        int infoType = Integer.valueOf(item.getPruchase_type());
+        switch (infoType) {
+            case Const.INFO_TYPE_PER:
+                txtMark.setText("个人");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
+                break;
+            case Const.INFO_TYPE_COM:
+                txtMark.setText("企业");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+                break;
+            case Const.INFO_TYPE_OFFICIAL:
+                txtMark.setText("官方");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
+                helper.setText(R.id.txtName, "丝网+官方");
+                break;
+            default:
+                break;
+        }
+
+        if (infoType != Const.INFO_TYPE_OFFICIAL) {
+            String authState = item.getEnterprise_auth_status();
+            if (!TextUtils.isEmpty(authState) && authState.equals("2")) {
+                txtMark.setText("企业");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_enterprise_bg);
+            } else {
+                txtMark.setText("个人");
+                txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
             }
         }
 

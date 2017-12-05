@@ -151,10 +151,10 @@ public class TransportingDeliverActivity extends BaseActivity {
      */
     private void setData() {
         String arriveState = data.getConfirm_arrive();
-        if (arriveState.equals("1") || arriveState.equals("2")) {
-            btn1.setVisibility(View.GONE);
-        } else {
+        if (arriveState.equals("0")) {
             btn1.setVisibility(View.VISIBLE);
+        } else {
+            btn1.setVisibility(View.GONE);
         }
 
         txtTitle.setText(data.getFrom_name() + " - " + data.getTo_name());

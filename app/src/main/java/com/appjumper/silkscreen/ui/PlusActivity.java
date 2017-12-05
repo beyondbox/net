@@ -111,7 +111,6 @@ public class PlusActivity extends BaseActivity {
                 break;
 
             case R.id.rlAskBuy: //发布求购
-                if (!MyApplication.appContext.checkCertifyPer(context)) return;
                 Intent intent = new Intent(context, ProductSelectActivity.class);
                 intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
                 intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);

@@ -225,9 +225,9 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
         params.put("driver_lng", getLng());
         params.put("driver_lat", getLat());
         params.put("name", driverAuth.getName());
-        params.put("idcard", driverAuth.getID());
+        /*params.put("idcard", driverAuth.getID());
         params.put("idcard_img", driverAuth.getImgIDCard());
-        params.put("idcard_img_back", driverAuth.getImgIDCardBack());
+        params.put("idcard_img_back", driverAuth.getImgIDCardBack());*/
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
@@ -336,15 +336,15 @@ public class DriverAuthThirdActivity extends MultiSelectPhotoActivity {
                         switch (mark){
                             case 0:
                                 driverAuth.setImgDriving(imgResponse.getData().get(0).getOrigin());
-                                Glide.with(context).load(driverAuth.getImgDriving()).placeholder(R.mipmap.icon_uploading_01).into(imgVi0);
+                                Glide.with(context).load(driverAuth.getImgDriving()).placeholder(R.mipmap.upload_driving_front).into(imgVi0);
                                 break;
                             case 1:
                                 driverAuth.setImgDrivingBack(imgResponse.getData().get(0).getOrigin());
-                                Glide.with(context).load(driverAuth.getImgDrivingBack()).placeholder(R.mipmap.icon_uploading_01).into(imgVi1);
+                                Glide.with(context).load(driverAuth.getImgDrivingBack()).placeholder(R.mipmap.upload_driving_back).into(imgVi1);
                                 break;
                             case 2:
                                 driverAuth.setImgGroup(imgResponse.getData().get(0).getOrigin());
-                                Glide.with(context).load(driverAuth.getImgGroup()).placeholder(R.mipmap.icon_uploading_01).into(imgVi2);
+                                Glide.with(context).load(driverAuth.getImgGroup()).placeholder(R.mipmap.upload_group).into(imgVi2);
                                 break;
                         }
                     } else {

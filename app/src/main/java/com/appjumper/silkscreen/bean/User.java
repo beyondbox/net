@@ -32,6 +32,8 @@ public class User {
     private String driver_status;
     private String driver_car_status;
     private String is_vender; //是否空车配货发货厂家 0不是  1是
+    private String is_purchase; //求购短信推送开关  0推送 1不推送
+    private String is_car_product_message; //空车配货短信推送开关  0推送 1不推送
 
 
     public String getAuth_status() {
@@ -248,5 +250,21 @@ public class User {
 
     public void setIs_vender(String is_vender) {
         this.is_vender = is_vender;
+    }
+
+    public String getIs_purchase() {
+        return is_purchase;
+    }
+
+    public void setIs_purchase(String is_purchase) {
+        this.is_purchase = is_purchase;
+    }
+
+    public String getIs_car_product_message() {
+        return is_car_product_message;
+    }
+
+    public void setIs_car_product_message(String is_car_product_message) {
+        this.is_car_product_message = is_car_product_message;
     }
 }

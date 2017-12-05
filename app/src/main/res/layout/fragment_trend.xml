@@ -27,15 +27,13 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:orientation="horizontal"
-                android:weightSum="3">
+                android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/rd_material"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/selector_dynamic_radiobutton"
                     android:button="@null"
                     android:checked="true"
                     android:gravity="center"
@@ -50,6 +48,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:background="@drawable/selector_dynamic_radiobutton"
                     android:button="@null"
                     android:gravity="center"
@@ -64,6 +63,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     android:background="@drawable/selector_dynamic_radiobutton"
                     android:button="@null"
                     android:gravity="center"

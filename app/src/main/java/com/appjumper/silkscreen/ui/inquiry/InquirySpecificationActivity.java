@@ -155,7 +155,7 @@ public class InquirySpecificationActivity extends BasePhotoGridActivity {
                 initViewSpecification();
                 etRemark.setHint(service.getRemark());
             }
-        }, 50);
+        }, 150);
     }
 
 

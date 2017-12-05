@@ -371,7 +371,10 @@ public abstract class AsyncHttpResponseHandler implements ResponseHandlerInterfa
                     response = (Object[]) message.obj;
                     if (response != null && response.length >= 3) {
                         onSuccess((Integer) response[0], (Header[]) response[1], (byte[]) response[2]);
-                        LogHelper.i("<<<<<<<<<<<<<", new String((byte[]) response[2]));
+
+                        byte[] arr = (byte[]) response[2];
+                        if (arr != null && arr.length > 0)
+                            LogHelper.i("<<<<<<<<<<<<<", new String(arr));
                     } else {
                         AsyncHttpClient.log.e(LOG_TAG, "SUCCESS_MESSAGE didn't got enough params");
                     }

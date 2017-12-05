@@ -2,6 +2,7 @@ package com.appjumper.silkscreen.bean;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by yc on 2016/10/18.
@@ -13,6 +14,7 @@ public class AreaBean implements Comparable<AreaBean>, Serializable {
     private String first;
     private String lng;
     private String lat;
+    private List<AreaBean> sublist;
 
     public String getId() {
         return id;
@@ -60,6 +62,14 @@ public class AreaBean implements Comparable<AreaBean>, Serializable {
 
     public void setLat(String lat) {
         this.lat = lat;
+    }
+
+    public List<AreaBean> getSublist() {
+        return sublist;
+    }
+
+    public void setSublist(List<AreaBean> sublist) {
+        this.sublist = sublist;
     }
 
     @Override

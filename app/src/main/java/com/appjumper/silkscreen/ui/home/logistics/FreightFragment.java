@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,13 +29,15 @@ import com.appjumper.silkscreen.bean.StartPlace;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.home.adapter.AddRessRecyclerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.CarLengthGridAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.CarModelGridAdapter;
-import com.appjumper.silkscreen.ui.home.adapter.EndPlaceListAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.CityListViewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.FreightListAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StartPlaceListAdapter;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
+import com.appjumper.silkscreen.view.MyRecyclerView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -87,12 +90,14 @@ public class FreightFragment extends BaseFragment {
     private int pageSize = 20;
     private int totalSize;
 
-    private String startId = "";
+    private String startId = "1";
     private String endId = "";
     private List<StartPlace> startList = new ArrayList<>(); //始发地
     private StartPlaceListAdapter startAdapter;
-    private List<AreaBean> endList = new ArrayList<>(); //目的地
-    private EndPlaceListAdapter endAdapter;
+    private List<AreaBean> endLeftList = new ArrayList<>(); //目的地左边
+    private List<AreaBean> endRightList = new ArrayList<>(); //目的地右边
+    private AddRessRecyclerAdapter endLeftAdapter;
+    private CityListViewAdapter endRightAdapter;
 
     private String lengthsId = "";
     private String modelsId = "";
@@ -119,11 +124,19 @@ public class FreightFragment extends BaseFragment {
         getEndPlace();
         getCarLength();
         getCarModel();
-        getSuccessNum();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initAnim();
+            }
+        }, 200);
+
         ptrLayt.postDelayed(new Runnable() {
             @Override
             public void run() {
                 ptrLayt.autoRefresh();
+                getSuccessNum();
             }
         }, 50);
     }
@@ -134,7 +147,7 @@ public class FreightFragment extends BaseFragment {
      */
     private void initDropDownMenu() {
         List<String> tabTexts = new ArrayList<>();
-        tabTexts.add("始发地");
+        tabTexts.add("衡水安平");
         tabTexts.add("目的地");
         tabTexts.add("车长车型");
 
@@ -159,10 +172,8 @@ public class FreightFragment extends BaseFragment {
             }
         });
 
-        /**
-         * 目的地
-         */
-        ListView endView = new ListView(context);
+
+        /*ListView endView = new ListView(context);
         endAdapter = new EndPlaceListAdapter(context, endList);
         endView.setDividerHeight(0);
         endView.setAdapter(endAdapter);
@@ -178,7 +189,61 @@ public class FreightFragment extends BaseFragment {
                 endId = endList.get(position).getId();
                 ptrLayt.autoRefresh();
             }
+        });*/
+
+        /**
+         * 目的地
+         */
+        LinearLayout endView = new LinearLayout(context);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        endView.setOrientation(LinearLayout.VERTICAL);
+        endView.setBackgroundResource(R.color.while_color);
+        endView.setLayoutParams(params);
+        endView.setOnClickListener(null);
+        View formView = LayoutInflater.from(context).inflate(R.layout.layout_choice, null);
+        RecyclerView recyclerEnd = (MyRecyclerView)formView.findViewById(R.id.recycler_view);
+        ListView lvEnd = (ListView)formView.findViewById(R.id.list_view);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerEnd.setLayoutManager(linearLayoutManager);
+        endLeftAdapter = new AddRessRecyclerAdapter(context, endLeftList);
+        recyclerEnd.setAdapter(endLeftAdapter);
+        endRightAdapter = new CityListViewAdapter(context, endRightList);
+        lvEnd.setAdapter(endRightAdapter);
+        endView.addView(formView);
+
+        endLeftAdapter.setOnItemClickLitener(new AddRessRecyclerAdapter.OnItemClickLitener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                if (position == 0) {
+                    endRightList.clear();
+                    endRightAdapter.notifyDataSetChanged();
+                    dropDownMenu.setTabText("目的地");
+                    dropDownMenu.closeMenu();
+                    endId = endLeftList.get(position).getId();
+                    ptrLayt.autoRefresh();
+                } else {
+                    endRightList.clear();
+                    endRightList.addAll(endLeftList.get(position).getSublist());
+                    endRightAdapter.setCurrentSelectPosition(0);
+                    endRightAdapter.notifyDataSetChanged();
+                }
+            }
         });
+
+        lvEnd.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                endRightAdapter.setCurrentSelectPosition(i);
+                endRightAdapter.notifyDataSetChanged();
+                dropDownMenu.setTabText(endRightList.get(i).getShortname());
+                dropDownMenu.closeMenu();
+                endId = endRightList.get(i).getId();
+                ptrLayt.autoRefresh();
+            }
+        });
+
 
         /**
          * 车长车型
@@ -362,6 +427,35 @@ public class FreightFragment extends BaseFragment {
     }
 
 
+    private void initAnim() {
+        numHeight = llFreightNum.getHeight();
+        animHide = ObjectAnimator.ofFloat(llFreightNum, "translationY", -numHeight).setDuration(200);
+        animShow = ObjectAnimator.ofFloat(llFreightNum, "translationY", 0).setDuration(200);
+        animUp = ObjectAnimator.ofFloat(dropDownMenu, "translationY", -numHeight).setDuration(200);
+        animDown = ObjectAnimator.ofFloat(dropDownMenu, "translationY", 0).setDuration(200);
+
+        animHide.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                llFreightNum.setVisibility(View.GONE);
+                dropDownMenu.setTranslationY(0);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+            }
+        });
+    }
+
+
     /**
      * 获取数据
      */
@@ -429,7 +523,7 @@ public class FreightFragment extends BaseFragment {
      * 获取平台成功配货车次
      */
     private void getSuccessNum() {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "car_success");
+        final RequestParams params = MyHttpClient.getApiParam("purchase", "car_success");
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
 
             @Override
@@ -440,33 +534,7 @@ public class FreightFragment extends BaseFragment {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         String number = jsonObj.getJSONArray("data").getJSONObject(0).getString("car_num");
-                        txtNum.setText(number + "车次");
-
-                        numHeight = llFreightNum.getHeight();
-                        animHide = ObjectAnimator.ofFloat(llFreightNum, "translationY", -numHeight).setDuration(200);
-                        animShow = ObjectAnimator.ofFloat(llFreightNum, "translationY", 0).setDuration(200);
-                        animUp = ObjectAnimator.ofFloat(dropDownMenu, "translationY", -numHeight).setDuration(200);
-                        animDown = ObjectAnimator.ofFloat(dropDownMenu, "translationY", 0).setDuration(200);
-
-                        animHide.addListener(new Animator.AnimatorListener() {
-                            @Override
-                            public void onAnimationStart(Animator animator) {
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animator animator) {
-                                llFreightNum.setVisibility(View.GONE);
-                                dropDownMenu.setTranslationY(0);
-                            }
-
-                            @Override
-                            public void onAnimationCancel(Animator animator) {
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animator animator) {
-                            }
-                        });
+                        txtNum.setText(number);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -504,6 +572,8 @@ public class FreightFragment extends BaseFragment {
                         startList.add(startPlace);
                         startList.addAll(list);
                         startAdapter.notifyDataSetChanged();
+
+                        startAdapter.setCheckItem(1);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -521,7 +591,7 @@ public class FreightFragment extends BaseFragment {
      * 获取目的地
      */
     private void getEndPlace() {
-        RequestParams params = MyHttpClient.getApiParam("area", "city_list");
+        RequestParams params = MyHttpClient.getApiParam("area", "province");
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
 
             @Override
@@ -532,15 +602,15 @@ public class FreightFragment extends BaseFragment {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         List<AreaBean> list = GsonUtil.getEntityList(jsonObj.getJSONArray("data").toString(), AreaBean.class);
-                        endList.clear();
+                        endLeftList.clear();
 
                         AreaBean areaBean = new AreaBean();
                         areaBean.setShortname("不限");
                         areaBean.setId("");
 
-                        endList.add(areaBean);
-                        endList.addAll(list);
-                        endAdapter.notifyDataSetChanged();
+                        endLeftList.add(areaBean);
+                        endLeftList.addAll(list);
+                        endLeftAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

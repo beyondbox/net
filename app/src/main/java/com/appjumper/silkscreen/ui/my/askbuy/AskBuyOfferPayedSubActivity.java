@@ -37,8 +37,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.appjumper.silkscreen.util.Applibrary.mContext;
-
 /**
  * 求购报价详情--已付订金
  * Created by Botx on 2017/10/19.
@@ -144,7 +142,7 @@ public class AskBuyOfferPayedSubActivity extends BaseActivity {
     private void setData() {
         initTitle("求购" + data.getProduct_name());
 
-        Picasso.with(mContext)
+        Picasso.with(context)
                 .load(data.getImg())
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
@@ -177,19 +175,19 @@ public class AskBuyOfferPayedSubActivity extends BaseActivity {
         final List<Avatar> imgList = data.getImg_list();
         if (imgList != null && imgList.size() > 0) {
             gridImg.setVisibility(View.VISIBLE);
-            AskBuyImageAdapter imgAdapter = new AskBuyImageAdapter(mContext, imgList);
+            AskBuyImageAdapter imgAdapter = new AskBuyImageAdapter(context, imgList);
             gridImg.setAdapter(imgAdapter);
             gridImg.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(mContext, GalleryActivity.class);
+                    Intent intent = new Intent(context, GalleryActivity.class);
                     ArrayList<String> urls = new ArrayList<String>();
                     for (Avatar avatar : imgList) {
                         urls.add(avatar.getOrigin());
                     }
                     intent.putExtra(GalleryActivity.EXTRA_IMAGE_URLS, urls);
                     intent.putExtra(GalleryActivity.EXTRA_IMAGE_INDEX, i);
-                    mContext.startActivity(intent);
+                    context.startActivity(intent);
                 }
             });
         } else {
@@ -197,7 +195,7 @@ public class AskBuyOfferPayedSubActivity extends BaseActivity {
         }
 
 
-        Picasso.with(mContext)
+        Picasso.with(context)
                 .load(data.getAdviser_avatar())
                 .placeholder(R.mipmap.img_error_head)
                 .error(R.mipmap.img_error_head)

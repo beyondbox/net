@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/select_white_background"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingTop="7dp"
-    android:paddingBottom="7dp"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp"
     android:orientation="vertical">
 
     <com.appjumper.silkscreen.view.BorderRectImageView
@@ -27,7 +27,7 @@
         android:lineSpacingExtra="2dp"
         android:text="厂家现货供应框架式护栏网 厂区双边丝框架护栏网"
         android:textSize="13sp"
-        android:textColor="@color/text_gray_color"/>
+        android:textColor="@color/gray_color"/>
 
 
 
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/txtPrice"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="6dp"
         android:text="20人咨询"
         android:textSize="12sp"
         android:textColor="@color/light_gray_color"/>

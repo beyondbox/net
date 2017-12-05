@@ -366,8 +366,8 @@
                         android:id="@+id/recyclerStockShop"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="3dp"
-                        android:paddingBottom="3dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
                         android:paddingLeft="7dp"
                         android:paddingRight="7dp"
                         android:nestedScrollingEnabled="false"/>

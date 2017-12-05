@@ -67,7 +67,7 @@ public class MyAlertDialog extends Dialog {
 		public MyAlertDialog create() {
 			final MyAlertDialog dialog = new MyAlertDialog(context, R.style.CustomDialog);
 			LayoutInflater inflater = LayoutInflater.from(context);
-			View contentView = inflater.inflate(R.layout.layout_my_alert_dialog, null);
+			View contentView = inflater.inflate(R.layout.dialog_my_alert, null);
 
             //图标
             if (icon != 0) {

@@ -141,10 +141,10 @@ public class StockShopActivity extends BaseActivity {
             @Override
             public void run() {
                 isFastClick();
-                getRecommendProduct();
                 ptrLayt.autoRefresh();
+                getRecommendProduct();
             }
-        }, 80);
+        }, 100);
     }
 
 

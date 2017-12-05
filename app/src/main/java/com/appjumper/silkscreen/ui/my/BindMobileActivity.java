@@ -235,13 +235,15 @@ public class BindMobileActivity extends BaseActivity{
                         user.setIs_wechat("1");
                         getMyApplication().getMyUserManager().storeUserInfo(user);
 
-                        XGPushManager.registerPush(getApplicationContext(), "*");
+                        XGPushManager.registerPush(getApplicationContext(), user.getMobile());
+
+                        /*XGPushManager.registerPush(getApplicationContext(), "*");
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 XGPushManager.registerPush(getApplicationContext(), user.getMobile());
                             }
-                        }, 1000);
+                        }, 1000);*/
 
                         activity.showErrorToast("绑定成功");
                         activity.finish();

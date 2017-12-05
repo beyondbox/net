@@ -62,7 +62,7 @@ public class LoginActivity extends BaseActivity{
         initProgressDialog(false, null);
     }
 
-    @OnClick({R.id.btn_register,R.id.login_btn,R.id.tv_repassword, R.id.txtLoginWechat})
+    @OnClick({R.id.btn_register,R.id.login_btn,R.id.tv_repassword, R.id.llLoginWeChat})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_repassword://忘记密码
@@ -85,7 +85,7 @@ public class LoginActivity extends BaseActivity{
                 progress.show();
                 new Thread(loginRun).start();
                 break;
-            case R.id.txtLoginWechat: //微信登录
+            case R.id.llLoginWeChat: //微信登录
                 if (WXAPIFactory.createWXAPI(context, null).isWXAppInstalled())
                     UMShareAPI.get(context).getPlatformInfo(context, SHARE_MEDIA.WEIXIN, umAuthListener);
                 else
@@ -149,14 +149,15 @@ public class LoginActivity extends BaseActivity{
                     UserResponse userResponse = (UserResponse) msg.obj;
                     if(userResponse.isSuccess()){
                         final User user = userResponse.getData();
-                        XGPushManager.registerPush(getApplicationContext(), "*");
+                        /*XGPushManager.registerPush(getApplicationContext(), "*");
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
                                 XGPushManager.registerPush(getApplicationContext(), user.getMobile());
                             }
-                        }, 1000);
+                        }, 1000);*/
 
+                        XGPushManager.registerPush(getApplicationContext(), user.getMobile());
                         getMyApplication().getMyUserManager().storeUserInfo(user);
                         CommonApi.addLiveness(getUserID(), 1);
                         sendBroadcast(new Intent(Const.ACTION_LOGIN_SUCCESS));

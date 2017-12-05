@@ -54,7 +54,12 @@ public class CertifyManageActivity extends BaseActivity {
         initTitle("认证管理");
         initBack();
 
-        handleAuthState();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                handleAuthState();
+            }
+        }, 100);
     }
 
 

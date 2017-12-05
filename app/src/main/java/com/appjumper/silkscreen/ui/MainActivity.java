@@ -1,13 +1,17 @@
 package com.appjumper.silkscreen.ui;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -16,9 +20,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,12 +54,15 @@ import com.appjumper.silkscreen.ui.home.HomeFragment;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.ui.my.MyFragment;
 import com.appjumper.silkscreen.ui.trend.TrendFragment;
+import com.appjumper.silkscreen.util.Applibrary;
 import com.appjumper.silkscreen.util.Configure;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.SPUtil;
 import com.appjumper.silkscreen.util.morewindow.MoreWindow;
-import com.appjumper.silkscreen.view.SureOrCancelVersionDialog;
+import com.appjumper.silkscreen.view.UpdateDialog;
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.FileAsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.tencent.android.tpush.XGPushManager;
 import com.umeng.analytics.MobclickAgent;
@@ -57,6 +71,7 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +111,10 @@ public class MainActivity extends FragmentActivity {
 
     private long lastClickTime = 0;
 
+    private File downloadFile;
+    private AsyncHttpClient downloadClient;
+    private int widthAngel;
+
 
 
     @Override
@@ -108,8 +127,6 @@ public class MainActivity extends FragmentActivity {
         instance = this;
 
         setupViews();
-        checkNewVersion();
-
         initUnread();
 
         //注册推送
@@ -133,6 +150,8 @@ public class MainActivity extends FragmentActivity {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, Const.REQUEST_CODE_PERMISSION);
+
+        checkNewVersion();
     }
 
 
@@ -229,7 +248,7 @@ public class MainActivity extends FragmentActivity {
                         if(data.getVersioncode()!=null&&!data.getVersioncode().equals("")){
                             double version = Double.parseDouble(data.getVersioncode());
                             if (version > activity.getVersionCode()) {
-                                activity.downLoadNewVersion(data.getUrl(),data.getContent());
+                                showUpdateDialog(data.getUrl(), data.getContent());
                             }
                         }
                     }
@@ -240,18 +259,124 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    // 跳转下载新版本界面
-    public void downLoadNewVersion(final String url, String content) {
-        SureOrCancelVersionDialog followDialog = new SureOrCancelVersionDialog(this, content, new SureOrCancelVersionDialog.SureButtonClick() {
+
+    /**
+     * 版本更新对话框
+     * @param url
+     * @param content
+     */
+    public void showUpdateDialog(final String url, String content) {
+        new UpdateDialog.Builder(this)
+                .setMessage(content)
+                .setPositiveListener(new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        /*Uri uri = Uri.parse(url);
+                        Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                        it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(it);*/
+                        startDownload(url);
+                    }
+                }).create().show();
+    }
+
+
+    /**
+     * 开始下载新版本
+     * @param url
+     */
+    public void startDownload(String url) {
+        if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            Toast.makeText(this, "手机存储不可用，请检查存储状态", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        /**
+         * 弹出对话框
+         */
+        final Dialog downloadDialog = new Dialog(this, R.style.CustomDialog);
+        View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_update_downloading, null);
+        downloadDialog.setContentView(contentView);
+        downloadDialog.setCancelable(false);
+        downloadDialog.setCanceledOnTouchOutside(false);
+
+        final LinearLayout llAngel = (LinearLayout) contentView.findViewById(R.id.llAngel);
+        final ImageView imgViAngel = (ImageView) contentView.findViewById(R.id.imgViAngel);
+        final ProgressBar proDownload = (ProgressBar) contentView.findViewById(R.id.proDownLoad);
+        TextView txtCancel = (TextView) contentView.findViewById(R.id.txtCancel);
+
+        txtCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSureButtonClick() {
-                Uri uri = Uri.parse(url);
-                Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(it);
+            public void onClick(View view) {
+                downloadClient.cancelRequests(instance, true);
+                downloadDialog.dismiss();
+                if (downloadFile != null && downloadFile.exists())
+                    downloadFile.delete();
             }
         });
-        followDialog.show();
+
+        Display display = getWindowManager().getDefaultDisplay();
+        WindowManager.LayoutParams params = downloadDialog.getWindow().getAttributes();
+        params.width = (int) (display.getWidth() * 0.85);
+        downloadDialog.getWindow().setAttributes(params);
+        downloadDialog.show();
+
+        downloadClient = new AsyncHttpClient();
+        downloadFile = new File(Applibrary.APP_DIR, "siwangjia.apk");
+        if (downloadFile.exists())
+            downloadFile.delete();
+
+        /**
+         * 开始下载
+         */
+        downloadClient.get(instance, url, new FileAsyncHttpResponseHandler(downloadFile) {
+            @Override
+            public void onStart() {
+                super.onStart();
+                widthAngel = llAngel.getWidth();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, File file) {
+                downloadDialog.dismiss();
+                Toast.makeText(MainActivity.this, "网络超时，请稍候", Toast.LENGTH_SHORT).show();
+                if (downloadFile != null && downloadFile.exists())
+                    downloadFile.delete();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, File file) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_DEFAULT);
+
+                Uri uri;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    uri = FileProvider.getUriForFile(instance, Const.FILE_PROVIDER, downloadFile);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } else {
+                    uri = Uri.fromFile(downloadFile);
+                }
+
+                intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                startActivity(intent);
+
+                downloadDialog.dismiss();
+            }
+
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                super.onProgress(bytesWritten, totalSize);
+                int count = (int) (100 * (bytesWritten * 1.0 / totalSize));
+                proDownload.setProgress(count);
+
+                int angelX = (int) (widthAngel * (bytesWritten * 1.0 / totalSize));
+                LinearLayout.LayoutParams layoutparam = (LinearLayout.LayoutParams) imgViAngel.getLayoutParams();
+                layoutparam.leftMargin = angelX - (imgViAngel.getWidth() / 2);
+                imgViAngel.setLayoutParams(layoutparam);
+                imgViAngel.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
 

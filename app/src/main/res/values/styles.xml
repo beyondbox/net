@@ -172,5 +172,14 @@
         <item name="android:windowExitAnimation">@anim/top_to_bottom</item>
     </style>
 
+    <!--下载进度条-->
+    <style name="UpdateProgress" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">16dp</item>
+        <item name="android:minHeight">16dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:progressDrawable">@drawable/update_progress_drawable</item>
+    </style>
+
 </resources>
 

@@ -615,7 +615,7 @@ public class DriverOrderListActivity extends MultiSelectPhotoActivity implements
         RequestParams params = MyHttpClient.getApiParam("purchase", "driver_pay");
         params.put("uid", getUserID());
         params.put("car_product_id", item.getId());
-        params.put("pay_money", 0.01);
+        params.put("pay_money", 200.00);
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

@@ -134,7 +134,83 @@
                         android:layout_centerVertical="true"
                         android:src="@mipmap/icon_my_arrows_right" />
                 </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View
+                        style="@style/LineStyle"
+                        android:layout_marginLeft="12dp" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="12dp"
+                            android:drawablePadding="12dp"
+                            android:text="空车配货短信提示"
+                            android:textColor="@color/black_color"
+                            android:textSize="15sp" />
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/switchFreight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:longClickable="false"/>
+                    </RelativeLayout>
+
+                    <View
+                        style="@style/LineStyle"
+                        android:layout_marginLeft="12dp" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="12dp"
+                            android:drawablePadding="12dp"
+                            android:text="求购短信提示"
+                            android:textColor="@color/black_color"
+                            android:textSize="15sp" />
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/switchAskBuy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:longClickable="false"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+
             </LinearLayout>
+
+
+
+
+
+
 
             <LinearLayout
                 android:id="@+id/ll_exit"

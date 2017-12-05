@@ -29,6 +29,7 @@ android {
     minSdkVersion 17
     targetSdkVersion 26
 
+    multiDexEnabled true
     consumerProguardFiles 'consumer-proguard-rules.txt'
   }
 

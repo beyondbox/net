@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.base;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.appjumper.silkscreen.bean.User;
@@ -31,6 +32,14 @@ public class MyApplication extends Application{
     public static String QQappKey="c7394704798a158208a74ab60104f0ba";
 
     public static MyApplication appContext;
+
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
 
     @Override

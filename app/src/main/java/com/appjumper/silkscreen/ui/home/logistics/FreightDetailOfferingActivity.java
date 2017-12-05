@@ -255,7 +255,7 @@ public class FreightDetailOfferingActivity extends BaseActivity {
             lvRecord.setAdapter(recordAdapter);
             txtRecord.setText("报价列表（" + offerList.size() + "）");
 
-            if (getUser().getDriver_status().equals(Const.AUTH_SUCCESS + "")) {
+            if (getUser() != null && getUser().getDriver_status().equals(Const.AUTH_SUCCESS + "")) {
                 for (FreightOffer offer : offerList) {
                     if (offer.getUser_id().equals(getUserID())) {
                         txtOffer.setText("您已报价");

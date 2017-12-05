@@ -176,10 +176,6 @@ public class ReleaseOfferActivity extends BaseActivity {
                     showErrorToast("请输入产品单价");
                     return;
                 }
-                if (TextUtils.isEmpty(edtTxtContent.getText().toString().trim())) {
-                    showErrorToast("请输入报价说明");
-                    return;
-                }
                 submit();
                 break;
             case R.id.txtUnit: //选择单位

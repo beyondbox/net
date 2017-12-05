@@ -279,7 +279,7 @@ public class HomeFragment extends BaseFragment {
 
     private void initView() {
         l_homeview.setVisibility(View.VISIBLE);
-        mScrollView.smoothScrollTo(0, 0);
+        //mScrollView.smoothScrollTo(0, 0);
 
         //公告
         List<Notice> noticeList = data.getNotice();

@@ -8,7 +8,6 @@ import android.os.Message;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.bean.DriverAuth;
@@ -48,14 +47,8 @@ public class DriverAuthFirstActivity extends MultiSelectPhotoActivity{
     @Bind(R.id.iv_id_card_two)
     ImageView iv_id_card_two;
 
-    @Bind(R.id.txtNext)
-    TextView txtNext;
-
     @Bind(R.id.et_name)
     EditText et_name;
-
-    @Bind(R.id.et_idcard)
-    EditText et_idcard;
 
     String iv_id_card_one_url="";
     String iv_id_card_two_url="";
@@ -83,17 +76,18 @@ public class DriverAuthFirstActivity extends MultiSelectPhotoActivity{
 
     private void initView(PersonalAuthInfo data){
         if (!data.getAuth_status().equals(Const.AUTH_NOT_YET + "")) {
-            iv_id_card_one_url = data.getIdcard_img().getOrigin();
+            /*iv_id_card_one_url = data.getIdcard_img().getOrigin();
             iv_id_card_two_url = data.getIdcard_img_back().getOrigin();
             Glide.with(this).load(iv_id_card_one_url).placeholder(R.mipmap.icon_uploading_01).into(iv_id_card);
             Glide.with(this).load(iv_id_card_two_url).placeholder(R.mipmap.icon_uploading_01).into(iv_id_card_two);
-            et_name.setText(data.getName());
             et_idcard.setText(data.getIdcard());
 
-            et_name.setFocusable(false);
             et_idcard.setFocusable(false);
             iv_id_card.setEnabled(false);
-            iv_id_card_two.setEnabled(false);
+            iv_id_card_two.setEnabled(false);*/
+
+            et_name.setText(data.getName());
+            et_name.setFocusable(false);
         }
     }
 
@@ -111,35 +105,25 @@ public class DriverAuthFirstActivity extends MultiSelectPhotoActivity{
                 showWindowSelectList(v);
                 break;
             case R.id.txtNext://下一步
-                if(et_name.getText().toString().length()<1){
+                if(et_name.getText().toString().trim().length()<1){
                     showErrorToast("请输入您的真实姓名");
                     return;
                 }
-                if(et_idcard.getText().toString().length()<1){
-                    showErrorToast("请输入您的身份证号");
-                    return;
-                }
-
-                if (et_idcard.getText().toString().length() < 18) {
-                    showErrorToast("请输入正确的身份证号");
-                    return;
-                }
                 if (iv_id_card_one_url.equals("")) {
-                    showErrorToast("请上传身份证正面照");
+                    showErrorToast("请上传驾驶证正面照");
                     return;
                 }
                 if (iv_id_card_two_url.equals("")) {
-                    showErrorToast("请上传身份证反面照");
+                    showErrorToast("请上传驾驶证反面照");
                     break;
                 }
 
                 DriverAuth driverAuth = new DriverAuth();
                 driverAuth.setName(et_name.getText().toString().trim());
-                driverAuth.setID(et_idcard.getText().toString().trim());
-                driverAuth.setImgIDCard(iv_id_card_one_url);
-                driverAuth.setImgIDCardBack(iv_id_card_two_url);
+                driverAuth.setImgDriver(iv_id_card_one_url);
+                driverAuth.setImgDriverBack(iv_id_card_two_url);
 
-                intent = new Intent(context, DriverAuthSecondActivity.class);
+                intent = new Intent(context, DriverAuthThirdActivity.class);
                 intent.putExtra(Const.KEY_OBJECT, driverAuth);
                 startActivity(intent);
                 break;
@@ -247,11 +231,11 @@ public class DriverAuthFirstActivity extends MultiSelectPhotoActivity{
                         switch (mark){
                             case 0:
                                 iv_id_card_one_url=imgResponse.getData().get(0).getOrigin();
-                                Glide.with(activity).load(iv_id_card_one_url).placeholder(R.mipmap.icon_uploading_01).into(iv_id_card);
+                                Glide.with(activity).load(iv_id_card_one_url).placeholder(R.mipmap.upload_driver_front).into(iv_id_card);
                                 break;
                             case 1:
                                 iv_id_card_two_url=imgResponse.getData().get(0).getOrigin();
-                                Glide.with(activity).load(iv_id_card_two_url).placeholder(R.mipmap.icon_uploading_01).into(iv_id_card_two);
+                                Glide.with(activity).load(iv_id_card_two_url).placeholder(R.mipmap.upload_driver_back).into(iv_id_card_two);
                                 break;
                         }
                     } else {

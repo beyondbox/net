@@ -3,33 +3,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/while_color"
+    android:background="@color/view_background_gray_color"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/llFreightNum"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:background="@color/view_background_gray_color"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="2dp"
+            android:src="@mipmap/tail_left"
+            android:layout_marginRight="12dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="平台成功配货 : "
-            android:textColor="#FD7674"
-            android:textSize="14sp"/>
+            android:textColor="#F4A366"
+            android:textSize="13sp"/>
 
         <TextView
             android:id="@+id/txtNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:textStyle="bold"
+            android:text=""
+            android:textColor="#F67A01"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
             android:text="车次"
-            android:textColor="#FD7674"
-            android:textSize="14sp"/>
+            android:textColor="#F4A366"
+            android:textSize="13sp"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="2dp"
+            android:src="@mipmap/tail_right"
+            android:layout_marginLeft="12dp"/>
     </LinearLayout>
 
 
