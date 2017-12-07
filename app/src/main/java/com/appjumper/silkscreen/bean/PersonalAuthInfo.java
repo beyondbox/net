@@ -1,10 +1,12 @@
 package com.appjumper.silkscreen.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by yc on 2016/12/8.
  * 个人认证
  */
-public class PersonalAuthInfo {
+public class PersonalAuthInfo implements Serializable{
     private Avatar idcard_img;
     private Avatar idcard_img_back;
     private String idcard;

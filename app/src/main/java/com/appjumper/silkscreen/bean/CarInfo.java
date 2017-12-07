@@ -1,10 +1,12 @@
 package com.appjumper.silkscreen.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by Botx on 2017/11/16.
  */
 
-public class CarInfo {
+public class CarInfo implements Serializable{
 
 
     /**

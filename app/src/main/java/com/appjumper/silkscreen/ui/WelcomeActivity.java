@@ -67,7 +67,7 @@ public class WelcomeActivity extends BaseActivity {
 						@Override
 						public void run() {
 							try {
-								Thread.sleep(800);
+								Thread.sleep(300);
 								startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
 								WelcomeActivity.this.finish();
 							} catch (InterruptedException e) {
@@ -85,7 +85,7 @@ public class WelcomeActivity extends BaseActivity {
 						@Override
 						public void run() {
 							try {
-								Thread.sleep(800);
+								Thread.sleep(300);
 								startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
 								WelcomeActivity.this.finish();
 							} catch (InterruptedException e) {

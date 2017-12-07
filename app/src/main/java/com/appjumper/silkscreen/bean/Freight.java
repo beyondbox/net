@@ -1,12 +1,13 @@
 package com.appjumper.silkscreen.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Botx on 2017/10/26.
  */
 
-public class Freight {
+public class Freight implements Serializable{
 
 
     /**
@@ -94,6 +95,7 @@ public class Freight {
     private String enterprise_auth_status;
     private String enterprise_productivity_auth_status;
     private String remark;
+    private String name;
 
     private List<FreightOffer> offer_list;
     private List<Transport> transport_list;
@@ -491,5 +493,13 @@ public class Freight {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

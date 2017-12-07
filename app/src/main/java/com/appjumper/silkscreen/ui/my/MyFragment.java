@@ -7,11 +7,13 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amap.api.location.AMapLocation;
@@ -34,6 +36,7 @@ import com.appjumper.silkscreen.ui.home.stockshop.ReleaseGoodsSelectActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.my.adapter.MyDeliverAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.MyDriverAdapter;
+import com.appjumper.silkscreen.ui.my.audit.AuditMenuActivity;
 import com.appjumper.silkscreen.ui.my.deliver.AuditRefuseActivity;
 import com.appjumper.silkscreen.ui.my.deliver.AuditingDeliverActivity;
 import com.appjumper.silkscreen.ui.my.deliver.ChooseDriverActivity;
@@ -76,6 +79,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import q.rorbin.badgeview.QBadgeView;
 
 
 /**
@@ -93,6 +97,11 @@ public class MyFragment extends BaseFragment {
     TextView txtCompanyName;
     @Bind(R.id.llReleaseStockGoods)
     LinearLayout llReleaseStockGoods;
+
+    @Bind(R.id.llAudit)
+    LinearLayout llAudit;
+    @Bind(R.id.rlAudit)
+    RelativeLayout rlAudit;
 
     @Bind(R.id.llDeliver)
     LinearLayout llDeliver;
@@ -118,6 +127,8 @@ public class MyFragment extends BaseFragment {
     private MyDeliverAdapter deliverAdapter;
     private List<Freight> driverList;
     private MyDriverAdapter driverAdapter;
+
+    private QBadgeView badgeAudit; //快速审核小红点
 
 
 
@@ -156,6 +167,13 @@ public class MyFragment extends BaseFragment {
             else
                 llReleaseStockGoods.setVisibility(View.GONE);
 
+            if (user.getIs_fast_examine().equals("1")) {
+                llAudit.setVisibility(View.VISIBLE);
+                getUnreadAudit();
+            } else {
+                llAudit.setVisibility(View.GONE);
+            }
+
 
             if (user.getDriver_status().equals(Const.AUTH_SUCCESS + "")) { //司机
                 llDriver.setVisibility(View.VISIBLE);
@@ -176,7 +194,6 @@ public class MyFragment extends BaseFragment {
             txtCompanyName.setVisibility(View.GONE);
             tv_name.setText("请登录／注册");
             img_head.setImageDrawable(getContext().getResources().getDrawable(R.mipmap.img_error_head));
-            llReleaseStockGoods.setVisibility(View.GONE);
         }
     }
 
@@ -191,6 +208,7 @@ public class MyFragment extends BaseFragment {
 
         initOrderView();
         initView();
+        initUnread();
         if (getUser() != null) {
             new Thread(new UserInfoRun()).start();
         }
@@ -305,6 +323,12 @@ public class MyFragment extends BaseFragment {
     }
 
 
+    private void initUnread() {
+        badgeAudit = new QBadgeView(context);
+        badgeAudit.bindTarget(rlAudit).setBadgePadding(4.3f, true).setBadgeGravity(Gravity.START | Gravity.TOP).setGravityOffset(6, 7, true);
+    }
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -315,7 +339,7 @@ public class MyFragment extends BaseFragment {
 
 
 
-    @OnClick({R.id.llCompany, R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rlHelp, R.id.txtMoreDeliver, R.id.txtMoreDriver,
+    @OnClick({R.id.llCompany, R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rlHelp, R.id.txtMoreDeliver, R.id.txtMoreDriver, R.id.rlAudit,
             R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal, R.id.rlReleaseStockGoods, R.id.txtDriverState, R.id.txtUpdateLocation})
     public void onClick(View v) {
         switch (v.getId()) {
@@ -386,6 +410,9 @@ public class MyFragment extends BaseFragment {
                         }
                     }
                 });
+                break;
+            case R.id.rlAudit:
+                start_Activity(context, AuditMenuActivity.class);
                 break;
             default:
                 break;
@@ -659,6 +686,42 @@ public class MyFragment extends BaseFragment {
     }
 
 
+    /**
+     * 获取快速审核未处理数
+     */
+    private void getUnreadAudit() {
+        RequestParams params = MyHttpClient.getApiParam("collection", "fast_examine_num");
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        int numFreight = dataObj.optInt("car_product_num");
+                        int numAskbuy = dataObj.optInt("purchase_num");
+                        int numPerson = dataObj.optInt("auth_status_num");
+                        int numDriver = dataObj.optInt("driver_status_num");
+
+                        if (numFreight > 0 || numAskbuy > 0 || numPerson > 0 || numDriver > 0)
+                            badgeAudit.setBadgeNumber(-1);
+                        else
+                            badgeAudit.setBadgeNumber(0);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
 
     /**
      * 测试接口

@@ -208,6 +208,10 @@ public class Const {
     public static final int PUSH_FREIGHT_CHOOSED = 7; //推送-空车配货-司机被采纳
     public static final int PUSH_FREIGHT_DRIVER_PAYED = 8; //推送-空车配货-司机已支付
     public static final int PUSH_FREIGHT_DRIVER_ARRIVED = 9; //推送-空车配货-司机已送达
+    public static final int PUSH_AUDIT_ASKBUY = 11; //推送-快速审核-求购
+    public static final int PUSH_AUDIT_FREIGHT = 12; //推送-快速审核-空车配货
+    public static final int PUSH_AUDIT_PERSON = 13; //推送-快速审核-个人认证
+    public static final int PUSH_AUDIT_DRIVER = 14; //推送-快速审核-司机认证
 
 
     public static final int FREIGHT_AUDITING = 0; //空车配货-审核中

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="12dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/llContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/shape_round_corner_white_big"
+                android:orientation="vertical">
+                
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+                    
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:text="姓名:"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_gray_color"/>
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="刘东强"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_gray_color"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/txtState"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:textColor="@color/orange_color"
+                        android:textSize="13sp"
+                        android:text="待审核"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:text="手机号码:"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_gray_color"/>
+
+                    <TextView
+                        android:id="@+id/txtMobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="13056985632"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_gray_color"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"/>
+
+                    <ImageView
+                        android:id="@+id/imgViCall"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginRight="30dp"
+                        android:src="@mipmap/company_phone"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:text="身份证号:"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_gray_color"/>
+
+                    <TextView
+                        android:id="@+id/txtID"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="130127198901311121"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_gray_color"/>
+                </LinearLayout>
+
+                <View style="@style/LineStyle" android:layout_marginTop="15dp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="身份证正面照"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_gray_color"/>
+
+                <ImageView
+                    android:id="@+id/imgVi0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/icon_front_01" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:text="身份证反面照"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_gray_color"/>
+
+                <ImageView
+                    android:id="@+id/imgVi1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="90dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="25dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/icon_contrary_02" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/llBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtRefuse"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/selector_btn_black"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="审核失败"
+            android:textColor="@color/while_color"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/txtPass"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:background="@drawable/selector_btn_blue"
+            android:layout_marginLeft="6dp"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="审核通过"
+            android:textColor="@color/while_color"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+</LinearLayout>

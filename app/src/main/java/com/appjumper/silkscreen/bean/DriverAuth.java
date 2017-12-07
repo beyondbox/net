@@ -3,7 +3,7 @@ package com.appjumper.silkscreen.bean;
 import java.io.Serializable;
 
 /**
- * 司机认证
+ * 司机认证(本地用)
  * Created by Botx on 2017/10/24.
  */
 

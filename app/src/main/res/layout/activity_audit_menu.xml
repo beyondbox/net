@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_dark_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="15dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rlFreight"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/select_white_background"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imgViFreight"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/audit_freight"
+                        android:layout_marginTop="20dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/imgViFreight"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="@color/text_black_color2"
+                        android:textSize="15sp"
+                        android:text="空车配货"/>
+
+                    <TextView
+                        android:id="@+id/unReadFreight"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:visibility="gone"
+                        android:background="@drawable/shape_red_dot_rectangle"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:textColor="@color/while_color"
+                        android:text="5"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlAskBuy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/select_white_background"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imgViAskBuy"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/audit_askbuy"
+                        android:layout_marginTop="20dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/imgViAskBuy"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="@color/text_black_color2"
+                        android:textSize="15sp"
+                        android:text="求购信息"/>
+
+                    <TextView
+                        android:id="@+id/unReadAskbuy"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:visibility="gone"
+                        android:background="@drawable/shape_red_dot_rectangle"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:textColor="@color/while_color"
+                        android:text="5"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:id="@+id/rlPerson"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/select_white_background"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imgViPerson"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/audit_person"
+                        android:layout_marginTop="20dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/imgViPerson"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="@color/text_black_color2"
+                        android:textSize="15sp"
+                        android:text="个人认证"/>
+
+                    <TextView
+                        android:id="@+id/unReadPerson"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:visibility="gone"
+                        android:background="@drawable/shape_red_dot_rectangle"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:textColor="@color/while_color"
+                        android:text="5"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlDriver"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/select_white_background"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imgViDriver"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:src="@mipmap/audit_driver"
+                        android:layout_marginTop="20dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/imgViDriver"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="@color/text_black_color2"
+                        android:textSize="15sp"
+                        android:text="司机认证"/>
+
+                    <TextView
+                        android:id="@+id/unReadDriver"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:visibility="gone"
+                        android:background="@drawable/shape_red_dot_rectangle"
+                        android:gravity="center"
+                        android:textSize="12sp"
+                        android:textColor="@color/while_color"
+                        android:text="5"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

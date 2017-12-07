@@ -10,6 +10,10 @@ import android.graphics.BitmapFactory;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.my.MyReleaseActivity;
+import com.appjumper.silkscreen.ui.my.audit.AuditAskBuyActivity;
+import com.appjumper.silkscreen.ui.my.audit.AuditDriverActivity;
+import com.appjumper.silkscreen.ui.my.audit.AuditFreightActivity;
+import com.appjumper.silkscreen.ui.my.audit.AuditPersonActivity;
 import com.appjumper.silkscreen.ui.my.deliver.DeliverOrderListActivity;
 import com.appjumper.silkscreen.ui.my.driver.DriverOrderListActivity;
 import com.appjumper.silkscreen.util.Const;
@@ -122,6 +126,18 @@ public class MessageService extends XGPushBaseReceiver {
 							break;
 						case Const.PUSH_FREIGHT_DRIVER_ARRIVED: //空车配货-司机已送达
 							intent = new Intent(context, DeliverOrderListActivity.class);
+							break;
+						case Const.PUSH_AUDIT_ASKBUY: //快速审核-求购信息
+							intent = new Intent(context, AuditAskBuyActivity.class);
+							break;
+						case Const.PUSH_AUDIT_FREIGHT: //快速审核-空车配货
+							intent = new Intent(context, AuditFreightActivity.class);
+							break;
+						case Const.PUSH_AUDIT_PERSON: //快速审核-个人认证
+							intent = new Intent(context, AuditPersonActivity.class);
+							break;
+						case Const.PUSH_AUDIT_DRIVER: //快速审核-司机认证
+							intent = new Intent(context, AuditDriverActivity.class);
 							break;
 					}
 

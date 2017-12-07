@@ -1,10 +1,12 @@
 package com.appjumper.silkscreen.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by yc on 16/10/6.
  *  用户模型
  */
-public class User {
+public class User implements Serializable{
     private String id;
     private String last_login_ip;
     private String user_pass;
@@ -34,6 +36,11 @@ public class User {
     private String is_vender; //是否空车配货发货厂家 0不是  1是
     private String is_purchase; //求购短信推送开关  0推送 1不推送
     private String is_car_product_message; //空车配货短信推送开关  0推送 1不推送
+    private String is_fast_examine; //是否有快速审核权限 0没有  1有
+    private String idcard;
+    private String idcard_img;
+    private String idcard_img_back;
+    private String name;
 
 
     public String getAuth_status() {
@@ -266,5 +273,45 @@ public class User {
 
     public void setIs_car_product_message(String is_car_product_message) {
         this.is_car_product_message = is_car_product_message;
+    }
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
+    }
+
+    public String getIdcard_img() {
+        return idcard_img;
+    }
+
+    public void setIdcard_img(String idcard_img) {
+        this.idcard_img = idcard_img;
+    }
+
+    public String getIdcard_img_back() {
+        return idcard_img_back;
+    }
+
+    public void setIdcard_img_back(String idcard_img_back) {
+        this.idcard_img_back = idcard_img_back;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getIs_fast_examine() {
+        return is_fast_examine;
+    }
+
+    public void setIs_fast_examine(String is_fast_examine) {
+        this.is_fast_examine = is_fast_examine;
     }
 }

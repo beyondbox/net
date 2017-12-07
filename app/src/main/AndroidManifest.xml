@@ -346,6 +346,18 @@
         <activity android:name=".ui.my.deliver.OrderFinishDeliverActivity" />
 
 
+        <!--快速审核-主界面-->
+        <activity android:name=".ui.my.audit.AuditMenuActivity" />
+        <!--快速审核-空车配货-->
+        <activity android:name=".ui.my.audit.AuditFreightActivity" />
+        <!--快速审核-求购-->
+        <activity android:name=".ui.my.audit.AuditAskBuyActivity" />
+        <!--快速审核-个人认证-->
+        <activity android:name=".ui.my.audit.AuditPersonActivity" />
+        <!--快速审核-司机认证-->
+        <activity android:name=".ui.my.audit.AuditDriverActivity" />
+
+
         <!--发布护栏网-->
         <activity android:name=".ui.spec.ReleaseHuLanActivity" />
         <!--发布护栏网现货-->
