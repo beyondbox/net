@@ -2,10 +2,12 @@ package com.appjumper.silkscreen.ui.dynamic;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -13,20 +15,21 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
-import com.bigkoo.pickerview.OptionsPickerView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
-import java.util.Arrays;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
@@ -40,13 +43,12 @@ public class ReleaseOfferActivity extends BaseActivity {
     EditText edtTxtPrice;
     @Bind(R.id.edtTxtContent)
     EditText edtTxtContent;
-    @Bind(R.id.txtUnit)
-    TextView txtUnit;
+    @Bind(R.id.txtConfirm)
+    TextView txtConfirm;
 
     private DecimalFormat df = new DecimalFormat("0.00");
     private String inquiryId = "";
-    private OptionsPickerView pvUnits;
-    private String [] unitArr = {"元/平米", "元/卷", "元/吨", "元/片", "元/套", "元/根", "元/个", "元/捆", "元/米"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,22 +58,18 @@ public class ReleaseOfferActivity extends BaseActivity {
 
         initBack();
         initTitle("我要报价");
-        initPickerView();
         initProgressDialog(false, "正在发布....");
 
         inquiryId = getIntent().getStringExtra("id");
         edtTxtPrice.addTextChangedListener(textWatcher);
-    }
 
-
-    private void initPickerView() {
-        pvUnits = new OptionsPickerView.Builder(context, new OptionsPickerView.OnOptionsSelectListener() {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                txtUnit.setText(unitArr[options1]);
+            public void run() {
+                edtTxtPrice.requestFocus();
+                AppTool.showSoftInput(context, edtTxtPrice);
             }
-        }).build();
-        pvUnits.setPicker(Arrays.asList(unitArr));
+        }, 100);
     }
 
 
@@ -111,7 +109,6 @@ public class ReleaseOfferActivity extends BaseActivity {
         params.put("uid", getUserID());
         params.put("purchase_id", inquiryId);
         params.put("money", df.format(Double.valueOf(edtTxtPrice.getText().toString().trim())));
-        params.put("price_unit", txtUnit.getText().toString().trim());
         params.put("offer_content", edtTxtContent.getText().toString().trim());
         params.put("offer_type", 1);
 
@@ -135,13 +132,8 @@ public class ReleaseOfferActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        if (AskBuyDetailActivity.instance != null)
-                            AskBuyDetailActivity.instance.finish();
                         sendBroadcast(new Intent(Const.ACTION_RELEASE_SUCCESS));
-
-                        Intent intent = new Intent(context, ReleaseCompleteActivity.class);
-                        intent.putExtra(Const.KEY_TYPE, ReleaseCompleteActivity.TYPE_OFFER);
-                        startActivity(intent);
+                        start_Activity(context, AskBuyDetailActivity.class, new BasicNameValuePair("id", inquiryId));
                         finish();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
@@ -168,7 +160,15 @@ public class ReleaseOfferActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.txtConfirm, R.id.txtUnit})
+    @OnCheckedChanged(R.id.chkProtocol)
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked)
+            txtConfirm.setEnabled(true);
+        else
+            txtConfirm.setEnabled(false);
+    }
+
+    @OnClick({R.id.txtConfirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txtConfirm: //发布
@@ -177,9 +177,6 @@ public class ReleaseOfferActivity extends BaseActivity {
                     return;
                 }
                 submit();
-                break;
-            case R.id.txtUnit: //选择单位
-                pvUnits.show();
                 break;
             default:
                 break;

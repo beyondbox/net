@@ -11,7 +11,6 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.Avatar;
-import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.manager.MyUserManager;
@@ -68,33 +67,18 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
         String loginId = userManager.getUserId();
         helper.setText(R.id.txtName, newName)
                 .setText(R.id.txtTime, item.getCreate_time().substring(5, 16))
-                .setText(R.id.txtTitle, "求购" + item.getProduct_name())
                 .setText(R.id.txtContent, item.getPurchase_content())
                 .setText(R.id.txtReadNum, "浏览" + "(" + item.getConsult_num() + ")")
                 .setText(R.id.txtOfferNum, "报价" + "(" + item.getOffer_num() + ")")
-                .setVisible(R.id.imgViMarkSelf, loginId.equals(item.getUser_id()));
+                .setText(R.id.txtState, "报价中 " + item.getExpiry_date().substring(5, 16) + "截止")
+                .setVisible(R.id.imgViMarkSelf, loginId.equals(item.getUser_id()))
+                .setVisible(R.id.txtOffer, !loginId.equals(item.getUser_id()))
+                .addOnClickListener(R.id.txtOffer);
 
-
-        TextView txtState = helper.getView(R.id.txtState);
-        int state = Integer.valueOf(item.getExamine_status());
-        switch (state) {
-            case Const.ASKBUY_OFFERING:
-                long expiryTime = AppTool.getTimeMs(item.getExpiry_date(), "yy-MM-dd HH:mm:ss");
-                long currTime = System.currentTimeMillis();
-                if (currTime < expiryTime)
-                    txtState.setText(item.getExpiry_date().substring(5, 16) + "截止");
-                else
-                    txtState.setText("报价结束");
-                break;
-            case Const.ASKBUY_PAYED_SUB:
-                txtState.setText("已交易");
-                break;
-            case Const.ASKBUY_PAYED_ALL:
-                txtState.setText("已交易");
-                break;
-            default:
-                break;
-        }
+        if (item.getPurchase_num().equals("0"))
+            helper.setText(R.id.txtTitle, item.getProduct_name());
+        else
+            helper.setText(R.id.txtTitle, item.getProduct_name() + item.getPurchase_num() + item.getPurchase_unit());
 
 
         TextView txtMark = helper.getView(R.id.txtMark);
@@ -139,19 +123,6 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
             gridImg.setClickable(false);
             gridImg.setEnabled(false);
             gridImg.setPressed(false);
-            /*gridImg.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(mContext, GalleryActivity.class);
-                    ArrayList<String> urls = new ArrayList<String>();
-                    for (Avatar avatar : imgList) {
-                        urls.add(avatar.getOrigin());
-                    }
-                    intent.putExtra(GalleryActivity.EXTRA_IMAGE_URLS, urls);
-                    intent.putExtra(GalleryActivity.EXTRA_IMAGE_INDEX, i);
-                    mContext.startActivity(intent);
-                }
-            });*/
         } else {
             helper.setVisible(R.id.gridImg, false);
         }

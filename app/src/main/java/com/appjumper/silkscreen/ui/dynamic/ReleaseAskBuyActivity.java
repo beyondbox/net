@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.ServiceProduct;
@@ -19,6 +20,7 @@ import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
 import com.appjumper.silkscreen.view.phonegridview.SelectPictureActivity;
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.TimePickerView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -29,6 +31,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,11 +53,18 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
     TextView txtTime;
     @Bind(R.id.edtTxtContent)
     EditText edtTxtContent;
+    @Bind(R.id.txtUnit)
+    TextView txtUnit;
+    @Bind(R.id.edtTxtNum)
+    EditText edtTxtNum;
 
 
     private ServiceProduct product;
     private TimePickerView pvTime;
     private String imgs = ""; //图纸图片
+
+    private OptionsPickerView pvUnits;
+    private String [] unitArr = {"平米", "卷", "吨", "片", "套", "根", "个", "捆", "米"};
 
 
     @Override
@@ -71,10 +82,22 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
 
         initPickerView();
         initProgressDialog(false, "正在发布.....");
+        getLastData();
     }
 
 
     private void initPickerView() {
+        pvUnits = new OptionsPickerView.Builder(context, new OptionsPickerView.OnOptionsSelectListener() {
+            @Override
+            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                txtUnit.setText(unitArr[options1]);
+            }
+        }).build();
+        pvUnits.setPicker(Arrays.asList(unitArr));
+
+
+        Calendar endTime = Calendar.getInstance();
+        endTime.add(Calendar.MINUTE, 24 * 60);
         pvTime = new TimePickerView.Builder(this, new TimePickerView.OnTimeSelectListener() {
             @Override
             public void onTimeSelect(Date date, View v) {
@@ -83,7 +106,41 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
         })
                 .setContentSize(17)
                 .setType(new boolean[]{true, true, true, true, true, false})
+                .setRangDate(Calendar.getInstance(), endTime)
                 .build();
+    }
+
+
+    /**
+     * 获取上次发布数据
+     */
+    private void getLastData() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "last_purchase");
+        params.put("uid", getUserID());
+        params.put("product_id", product.getId());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        AskBuy askBuy = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), AskBuy.class);
+                        edtTxtNum.setText(askBuy.getPurchase_num());
+                        txtUnit.setText(askBuy.getPurchase_unit());
+                        edtTxtContent.setText(askBuy.getPurchase_content());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
     }
 
 
@@ -158,6 +215,8 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
         params.put("product_name", product.getName());
         params.put("purchase_content", edtTxtContent.getText().toString().trim());
         params.put("mobile", getUser().getMobile());
+        params.put("purchase_num", edtTxtNum.getText().toString().trim());
+        params.put("purchase_unit", txtUnit.getText().toString());
 
         int infoType;
         Enterprise enterprise = getUser().getEnterprise();
@@ -205,19 +264,23 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
     }
 
 
-    @OnClick({R.id.txtTime, R.id.txtConfirm, R.id.txtProduct})
+    @OnClick({R.id.txtTime, R.id.txtConfirm, R.id.txtProduct, R.id.txtUnit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txtTime: //选择截止时间
                 pvTime.show();
                 break;
             case R.id.txtConfirm: //立即发布
-                if (TextUtils.isEmpty(edtTxtContent.getText().toString().trim())) {
-                    showErrorToast("请输入求购说明");
+                if (TextUtils.isEmpty(edtTxtNum.getText().toString().trim())) {
+                    showErrorToast("请输入求购数量");
                     return;
                 }
                 if (TextUtils.isEmpty(txtTime.getText().toString().trim())) {
                     showErrorToast("请选择截止时间");
+                    return;
+                }
+                if (TextUtils.isEmpty(edtTxtContent.getText().toString().trim())) {
+                    showErrorToast("请输入求购说明");
                     return;
                 }
 
@@ -227,8 +290,12 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
                 else
                     submit();
                 break;
-            case R.id.txtProduct:
+            case R.id.txtProduct: //选择产品
                 finish();
+                break;
+            case R.id.txtUnit: //选择单位
+                AppTool.hideSoftInput(this);
+                pvUnits.show();
                 break;
             default:
                 break;

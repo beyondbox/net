@@ -14,6 +14,8 @@ public class Const {
 
     //空车配货版块客服电话
     public static final String SERVICE_PHONE_FREIGHT = "18531881288";
+    //求购版块客服电话
+    public static final String SERVICE_PHONE_ASKBUY = "18531881113";
 
 
 

@@ -22,7 +22,7 @@
         android:layout_toRightOf="@id/imgViHead"
         android:layout_marginLeft="10dp"
         android:text="昵称"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textColor="@color/light_gray_color"/>
 
     <ImageView
@@ -39,9 +39,10 @@
         android:id="@+id/txtMark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/imgViMarkSelf"
         android:background="@drawable/shape_mark_enterprise_bg"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="8dp"
         android:paddingTop="1dp"
         android:paddingBottom="1dp"
         android:paddingLeft="5dp"
@@ -58,8 +59,24 @@
         android:layout_below="@id/txtName"
         android:layout_marginTop="8dp"
         android:text="8-05 12:00"
-        android:textSize="13sp"
+        android:textSize="12sp"
         android:textColor="@color/light_gray_color"/>
+
+    <TextView
+        android:id="@+id/txtOffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/selector_btn_blue"
+        android:gravity="center"
+        android:layout_marginTop="0dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:text="报价"
+        android:textColor="@color/while_color"
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/txtTitle"
@@ -101,9 +118,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/gridImg"
         android:layout_marginTop="10dp"
-        android:text="阅读(60)"
+        android:text="浏览(60)"
         android:textSize="12sp"
-        android:textColor="@color/text_black_color"/>
+        android:textColor="@color/text_gray_light_color"/>
 
     <TextView
         android:id="@+id/txtOfferNum"
@@ -114,17 +131,17 @@
         android:layout_marginLeft="20dp"
         android:text="报价(10)"
         android:textSize="12sp"
-        android:textColor="@color/text_black_color"/>
+        android:textColor="@color/text_gray_light_color"/>
 
     <TextView
         android:id="@+id/txtState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/txtReadNum"
-        android:text="交易结束"
+        android:layout_alignTop="@id/txtReadNum"
+        android:text="报价中"
         android:textSize="13sp"
-        android:textColor="@color/text_black_color"/>
+        android:textColor="@color/orange_color"/>
 
     <View
         style="@style/LineStyle"

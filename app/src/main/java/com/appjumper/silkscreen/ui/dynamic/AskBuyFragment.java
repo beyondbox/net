@@ -11,14 +11,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.AskBuy;
+import com.appjumper.silkscreen.bean.HotInquiry;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyFilterAdapter;
 import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyListAdapter;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -37,6 +42,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 求购
@@ -49,13 +55,23 @@ public class AskBuyFragment extends BaseFragment {
     PtrClassicFrameLayout ptrLayt;
     @Bind(R.id.recyclerData)
     RecyclerView recyclerData;
+    @Bind(R.id.llAll)
+    LinearLayout llAll;
+    @Bind(R.id.markAll)
+    View markAll;
+    @Bind(R.id.recyclerFilter)
+    RecyclerView recyclerFilter;
 
     private List<AskBuy> dataList;
     private AskBuyListAdapter adapter;
 
+    private List<HotInquiry> filterList;
+    private AskBuyFilterAdapter filterAdapter;
+
     private int page = 1;
-    private int pageSize = 20;
+    private int pageSize = 30;
     private int totalSize;
+    private String productId = "";
 
 
 
@@ -67,7 +83,7 @@ public class AskBuyFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dynamic_data, container, false);
+        View view = inflater.inflate(R.layout.fragment_askbuy, container, false);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -87,6 +103,7 @@ public class AskBuyFragment extends BaseFragment {
 
     private void initRecyclerView() {
         dataList = new ArrayList<>();
+        filterList = new ArrayList<>();
 
         adapter = new AskBuyListAdapter(R.layout.item_recycler_ask_buy_list, dataList);
         recyclerData.setLayoutManager(new LinearLayoutManager(context));
@@ -99,6 +116,19 @@ public class AskBuyFragment extends BaseFragment {
                 start_Activity(context, AskBuyDetailActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()));
             }
         });
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.txtOffer:
+                        if (checkLogined()) {
+                            if (!MyApplication.appContext.checkMobile(context)) return;
+                            start_Activity(context, ReleaseOfferActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()));
+                        }
+                        break;
+                }
+            }
+        });
 
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
@@ -109,6 +139,23 @@ public class AskBuyFragment extends BaseFragment {
         }, recyclerData);
 
         adapter.setEnableLoadMore(false);
+
+
+        filterAdapter = new AskBuyFilterAdapter(R.layout.item_recycler_askbuy_filter, filterList);
+        recyclerFilter.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        filterAdapter.bindToRecyclerView(recyclerFilter);
+        filterAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                filterAdapter.changeSelected(position);
+                recyclerFilter.smoothScrollToPosition(position);
+                llAll.setSelected(false);
+                markAll.setVisibility(View.INVISIBLE);
+                productId = filterList.get(position).getProduct_id();
+                ptrLayt.autoRefresh();
+            }
+        });
+        llAll.setSelected(true);
     }
 
 
@@ -121,8 +168,39 @@ public class AskBuyFragment extends BaseFragment {
         ptrLayt.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
+                getFilter();
                 page = 1;
                 getData();
+            }
+        });
+    }
+
+
+    /**
+     * 获取顶部筛选数据
+     */
+    private void getFilter() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "purchase_product_list");
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        List<HotInquiry> list = GsonUtil.getEntityList(jsonObj.getJSONArray("data").toString(), HotInquiry.class);
+                        filterList.clear();
+                        filterList.addAll(list);
+                        filterAdapter.notifyDataSetChanged();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
             }
         });
     }
@@ -133,6 +211,7 @@ public class AskBuyFragment extends BaseFragment {
      */
     private void getData() {
         RequestParams params = MyHttpClient.getApiParam("purchase", "purchase_list");
+        params.put("product_id", productId);
         params.put("page", page);
         params.put("pagesize", pageSize);
         params.put("uid", getUserID());
@@ -210,10 +289,29 @@ public class AskBuyFragment extends BaseFragment {
                     }
                 }
             } else if (action.equals(Const.ACTION_RELEASE_SUCCESS)) {
-                ptrLayt.autoRefresh();
+                getFilter();
+                page = 1;
+                getData();
             }
         }
     };
+
+
+    @OnClick({R.id.llAll, R.id.imgViCall})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.llAll: //全部
+                llAll.setSelected(true);
+                markAll.setVisibility(View.VISIBLE);
+                filterAdapter.changeSelected(-1);
+                productId = "";
+                ptrLayt.autoRefresh();
+                break;
+            case R.id.imgViCall: //联系客服
+                AppTool.dial(context, Const.SERVICE_PHONE_ASKBUY);
+                break;
+        }
+    }
 
 
     @Override

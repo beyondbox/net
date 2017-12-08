@@ -271,7 +271,7 @@
         <!--发布成功-->
         <activity android:name=".ui.dynamic.ReleaseCompleteActivity" />
         <!--求购详情-->
-        <activity android:name=".ui.dynamic.AskBuyDetailActivity" />
+        <activity android:name=".ui.dynamic.AskBuyDetailActivity" android:launchMode="singleTask"/>
         <!--求购编辑-->
         <activity android:name=".ui.my.askbuy.AskBuyEditActivity" />
         <!--查看报价-->

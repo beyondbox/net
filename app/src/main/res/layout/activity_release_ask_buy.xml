@@ -53,6 +53,102 @@
 
             <View style="@style/LineStyle"/>
 
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:padding="12dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="求购数量 : "
+                    android:textSize="14sp"
+                    android:textColor="@color/text_black_color"/>
+
+                <EditText
+                    android:id="@+id/edtTxtNum"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:background="@drawable/shape_item_attent_trans"
+                    android:hint="请输入求购数量"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="@color/light_gray_color"
+                    android:textColor="@color/text_black_color"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/txtUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_item_attent_trans"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:drawableRight="@mipmap/icon_arrows_down"
+                    android:drawablePadding="5dp"
+                    android:text="平米"
+                    android:textColor="@color/text_gray_light_color"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="17dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:text="截止时间 : "
+                    android:textColor="@color/text_black_color"
+                    android:textSize="14sp"/>
+
+                <EditText
+                    android:id="@+id/txtTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="85dp"
+                    android:layout_marginLeft="5dp"
+                    android:inputType="none"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:background="@drawable/shape_item_attent_trans"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:hint="请选择报价截止时间"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_black_color"
+                    android:textColorHint="@color/light_gray_color"/>
+
+            </LinearLayout>
+
+            <View style="@style/LineStyle"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/view_background_gray_color"/>
+
+            <View style="@style/LineStyle"/>
+
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,46 +163,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
+                android:layout_marginBottom="20dp"
                 android:background="@color/view_background_gray_color"
                 android:gravity="left|top"
                 android:padding="10dp"
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="3dp"
-                android:minLines="7"
-                android:hint=""
+                android:minLines="6"
+                android:hint="请输入求购产品规格"
                 android:textColor="@color/text_black_color"
                 android:textColorHint="@color/light_gray_color"
                 android:textSize="13sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="12dp"
-                    android:text="截止时间："
-                    android:textColor="@color/text_black_color"
-                    android:textSize="14sp"/>
-
-                <EditText
-                    android:id="@+id/txtTime"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:background="@null"
-                    android:padding="12dp"
-                    android:hint="请选择报价截止时间"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_black_color"
-                    android:textColorHint="@color/light_gray_color"/>
-
-            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>

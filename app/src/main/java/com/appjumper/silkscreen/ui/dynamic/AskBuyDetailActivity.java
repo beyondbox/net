@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.AskBuyOffer;
 import com.appjumper.silkscreen.bean.Avatar;
@@ -62,8 +63,22 @@ public class AskBuyDetailActivity extends BaseActivity {
     TextView txtContent;
     @Bind(R.id.gridImg)
     GridView gridImg;
+    @Bind(R.id.txtReadNum)
+    TextView txtReadNum;
+    @Bind(R.id.txtOfferNum)
+    TextView txtOfferNum;
+    @Bind(R.id.txtState)
+    TextView txtState;
+
+    @Bind(R.id.imgViAvatar)
+    ImageView imgViAvatar;
+    @Bind(R.id.txtAdviserName)
+    TextView txtAdviserName;
+
     @Bind(R.id.llRecord)
     LinearLayout llRecord;
+    @Bind(R.id.txtRecord)
+    TextView txtRecord;
     @Bind(R.id.lvRecord)
     ListView lvRecord;
     @Bind(R.id.txtOffer)
@@ -76,7 +91,6 @@ public class AskBuyDetailActivity extends BaseActivity {
     @Bind(R.id.txtTitle)
     TextView txtTitle;
 
-    public static AskBuyDetailActivity instance = null;
     private String id;
     private AskBuy data;
 
@@ -85,11 +99,20 @@ public class AskBuyDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_askbuy_detail);
         ButterKnife.bind(context);
-        instance = this;
         initBack();
         initProgressDialog();
 
         id = getIntent().getStringExtra("id");
+        getData();
+    }
+
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        id = getIntent().getStringExtra("id");
+        initProgressDialog();
         getData();
     }
 
@@ -150,25 +173,21 @@ public class AskBuyDetailActivity extends BaseActivity {
     private void setData() {
         initTitle("求购" + data.getProduct_name());
         right.setImageResource(R.mipmap.icon_share);
-        int state = Integer.valueOf(data.getPurchase_status());
-        if (state == Const.OFFER_DEAL) {
-            txtOffer.setText("已交易");
-            txtOffer.setEnabled(false);
-        } else {
-            long expiryTime = AppTool.getTimeMs(data.getExpiry_date(), "yy-MM-dd HH:mm:ss");
-            long currTime = System.currentTimeMillis();
-            if (currTime < expiryTime) {
-                txtOffer.setText("报价");
-                if (data.getUser_id().equals(getUserID()))
-                    txtOffer.setEnabled(false);
-                else
-                    txtOffer.setEnabled(true);
-            } else {
-                txtOffer.setText("报价结束");
-                txtOffer.setEnabled(false);
-            }
-        }
 
+        long expiryTime = AppTool.getTimeMs(data.getExpiry_date(), "yy-MM-dd HH:mm:ss");
+        long currTime = System.currentTimeMillis();
+        if (currTime < expiryTime) {
+            txtState.setText("报价中 " + data.getExpiry_date().substring(5, 16) + "截止");
+            txtOffer.setText("报价");
+            if (data.getUser_id().equals(getUserID()))
+                txtOffer.setEnabled(false);
+            else
+                txtOffer.setEnabled(true);
+        } else {
+            txtState.setText("");
+            txtOffer.setText("报价结束");
+            txtOffer.setEnabled(false);
+        }
 
         Picasso.with(context)
                 .load(data.getImg())
@@ -242,6 +261,8 @@ public class AskBuyDetailActivity extends BaseActivity {
         txtTime.setText(data.getCreate_time().substring(5, 16));
         txtTitle.setText("求购" + data.getProduct_name());
         txtContent.setText(data.getPurchase_content());
+        txtReadNum.setText("浏览" + "(" + data.getConsult_num() + ")");
+        txtOfferNum.setText("报价" + "(" + data.getOffer_num() + ")");
 
         final List<Avatar> imgList = data.getImg_list();
         if (imgList != null && imgList.size() > 0) {
@@ -265,21 +286,36 @@ public class AskBuyDetailActivity extends BaseActivity {
             gridImg.setVisibility(View.GONE);
         }
 
+
+        Picasso.with(context)
+                .load(data.getAdviser_avatar())
+                .placeholder(R.mipmap.img_error_head)
+                .error(R.mipmap.img_error_head)
+                .into(imgViAvatar);
+
+        txtAdviserName.setText("报价顾问" + data.getAdviser_nicename());
+
+
         List<AskBuyOffer> offerList = data.getOffer_list();
         if (offerList != null && offerList.size() > 0) {
+            for (int i = 0; i < offerList.size(); i++) {
+                AskBuyOffer offer = offerList.get(i);
+                if (getUserID().equals(offer.getUser_id())) {
+                    txtOffer.setText("您已报价");
+                    txtOffer.setEnabled(false);
+                    offerList.remove(i);
+                    offerList.add(offer);
+                    break;
+                }
+            }
+
             llRecord.setVisibility(View.VISIBLE);
+            txtRecord.setText("报价记录" + "(" + offerList.size() + ")");
+
             OfferRecordAdapter recordAdapter = new OfferRecordAdapter(context, offerList, getUserID());
             if (getUserID().equals(data.getUser_id()))
                 recordAdapter.setPrivateMode(false);
             lvRecord.setAdapter(recordAdapter);
-
-            for (AskBuyOffer offer : offerList) {
-                if (getUserID().equals(offer.getUser_id())) {
-                    txtOffer.setText("您已报价");
-                    txtOffer.setEnabled(false);
-                    break;
-                }
-            }
         } else {
             llRecord.setVisibility(View.GONE);
         }
@@ -328,6 +364,7 @@ public class AskBuyDetailActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.txtOffer: //报价
                 if (txtOffer.getText().toString().equals("报价")) {
+                    if (!MyApplication.appContext.checkMobile(context)) return;
                     start_Activity(context, ReleaseOfferActivity.class, new BasicNameValuePair("id", id));
                 }
                 break;
@@ -344,10 +381,4 @@ public class AskBuyDetailActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        instance = null;
-    }
 }

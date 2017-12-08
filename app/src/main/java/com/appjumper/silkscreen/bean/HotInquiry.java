@@ -24,6 +24,8 @@ public class HotInquiry {
     private String productimg;
     private String shuliang;
 
+    private String product_name;
+
     public String getId() {
         return id;
     }
@@ -70,5 +72,13 @@ public class HotInquiry {
 
     public void setShuliang(String shuliang) {
         this.shuliang = shuliang;
+    }
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
     }
 }

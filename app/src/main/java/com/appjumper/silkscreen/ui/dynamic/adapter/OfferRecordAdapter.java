@@ -48,22 +48,26 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
 
         AskBuyOffer offer = list.get(position);
         vh.txtTime.setText(offer.getCreate_time().substring(5));
+        vh.txtName.setText("厂家报价" + (position + 1));
 
-        if (offer.getOffer_user_type().equals("0")) {
-            vh.txtName.setText("平台报价");
-        } else {
-            if (list.get(0).getOffer_user_type().equals("0")) {
-                vh.txtName.setText("企业报价" + position);
-            } else {
-                vh.txtName.setText("企业报价" + (position + 1));
-            }
-        }
+        vh.txtName.setTextColor(context.getResources().getColor(R.color.text_black_color));
+        vh.txtPrice.setTextColor(context.getResources().getColor(R.color.text_black_color));
+        vh.txtTime.setTextColor(context.getResources().getColor(R.color.text_black_color));
 
         if (isPrivateMode) {
-            if (uid.equals(offer.getUser_id()))
-                vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
-            else
+            if (position == 0) {
+                if (uid.equals(offer.getUser_id())) {
+                    vh.txtName.setText("我的报价");
+                    vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
+                    vh.txtName.setTextColor(context.getResources().getColor(R.color.red_color));
+                    vh.txtPrice.setTextColor(context.getResources().getColor(R.color.red_color));
+                    vh.txtTime.setTextColor(context.getResources().getColor(R.color.red_color));
+                } else {
+                    vh.txtPrice.setText("***" + offer.getPrice_unit());
+                }
+            } else {
                 vh.txtPrice.setText("***" + offer.getPrice_unit());
+            }
         } else {
             vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
         }
