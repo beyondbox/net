@@ -216,7 +216,7 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
         params.put("purchase_content", edtTxtContent.getText().toString().trim());
         params.put("mobile", getUser().getMobile());
         params.put("purchase_num", edtTxtNum.getText().toString().trim());
-        params.put("purchase_unit", txtUnit.getText().toString());
+        params.put("purchase_unit", txtUnit.getText().toString().trim());
 
         int infoType;
         Enterprise enterprise = getUser().getEnterprise();
@@ -273,6 +273,10 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
             case R.id.txtConfirm: //立即发布
                 if (TextUtils.isEmpty(edtTxtNum.getText().toString().trim())) {
                     showErrorToast("请输入求购数量");
+                    return;
+                }
+                if (TextUtils.isEmpty(txtUnit.getText().toString().trim())) {
+                    showErrorToast("请选择求购单位");
                     return;
                 }
                 if (TextUtils.isEmpty(txtTime.getText().toString().trim())) {

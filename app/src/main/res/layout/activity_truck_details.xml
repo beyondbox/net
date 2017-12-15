@@ -527,7 +527,7 @@
                 android:drawableLeft="@mipmap/icon_home_recommend"
                 android:drawablePadding="6dp"
                 android:text="相关推荐"
-                android:textColor="@color/gray_color"
+                android:textColor="@color/new_gray_color"
                 android:textSize="14sp" />
 
             <View

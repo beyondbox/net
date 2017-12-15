@@ -36,6 +36,7 @@ import com.appjumper.silkscreen.ui.home.stockshop.ReleaseGoodsSelectActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.my.adapter.MyDeliverAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.MyDriverAdapter;
+import com.appjumper.silkscreen.ui.my.askbuy.AskBuyOrderListActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditMenuActivity;
 import com.appjumper.silkscreen.ui.my.deliver.AuditRefuseActivity;
 import com.appjumper.silkscreen.ui.my.deliver.AuditingDeliverActivity;
@@ -123,6 +124,17 @@ public class MyFragment extends BaseFragment {
     @Bind(R.id.llChangeState)
     LinearLayout llChangeState;
 
+    @Bind(R.id.llAskBuy)
+    LinearLayout llAskBuy;
+    @Bind(R.id.unReadAudit)
+    TextView unReadAudit;
+    @Bind(R.id.unReadPay)
+    TextView unReadPay;
+    @Bind(R.id.unReadFinishing)
+    TextView unReadFinishing;
+    @Bind(R.id.unReadFinish)
+    TextView unReadFinish;
+
     private List<Freight> deliverList;
     private MyDeliverAdapter deliverAdapter;
     private List<Freight> driverList;
@@ -174,6 +186,12 @@ public class MyFragment extends BaseFragment {
                 llAudit.setVisibility(View.GONE);
             }
 
+            if (user.getIs_purchase_order().equals("1")) {
+                llAskBuy.setVisibility(View.VISIBLE);
+                getUnreadAskBuy();
+            } else {
+                llAskBuy.setVisibility(View.GONE);
+            }
 
             if (user.getDriver_status().equals(Const.AUTH_SUCCESS + "")) { //司机
                 llDriver.setVisibility(View.VISIBLE);
@@ -340,8 +358,10 @@ public class MyFragment extends BaseFragment {
 
 
     @OnClick({R.id.llCompany, R.id.rl_user, R.id.rl_share, R.id.rl_system_setting, R.id.rlHelp, R.id.txtMoreDeliver, R.id.txtMoreDriver, R.id.rlAudit,
-            R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal, R.id.rlReleaseStockGoods, R.id.txtDriverState, R.id.txtUpdateLocation})
+            R.id.rl_feedback, R.id.ll_certify, R.id.rl_point, R.id.rl_my_release, R.id.rlMyDeal, R.id.rlReleaseStockGoods, R.id.txtDriverState, R.id.txtUpdateLocation,
+            R.id.txtMoreAskBuy, R.id.rlAuditing, R.id.rlPaying, R.id.rlFinishing, R.id.rlFinish})
     public void onClick(View v) {
+        Intent intent = null;
         switch (v.getId()) {
             case R.id.llCompany: //企业信息
                 if (checkLogined()) {
@@ -411,8 +431,31 @@ public class MyFragment extends BaseFragment {
                     }
                 });
                 break;
-            case R.id.rlAudit:
+            case R.id.rlAudit: //快速审核
                 start_Activity(context, AuditMenuActivity.class);
+                break;
+            case R.id.txtMoreAskBuy: //求购订单列表
+                start_Activity(context, AskBuyOrderListActivity.class);
+                break;
+            case R.id.rlAuditing:
+                intent = new Intent(context, AskBuyOrderListActivity.class);
+                intent.putExtra(Const.KEY_POSITION, 1);
+                startActivity(intent);
+                break;
+            case R.id.rlPaying:
+                intent = new Intent(context, AskBuyOrderListActivity.class);
+                intent.putExtra(Const.KEY_POSITION, 2);
+                startActivity(intent);
+                break;
+            case R.id.rlFinishing:
+                intent = new Intent(context, AskBuyOrderListActivity.class);
+                intent.putExtra(Const.KEY_POSITION, 3);
+                startActivity(intent);
+                break;
+            case R.id.rlFinish:
+                intent = new Intent(context, AskBuyOrderListActivity.class);
+                intent.putExtra(Const.KEY_POSITION, 4);
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -722,6 +765,48 @@ public class MyFragment extends BaseFragment {
             }
         });
     }
+
+
+    /**
+     * 获取求购订单未处理数
+     */
+    private void getUnreadAskBuy() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "my_purchase_order_num");
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        int auditNum = dataObj.optInt("wait_examine");
+                        int payNum = dataObj.optInt("wait_pay");
+                        int finishingNum = dataObj.optInt("wait_confirm");
+
+                        unReadAudit.setText(auditNum + "");
+                        unReadPay.setText(payNum + "");
+                        unReadFinishing.setText(finishingNum + "");
+
+                        unReadAudit.setVisibility(auditNum > 0 ? View.VISIBLE : View.GONE);
+                        unReadPay.setVisibility(payNum > 0 ? View.VISIBLE : View.GONE);
+                        unReadFinishing.setVisibility(finishingNum > 0 ? View.VISIBLE : View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
 
     /**
      * 测试接口

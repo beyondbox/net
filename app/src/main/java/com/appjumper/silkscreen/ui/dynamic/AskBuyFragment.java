@@ -123,7 +123,7 @@ public class AskBuyFragment extends BaseFragment {
                     case R.id.txtOffer:
                         if (checkLogined()) {
                             if (!MyApplication.appContext.checkMobile(context)) return;
-                            start_Activity(context, ReleaseOfferActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()));
+                            start_Activity(context, ReleaseOfferActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()), new BasicNameValuePair(Const.KEY_UNIT, dataList.get(position).getPurchase_unit()));
                         }
                         break;
                 }

@@ -295,7 +295,7 @@
                             android:maxLines="1"
                             android:ellipsize="end"
                             android:text=""
-                            android:textColor="@color/gray_color"
+                            android:textColor="@color/new_gray_color"
                             android:textSize="12sp"/>
 
                         <ViewFlipper

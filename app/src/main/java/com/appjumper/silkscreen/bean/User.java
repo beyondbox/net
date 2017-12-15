@@ -41,6 +41,7 @@ public class User implements Serializable{
     private String idcard_img;
     private String idcard_img_back;
     private String name;
+    private String is_purchase_order; //求购-是否显示我的采购订单：0-不显示；1-显示
 
 
     public String getAuth_status() {
@@ -313,5 +314,13 @@ public class User implements Serializable{
 
     public void setIs_fast_examine(String is_fast_examine) {
         this.is_fast_examine = is_fast_examine;
+    }
+
+    public String getIs_purchase_order() {
+        return is_purchase_order;
+    }
+
+    public void setIs_purchase_order(String is_purchase_order) {
+        this.is_purchase_order = is_purchase_order;
     }
 }

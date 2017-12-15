@@ -368,6 +368,8 @@ public class HomeFragment extends BaseFragment {
                 ((RecommendFragment)recommendFragList.get(0)).refresh(recommend0);
                 ((RecommendFragment)recommendFragList.get(1)).refresh(recommend1);
                 ((RecommendFragment)recommendFragList.get(2)).refresh(recommend2);
+
+                recommendAdapter.notifyDataSetChanged();
             }
         }, 200);
 

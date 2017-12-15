@@ -48,6 +48,7 @@ public class ReleaseOfferActivity extends BaseActivity {
 
     private DecimalFormat df = new DecimalFormat("0.00");
     private String inquiryId = "";
+    private String unit = "元";
 
 
     @Override
@@ -61,6 +62,7 @@ public class ReleaseOfferActivity extends BaseActivity {
         initProgressDialog(false, "正在发布....");
 
         inquiryId = getIntent().getStringExtra("id");
+        unit = getIntent().getStringExtra(Const.KEY_UNIT);
         edtTxtPrice.addTextChangedListener(textWatcher);
 
         new Handler().postDelayed(new Runnable() {
@@ -111,6 +113,7 @@ public class ReleaseOfferActivity extends BaseActivity {
         params.put("money", df.format(Double.valueOf(edtTxtPrice.getText().toString().trim())));
         params.put("offer_content", edtTxtContent.getText().toString().trim());
         params.put("offer_type", 1);
+        params.put("price_unit", "元/" + unit);
 
         //平台业务员报价
         if (getUser().getMobile().equals("18531881110"))

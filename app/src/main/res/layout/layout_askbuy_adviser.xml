@@ -16,19 +16,6 @@
         app:border_width="1dp"/>
 
     <TextView
-        android:id="@+id/txtAdviserName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/imgViAvatar"
-        android:layout_toLeftOf="@id/txtCall"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="10dp"
-        android:text="报价顾问涛涛"
-        android:textSize="15sp"
-        android:textColor="@color/text_gray_light_color"/>
-
-    <TextView
         android:id="@+id/txtCall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,5 +29,18 @@
         android:text="立即咨询"
         android:textColor="@color/while_color"
         android:textSize="13sp"/>
+
+    <TextView
+        android:id="@+id/txtAdviserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/imgViAvatar"
+        android:layout_toLeftOf="@id/txtCall"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="10dp"
+        android:text="报价顾问涛涛"
+        android:textSize="15sp"
+        android:textColor="@color/text_gray_light_color"/>
 
 </RelativeLayout>

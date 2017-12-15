@@ -8,8 +8,9 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.ui.dynamic.AskBuyManageActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
-import com.appjumper.silkscreen.ui.my.MyReleaseActivity;
+import com.appjumper.silkscreen.ui.my.askbuy.AskBuyOrderListActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditAskBuyActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditDriverActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditFreightActivity;
@@ -110,10 +111,13 @@ public class MessageService extends XGPushBaseReceiver {
 							intent = new Intent(context, DriverOrderListActivity.class);
 							break;
 						case Const.PUSH_ASKBUY_CHOOSE_OFFER: //求购-选择报价
-							intent = new Intent(context, MyReleaseActivity.class);
+							//intent = new Intent(context, MyReleaseActivity.class);
+							intent = new Intent(context, AskBuyManageActivity.class);
 							break;
 						case Const.PUSH_ASKBUY_CHOOSED: //求购-报价被采纳
-							intent = new Intent(context, MessageActivity.class);
+							//intent = new Intent(context, MessageActivity.class);
+							intent = new Intent(context, AskBuyManageActivity.class);
+							intent.putExtra(Const.KEY_POSITION, 1);
 							break;
 						case Const.PUSH_FREIGHT_NEW_OFFER: //空车配货-有司机报价
 							intent = new Intent(context, DeliverOrderListActivity.class);
@@ -138,6 +142,17 @@ public class MessageService extends XGPushBaseReceiver {
 							break;
 						case Const.PUSH_AUDIT_DRIVER: //快速审核-司机认证
 							intent = new Intent(context, AuditDriverActivity.class);
+							break;
+						case Const.PUSH_ASKBUY_PASS:
+							intent = new Intent(context, AskBuyManageActivity.class);
+							break;
+						case Const.PUSH_ASKBUY_ORDER_PASS:
+							intent = new Intent(context, AskBuyOrderListActivity.class);
+							intent.putExtra(Const.KEY_POSITION, 2);
+							break;
+						case Const.PUSH_ASKBUY_ORDER_REFUSE:
+							intent = new Intent(context, AskBuyOrderListActivity.class);
+							intent.putExtra(Const.KEY_POSITION, 1);
 							break;
 					}
 

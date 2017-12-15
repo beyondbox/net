@@ -22,8 +22,14 @@ import butterknife.ButterKnife;
 
 public class ChooseOfferAdapter extends MyBaseAdapter<AskBuyOffer> {
 
+    private boolean isReadMode = false;
+
     public ChooseOfferAdapter(Context context, List<AskBuyOffer> list) {
         super(context, list);
+    }
+
+    public void setReadMode(boolean readMode) {
+        isReadMode = readMode;
     }
 
     @Override
@@ -40,24 +46,21 @@ public class ChooseOfferAdapter extends MyBaseAdapter<AskBuyOffer> {
 
         AskBuyOffer offer = list.get(position);
         vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
+        vh.txtName.setText("厂家报价" + (position + 1));
 
-        if (offer.getOffer_user_type().equals("0")) {
-            vh.txtName.setText("平台报价");
+        if (isReadMode) {
+            vh.txtHandle.setEnabled(false);
+            vh.txtHandle.setOnClickListener(null);
         } else {
-            if (list.get(0).getOffer_user_type().equals("0")) {
-                vh.txtName.setText("企业报价" + position);
-            } else {
-                vh.txtName.setText("企业报价" + (position + 1));
+            vh.txtHandle.setEnabled(true);
+            if (onWhichClickListener != null) {
+                vh.txtHandle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onWhichClickListener.onWhichClick(view, position, 0);
+                    }
+                });
             }
-        }
-
-        if (onWhichClickListener != null) {
-            vh.txtHandle.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onWhichClickListener.onWhichClick(view, position, 0);
-                }
-            });
         }
 
         return convertView;

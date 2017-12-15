@@ -75,9 +75,12 @@ public class AskBuy implements Serializable{
     private String enterprise_productivity_auth_status;
     private String adviser_avatar;
     private String adviser_nicename;
+    private String examine_refusal_reason;
+    private String offer_num_read;
     private List<Avatar> img_list;
     private List<AskBuyOffer> offer_list;
 
+    private String order_id;
     private String purchase_num;
     private String pay_type;
     private String pay_money;
@@ -85,6 +88,12 @@ public class AskBuy implements Serializable{
     private String purchase_unit;
     private String surplus_money;
     private String pruchase_type;
+    private String address;
+    private String remarks;
+    private String purchase_id;
+    private String product_img;
+
+
 
     public String getId() {
         return id;
@@ -404,5 +413,61 @@ public class AskBuy implements Serializable{
 
     public void setPruchase_type(String pruchase_type) {
         this.pruchase_type = pruchase_type;
+    }
+
+    public String getExamine_refusal_reason() {
+        return examine_refusal_reason;
+    }
+
+    public void setExamine_refusal_reason(String examine_refusal_reason) {
+        this.examine_refusal_reason = examine_refusal_reason;
+    }
+
+    public String getOffer_num_read() {
+        return offer_num_read;
+    }
+
+    public void setOffer_num_read(String offer_num_read) {
+        this.offer_num_read = offer_num_read;
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getPurchase_id() {
+        return purchase_id;
+    }
+
+    public void setPurchase_id(String purchase_id) {
+        this.purchase_id = purchase_id;
+    }
+
+    public String getProduct_img() {
+        return product_img;
+    }
+
+    public void setProduct_img(String product_img) {
+        this.product_img = product_img;
     }
 }

@@ -24,6 +24,7 @@ import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyImageAdapter;
 import com.appjumper.silkscreen.ui.dynamic.adapter.OfferRecordAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.ShareUtil;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -41,6 +42,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.appjumper.silkscreen.util.Applibrary.mContext;
 
 /**
  * 求购详情
@@ -191,35 +194,16 @@ public class AskBuyDetailActivity extends BaseActivity {
 
         Picasso.with(context)
                 .load(data.getImg())
+                .resize(DisplayUtil.dip2px(mContext, 50), DisplayUtil.dip2px(mContext, 50))
+                .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(imgViHead);
 
-        if (data.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + "")) {
-            txtName.setText("丝网+官方");
-        } else {
-            String newName = "";
-            if (TextUtils.isEmpty(data.getNickname())) {
-                String mobile = data.getMobile();
-                newName = mobile.substring(0, 3) + "***" + mobile.substring(8, 11);
-            } else {
-                String nickName = data.getNickname();
-                int length = nickName.length();
-                switch (length) {
-                    case 1:
-                        newName = nickName + "***" + nickName;
-                        break;
-                    case 2:
-                        newName = nickName.substring(0, 1) + "***" + nickName.substring(1, 2);
-                        break;
-                    default:
-                        newName = nickName.substring(0, 1) + "***" + nickName.substring(length - 1, length);
-                        break;
-                }
-            }
-
-            txtName.setText(newName);
-        }
+        if (data.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
+            txtName.setText("丝网+官方求购G" + data.getId());
+        else
+            txtName.setText("求购信息C" + data.getId());
 
 
         if (data.getUser_id().equals(getUserID()))
@@ -259,10 +243,15 @@ public class AskBuyDetailActivity extends BaseActivity {
 
 
         txtTime.setText(data.getCreate_time().substring(5, 16));
-        txtTitle.setText("求购" + data.getProduct_name());
         txtContent.setText(data.getPurchase_content());
         txtReadNum.setText("浏览" + "(" + data.getConsult_num() + ")");
         txtOfferNum.setText("报价" + "(" + data.getOffer_num() + ")");
+
+        if (data.getPurchase_num().equals("0"))
+            txtTitle.setText(data.getProduct_name());
+        else
+            txtTitle.setText(data.getProduct_name() + data.getPurchase_num() + data.getPurchase_unit());
+
 
         final List<Avatar> imgList = data.getImg_list();
         if (imgList != null && imgList.size() > 0) {
@@ -304,7 +293,7 @@ public class AskBuyDetailActivity extends BaseActivity {
                     txtOffer.setText("您已报价");
                     txtOffer.setEnabled(false);
                     offerList.remove(i);
-                    offerList.add(offer);
+                    offerList.add(0, offer);
                     break;
                 }
             }
@@ -353,7 +342,7 @@ public class AskBuyDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.txtOffer, R.id.txtCall, R.id.right})
+    @OnClick({R.id.txtOffer, R.id.txtCall, R.id.right, R.id.imgViHead})
     public void onClick(View view) {
         if (data == null)
             return;
@@ -365,7 +354,7 @@ public class AskBuyDetailActivity extends BaseActivity {
             case R.id.txtOffer: //报价
                 if (txtOffer.getText().toString().equals("报价")) {
                     if (!MyApplication.appContext.checkMobile(context)) return;
-                    start_Activity(context, ReleaseOfferActivity.class, new BasicNameValuePair("id", id));
+                    start_Activity(context, ReleaseOfferActivity.class, new BasicNameValuePair("id", id), new BasicNameValuePair(Const.KEY_UNIT, data.getPurchase_unit()));
                 }
                 break;
             case R.id.txtCall: //咨询顾问
@@ -375,6 +364,14 @@ public class AskBuyDetailActivity extends BaseActivity {
                 break;
             case R.id.right: //分享
                 ShareUtil.intShare(context, view, data.getPurchase_content(), "求购" + data.getProduct_name(), Const.SHARE_ASKBUY_URL + "?id=" + id);
+                break;
+            case R.id.imgViHead:
+                Intent intent = new Intent(context, GalleryActivity.class);
+                ArrayList<String> urls = new ArrayList<String>();
+                urls.add(data.getImg());
+                intent.putExtra(GalleryActivity.EXTRA_IMAGE_URLS, urls);
+                intent.putExtra(GalleryActivity.EXTRA_IMAGE_INDEX, 0);
+                startActivity(intent);
                 break;
             default:
                 break;

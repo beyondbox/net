@@ -27,7 +27,7 @@
         android:lineSpacingExtra="2dp"
         android:text="厂家现货供应框架式护栏网 厂区双边丝框架护栏网"
         android:textSize="13sp"
-        android:textColor="@color/gray_color"/>
+        android:textColor="@color/new_gray_color"/>
 
 
 

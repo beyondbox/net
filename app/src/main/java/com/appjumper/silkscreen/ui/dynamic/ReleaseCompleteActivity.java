@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
-import com.appjumper.silkscreen.ui.my.MyReleaseActivity;
 import com.appjumper.silkscreen.util.Const;
 
 import butterknife.Bind;
@@ -55,7 +54,7 @@ public class ReleaseCompleteActivity extends BaseActivity {
                 initTitle("发布成功");
                 txtTitle.setText("发布成功");
                 txtMessage.setText("您发布的信息已经提交审核\n请耐心等待！");
-                txtManage.setText("查看已发布信息");
+                txtManage.setText("管理信息");
                 break;
             case TYPE_OFFER:
                 initTitle("报价成功");
@@ -76,7 +75,7 @@ public class ReleaseCompleteActivity extends BaseActivity {
             case R.id.txtManage:
                 switch (type) {
                     case TYPE_ASK_BUY:
-                        intent = new Intent(context, MyReleaseActivity.class);
+                        intent = new Intent(context, AskBuyManageActivity.class);
                         break;
                     case TYPE_OFFER:
                         intent = new Intent(context, MessageActivity.class);

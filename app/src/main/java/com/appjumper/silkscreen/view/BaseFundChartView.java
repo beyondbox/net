@@ -200,7 +200,7 @@ public class BaseFundChartView extends View {
 //                    //画除X轴之外的------背景虚线一条-------
 //                    path.moveTo(x, 0);//背景【虚线起点】。
 //                    path.lineTo(x, gridY  *2);//背景【虚线终点】。
-//                    linePaint.setColor(ContextCompat.getColor(getContext(),R.color.gray_color));
+//                    linePaint.setColor(ContextCompat.getColor(getContext(),R.color.new_gray_color));
 //                    canvas.drawPath(path, linePaint);
 //                }
             }
@@ -223,7 +223,7 @@ public class BaseFundChartView extends View {
                     //画除X轴之外的------背景虚线一条-------
                     path.moveTo(gridX, my);//背景【虚线起点】。
                     path.lineTo(getWidth(), my);//背景【虚线终点】。
-                    //linePaint.setColor(ContextCompat.getColor(getContext(), R.color.gray_color));
+                    //linePaint.setColor(ContextCompat.getColor(getContext(), R.color.new_gray_color));
                     linePaint.setColor(Color.parseColor("#C7C7C7"));
                     canvas.drawPath(path, linePaint);
                 }

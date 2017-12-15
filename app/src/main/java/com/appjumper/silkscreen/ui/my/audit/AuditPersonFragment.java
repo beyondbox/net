@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
-import com.appjumper.silkscreen.bean.User;
+import com.appjumper.silkscreen.bean.AuditUser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.util.AppTool;
@@ -65,7 +65,7 @@ public class AuditPersonFragment extends BaseFragment {
     private AuditPersonActivity activity;
     private Dialog dialogRefuse;
     private EditText edtTxtContent;
-    private User data;
+    private AuditUser data;
 
 
     @Override
@@ -79,7 +79,7 @@ public class AuditPersonFragment extends BaseFragment {
     protected void initData() {
         activity = (AuditPersonActivity) getActivity();
         Bundle bundle = getArguments();
-        data = (User) bundle.getSerializable(Const.KEY_OBJECT);
+        data = (AuditUser) bundle.getSerializable(Const.KEY_OBJECT);
         setData();
         initDialog();
         initProgressDialog(false, null);

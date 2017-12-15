@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="20dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:background="@color/while_color"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="收 货 人:"
+                        android:textSize="14sp"
+                        android:textColor="@color/new_gray_color"/>
+
+                    <EditText
+                        android:id="@+id/edtTxtConsigner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:padding="12dp"
+                        android:hint="请填写收货人姓名"
+                        android:textSize="14sp"
+                        android:textColor="@color/new_gray_light_color"
+                        android:textColorHint="@color/new_gray_light_color"/>
+                </LinearLayout>
+
+                <View style="@style/LineStyleLight"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="65dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="联系电话:"
+                        android:textSize="14sp"
+                        android:textColor="@color/new_gray_color"/>
+
+                    <EditText
+                        android:id="@+id/edtTxtMobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:padding="12dp"
+                        android:hint="请填写联系电话"
+                        android:inputType="phone"
+                        android:textSize="14sp"
+                        android:textColor="@color/new_gray_light_color"
+                        android:textColorHint="@color/new_gray_light_color"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/while_color"
+                android:layout_marginTop="12dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:orientation="vertical">
+
+                <CheckBox
+                    android:id="@+id/chk0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_marginBottom="2dp"
+                    android:drawableLeft="@drawable/selector_rdobtn_freight"
+                    android:drawablePadding="8dp"
+                    android:text="送到货站"
+                    android:textSize="14sp"
+                    android:textColor="@color/new_gray_color"/>
+
+                <LinearLayout
+                    android:id="@+id/llStation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <View style="@style/LineStyleLight"/>
+
+                    <TextView
+                        android:id="@+id/txtStation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/select_white_background"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:drawableRight="@mipmap/icon_arrows_right"
+                        android:drawablePadding="12dp"
+                        android:text="请选择货站"
+                        android:textColor="@color/new_gray_light_color"
+                        android:textSize="13sp"/>
+
+                    <View style="@style/LineStyleLight"/>
+
+
+                    <LinearLayout
+                        android:id="@+id/llCommonStation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="15dp"
+                            android:text="常用货站"
+                            android:textSize="14sp"
+                            android:textColor="@color/new_gray_color"/>
+
+                        <com.appjumper.silkscreen.view.MyListView
+                            android:id="@+id/lvStation"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <CheckBox
+                    android:id="@+id/chk1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:drawableLeft="@drawable/selector_rdobtn_freight"
+                    android:drawablePadding="8dp"
+                    android:text="送到指定地点"
+                    android:textSize="14sp"
+                    android:textColor="@color/new_gray_color"/>
+
+                <LinearLayout
+                    android:id="@+id/llLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <View style="@style/LineStyleLight"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="指定地点:"
+                            android:textSize="13sp"
+                            android:textColor="@color/new_gray_color"/>
+
+                        <EditText
+                            android:id="@+id/edtTxtLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:padding="12dp"
+                            android:lineSpacingExtra="2dp"
+                            android:hint="请输入指定地点"
+                            android:textSize="13sp"
+                            android:textColor="@color/new_gray_light_color"
+                            android:textColorHint="@color/new_gray_light_color"/>
+                    </LinearLayout>
+
+                    <View style="@style/LineStyleLight"/>
+
+                    <LinearLayout
+                        android:id="@+id/llCommonLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="15dp"
+                            android:text="常用地点"
+                            android:textSize="14sp"
+                            android:textColor="@color/new_gray_color"/>
+
+                        <com.appjumper.silkscreen.view.MyListView
+                            android:id="@+id/lvLocation"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="18dp"
+                android:layout_marginTop="10dp"
+                android:text="说明: 目前平台只支持送到安平县内的物流园区或者安平县及周边指定地点，暂不支持太远的配送，如有特殊需要，请自己安排运输。"
+                android:lineSpacingExtra="5dp"
+                android:textColor="@color/orange_color"
+                android:textSize="12sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <TextView
+        android:id="@+id/txtConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_btn_blue_rect"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="确定"
+        android:textColor="@color/while_color"
+        android:textSize="15sp" />
+
+</LinearLayout>

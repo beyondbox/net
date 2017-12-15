@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
@@ -11,20 +13,49 @@ import com.appjumper.silkscreen.bean.HomeDataResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.SPUtil;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 欢迎页
  */
 public class WelcomeActivity extends BaseActivity {
+
+	@Bind(R.id.imgViWelcome)
+	ImageView imgViWelcome;
+	@Bind(R.id.imgViGuide)
+	ImageView imgViGuide;
+
+	private int oldCode;
+	private int currCode;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
+		ButterKnife.bind(context);
 		//Context context = getApplicationContext();
 		//XGPushManager.registerPush(context);
+
+		oldCode = SPUtil.getInt(null, Const.KEY_VERSION_CODE, 0);
+		currCode = getVersionCode();
+
+		if (oldCode != currCode) {
+			imgViWelcome.setVisibility(View.GONE);
+			imgViGuide.setVisibility(View.VISIBLE);
+			SPUtil.putInt(null, Const.KEY_VERSION_CODE, currCode);
+		} else {
+			imgViGuide.setVisibility(View.GONE);
+			imgViWelcome.setVisibility(View.VISIBLE);
+		}
 
 		new Thread(new HomeDataRun()).start();
 	}
@@ -57,17 +88,22 @@ public class WelcomeActivity extends BaseActivity {
 	private class MyHandler extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
+			if (isDestroyed()) return;
+
 			switch (msg.what) {
 				case NETWORK_SUCCESS_PAGER_RIGHT:
 					HomeDataResponse detailsResponse = (HomeDataResponse) msg.obj;
 					if (detailsResponse.isSuccess()) {
 						getMyApplication().getMyUserManager().storeHomeInfo(detailsResponse);
 					}
+
+					if (oldCode != currCode) return;
+
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
 							try {
-								Thread.sleep(300);
+								Thread.sleep(200);
 								startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
 								WelcomeActivity.this.finish();
 							} catch (InterruptedException e) {
@@ -81,11 +117,12 @@ public class WelcomeActivity extends BaseActivity {
 					showErrorToast();
 					break;
 				default:
+					if (oldCode != currCode) return;
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
 							try {
-								Thread.sleep(300);
+								Thread.sleep(200);
 								startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
 								WelcomeActivity.this.finish();
 							} catch (InterruptedException e) {
@@ -98,5 +135,16 @@ public class WelcomeActivity extends BaseActivity {
 			}
 		}
 	};
+
+
+	@OnClick(R.id.imgViGuide)
+	public void onClick(View view) {
+		switch (view.getId()) {
+			case R.id.imgViGuide:
+				start_Activity(context, MainActivity.class);
+				finish();
+				break;
+		}
+	}
 
 }

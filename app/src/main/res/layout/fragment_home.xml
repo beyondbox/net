@@ -115,7 +115,7 @@
                         android:background="@color/while_color"
                         android:ellipsize="end"
                         android:singleLine="true"
-                        android:textColor="@color/gray_color"
+                        android:textColor="@color/new_gray_color"
                         android:textSize="14sp"
                         vswitch:idleDuaration="1500"
                         vswitch:switchDuaration="500"
@@ -129,7 +129,7 @@
                 <!--android:drawableLeft="@mipmap/icon_home_notice04"-->
                 <!--android:drawablePadding="6dp"-->
                 <!--android:text="电镀丝网特价销售，更有抽奖活动......"-->
-                <!--android:textColor="@color/gray_color"-->
+                <!--android:textColor="@color/new_gray_color"-->
                 <!--android:textSize="14sp" />-->
 
                 <LinearLayout

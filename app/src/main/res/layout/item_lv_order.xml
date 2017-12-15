@@ -47,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="（石笼网1、石笼网2）"
-                        android:textColor="@color/gray_color"
+                        android:textColor="@color/new_gray_color"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -62,7 +62,7 @@
                     android:maxLines="2"
                     android:ellipsize="end"
                     android:text="丝径100-200，网孔4-10厘米，尺寸100*200 200*400"
-                    android:textColor="@color/gray_color"
+                    android:textColor="@color/new_gray_color"
                     android:textSize="13sp" />
 
 
@@ -81,7 +81,7 @@
                         android:maxLines="1"
                         android:maxWidth="200dp"
                         android:text="阿普匠丝网有限公司"
-                        android:textColor="@color/gray_color"
+                        android:textColor="@color/new_gray_color"
                         android:textSize="14sp" />
 
                     <ImageView

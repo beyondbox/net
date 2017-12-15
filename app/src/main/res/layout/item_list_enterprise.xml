@@ -32,7 +32,7 @@
         android:layout_marginTop="5dp"
         android:text="入驻时间: 2016-03-18"
         android:textSize="12sp"
-        android:textColor="@color/gray_color"/>
+        android:textColor="@color/new_gray_color"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -70,7 +70,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/imageView"
         android:text="55km"
-        android:textColor="@color/gray_color"
+        android:textColor="@color/new_gray_color"
         android:textSize="13sp"/>
 
     <TextView
@@ -82,7 +82,7 @@
         android:layout_below="@id/imageView"
         android:layout_marginTop="10dp"
         android:text="石笼网加工、石笼网订做、金刚网现货、浸塑加工"
-        android:textColor="@color/gray_color"
+        android:textColor="@color/new_gray_color"
         android:textSize="13sp"/>
 
 

@@ -4,15 +4,20 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.widget.Toast;
+
+import com.appjumper.silkscreen.base.MyApplication;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -177,10 +182,22 @@ public class ImageUtil {
                 }
                 os = new FileOutputStream(targetFile);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, quality, os);
+
+                //通知图片更新
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                Uri uri;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    uri = FileProvider.getUriForFile(MyApplication.appContext, Const.FILE_PROVIDER, targetFile);
+                } else {
+                    uri = Uri.fromFile(targetFile);
+                }
+                intent.setData(uri);
+                MyApplication.appContext.sendBroadcast(intent);
+
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(Applibrary.mContext, "保存图片出错", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyApplication.appContext, "保存图片出错", Toast.LENGTH_SHORT).show();
                 return false;
             } finally {
                 if (os != null) {
@@ -193,7 +210,7 @@ public class ImageUtil {
             }
 
         } else {
-            Toast.makeText(Applibrary.mContext, "手机存储不可用，请检查存储状态", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.appContext, "手机存储不可用，请检查存储状态", Toast.LENGTH_SHORT).show();
             return false;
         }
     }

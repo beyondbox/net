@@ -43,7 +43,7 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
                 .error(R.mipmap.ic_launcher)
                 .into((ImageView) helper.getView(R.id.imgViHead));
 
-        String newName = "";
+        /*String newName = "";
         if (TextUtils.isEmpty(item.getNickname())) {
             String mobile = item.getMobile();
             newName = mobile.substring(0, 3) + "***" + mobile.substring(8, 11);
@@ -61,12 +61,15 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
                     newName = nickName.substring(0, 1) + "***" + nickName.substring(length - 1, length);
                     break;
             }
-        }
+        }*/
 
+        if (item.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
+            helper.setText(R.id.txtName, "丝网+官方求购G" + item.getId());
+        else
+            helper.setText(R.id.txtName, "求购信息C" + item.getId());
 
         String loginId = userManager.getUserId();
-        helper.setText(R.id.txtName, newName)
-                .setText(R.id.txtTime, item.getCreate_time().substring(5, 16))
+        helper.setText(R.id.txtTime, item.getCreate_time().substring(5, 16))
                 .setText(R.id.txtContent, item.getPurchase_content())
                 .setText(R.id.txtReadNum, "浏览" + "(" + item.getConsult_num() + ")")
                 .setText(R.id.txtOfferNum, "报价" + "(" + item.getOffer_num() + ")")
@@ -95,7 +98,7 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
             case Const.INFO_TYPE_OFFICIAL:
                 txtMark.setText("官方");
                 txtMark.setBackgroundResource(R.drawable.shape_mark_official_bg);
-                helper.setText(R.id.txtName, "丝网+官方");
+                //helper.setText(R.id.txtName, "丝网+官方");
                 break;
             default:
                 break;

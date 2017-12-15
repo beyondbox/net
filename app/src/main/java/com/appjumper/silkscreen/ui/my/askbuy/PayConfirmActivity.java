@@ -74,10 +74,10 @@ public class PayConfirmActivity extends BaseActivity {
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         if (ChooseOfferActivity.instance != null)
                             ChooseOfferActivity.instance.finish();
-                        if (AskBuyMakeOrderActivity.instance != null)
-                            AskBuyMakeOrderActivity.instance.finish();
-                        if (AskBuyOrderDetailActivity.instance != null)
-                            AskBuyOrderDetailActivity.instance.finish();
+                        /*if (AskBuyMakeOrderActivity.instance != null)
+                            AskBuyMakeOrderActivity.instance.finish();*/
+                        /*if (AskBuyOrderDetailActivity.instance != null)
+                            AskBuyOrderDetailActivity.instance.finish();*/
 
                         sendBroadcast(new Intent(Const.ACTION_RELEASE_SUCCESS));
                         showErrorToast("请等待平台确认收款");

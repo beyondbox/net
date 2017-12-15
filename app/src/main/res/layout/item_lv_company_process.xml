@@ -59,7 +59,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="丝径：120-300丝"
-                    android:textColor="@color/gray_color"
+                    android:textColor="@color/new_gray_color"
                     android:textSize="13sp" />
 
                 <TextView
@@ -70,7 +70,7 @@
                     android:maxLines="1"
                     android:ellipsize="end"
                     android:text="网孔：4-9cm"
-                    android:textColor="@color/gray_color"
+                    android:textColor="@color/new_gray_color"
                     android:textSize="13sp" />
             </LinearLayout>
 

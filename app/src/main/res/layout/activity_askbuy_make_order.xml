@@ -16,7 +16,7 @@
             android:id="@+id/llContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             android:orientation="vertical">
 
             <include layout="@layout/layout_askbuy_product_info"/>

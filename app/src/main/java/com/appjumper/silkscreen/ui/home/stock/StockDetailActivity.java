@@ -315,7 +315,7 @@ public class StockDetailActivity extends BaseActivity {
      * 初始化规格选择对话框
      */
     private void initSepcSelectPopup() {
-        View contentView = LayoutInflater.from(context).inflate(R.layout.layout_stock_spec_select, null);
+        View contentView = LayoutInflater.from(context).inflate(R.layout.popup_stock_spec_select, null);
         popup = new PopupWindow(contentView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         ImageView imgViProduct = (ImageView) contentView.findViewById(R.id.imgViProduct);

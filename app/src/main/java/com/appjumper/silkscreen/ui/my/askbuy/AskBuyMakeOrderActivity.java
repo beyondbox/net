@@ -2,27 +2,27 @@ package com.appjumper.silkscreen.ui.my.askbuy;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.bean.Address;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.AskBuyOffer;
-import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyImageAdapter;
+import com.appjumper.silkscreen.ui.dynamic.AskBuyManageDetailActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
-import com.bigkoo.pickerview.OptionsPickerView;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
@@ -31,12 +31,9 @@ import org.apache.http.Header;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
@@ -50,79 +47,52 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
     LinearLayout llContent;
     @Bind(R.id.imgViHead)
     ImageView imgViHead;
-    @Bind(R.id.txtName)
-    TextView txtName;
-    @Bind(R.id.txtTime)
-    TextView txtTime;
     @Bind(R.id.txtContent)
     TextView txtContent;
-    @Bind(R.id.gridImg)
-    GridView gridImg;
 
-    @Bind(R.id.imgViAvatar)
-    ImageView imgViAvatar;
-    @Bind(R.id.txtAdviserName)
-    TextView txtAdviserName;
     @Bind(R.id.txtPrice)
     TextView txtPrice;
     @Bind(R.id.txtNum)
     TextView txtNum;
-    @Bind(R.id.txtPayedType)
-    TextView txtPayedType;
-    @Bind(R.id.imgViAdd)
-    ImageView imgViAdd;
-    @Bind(R.id.imgViMinus)
-    ImageView imgViMinus;
     @Bind(R.id.txtTotal)
     TextView txtTotal;
 
-    public static AskBuyMakeOrderActivity instance = null;
+    @Bind(R.id.txtConsigner)
+    TextView txtConsigner;
+    @Bind(R.id.txtMobile)
+    TextView txtMobile;
+    @Bind(R.id.txtAddress)
+    TextView txtAddress;
+    @Bind(R.id.edtTxtRemark)
+    EditText edtTxtRemark;
+    @Bind(R.id.switchTrans)
+    SwitchCompat switchTrans;
+    @Bind(R.id.txtConfirm)
+    TextView txtConfirm;
+
+
     private String id;
     private AskBuy data;
     private AskBuyOffer offer;
-    private int buyNum = 1;
     private double payMoney;
 
-    private String payType = Const.PAY_TYPE_ALL;
-    private String [] payTypeArr = {"全额付款", "30%订金"};
-    private OptionsPickerView pvPayType;
-
+    private Address address; //收货地址
+    private int siwangjia_short = 0; //是否由丝网+进行短途运输（0-是，默认；1-否）
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_askbuy_make_order);
+        setContentView(R.layout.activity_askbuy_make_order2);
         ButterKnife.bind(context);
-        instance = this;
         initBack();
+        initTitle("创建订单");
         initProgressDialog(false, null);
-        initPickerView();
 
         id = getIntent().getStringExtra("id");
         offer = (AskBuyOffer) getIntent().getSerializableExtra(Const.KEY_OBJECT);
         getData();
-    }
-
-
-    private void initPickerView() {
-        pvPayType = new OptionsPickerView.Builder(context, new OptionsPickerView.OnOptionsSelectListener() {
-            @Override
-            public void onOptionsSelect(int options1, int options2, int options3, View v) {
-                switch (options1) {
-                    case 0:
-                        payType = Const.PAY_TYPE_ALL;
-                        break;
-                    case 1:
-                        payType = Const.PAY_TYPE_SUB;
-                        break;
-                }
-                txtPayedType.setText(payTypeArr[options1]);
-                calculatePayMoney();
-            }
-        }).build();
-
-        pvPayType.setPicker(Arrays.asList(payTypeArr));
+        getLastAddress();
     }
 
 
@@ -176,73 +146,52 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
 
 
     /**
+     * 获取上次提交订单的地址
+     */
+    private void getLastAddress() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "select_purchase_address");
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        address = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), Address.class);
+                        txtConsigner.setText(address.getName());
+                        txtMobile.setText(address.getMobile());
+                        txtAddress.setText(address.getAddress());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+
+    /**
      * 渲染数据
      */
     private void setData() {
-        initTitle("求购" + data.getProduct_name());
-
         Picasso.with(context)
                 .load(data.getImg())
+                .resize(DisplayUtil.dip2px(context, 60), DisplayUtil.dip2px(context, 60))
+                .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(imgViHead);
 
-        String newName = "";
-        if (TextUtils.isEmpty(data.getNickname())) {
-            String mobile = data.getMobile();
-            newName = mobile.substring(0, 3) + "***" + mobile.substring(8, 11);
-        } else {
-            String nickName = data.getNickname();
-            int length = nickName.length();
-            switch (length) {
-                case 1:
-                    newName = nickName + "***" + nickName;
-                    break;
-                case 2:
-                    newName = nickName.substring(0, 1) + "***" + nickName.substring(1, 2);
-                    break;
-                default:
-                    newName = nickName.substring(0, 1) + "***" + nickName.substring(length - 1, length);
-                    break;
-            }
-        }
-
-        txtName.setText(newName);
-        txtTime.setText(data.getCreate_time().substring(5, 16));
         txtContent.setText(data.getPurchase_content());
-
-        final List<Avatar> imgList = data.getImg_list();
-        if (imgList != null && imgList.size() > 0) {
-            gridImg.setVisibility(View.VISIBLE);
-            AskBuyImageAdapter imgAdapter = new AskBuyImageAdapter(context, imgList);
-            gridImg.setAdapter(imgAdapter);
-            gridImg.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(context, GalleryActivity.class);
-                    ArrayList<String> urls = new ArrayList<String>();
-                    for (Avatar avatar : imgList) {
-                        urls.add(avatar.getOrigin());
-                    }
-                    intent.putExtra(GalleryActivity.EXTRA_IMAGE_URLS, urls);
-                    intent.putExtra(GalleryActivity.EXTRA_IMAGE_INDEX, i);
-                    context.startActivity(intent);
-                }
-            });
-        } else {
-            gridImg.setVisibility(View.GONE);
-        }
-
-
-        Picasso.with(context)
-                .load(data.getAdviser_avatar())
-                .placeholder(R.mipmap.img_error_head)
-                .error(R.mipmap.img_error_head)
-                .into(imgViAvatar);
-
-        txtAdviserName.setText("报价顾问" + data.getAdviser_nicename());
-
         txtPrice.setText("¥" + offer.getMoney());
+        txtNum.setText(data.getProduct_name() + " " + data.getPurchase_num() + data.getPurchase_unit());
         calculatePayMoney();
     }
 
@@ -251,26 +200,35 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
      * 提交订单
      */
     private void makeOrder() {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "order_pay");
+        RequestParams params = MyHttpClient.getApiParam("purchase", "purchase_commit_order");
         params.put("uid", getUserID());
         params.put("pay_money", AppTool.df.format(payMoney));
         params.put("product_id", data.getProduct_id());
         params.put("product_name", data.getProduct_name());
+        params.put("product_img", data.getImg());
         params.put("purchase_id", data.getId());
-        params.put("pay_type", payType);
-        params.put("purchase_num", buyNum);
+        params.put("pay_type", Const.PAY_TYPE_ALL);
+        params.put("purchase_num", data.getPurchase_num());
         params.put("offer_money", offer.getMoney());
-        params.put("purchase_unit", offer.getPrice_unit().substring(2, offer.getPrice_unit().length()));
+        params.put("offer_id", offer.getUser_id());
+        params.put("purchase_unit", data.getPurchase_unit());
         params.put("offer_id", offer.getUser_id());
 
-        double surplusMoney;
-        if (payType.equals(Const.PAY_TYPE_ALL)) {
-            surplusMoney = 0;
-        } else {
-            surplusMoney = Double.valueOf(offer.getMoney()) * buyNum - payMoney;
-        }
+        params.put("remarks", edtTxtRemark.getText().toString().trim());
+        params.put("siwangjia_short", siwangjia_short);
+        params.put("name", address.getName());
+        params.put("mobile", address.getMobile());
+        params.put("address_type", address.getAddress_type());
+        params.put("purchase_content", data.getPurchase_content());
 
-        params.put("surplus_money", AppTool.df.format(surplusMoney));
+        if (address.getAddress_type().equals("0")) {
+            String [] arr = address.getAddress().split("\\s");
+            params.put("station_name", arr[0]);
+            params.put("station_address", arr[1]);
+            params.put("station_id", address.getStation_id());
+        } else {
+            params.put("address", address.getAddress());
+        }
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
@@ -286,10 +244,10 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        if (ChooseOfferActivity.instance != null)
-                            ChooseOfferActivity.instance.finish();
-                        sendBroadcast(new Intent(Const.ACTION_RELEASE_SUCCESS));
-                        showErrorToast("支付成功");
+                        saveAddress();
+                        if (AskBuyManageDetailActivity.instance != null) AskBuyManageDetailActivity.instance.finish();
+                        showErrorToast("提交订单成功");
+                        start_Activity(context, AskBuyOrderListActivity.class);
                         finish();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
@@ -307,9 +265,7 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
             @Override
             public void onFinish() {
                 super.onFinish();
-                if (isDestroyed())
-                    return;
-
+                if (isDestroyed()) return;
                 progress.dismiss();
             }
         });
@@ -321,62 +277,74 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
      */
     private void calculatePayMoney() {
         double price = Double.valueOf(offer.getMoney());
-        double total = price * buyNum;
-        if (payType.equals(Const.PAY_TYPE_ALL))
-            payMoney = total;
-        else
-            payMoney = total * 0.3;
+        int num = Integer.valueOf(data.getPurchase_num());
+        payMoney = price * num;
 
         payMoney = Double.valueOf(AppTool.dfRound.format(payMoney));
-        txtTotal.setText("¥" + AppTool.df.format(payMoney));
+        txtTotal.setText("¥ " + AppTool.df.format(payMoney) + "元");
     }
 
 
-    @OnClick({R.id.txtCall, R.id.txtConfirm, R.id.imgViMinus, R.id.imgViAdd, R.id.txtPayedType})
+    /**
+     * 保存收货地址
+     */
+    private void saveAddress() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "add_purchase_address");
+        params.put("uid", getUserID());
+        params.put("mobile", address.getMobile());
+        params.put("name", address.getName());
+        params.put("address_type", address.getAddress_type());
+        params.put("address", address.getAddress());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+
+    @OnCheckedChanged({R.id.switchTrans, R.id.chkProtocol})
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        switch (compoundButton.getId()) {
+            case R.id.switchTrans:
+                if (b)
+                    siwangjia_short = 0;
+                else
+                    siwangjia_short = 1;
+                break;
+            case R.id.chkProtocol:
+                if (b)
+                    txtConfirm.setEnabled(true);
+                else
+                    txtConfirm.setEnabled(false);
+                break;
+        }
+    }
+
+
+    @OnClick({R.id.txtConfirm, R.id.rlAddress})
     public void onClick(View view) {
         if (data == null)
             return;
 
+        Intent intent = null;
         switch (view.getId()) {
-            case R.id.txtCall:
-                if (!TextUtils.isEmpty(data.getAdviser_mobile()))
-                    AppTool.dial(context, data.getAdviser_mobile());
-                break;
-            case R.id.imgViAdd:
-                buyNum++;
-                txtNum.setText(buyNum + "");
-                calculatePayMoney();
-                break;
-            case R.id.imgViMinus:
-                if (buyNum > 1) {
-                    buyNum--;
-                    txtNum.setText(buyNum + "");
-                }
-                calculatePayMoney();
-                break;
-            case R.id.txtPayedType:
-                pvPayType.show();
-                break;
             case R.id.txtConfirm:
-                Intent intent = new Intent(context, PayConfirmActivity.class);
-                intent.putExtra(Const.KEY_OBJECT, data);
-                intent.putExtra("pay_money", AppTool.df.format(payMoney));
-                intent.putExtra("pay_type", payType);
-                intent.putExtra("purchase_num", buyNum + "");
-                intent.putExtra("offer_money", offer.getMoney());
-                intent.putExtra("purchase_unit", offer.getPrice_unit().substring(2, offer.getPrice_unit().length()));
-                intent.putExtra("offer_id", offer.getUser_id());
-
-                double surplusMoney;
-                if (payType.equals(Const.PAY_TYPE_ALL)) {
-                    surplusMoney = 0;
-                } else {
-                    surplusMoney = Double.valueOf(offer.getMoney()) * buyNum - payMoney;
+                if (TextUtils.isEmpty(txtAddress.getText().toString().trim())) {
+                    showErrorToast("请选择收货地址");
+                    return;
                 }
-
-                intent.putExtra("surplus_money", AppTool.df.format(surplusMoney));
-
-                startActivity(intent);
+                makeOrder();
+                break;
+            case R.id.rlAddress: //选择地址
+                intent = new Intent(context, AddAddressActivity.class);
+                intent.putExtra(Const.KEY_OBJECT, address);
+                startActivityForResult(intent, Const.REQUEST_CODE_SELECT_ADDRESS);
                 break;
             default:
                 break;
@@ -385,8 +353,16 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
 
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        instance = null;
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null)
+            return;
+
+        if (requestCode == Const.REQUEST_CODE_SELECT_ADDRESS) {
+            address = (Address) data.getSerializableExtra(Const.KEY_OBJECT);
+            txtConsigner.setText(address.getName());
+            txtMobile.setText(address.getMobile());
+            txtAddress.setText(address.getAddress());
+        }
     }
 }

@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,8 +82,8 @@ public class TrendFragment extends BaseFragment {
         });
 
         mTab.add(new MaterialFragment());
-        mTab.add(new FuturesFragment());
-        mTab.add(new MarketFragment());
+        //mTab.add(new FuturesFragment());
+        //mTab.add(new MarketFragment());
         idViewPager.setOffscreenPageLimit(mTab.size() - 1);
         idViewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
         idViewPager.setCurrentItem(0);

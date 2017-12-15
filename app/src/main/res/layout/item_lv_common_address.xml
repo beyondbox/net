@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp">
+
+    <ImageView
+        android:id="@+id/imgViDelete"
+        android:layout_width="30dp"
+        android:layout_height="14dp"
+        android:src="@drawable/delete_gray"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/imageView"
+        android:paddingRight="10dp"
+        android:layout_centerVertical="true"
+        android:text="远通北京货运 A区10栋29号"
+        android:textSize="13sp"
+        android:textColor="@color/new_gray_light_color"/>
+
+</RelativeLayout>

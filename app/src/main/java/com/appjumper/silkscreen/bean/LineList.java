@@ -1,5 +1,7 @@
 package com.appjumper.silkscreen.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -17,6 +19,7 @@ public class LineList implements Serializable{
     private Avatar enterprise_logo;
     private String type;//1是企业 2个人
     private String car_space;
+    @SerializedName(value = "id", alternate = {"station_id"})
     private String id;
     private String date;
     private String user_nicename;
@@ -41,8 +44,11 @@ public class LineList implements Serializable{
     private String auth_status;
     private boolean is_read = true;
     private String line_type;
+    @SerializedName(value = "official_name", alternate = {"station_name"})
     private String official_name;
     private String official_mobile;
+    @SerializedName(value = "official_address", alternate = {"station_address"})
+    private String official_address;
 
     private String product_name;
     private String productspec;
@@ -349,5 +355,13 @@ public class LineList implements Serializable{
 
     public void setOfficial_mobile(String official_mobile) {
         this.official_mobile = official_mobile;
+    }
+
+    public String getOfficial_address() {
+        return official_address;
+    }
+
+    public void setOfficial_address(String official_address) {
+        this.official_address = official_address;
     }
 }

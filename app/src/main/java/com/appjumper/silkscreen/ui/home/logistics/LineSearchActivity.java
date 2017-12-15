@@ -101,7 +101,12 @@ public class LineSearchActivity extends BaseActivity {
                         llHot.setVisibility(View.GONE);
                         ptrLayt.setVisibility(View.VISIBLE);
                         AppTool.hideSoftInput(context);
-                        ptrLayt.autoRefresh();
+                        ptrLayt.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ptrLayt.autoRefresh();
+                            }
+                        }, 50);
                         addHot();
                         break;
                     default:
@@ -141,8 +146,9 @@ public class LineSearchActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                if (checkLogined())
+                if (checkLogined()) {
                     start_Activity(context, LineDetailsActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()));
+                }
             }
         });
 

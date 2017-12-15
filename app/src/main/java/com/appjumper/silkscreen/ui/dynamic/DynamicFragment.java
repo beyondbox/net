@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -37,8 +36,8 @@ import butterknife.OnClick;
 
 public class DynamicFragment extends BaseFragment {
 
-    @Bind(R.id.back)
-    ImageView imgViBack;
+    @Bind(R.id.left)
+    TextView txtLeft;
     @Bind(R.id.right)
     TextView txtRight;
     @Bind(R.id.frameContent)
@@ -64,8 +63,6 @@ public class DynamicFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.fragment_dynamic, container, false);
         ButterKnife.bind(this, view);
 
-        //txtTitle.setText("动态");
-        imgViBack.setVisibility(View.GONE);
         txtRight.setText("发布");
         return view;
     }
@@ -88,10 +85,12 @@ public class DynamicFragment extends BaseFragment {
                     case R.id.rdoBtnAskBuy:
                         switchFragment(0);
                         txtRight.setText("发布");
+                        txtLeft.setVisibility(View.VISIBLE);
                         break;
                     case R.id.rdoBtnAttention:
                         switchFragment(1);
                         txtRight.setText("管理");
+                        txtLeft.setVisibility(View.INVISIBLE);
                         break;
                     default:
                         break;
@@ -134,7 +133,7 @@ public class DynamicFragment extends BaseFragment {
     };
 
 
-    @OnClick(R.id.right)
+    @OnClick({R.id.right, R.id.left})
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
@@ -150,6 +149,10 @@ public class DynamicFragment extends BaseFragment {
                         attentionFragment.attentionManage();
                     }
                 }
+                break;
+            case R.id.left:
+                if (checkLogined())
+                    start_Activity(context, AskBuyManageActivity.class);
                 break;
             default:
                 break;

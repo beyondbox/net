@@ -73,6 +73,14 @@ public class Const {
      * 地图选点
      */
     public static final int REQUEST_CODE_MAP_CHOOSE = 2012;
+    /**
+     * 选择收货地址
+     */
+    public static final int REQUEST_CODE_SELECT_ADDRESS = 2013;
+    /**
+     * 选择货站
+     */
+    public static final int REQUEST_CODE_SELECT_STATION = 2014;
 
 
 
@@ -197,6 +205,13 @@ public class Const {
     public static final int ASKBUY_RECEIPT_ACCEPT = 7; //求购-报价方收款审核通过
 
 
+    public static final int ASKBUY_ORDER_AUDITING = 0; //求购订单-审核中
+    public static final int ASKBUY_ORDER_PAYING = 1; //求购订单-待付款
+    public static final int ASKBUY_ORDER_REFUSE = 2; //求购订单-审核拒绝
+    public static final int ASKBUY_ORDER_RECEIPTING = 3; //求购订单-待收款
+    public static final int ASKBUY_ORDER_FINISH = 4; //求购订单-交易完成
+
+
     public static final String PAY_TYPE_ALL = "0"; //支付方式-全额
     public static final String PAY_TYPE_SUB = "1"; //支付方式-订金
 
@@ -214,6 +229,9 @@ public class Const {
     public static final int PUSH_AUDIT_FREIGHT = 12; //推送-快速审核-空车配货
     public static final int PUSH_AUDIT_PERSON = 13; //推送-快速审核-个人认证
     public static final int PUSH_AUDIT_DRIVER = 14; //推送-快速审核-司机认证
+    public static final int PUSH_ASKBUY_ORDER_PASS = 15; //推送-求购订单审核通过
+    public static final int PUSH_ASKBUY_PASS = 16; //推送-求购信息审核通过
+    public static final int PUSH_ASKBUY_ORDER_REFUSE = 17; //推送-求购订单审核失败
 
 
     public static final int FREIGHT_AUDITING = 0; //空车配货-审核中
@@ -256,6 +274,9 @@ public class Const {
     public static final String KEY_POI = "poi";
     public static final String KEY_LATLNG = "latLng";
     public static final String KEY_POSITION = "position";
+    public static final String KEY_IS_SELECT_MODE = "isSelectMode";
+    public static final String KEY_UNIT = "unit";
+    public static final String KEY_VERSION_CODE = "version_code";
 
 
 

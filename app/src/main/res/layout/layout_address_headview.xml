@@ -27,7 +27,7 @@
         android:layout_marginLeft="12dp"
         android:layout_marginTop="24dp"
         android:text="历史搜索"
-        android:textColor="@color/gray_color"
+        android:textColor="@color/new_gray_color"
         android:textSize="15sp" />
 
     <com.appjumper.silkscreen.view.MyGridView

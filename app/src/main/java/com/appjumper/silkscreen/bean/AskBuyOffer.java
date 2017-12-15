@@ -60,6 +60,13 @@ public class AskBuyOffer implements Serializable{
     private String product_img;
     private String purchase_user_nicename;
     private String purchase_user_mobile;
+    private String offer_num;
+    private String product_name;
+    private String purchase_num;
+    private String purchase_unit;
+    private String pruchase_type;
+    private String expiry_date;
+
 
     public String getId() {
         return id;
@@ -260,5 +267,53 @@ public class AskBuyOffer implements Serializable{
 
     public void setPurchase_user_mobile(String purchase_user_mobile) {
         this.purchase_user_mobile = purchase_user_mobile;
+    }
+
+    public String getOffer_num() {
+        return offer_num;
+    }
+
+    public void setOffer_num(String offer_num) {
+        this.offer_num = offer_num;
+    }
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
+    }
+
+    public String getPurchase_num() {
+        return purchase_num;
+    }
+
+    public void setPurchase_num(String purchase_num) {
+        this.purchase_num = purchase_num;
+    }
+
+    public String getPurchase_unit() {
+        return purchase_unit;
+    }
+
+    public void setPurchase_unit(String purchase_unit) {
+        this.purchase_unit = purchase_unit;
+    }
+
+    public String getPruchase_type() {
+        return pruchase_type;
+    }
+
+    public void setPruchase_type(String pruchase_type) {
+        this.pruchase_type = pruchase_type;
+    }
+
+    public String getExpiry_date() {
+        return expiry_date;
+    }
+
+    public void setExpiry_date(String expiry_date) {
+        this.expiry_date = expiry_date;
     }
 }

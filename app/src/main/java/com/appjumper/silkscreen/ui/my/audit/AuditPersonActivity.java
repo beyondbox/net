@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.bean.User;
+import com.appjumper.silkscreen.bean.AuditUser;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
@@ -39,7 +39,7 @@ public class AuditPersonActivity extends BaseActivity {
     @Bind(R.id.viewPager)
     ViewPager viewPager;
 
-    private List<User> dataList = new ArrayList<>();
+    private List<AuditUser> dataList = new ArrayList<>();
     private List<Fragment> fragList = new ArrayList<>();
     private ViewPagerFragAdapter pagerAdapter;
 
@@ -83,14 +83,14 @@ public class AuditPersonActivity extends BaseActivity {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
-                        List<User> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), User.class);
+                        List<AuditUser> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), AuditUser.class);
                         count = dataObj.optInt("total");
                         txtCount.setText("未审核信息" + count + "条");
                         dataList.clear();
                         dataList.addAll(list);
 
                         fragList.clear();
-                        for (User user : dataList) {
+                        for (AuditUser user : dataList) {
                             AuditPersonFragment fragment = new AuditPersonFragment();
                             Bundle bundle = new Bundle();
                             bundle.putSerializable(Const.KEY_OBJECT, user);

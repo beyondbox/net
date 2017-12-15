@@ -171,7 +171,7 @@
                             android:background="@color/while_color"
                             android:ellipsize="end"
                             android:singleLine="true"
-                            android:textColor="@color/gray_color"
+                            android:textColor="@color/new_gray_color"
                             android:textSize="14sp"
                             vswitch:idleDuaration="1500"
                             vswitch:switchDuaration="500"
