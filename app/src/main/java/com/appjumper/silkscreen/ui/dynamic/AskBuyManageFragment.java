@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,6 +71,7 @@ public class AskBuyManageFragment extends BaseFragment {
     private int totalSize;
 
     private PopupWindow popupDelete;
+    private String pushId;
 
 
 
@@ -83,6 +85,9 @@ public class AskBuyManageFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        Bundle bundle = getArguments();
+        if (bundle != null) pushId = bundle.getString("id");
+
         initRecyclerView();
         initRefreshLayout();
         initProgressDialog(false, null);
@@ -259,6 +264,15 @@ public class AskBuyManageFragment extends BaseFragment {
 
                         if (dataList.size() < totalSize)
                             adapter.setEnableLoadMore(true);
+
+                        //处理推送
+                        if (page == 1) {
+                            if (!TextUtils.isEmpty(pushId)) {
+                                start_Activity(context, AskBuyManageDetailActivity.class, new BasicNameValuePair("id", pushId));
+                                pushId = "";
+                            }
+                        }
+
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }

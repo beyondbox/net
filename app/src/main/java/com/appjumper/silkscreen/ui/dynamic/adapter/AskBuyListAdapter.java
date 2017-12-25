@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.AskBuy;
+import com.appjumper.silkscreen.bean.AskBuyOffer;
 import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
@@ -35,6 +36,8 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
 
     @Override
     protected void convert(BaseViewHolder helper, AskBuy item) {
+        String loginId = userManager.getUserId();
+
         Picasso.with(mContext)
                 .load(item.getImg())
                 .resize(DisplayUtil.dip2px(mContext, 50), DisplayUtil.dip2px(mContext, 50))
@@ -63,12 +66,30 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
             }
         }*/
 
-        if (item.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
-            helper.setText(R.id.txtName, "丝网+官方求购G" + item.getId());
-        else
-            helper.setText(R.id.txtName, "求购信息C" + item.getId());
+        TextView txtoffer = helper.getView(R.id.txtOffer);
+        List<AskBuyOffer> offerList = item.getOffer_list();
+        if (offerList != null && offerList.size() > 0) {
+            txtoffer.setText("报价");
+            txtoffer.setEnabled(true);
+            for (AskBuyOffer offer : offerList) {
+                if (loginId.equals(offer.getUser_id())) {
+                    txtoffer.setText("已报价");
+                    txtoffer.setEnabled(false);
+                    break;
+                }
+            }
+        } else {
+            txtoffer.setText("报价");
+            txtoffer.setEnabled(true);
+        }
 
-        String loginId = userManager.getUserId();
+
+        if (item.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
+            helper.setText(R.id.txtName, "求购G" + item.getId());
+        else
+            helper.setText(R.id.txtName, "求购C" + item.getId());
+
+
         helper.setText(R.id.txtTime, item.getCreate_time().substring(5, 16))
                 .setText(R.id.txtContent, item.getPurchase_content())
                 .setText(R.id.txtReadNum, "浏览" + "(" + item.getConsult_num() + ")")
@@ -81,7 +102,7 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
         if (item.getPurchase_num().equals("0"))
             helper.setText(R.id.txtTitle, item.getProduct_name());
         else
-            helper.setText(R.id.txtTitle, item.getProduct_name() + item.getPurchase_num() + item.getPurchase_unit());
+            helper.setText(R.id.txtTitle, item.getProduct_name() + " " + item.getPurchase_num() + item.getPurchase_unit());
 
 
         TextView txtMark = helper.getView(R.id.txtMark);
@@ -114,7 +135,6 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
                 txtMark.setBackgroundResource(R.drawable.shape_mark_person_bg);
             }
         }
-
 
         final List<Avatar> imgList = item.getImg_list();
         if (imgList != null && imgList.size() > 0) {

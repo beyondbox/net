@@ -5,13 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
@@ -25,6 +29,7 @@ import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyFilterAdapter;
 import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyListAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -61,6 +66,10 @@ public class AskBuyFragment extends BaseFragment {
     View markAll;
     @Bind(R.id.recyclerFilter)
     RecyclerView recyclerFilter;
+    @Bind(R.id.llFilter)
+    LinearLayout llFilter;
+    @Bind(R.id.imgViCall)
+    ImageView imgViCall;
 
     private List<AskBuy> dataList;
     private AskBuyListAdapter adapter;
@@ -72,6 +81,9 @@ public class AskBuyFragment extends BaseFragment {
     private int pageSize = 30;
     private int totalSize;
     private String productId = "";
+
+    private int lastX;
+    private int lastY;
 
 
 
@@ -97,7 +109,14 @@ public class AskBuyFragment extends BaseFragment {
             public void run() {
                 ptrLayt.autoRefresh();
             }
-        }, 50);
+        }, 60);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setHoverButton();
+            }
+        }, 200);
     }
 
 
@@ -123,7 +142,9 @@ public class AskBuyFragment extends BaseFragment {
                     case R.id.txtOffer:
                         if (checkLogined()) {
                             if (!MyApplication.appContext.checkMobile(context)) return;
-                            start_Activity(context, ReleaseOfferActivity.class, new BasicNameValuePair("id", dataList.get(position).getId()), new BasicNameValuePair(Const.KEY_UNIT, dataList.get(position).getPurchase_unit()));
+                            Intent intent = new Intent(context, ReleaseOfferActivity.class);
+                            intent.putExtra(Const.KEY_OBJECT, dataList.get(position));
+                            startActivity(intent);
                         }
                         break;
                 }
@@ -171,6 +192,78 @@ public class AskBuyFragment extends BaseFragment {
                 getFilter();
                 page = 1;
                 getData();
+            }
+        });
+    }
+
+
+    /**
+     * 设置联系客服悬浮按钮
+     */
+    private void setHoverButton() {
+        final int width = imgViCall.getWidth();
+        final int height = imgViCall.getHeight();
+
+        int padding = DisplayUtil.dip2px(context, 5);
+        final int boundaryL = padding;
+        final int boundaryR = context.getWindowManager().getDefaultDisplay().getWidth() - padding;
+        final int boundaryT = padding;
+        final int boundaryB = llFilter.getHeight() + ptrLayt.getHeight() - padding;
+
+        imgViCall.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        lastX = (int) event.getRawX();
+                        lastY = (int) event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        imgViCall.setClickable(false);
+                        int dx =(int)event.getRawX() - lastX;
+                        int dy =(int)event.getRawY() - lastY;
+
+                        int left = imgViCall.getLeft() + dx;
+                        int top = imgViCall.getTop() + dy;
+                        int right = imgViCall.getRight() + dx;
+                        int bottom = imgViCall.getBottom() + dy;
+                        if(left < boundaryL){
+                            left = boundaryL;
+                            right = left + width;
+                        }
+                        if(right > boundaryR){
+                            right = boundaryR;
+                            left = right - width;
+                        }
+                        if(top < boundaryT){
+                            top = boundaryT;
+                            bottom = top + height;
+                        }
+                        if(bottom > boundaryB){
+                            bottom = boundaryB;
+                            top = bottom - height;
+                        }
+                        imgViCall.layout(left, top, right, bottom);
+                        lastX = (int) event.getRawX();
+                        lastY = (int) event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(DisplayUtil.dip2px(context, 90), RelativeLayout.LayoutParams.WRAP_CONTENT);
+                        params.setMargins(imgViCall.getLeft(), imgViCall.getTop(), 0, 0);
+                        imgViCall.setLayoutParams(params);
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                imgViCall.setClickable(true);
+                            }
+                        }, 20);
+                        break;
+                    default:
+                        break;
+                }
+
+                return false;
             }
         });
     }

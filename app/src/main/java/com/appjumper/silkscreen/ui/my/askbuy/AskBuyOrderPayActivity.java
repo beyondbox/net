@@ -42,8 +42,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 
-import static com.appjumper.silkscreen.util.Applibrary.mContext;
-
 /**
  * 求购订单支付
  * Created by Botx on 2017/10/19.
@@ -203,9 +201,9 @@ public class AskBuyOrderPayActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        llContent.setVisibility(View.VISIBLE);
                         data = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), AskBuy.class);
                         setData();
+                        llContent.setVisibility(View.VISIBLE);
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -236,7 +234,7 @@ public class AskBuyOrderPayActivity extends BaseActivity {
     private void setData() {
         Picasso.with(context)
                 .load(data.getProduct_img())
-                .resize(DisplayUtil.dip2px(mContext, 60), DisplayUtil.dip2px(mContext, 60))
+                .resize(DisplayUtil.dip2px(context, 60), DisplayUtil.dip2px(context, 60))
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)

@@ -1,6 +1,7 @@
 package com.appjumper.silkscreen.ui.dynamic;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -13,8 +14,11 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.bean.AskBuy;
+import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -45,10 +49,18 @@ public class ReleaseOfferActivity extends BaseActivity {
     EditText edtTxtContent;
     @Bind(R.id.txtConfirm)
     TextView txtConfirm;
+    @Bind(R.id.txtUnit)
+    TextView txtUnit;
+    @Bind(R.id.txtTitle)
+    TextView txtTitle;
+    @Bind(R.id.txtContent)
+    TextView txtContent;
+    @Bind(R.id.txtProtocol)
+    TextView txtProtocol;
+
 
     private DecimalFormat df = new DecimalFormat("0.00");
-    private String inquiryId = "";
-    private String unit = "元";
+    private AskBuy data;
 
 
     @Override
@@ -60,10 +72,10 @@ public class ReleaseOfferActivity extends BaseActivity {
         initBack();
         initTitle("我要报价");
         initProgressDialog(false, "正在发布....");
-
-        inquiryId = getIntent().getStringExtra("id");
-        unit = getIntent().getStringExtra(Const.KEY_UNIT);
         edtTxtPrice.addTextChangedListener(textWatcher);
+
+        data = (AskBuy) getIntent().getSerializableExtra(Const.KEY_OBJECT);
+        setData();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -71,7 +83,23 @@ public class ReleaseOfferActivity extends BaseActivity {
                 edtTxtPrice.requestFocus();
                 AppTool.showSoftInput(context, edtTxtPrice);
             }
-        }, 100);
+        }, 50);
+    }
+
+
+    private void setData() {
+        if (!TextUtils.isEmpty(data.getPurchase_unit()))
+            txtUnit.setText("元/" + data.getPurchase_unit());
+
+        if (data.getPurchase_num().equals("0"))
+            txtTitle.setText("求购" + data.getProduct_name());
+        else
+            txtTitle.setText("求购" + data.getProduct_name() + " " + data.getPurchase_num() + data.getPurchase_unit());
+
+        txtContent.setText(data.getPurchase_content());
+
+        txtProtocol.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        txtProtocol.getPaint().setAntiAlias(true);
     }
 
 
@@ -109,11 +137,12 @@ public class ReleaseOfferActivity extends BaseActivity {
     private void submit() {
         RequestParams params = MyHttpClient.getApiParam("purchase", "offer");
         params.put("uid", getUserID());
-        params.put("purchase_id", inquiryId);
+        params.put("purchase_id", data.getId());
         params.put("money", df.format(Double.valueOf(edtTxtPrice.getText().toString().trim())));
         params.put("offer_content", edtTxtContent.getText().toString().trim());
         params.put("offer_type", 1);
-        params.put("price_unit", "元/" + unit);
+        if (!TextUtils.isEmpty(data.getPurchase_unit()))
+            params.put("price_unit", "元/" + data.getPurchase_unit());
 
         //平台业务员报价
         if (getUser().getMobile().equals("18531881110"))
@@ -136,7 +165,7 @@ public class ReleaseOfferActivity extends BaseActivity {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         sendBroadcast(new Intent(Const.ACTION_RELEASE_SUCCESS));
-                        start_Activity(context, AskBuyDetailActivity.class, new BasicNameValuePair("id", inquiryId));
+                        start_Activity(context, AskBuyDetailActivity.class, new BasicNameValuePair("id", data.getId()));
                         finish();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
@@ -171,7 +200,7 @@ public class ReleaseOfferActivity extends BaseActivity {
             txtConfirm.setEnabled(false);
     }
 
-    @OnClick({R.id.txtConfirm})
+    @OnClick({R.id.txtConfirm, R.id.txtProtocol})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txtConfirm: //发布
@@ -180,6 +209,19 @@ public class ReleaseOfferActivity extends BaseActivity {
                     return;
                 }
                 submit();
+                break;
+            case R.id.txtProtocol: //协议
+                User user = getUser();
+                String name = TextUtils.isEmpty(user.getName()) ? "" : user.getName();
+
+                String product = "";
+                if (data.getPurchase_num().equals("0"))
+                    product = data.getProduct_name();
+                else
+                    product = data.getProduct_name() + data.getPurchase_num() + data.getPurchase_unit();
+
+                String url = Url.PROTOCOL_ASKBUY_OFFER + "?name=" + name + "&phone=" + user.getMobile() + "&goods=" + product + "&time=24&price=0.5";
+                start_Activity(context, WebViewActivity.class, new BasicNameValuePair("title", "协议内容"), new BasicNameValuePair("url", url));
                 break;
             default:
                 break;

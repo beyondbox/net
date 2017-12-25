@@ -749,8 +749,9 @@ public class MyFragment extends BaseFragment {
                         int numAskbuy = dataObj.optInt("purchase_num");
                         int numPerson = dataObj.optInt("auth_status_num");
                         int numDriver = dataObj.optInt("driver_status_num");
+                        int numAskBuyOrder = dataObj.optInt("purchase_order_num");
 
-                        if (numFreight > 0 || numAskbuy > 0 || numPerson > 0 || numDriver > 0)
+                        if (numFreight > 0 || numAskbuy > 0 || numPerson > 0 || numDriver > 0 || numAskBuyOrder > 0)
                             badgeAudit.setBadgeNumber(-1);
                         else
                             badgeAudit.setBadgeNumber(0);

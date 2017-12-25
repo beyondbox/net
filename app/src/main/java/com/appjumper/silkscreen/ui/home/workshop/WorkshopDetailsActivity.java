@@ -340,9 +340,9 @@ public class WorkshopDetailsActivity extends BaseActivity {
                 case NETWORK_SUCCESS_PAGER_RIGHT://详情
                     EquipmentDetailsResponse baseResponse = (EquipmentDetailsResponse) msg.obj;
                     if (baseResponse.isSuccess()) {
-                        llContent.setVisibility(View.VISIBLE);
                         EquipmentList data = baseResponse.getData();
                         initView(data);
+                        llContent.setVisibility(View.VISIBLE);
 
                         if (!getUserID().equals(data.getUser_id()))
                             CommonApi.addLiveness(data.getUser_id(), 20);

@@ -27,6 +27,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyImageAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -107,17 +108,23 @@ public class AuditAskBuyFragment extends BaseFragment {
     private void setData() {
         Picasso.with(context)
                 .load(data.getImg())
+                .resize(DisplayUtil.dip2px(context, 60), DisplayUtil.dip2px(context, 60))
+                .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(imgViHead);
 
-        if (TextUtils.isEmpty(data.getNickname()))
-            txtName.setText(data.getMobile());
+        if (data.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
+            txtName.setText("求购G" + data.getId());
         else
-            txtName.setText(data.getNickname());
+            txtName.setText("求购C" + data.getId());
+
+        if (data.getPurchase_num().equals("0"))
+            txtTitle.setText(data.getProduct_name());
+        else
+            txtTitle.setText(data.getProduct_name() + data.getPurchase_num() + data.getPurchase_unit());
 
         txtTime.setText(data.getCreate_time().substring(5, 16));
-        txtTitle.setText("求购" + data.getProduct_name());
         txtContent.setText(data.getPurchase_content());
 
         final List<Avatar> imgList = data.getImg_list();
@@ -299,6 +306,7 @@ public class AuditAskBuyFragment extends BaseFragment {
         RequestParams params = MyHttpClient.getApiParam("purchase", "pass_purchase");
         params.put("id", data.getId());
         params.put("product_id", data.getProduct_id());
+        params.put("product_name", data.getProduct_name());
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

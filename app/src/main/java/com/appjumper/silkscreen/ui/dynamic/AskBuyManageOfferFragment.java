@@ -248,6 +248,7 @@ public class AskBuyManageOfferFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txtDelete:
+                if (dataList.size() == 0) return;
                 deleteBatch();
                 break;
         }

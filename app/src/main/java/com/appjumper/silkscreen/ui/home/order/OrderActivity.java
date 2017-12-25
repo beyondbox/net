@@ -92,7 +92,7 @@ public class OrderActivity extends BaseActivity {
 
 
     private PullToRefreshPagedListView pullToRefreshView;
-    private String pagesize = "20";
+    private String pagesize = "30";
     private String type = "1";
     private String product_id = "";//产品id
     private String auth = "";//公司 0全部公司1认证公司2未认证公司
@@ -325,6 +325,7 @@ public class OrderActivity extends BaseActivity {
         pullToRefreshView = (PullToRefreshPagedListView) contentView.findViewById(R.id.listview);
         listView = pullToRefreshView.getRefreshableView();
         listView.onFinishLoading(false);
+        listView.setDividerHeight(0);
         mEmptyLayout = LayoutInflater.from(this).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
         mDropDownMenu.setDropDownMenu(Arrays.asList(headers), popupViews, contentView);

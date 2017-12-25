@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,9 @@ public class AskBuyOrderListFragment extends BaseFragment {
     private Dialog payDialog;
     private String payType;
 
+    private String pushId;
+    private int pushType;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -71,14 +75,18 @@ public class AskBuyOrderListFragment extends BaseFragment {
         return view;
     }
 
+
     @Override
     protected void initData() {
+        Bundle bundle = getArguments();
+        type = bundle.getString(Const.KEY_TYPE);
+        pushId = bundle.getString("id", "");
+        pushType = bundle.getInt(Const.KEY_PUSH_TYPE, 0);
+
         initRecyclerView();
         initRefreshLayout();
         initProgressDialog(false, null);
         initDialog();
-
-        type = getArguments().getString(Const.KEY_TYPE);
 
         ptrLayt.postDelayed(new Runnable() {
             @Override
@@ -262,6 +270,27 @@ public class AskBuyOrderListFragment extends BaseFragment {
 
                         if (dataList.size() < totalSize)
                             adapter.setEnableLoadMore(true);
+
+                        //处理推送
+                        if (page == 1) {
+                            if (TextUtils.isEmpty(type)) {
+                                if (!TextUtils.isEmpty(pushId)) {
+                                    switch (pushType) {
+                                        case Const.PUSH_ASKBUY_ORDER_PASS:
+                                            start_Activity(context, AskBuyOrderPayActivity.class, new BasicNameValuePair("id", pushId));
+                                            break;
+                                        case Const.PUSH_ASKBUY_RECEIPT_REFUSE:
+                                            start_Activity(context, AskBuyOrderPayActivity.class, new BasicNameValuePair("id", pushId));
+                                            break;
+                                        default:
+                                            start_Activity(context, AskBuyOrderDetailActivity.class, new BasicNameValuePair("id", pushId));
+                                            break;
+                                    }
+                                    pushId = "";
+                                }
+                            }
+                        }
+
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -435,12 +464,4 @@ public class AskBuyOrderListFragment extends BaseFragment {
         });
     }
 
-
-    @Override
-    public void setMenuVisibility(boolean menuVisible) {
-        super.setMenuVisibility(menuVisible);
-        if (getView() != null) {
-            getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
-        }
-    }
 }

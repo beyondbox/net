@@ -149,9 +149,9 @@ public class FreightDetailOfferingActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        llContent.setVisibility(View.VISIBLE);
                         data = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), Freight.class);
                         setData();
+                        llContent.setVisibility(View.VISIBLE);
                         initDialog();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
@@ -247,6 +247,11 @@ public class FreightDetailOfferingActivity extends BaseActivity {
         if (offerList != null && offerList.size() > 0) {
             llRecord.setVisibility(View.VISIBLE);
             FreightOfferPublicAdapter recordAdapter = new FreightOfferPublicAdapter(context, offerList, getUserID());
+            if (getUser() != null) {
+                String mobile = getUser().getMobile();
+                if (mobile.equals("18531881288") || mobile.equals("18531881166"))
+                    recordAdapter.setPrivateMode(false);
+            }
             if (getUserID().equals(data.getUser_id())) {
                 recordAdapter.setPrivateMode(false);
                 txtOffer.setVisibility(View.GONE);

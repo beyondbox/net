@@ -370,6 +370,10 @@
         <activity android:name=".ui.my.audit.AuditPersonActivity" />
         <!--快速审核-司机认证-->
         <activity android:name=".ui.my.audit.AuditDriverActivity" />
+        <!--快速审核-求购订单-->
+        <activity android:name=".ui.my.audit.AuditAskBuyOrderActivity" />
+        <!--快速审核-求购收款-->
+        <activity android:name=".ui.my.audit.AuditAskBuyReceiptActivity" />
 
 
         <!--发布护栏网-->

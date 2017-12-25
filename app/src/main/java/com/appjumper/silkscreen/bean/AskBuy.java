@@ -92,6 +92,9 @@ public class AskBuy implements Serializable{
     private String remarks;
     private String purchase_id;
     private String product_img;
+    private String siwangjia_short; //是否由丝网+进行短途运输（0-是，默认；1-否）
+    private String offer_name;
+    private String offer_mobile;
 
 
 
@@ -469,5 +472,29 @@ public class AskBuy implements Serializable{
 
     public void setProduct_img(String product_img) {
         this.product_img = product_img;
+    }
+
+    public String getSiwangjia_short() {
+        return siwangjia_short;
+    }
+
+    public void setSiwangjia_short(String siwangjia_short) {
+        this.siwangjia_short = siwangjia_short;
+    }
+
+    public String getOffer_name() {
+        return offer_name;
+    }
+
+    public void setOffer_name(String offer_name) {
+        this.offer_name = offer_name;
+    }
+
+    public String getOffer_mobile() {
+        return offer_mobile;
+    }
+
+    public void setOffer_mobile(String offer_mobile) {
+        this.offer_mobile = offer_mobile;
     }
 }

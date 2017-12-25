@@ -375,7 +375,7 @@ public class HomeFragment extends BaseFragment {
 
 
         //推荐企业悬停效果
-        final int hoverMark = llRecommend.getTop() + txtTitleRecommend.getHeight();
+        //final int hoverMark = llRecommend.getTop() + txtTitleRecommend.getHeight();
         mScrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
 
             @Override
@@ -386,10 +386,10 @@ public class HomeFragment extends BaseFragment {
                     img_back_top.setVisibility(View.GONE);
                 }
 
-                if (hoverMark > 0 && y >= hoverMark)
+                /*if (hoverMark > 0 && y >= hoverMark)
                     llHoverRecommend.setVisibility(View.VISIBLE);
                 else
-                    llHoverRecommend.setVisibility(View.GONE);
+                    llHoverRecommend.setVisibility(View.GONE);*/
             }
         });
     }

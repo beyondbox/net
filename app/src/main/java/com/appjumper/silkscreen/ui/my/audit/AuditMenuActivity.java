@@ -35,6 +35,10 @@ public class AuditMenuActivity extends BaseActivity {
     TextView unReadPerson;
     @Bind(R.id.unReadDriver)
     TextView unReadDriver;
+    @Bind(R.id.unReadAskbuyOrder)
+    TextView unReadAskbuyOrder;
+    @Bind(R.id.unReadAskBuyReceipt)
+    TextView unReadAskBuyReceipt;
 
     public static AuditMenuActivity instance = null;
 
@@ -78,6 +82,8 @@ public class AuditMenuActivity extends BaseActivity {
                         int numAskbuy = dataObj.optInt("purchase_num");
                         int numPerson = dataObj.optInt("auth_status_num");
                         int numDriver = dataObj.optInt("driver_status_num");
+                        int numAskBuyOrder = dataObj.optInt("purchase_order_num");
+                        int numAskBuyReceipt = dataObj.optInt("purchase_receivables_num");
 
                         if (isDestroyed()) return;
 
@@ -85,11 +91,15 @@ public class AuditMenuActivity extends BaseActivity {
                         unReadAskbuy.setText(numAskbuy + "");
                         unReadPerson.setText(numPerson + "");
                         unReadDriver.setText(numDriver + "");
+                        unReadAskbuyOrder.setText(numAskBuyOrder + "");
+                        unReadAskBuyReceipt.setText(numAskBuyReceipt + "");
 
                         unReadFreight.setVisibility(numFreight > 0 ? View.VISIBLE : View.GONE);
                         unReadAskbuy.setVisibility(numAskbuy > 0 ? View.VISIBLE : View.GONE);
                         unReadPerson.setVisibility(numPerson > 0 ? View.VISIBLE : View.GONE);
                         unReadDriver.setVisibility(numDriver > 0 ? View.VISIBLE : View.GONE);
+                        unReadAskbuyOrder.setVisibility(numAskBuyOrder > 0 ? View.VISIBLE : View.GONE);
+                        unReadAskBuyReceipt.setVisibility(numAskBuyReceipt > 0 ? View.VISIBLE : View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -103,7 +113,7 @@ public class AuditMenuActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.rlFreight, R.id.rlAskBuy, R.id.rlPerson, R.id.rlDriver})
+    @OnClick({R.id.rlFreight, R.id.rlAskBuy, R.id.rlPerson, R.id.rlDriver, R.id.rlAskBuyOrder, R.id.rlAskBuyReceipt})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rlFreight:
@@ -117,6 +127,12 @@ public class AuditMenuActivity extends BaseActivity {
                 break;
             case R.id.rlDriver:
                 start_Activity(context, AuditDriverActivity.class);
+                break;
+            case R.id.rlAskBuyOrder:
+                start_Activity(context, AuditAskBuyOrderActivity.class);
+                break;
+            case R.id.rlAskBuyReceipt:
+                start_Activity(context, AuditAskBuyReceiptActivity.class);
                 break;
         }
     }

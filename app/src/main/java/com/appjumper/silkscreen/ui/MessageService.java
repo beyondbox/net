@@ -12,6 +12,8 @@ import com.appjumper.silkscreen.ui.dynamic.AskBuyManageActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.my.askbuy.AskBuyOrderListActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditAskBuyActivity;
+import com.appjumper.silkscreen.ui.my.audit.AuditAskBuyOrderActivity;
+import com.appjumper.silkscreen.ui.my.audit.AuditAskBuyReceiptActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditDriverActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditFreightActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditPersonActivity;
@@ -131,6 +133,9 @@ public class MessageService extends XGPushBaseReceiver {
 						case Const.PUSH_FREIGHT_DRIVER_ARRIVED: //空车配货-司机已送达
 							intent = new Intent(context, DeliverOrderListActivity.class);
 							break;
+						case Const.PUSH_ASKBUY_PASS_TO_OFFER: //求购信息审核通过，推送给报价用户
+							intent = new Intent(context, MainActivity.class);
+							break;
 						case Const.PUSH_AUDIT_ASKBUY: //快速审核-求购信息
 							intent = new Intent(context, AuditAskBuyActivity.class);
 							break;
@@ -143,17 +148,31 @@ public class MessageService extends XGPushBaseReceiver {
 						case Const.PUSH_AUDIT_DRIVER: //快速审核-司机认证
 							intent = new Intent(context, AuditDriverActivity.class);
 							break;
-						case Const.PUSH_ASKBUY_PASS:
+						case Const.PUSH_ASKBUY_ORDER_PASS: //求购订单审核通过
+							intent = new Intent(context, AskBuyOrderListActivity.class);
+							break;
+						case Const.PUSH_ASKBUY_PASS: //求购信息审核通过
 							intent = new Intent(context, AskBuyManageActivity.class);
 							break;
-						case Const.PUSH_ASKBUY_ORDER_PASS:
+						case Const.PUSH_ASKBUY_ORDER_REFUSE: //求购订单审核拒绝
 							intent = new Intent(context, AskBuyOrderListActivity.class);
-							intent.putExtra(Const.KEY_POSITION, 2);
 							break;
-						case Const.PUSH_ASKBUY_ORDER_REFUSE:
-							intent = new Intent(context, AskBuyOrderListActivity.class);
+						case Const.PUSH_ASKBUY_ORDER_REFUSE_TO_OFFER: //求购订单审核失败-推给报价用户请谨慎报价
+							intent = new Intent(context, AskBuyManageActivity.class);
 							intent.putExtra(Const.KEY_POSITION, 1);
 							break;
+						case Const.PUSH_ASKBUY_RECEIPT_REFUSE: //求购收款审核失败
+							intent = new Intent(context, AskBuyOrderListActivity.class);
+							break;
+						case Const.PUSH_AUDIT_ASKBUY_ORDER: //快速审核-求购订单
+							intent = new Intent(context, AuditAskBuyOrderActivity.class);
+							break;
+						case Const.PUSH_AUDIT_ASKBUY_RECEIPT: //快速审核-求购收款
+							intent = new Intent(context, AuditAskBuyReceiptActivity.class);
+							break;
+                        case Const.PUSH_NEW_OFFER_WIRE_ROD: //有新的盘条报价
+                            intent = new Intent(context, MainActivity.class);
+                            break;
 					}
 
 					if (intent != null) {

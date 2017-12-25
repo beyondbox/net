@@ -3,7 +3,6 @@ package com.appjumper.silkscreen.ui.home.logistics;
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -363,9 +362,6 @@ public class FreightFragment extends BaseFragment {
         adapter.setEnableLoadMore(false);
 
 
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) return;
-
         recyclerData.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             private int HIDE_THRESHOLD = DisplayUtil.dip2px(context, 40);
@@ -427,14 +423,17 @@ public class FreightFragment extends BaseFragment {
     }
 
 
+    /**
+     * 设置位移动画
+     */
     private void initAnim() {
         numHeight = llFreightNum.getHeight();
-        animHide = ObjectAnimator.ofFloat(llFreightNum, "translationY", -numHeight).setDuration(200);
-        animShow = ObjectAnimator.ofFloat(llFreightNum, "translationY", 0).setDuration(200);
-        animUp = ObjectAnimator.ofFloat(dropDownMenu, "translationY", -numHeight).setDuration(200);
-        animDown = ObjectAnimator.ofFloat(dropDownMenu, "translationY", 0).setDuration(200);
+        animHide = ObjectAnimator.ofFloat(llFreightNum, "translationY", -numHeight).setDuration(300);
+        animShow = ObjectAnimator.ofFloat(llFreightNum, "translationY", 0).setDuration(300);
+        animUp = ObjectAnimator.ofFloat(dropDownMenu, "translationY", -numHeight).setDuration(300);
+        animDown = ObjectAnimator.ofFloat(dropDownMenu, "translationY", 0).setDuration(300);
 
-        animHide.addListener(new Animator.AnimatorListener() {
+        animUp.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
             }

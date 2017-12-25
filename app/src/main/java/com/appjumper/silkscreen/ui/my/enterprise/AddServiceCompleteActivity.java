@@ -39,6 +39,7 @@ public class AddServiceCompleteActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         initTitle("发布成功");
+        initBack();
 
         Intent intent = getIntent();
         serviceType = Integer.parseInt(intent.getStringExtra(Const.KEY_SERVICE_TYPE));

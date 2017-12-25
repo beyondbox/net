@@ -20,6 +20,43 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="求购美格网"
+                    android:textSize="15sp"
+                    android:textColor="@color/text_black_color"/>
+
+                <TextView
+                    android:id="@+id/txtContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:lineSpacingExtra="2dp"
+                    android:text="求购美格网350丝的22根100片22根100片 求购美格网350丝的22根100片22根100片"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_black_color"/>
+            </LinearLayout>
+
+
+            <View style="@style/LineStyle"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/view_background_gray_color"/>
+
+            <View style="@style/LineStyle"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="12dp"
                 android:orientation="horizontal">
@@ -46,6 +83,7 @@
                     android:textSize="14sp"/>
 
                 <TextView
+                    android:id="@+id/txtUnit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -83,7 +121,7 @@
                 android:padding="10dp"
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="3dp"
-                android:minLines="7"
+                android:minLines="6"
                 android:hint=""
                 android:textColor="@color/text_black_color"
                 android:textColorHint="@color/light_gray_color"
@@ -94,7 +132,9 @@
                 android:layout_height="match_parent"
                 android:paddingTop="15dp"
                 android:paddingLeft="12dp"
-                android:text="注：交易成功，平台将收取0.5%的服务费"
+                android:paddingRight="12dp"
+                android:lineSpacingExtra="2dp"
+                android:text="注：交易成功，平台将向厂家收取0.5%交易服务费。在丝网+平台交易，均为现金交易，不赊欠"
                 android:textColor="@color/red_color"
                 android:textSize="12sp"/>
 
@@ -119,9 +159,11 @@
                     android:id="@+id/txtProtocol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:autoLink="all"
+                    android:paddingRight="20dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
                     android:textSize="12sp"
-                    android:textColor="@color/text_black_color"
+                    android:textColor="@color/new_gray_color"
                     android:text="参与报价即视为同意丝网+《交易协议》内容"/>
             </LinearLayout>
 
@@ -139,7 +181,7 @@
         android:layout_margin="6dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        android:text="立即发布"
+        android:text="立即报价"
         android:textColor="@color/while_color"
         android:textSize="16sp" />
 

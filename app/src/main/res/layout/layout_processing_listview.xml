@@ -6,7 +6,10 @@
 
     <com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView
         android:id="@+id/listview"
-        style="@style/ListViewDividerStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@color/transparent_color"
+        android:divider="@color/transparent_color"
         android:dividerHeight="0dp">
 
     </com.appjumper.silkscreen.view.pulltorefresh.PullToRefreshPagedListView>

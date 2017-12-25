@@ -78,7 +78,7 @@ public class EnterpriseListActivity extends BaseActivity {
     private String service_id;//
     private String product_id;//
 
-    private String pagesize = "20";
+    private String pagesize = "30";
     private int pageNumber = 1;
     private List<Enterprise> list;
     private ListView list_view;
@@ -242,6 +242,7 @@ public class EnterpriseListActivity extends BaseActivity {
         pullToRefreshView = (PullToRefreshPagedListView) contentView.findViewById(R.id.listview);
         listView = pullToRefreshView.getRefreshableView();
         listView.onFinishLoading(false);
+        listView.setDividerHeight(0);
         mEmptyLayout = LayoutInflater.from(this).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

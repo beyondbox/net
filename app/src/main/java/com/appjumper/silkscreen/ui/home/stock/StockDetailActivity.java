@@ -523,7 +523,7 @@ public class StockDetailActivity extends BaseActivity {
                         initView(data);
 
                         if (!getUserID().equals(data.getUser_id())) {
-                            tv_inquiry.setVisibility(View.VISIBLE);
+                            //tv_inquiry.setVisibility(View.VISIBLE);
                             CommonApi.addLiveness(data.getUser_id(), 20);
                         } else {
                             tv_inquiry.setVisibility(View.GONE);

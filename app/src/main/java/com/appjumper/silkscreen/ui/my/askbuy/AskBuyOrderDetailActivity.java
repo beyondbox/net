@@ -28,8 +28,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.appjumper.silkscreen.util.Applibrary.mContext;
-
 /**
  * 求购订单详情
  * Created by Botx on 2017/10/19.
@@ -124,9 +122,9 @@ public class AskBuyOrderDetailActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        llContent.setVisibility(View.VISIBLE);
                         data = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), AskBuy.class);
                         setData();
+                        llContent.setVisibility(View.VISIBLE);
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -157,7 +155,7 @@ public class AskBuyOrderDetailActivity extends BaseActivity {
     private void setData() {
         Picasso.with(context)
                 .load(data.getProduct_img())
-                .resize(DisplayUtil.dip2px(mContext, 60), DisplayUtil.dip2px(mContext, 60))
+                .resize(DisplayUtil.dip2px(context, 60), DisplayUtil.dip2px(context, 60))
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
@@ -197,12 +195,12 @@ public class AskBuyOrderDetailActivity extends BaseActivity {
                 break;
             case Const.ASKBUY_ORDER_RECEIPTING: //待完成
                 txtState.setText("待完成");
-                txtHint.setText(getResources().getString(R.string.askbuy_receipting));
+                txtHint.setText("已确认支付: " + data.getPay_type() + "\n" + getResources().getString(R.string.askbuy_receipting));
                 llBottomBar.setVisibility(View.GONE);
                 break;
             case Const.ASKBUY_ORDER_FINISH: //交易完成
                 txtState.setText("交易完成");
-                txtHint.setText(getResources().getString(R.string.askbuy_finish));
+                txtHint.setText("已确认支付: " + data.getPay_type() + "\n" + getResources().getString(R.string.askbuy_finish));
                 btn1.setText("删除订单");
                 break;
         }
@@ -211,6 +209,11 @@ public class AskBuyOrderDetailActivity extends BaseActivity {
         txtMobile.setText(data.getMobile());
         txtAddress.setText(data.getAddress());
         txtRemark.setText(data.getRemarks());
+
+        if (data.getSiwangjia_short().equals("0"))
+            txtTrans.setText("由丝网+进行短途运输 (送到货站结运费)");
+        else
+            txtTrans.setText("自己负责运输");
     }
 
 
@@ -328,4 +331,10 @@ public class AskBuyOrderDetailActivity extends BaseActivity {
     }
 
 
+    @Override
+    public void finish() {
+        super.finish();
+        if (AskBuyOrderListActivity.instance == null)
+            start_Activity(context, AskBuyOrderListActivity.class);
+    }
 }

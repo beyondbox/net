@@ -144,7 +144,10 @@ public class OrderListviewAdapter extends BaseAdapter {
      // }
     }
 
-    viewHolder.tv_service.setText(str);
+    if (TextUtils.isEmpty(str))
+      viewHolder.tv_service.setText(item.getRemark());
+    else
+      viewHolder.tv_service.setText(str);
   }
 
   static class ViewHolder {

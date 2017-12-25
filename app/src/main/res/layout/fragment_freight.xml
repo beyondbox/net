@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/llFreightNum"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="38dp"
         android:background="@color/view_background_gray_color"
         android:gravity="center"
         android:orientation="horizontal">

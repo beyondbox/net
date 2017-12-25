@@ -1,6 +1,7 @@
 package com.appjumper.silkscreen.ui.my.askbuy;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.text.TextUtils;
@@ -16,9 +17,12 @@ import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.Address;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.AskBuyOffer;
+import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.WebViewActivity;
+import com.appjumper.silkscreen.ui.dynamic.AskBuyDetailActivity;
 import com.appjumper.silkscreen.ui.dynamic.AskBuyManageDetailActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
@@ -28,6 +32,7 @@ import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.Header;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,6 +74,8 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
     SwitchCompat switchTrans;
     @Bind(R.id.txtConfirm)
     TextView txtConfirm;
+    @Bind(R.id.txtProtocol)
+    TextView txtProtocol;
 
 
     private String id;
@@ -117,9 +124,9 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        llContent.setVisibility(View.VISIBLE);
                         data = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), AskBuy.class);
                         setData();
+                        llContent.setVisibility(View.VISIBLE);
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -190,9 +197,12 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
                 .into(imgViHead);
 
         txtContent.setText(data.getPurchase_content());
-        txtPrice.setText("¥" + offer.getMoney());
+        txtPrice.setText("¥" + offer.getMoney() + offer.getPrice_unit());
         txtNum.setText(data.getProduct_name() + " " + data.getPurchase_num() + data.getPurchase_unit());
         calculatePayMoney();
+
+        txtProtocol.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
+        txtProtocol.getPaint().setAntiAlias(true);
     }
 
 
@@ -220,14 +230,13 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
         params.put("mobile", address.getMobile());
         params.put("address_type", address.getAddress_type());
         params.put("purchase_content", data.getPurchase_content());
+        params.put("address", address.getAddress());
 
         if (address.getAddress_type().equals("0")) {
             String [] arr = address.getAddress().split("\\s");
             params.put("station_name", arr[0]);
             params.put("station_address", arr[1]);
             params.put("station_id", address.getStation_id());
-        } else {
-            params.put("address", address.getAddress());
         }
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
@@ -246,8 +255,9 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         saveAddress();
                         if (AskBuyManageDetailActivity.instance != null) AskBuyManageDetailActivity.instance.finish();
+                        if (AskBuyDetailActivity.instance != null) AskBuyDetailActivity.instance.finish();
                         showErrorToast("提交订单成功");
-                        start_Activity(context, AskBuyOrderListActivity.class);
+                        start_Activity(context, AskBuyOrderDetailActivity.class, new BasicNameValuePair("id", (String) jsonObj.getJSONArray("data").get(0)));
                         finish();
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
@@ -327,7 +337,7 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.txtConfirm, R.id.rlAddress})
+    @OnClick({R.id.txtConfirm, R.id.rlAddress, R.id.txtProtocol})
     public void onClick(View view) {
         if (data == null)
             return;
@@ -345,6 +355,19 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
                 intent = new Intent(context, AddAddressActivity.class);
                 intent.putExtra(Const.KEY_OBJECT, address);
                 startActivityForResult(intent, Const.REQUEST_CODE_SELECT_ADDRESS);
+                break;
+            case R.id.txtProtocol: //协议
+                User user = getUser();
+                String name = TextUtils.isEmpty(user.getName()) ? "" : user.getName();
+
+                String product = "";
+                if (data.getPurchase_num().equals("0"))
+                    product = data.getProduct_name();
+                else
+                    product = data.getProduct_name() + data.getPurchase_num() + data.getPurchase_unit();
+
+                String url = Url.PROTOCOL_ASKBUY_ORDER + "?name=" + name + "&phone=" + user.getMobile() + "&goods=" + product + "&danjia=" + offer.getMoney() + offer.getPrice_unit() + "&time=24";
+                start_Activity(context, WebViewActivity.class, new BasicNameValuePair("title", "协议内容"), new BasicNameValuePair("url", url));
                 break;
             default:
                 break;

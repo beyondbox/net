@@ -110,6 +110,7 @@ public class MainActivity extends FragmentActivity {
     private AMapLocationClient mLocationClient;
 
     private long lastClickTime = 0;
+    private int pushType;
 
     private File downloadFile;
     private AsyncHttpClient downloadClient;
@@ -141,6 +142,18 @@ public class MainActivity extends FragmentActivity {
         mLocationOption.setOnceLocation(true);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.setLocationListener(new LocationListener());
+
+        pushType = getIntent().getIntExtra(Const.KEY_TYPE, 0);
+        if (pushType != 0) {
+            switch (pushType) {
+                case Const.PUSH_NEW_OFFER_WIRE_ROD: //有新的盘条报价
+                    bottom_lly.check(R.id.rd_trend);
+                    break;
+                case Const.PUSH_ASKBUY_PASS_TO_OFFER: //求购信息审核通过，推送给报价用户
+                    bottom_lly.check(R.id.rd_dynamic);
+                    break;
+            }
+        }
 
 
         //安卓6.0以后需要手动请求写入权限，才能在存储设备上创建文件夹

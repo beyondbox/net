@@ -107,8 +107,10 @@
 
                 </LinearLayout>
             </LinearLayout>
+
+            <View style="@style/LineStyle"/>
         </LinearLayout>
     </LinearLayout>
 
-    <View style="@style/LineStyle" />
+
 </LinearLayout>

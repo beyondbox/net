@@ -225,6 +225,7 @@ public class Const {
     public static final int PUSH_FREIGHT_CHOOSED = 7; //推送-空车配货-司机被采纳
     public static final int PUSH_FREIGHT_DRIVER_PAYED = 8; //推送-空车配货-司机已支付
     public static final int PUSH_FREIGHT_DRIVER_ARRIVED = 9; //推送-空车配货-司机已送达
+    public static final int PUSH_ASKBUY_PASS_TO_OFFER = 10; //推送-求购信息审核通过，推送给报价用户
     public static final int PUSH_AUDIT_ASKBUY = 11; //推送-快速审核-求购
     public static final int PUSH_AUDIT_FREIGHT = 12; //推送-快速审核-空车配货
     public static final int PUSH_AUDIT_PERSON = 13; //推送-快速审核-个人认证
@@ -232,6 +233,11 @@ public class Const {
     public static final int PUSH_ASKBUY_ORDER_PASS = 15; //推送-求购订单审核通过
     public static final int PUSH_ASKBUY_PASS = 16; //推送-求购信息审核通过
     public static final int PUSH_ASKBUY_ORDER_REFUSE = 17; //推送-求购订单审核失败
+    public static final int PUSH_ASKBUY_ORDER_REFUSE_TO_OFFER = 18; //推送-求购订单审核失败-推给报价用户请谨慎报价
+    public static final int PUSH_ASKBUY_RECEIPT_REFUSE = 19; //推送-求购收款审核失败
+    public static final int PUSH_AUDIT_ASKBUY_ORDER = 20; //推送-快速审核-求购订单
+    public static final int PUSH_AUDIT_ASKBUY_RECEIPT = 21; //推送-快速审核-求购收款
+    public static final int PUSH_NEW_OFFER_WIRE_ROD = 22; //推送-有新的盘条报价
 
 
     public static final int FREIGHT_AUDITING = 0; //空车配货-审核中
@@ -277,6 +283,7 @@ public class Const {
     public static final String KEY_IS_SELECT_MODE = "isSelectMode";
     public static final String KEY_UNIT = "unit";
     public static final String KEY_VERSION_CODE = "version_code";
+    public static final String KEY_PUSH_TYPE = "pushType";
 
 
 

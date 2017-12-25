@@ -166,4 +166,10 @@ public class Url {
     //发布现货商品
     public static final String RELEASE_GOODS = HTTP_URL + "goods/add_goods";
 
+
+    //电子协议--求购报价
+    public static final String PROTOCOL_ASKBUY_OFFER = "http://siwangjia.com/data/upload/protocol/gonghuo_xieyi.html";
+    //电子协议--求购提交订单
+    public static final String PROTOCOL_ASKBUY_ORDER = "http://siwangjia.com/data/upload/protocol/xiadan_xieyi.html";
+
 }

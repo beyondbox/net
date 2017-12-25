@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -43,6 +44,8 @@ public class AskBuyOrderListActivity extends BaseActivity {
     @Bind(R.id.viewPager)
     ViewPager viewPager;
 
+    public static AskBuyOrderListActivity instance = null;
+
     private QBadgeView badgeAudit;
     private QBadgeView badgePaying;
     private QBadgeView badgeFinishing;
@@ -58,6 +61,8 @@ public class AskBuyOrderListActivity extends BaseActivity {
             Const.ASKBUY_ORDER_FINISH + ""};
 
     private int position;
+    private String pushId;
+    private int pushType;
 
 
     @Override
@@ -65,12 +70,20 @@ public class AskBuyOrderListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_askbuy_orderlist);
         ButterKnife.bind(context);
+        instance = this;
         initBack();
         initTitle("我的采购订单");
+
+        Intent intent = getIntent();
+        position = intent.getIntExtra(Const.KEY_POSITION, 0);
+        if (intent.hasExtra("id")) {
+            pushId = intent.getStringExtra("id");
+            pushType = intent.getIntExtra(Const.KEY_TYPE, 0);
+        }
+
         initViewPager();
         initUnread();
 
-        position = getIntent().getIntExtra(Const.KEY_POSITION, 0);
         viewPager.setCurrentItem(position);
     }
 
@@ -88,6 +101,14 @@ public class AskBuyOrderListActivity extends BaseActivity {
             Fragment fragment = new AskBuyOrderListFragment();
             Bundle bundle = new Bundle();
             bundle.putString(Const.KEY_TYPE, typeArr[i]);
+
+            if (i == 0) {
+                if (!TextUtils.isEmpty(pushId)) {
+                    bundle.putString("id", pushId);
+                    bundle.putInt(Const.KEY_PUSH_TYPE, pushType);
+                }
+            }
+
             fragment.setArguments(bundle);
             fragList.add(fragment);
         }
@@ -176,5 +197,11 @@ public class AskBuyOrderListActivity extends BaseActivity {
         super.finish();
         if (MainActivity.instance == null)
             startActivity(new Intent(context, MainActivity.class));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
     }
 }

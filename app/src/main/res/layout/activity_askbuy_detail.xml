@@ -41,7 +41,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="昵称"
                     android:textSize="16sp"
-                    android:textColor="@color/light_gray_color"/>
+                    android:textColor="@color/new_gray_light_color"/>
 
                 <ImageView
                     android:id="@+id/imgViMarkSelf"
@@ -147,7 +147,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="105dp"
+                android:layout_height="97dp"
                 android:layout_marginBottom="12dp"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ask_buy_security"/>

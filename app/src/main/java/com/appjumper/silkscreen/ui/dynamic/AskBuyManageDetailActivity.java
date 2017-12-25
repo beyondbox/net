@@ -44,8 +44,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.appjumper.silkscreen.util.Applibrary.mContext;
-
 /**
  * 求购管理--详情
  * Created by Botx on 2017/10/19.
@@ -160,9 +158,9 @@ public class AskBuyManageDetailActivity extends BaseActivity {
                     JSONObject jsonObj = new JSONObject(jsonStr);
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
-                        llContent.setVisibility(View.VISIBLE);
                         data = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), AskBuy.class);
                         setData();
+                        llContent.setVisibility(View.VISIBLE);
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }
@@ -193,14 +191,14 @@ public class AskBuyManageDetailActivity extends BaseActivity {
         initTitle("求购" + data.getProduct_name());
 
         if (data.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
-            txtName.setText("丝网+官方求购G" + data.getId());
+            txtName.setText("求购G" + data.getId());
         else
-            txtName.setText("求购信息C" + data.getId());
+            txtName.setText("求购C" + data.getId());
         //right.setImageResource(R.mipmap.icon_share);
 
         Picasso.with(context)
                 .load(data.getImg())
-                .resize(DisplayUtil.dip2px(mContext, 50), DisplayUtil.dip2px(mContext, 50))
+                .resize(DisplayUtil.dip2px(context, 50), DisplayUtil.dip2px(context, 50))
                 .centerCrop()
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
@@ -283,7 +281,7 @@ public class AskBuyManageDetailActivity extends BaseActivity {
                 .error(R.mipmap.img_error_head)
                 .into(imgViAvatar);
 
-        txtAdviserName.setText("报价顾问" + data.getAdviser_nicename());
+        txtAdviserName.setText("丝网+官方交易顾问-" + data.getAdviser_nicename());
 
 
         final List<AskBuyOffer> offerList = data.getOffer_list();

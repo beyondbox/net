@@ -6,6 +6,7 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.text.TextUtils;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
@@ -36,6 +37,8 @@ public class AskBuyManageActivity extends BaseActivity {
     private FragAdapter fragAdapter;
 
     private int position;
+    private String pushId;
+    private int pushType;
 
 
     @Override
@@ -44,10 +47,16 @@ public class AskBuyManageActivity extends BaseActivity {
         setContentView(R.layout.activity_askbuy_manage);
         ButterKnife.bind(context);
 
+        Intent intent = getIntent();
+        position = intent.getIntExtra(Const.KEY_POSITION, 0);
+        if (intent.hasExtra("id")) {
+            pushId = intent.getStringExtra("id");
+            pushType = intent.getIntExtra(Const.KEY_TYPE, 0);
+        }
+
         initBack();
         initData();
 
-        position = getIntent().getIntExtra(Const.KEY_POSITION, 0);
         if (position == 1)
             rdoGroup.check(R.id.rb1);
         else
@@ -57,8 +66,24 @@ public class AskBuyManageActivity extends BaseActivity {
 
     private void initData() {
         fragList = new ArrayList<>();
-        fragList.add(new AskBuyManageFragment());
-        fragList.add(new AskBuyManageOfferFragment());
+        AskBuyManageFragment askBuyFrag = new AskBuyManageFragment();
+        AskBuyManageOfferFragment offerFrag = new AskBuyManageOfferFragment();
+
+        if (!TextUtils.isEmpty(pushId)) {
+            Bundle bundle = new Bundle();
+            bundle.putString("id", pushId);
+            switch (pushType) {
+                case Const.PUSH_ASKBUY_CHOOSE_OFFER:
+                    askBuyFrag.setArguments(bundle);
+                    break;
+                case Const.PUSH_ASKBUY_PASS:
+                    askBuyFrag.setArguments(bundle);
+                    break;
+            }
+        }
+
+        fragList.add(askBuyFrag);
+        fragList.add(offerFrag);
 
         fragAdapter = new FragAdapter(getSupportFragmentManager());
 

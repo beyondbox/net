@@ -20,7 +20,7 @@
 
 
     <string name="askbuy_auditing">丝网+已成功收到您的订单啦~\n我们的顾问正拼命联系厂家确保货物事宜，十分钟内给您答复哦，请您稍等片刻...</string>
-    <string name="askbuy_receipting">已确认支付，我们正快马加鞭为您处理中，请您稍等片刻...</string>
+    <string name="askbuy_receipting">我们正快马加鞭为您处理中，请您稍等片刻...</string>
     <string name="askbuy_finish">丝网+已经确认收到款项，正在火速安排发货，请保持电话畅通。</string>
 
 </resources>

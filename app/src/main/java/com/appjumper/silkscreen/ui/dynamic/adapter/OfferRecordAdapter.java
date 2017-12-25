@@ -24,10 +24,12 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
 
     public boolean isPrivateMode = true;
     private String uid = "";
+    private String askBuyUid = "";
 
-    public OfferRecordAdapter(Context context, List<AskBuyOffer> list, String uid) {
+    public OfferRecordAdapter(Context context, List<AskBuyOffer> list, String loginUid, String askBuyUid) {
         super(context, list);
-        this.uid = uid;
+        this.uid = loginUid;
+        this.askBuyUid = askBuyUid;
     }
 
     public void setPrivateMode(boolean privateMode) {
@@ -35,7 +37,7 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder vh = null;
         if (convertView == null) {
             vh = new ViewHolder();
@@ -72,6 +74,18 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
             vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
         }
 
+
+        if (askBuyUid.equals(uid)) {
+            vh.txtTime.setVisibility(View.GONE);
+            vh.txtHandle.setVisibility(View.VISIBLE);
+            vh.txtHandle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onWhichClickListener.onWhichClick(view, position, 0);
+                }
+            });
+        }
+
         return convertView;
     }
 
@@ -83,5 +97,7 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
         TextView txtPrice;
         @Bind(R.id.txtTime)
         TextView txtTime;
+        @Bind(R.id.txtHandle)
+        TextView txtHandle;
     }
 }

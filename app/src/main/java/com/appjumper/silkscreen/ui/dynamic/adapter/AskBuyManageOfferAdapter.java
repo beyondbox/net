@@ -44,9 +44,9 @@ public class AskBuyManageOfferAdapter extends BaseQuickAdapter<AskBuyOffer, Base
                 .setText(R.id.txtPrice, "我的报价: " + item.getMoney() + "元");
 
         if (item.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
-            helper.setText(R.id.txtTitle, "丝网+官方求购G" + item.getId());
+            helper.setText(R.id.txtTitle, "求购G" + item.getId());
         else
-            helper.setText(R.id.txtTitle, "求购信息C" + item.getId());
+            helper.setText(R.id.txtTitle, "求购C" + item.getId());
 
         if (item.getPurchase_num().equals("0"))
             helper.setText(R.id.txtContent, "求购" + item.getProduct_name());

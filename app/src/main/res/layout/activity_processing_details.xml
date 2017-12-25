@@ -231,6 +231,7 @@
         android:id="@+id/tv_inquiry"
         android:layout_width="match_parent"
         android:layout_height="45dp"
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:background="@drawable/selector_btn_blue"
         android:gravity="center"
