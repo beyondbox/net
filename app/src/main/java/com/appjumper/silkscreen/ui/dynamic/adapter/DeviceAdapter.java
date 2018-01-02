@@ -37,7 +37,8 @@ public class DeviceAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHolde
     @Override
     protected void convert(BaseViewHolder helper, EquipmentList item) {
         helper.setText(R.id.txtTime, item.getCreate_time().replaceAll("-", "\\.").substring(0, 16))
-                .setText(R.id.txtTitle, item.getItems().get(0).getName())
+                //.setText(R.id.txtTitle, item.getItems().get(0).getName())
+                .setText(R.id.txtTitle, item.getTitle())
                 .setVisible(R.id.unRead, !item.is_read());
 
 
@@ -101,7 +102,7 @@ public class DeviceAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHolde
 
 
 
-        final List<Avatar> imgList = item.getItems().get(0).getImg_list();
+        final List<Avatar> imgList = item.getItems().size() == 0 ? null : item.getItems().get(0).getImg_list();
         if (imgList != null && imgList.size() > 0) {
             helper.setVisible(R.id.recyclerImage, true);
             RecyclerView recyclerImage = helper.getView(R.id.recyclerImage);

@@ -42,6 +42,16 @@ public class User implements Serializable{
     private String idcard_img_back;
     private String name;
     private String is_purchase_order; //求购-是否显示我的采购订单：0-不显示；1-显示
+    private String admin_purchase; //求购管理员帐号0-否；1-是
+    private String admin_car_product; //空车配货管理员帐号0-否；1-是
+
+
+    private String driver_img;
+    private String driver_img_back;
+    private String driving_license_img;
+    private String driving_license_img_back;
+    private String driver_car_img;
+    private CarInfo carinfo;
 
 
     public String getAuth_status() {
@@ -322,5 +332,69 @@ public class User implements Serializable{
 
     public void setIs_purchase_order(String is_purchase_order) {
         this.is_purchase_order = is_purchase_order;
+    }
+
+    public String getDriver_img() {
+        return driver_img;
+    }
+
+    public void setDriver_img(String driver_img) {
+        this.driver_img = driver_img;
+    }
+
+    public String getDriver_img_back() {
+        return driver_img_back;
+    }
+
+    public void setDriver_img_back(String driver_img_back) {
+        this.driver_img_back = driver_img_back;
+    }
+
+    public String getDriving_license_img() {
+        return driving_license_img;
+    }
+
+    public void setDriving_license_img(String driving_license_img) {
+        this.driving_license_img = driving_license_img;
+    }
+
+    public String getDriving_license_img_back() {
+        return driving_license_img_back;
+    }
+
+    public void setDriving_license_img_back(String driving_license_img_back) {
+        this.driving_license_img_back = driving_license_img_back;
+    }
+
+    public String getDriver_car_img() {
+        return driver_car_img;
+    }
+
+    public void setDriver_car_img(String driver_car_img) {
+        this.driver_car_img = driver_car_img;
+    }
+
+    public CarInfo getCarinfo() {
+        return carinfo;
+    }
+
+    public void setCarinfo(CarInfo carinfo) {
+        this.carinfo = carinfo;
+    }
+
+    public String getAdmin_purchase() {
+        return admin_purchase;
+    }
+
+    public void setAdmin_purchase(String admin_purchase) {
+        this.admin_purchase = admin_purchase;
+    }
+
+    public String getAdmin_car_product() {
+        return admin_car_product;
+    }
+
+    public void setAdmin_car_product(String admin_car_product) {
+        this.admin_car_product = admin_car_product;
     }
 }

@@ -14,13 +14,23 @@
         android:scaleType="centerCrop"
         android:src="@mipmap/icon_home_exhibition_bg"/>
 
+    <TextView
+        android:id="@+id/txtState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="报价中"
+        android:textSize="14sp"
+        android:textColor="@color/red_color"/>
 
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/imgViHead"
+        android:layout_toLeftOf="@id/txtState"
         android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:textStyle="bold"
         android:text="求购美格网"
         android:textSize="14sp"
@@ -36,15 +46,6 @@
         android:text="8-05 12:00"
         android:textSize="12sp"
         android:textColor="@color/light_gray_color"/>
-
-    <TextView
-        android:id="@+id/txtState"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:text="报价中"
-        android:textSize="14sp"
-        android:textColor="@color/red_color"/>
 
 
 
@@ -89,6 +90,23 @@
         android:text="12-09 13:00截止"
         android:textSize="13sp"
         android:textColor="@color/text_black_color2"/>
+
+    <TextView
+        android:id="@+id/txtHandle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_btn_blue"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_toLeftOf="@id/txtHandle"
+        android:layout_alignBottom="@id/txtHandle"
+        android:visibility="gone"
+        android:text="删除信息"
+        android:textColor="@color/while_color"
+        android:textSize="13sp" />
 
     <View
         style="@style/LineStyle"

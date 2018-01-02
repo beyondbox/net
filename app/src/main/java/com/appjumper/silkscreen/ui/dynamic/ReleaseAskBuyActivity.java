@@ -268,6 +268,7 @@ public class ReleaseAskBuyActivity extends BasePhotoGridActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txtTime: //选择截止时间
+                AppTool.hideSoftInput(this);
                 pvTime.show();
                 break;
             case R.id.txtConfirm: //立即发布

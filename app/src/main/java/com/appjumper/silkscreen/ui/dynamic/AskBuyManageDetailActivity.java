@@ -34,6 +34,7 @@ import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.Header;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -84,6 +85,8 @@ public class AskBuyManageDetailActivity extends BaseActivity {
     TextView txtHint;
     @Bind(R.id.txtHandle)
     TextView txtHandle;
+    @Bind(R.id.txtHandle1)
+    TextView txtHandle1;
     @Bind(R.id.txtTitle)
     TextView txtTitle;
 
@@ -240,6 +243,8 @@ public class AskBuyManageDetailActivity extends BaseActivity {
                 } else {
                     txtState.setText("报价结束");
                     txtHandle.setText("删除信息");
+                    txtHandle1.setText("重新发布");
+                    txtHandle1.setVisibility(View.VISIBLE);
                 }
                 break;
             default:
@@ -360,7 +365,7 @@ public class AskBuyManageDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.txtHandle, R.id.txtCall, R.id.right, R.id.imgViHead})
+    @OnClick({R.id.txtHandle, R.id.txtCall, R.id.right, R.id.imgViHead, R.id.txtHandle1})
     public void onClick(View view) {
         if (data == null)
             return;
@@ -375,7 +380,7 @@ public class AskBuyManageDetailActivity extends BaseActivity {
                         break;
                     case Const.ASKBUY_REFUSE:
                         intent = new Intent(context, AskBuyEditActivity.class);
-                        intent.putExtra(Const.KEY_OBJECT, data);
+                        intent.putExtra("id", id);
                         startActivity(intent);
                         break;
                     case Const.ASKBUY_OFFERING:
@@ -396,13 +401,16 @@ public class AskBuyManageDetailActivity extends BaseActivity {
             case R.id.right: //分享
                 //ShareUtil.intShare(context, view, data.getPurchase_content(), "求购" + data.getProduct_name(), Const.SHARE_ASKBUY_URL + "?id=" + id);
                 break;
-            case R.id.imgViHead:
+            case R.id.imgViHead: //产品图片
                 intent = new Intent(context, GalleryActivity.class);
                 ArrayList<String> urls = new ArrayList<String>();
                 urls.add(data.getImg());
                 intent.putExtra(GalleryActivity.EXTRA_IMAGE_URLS, urls);
                 intent.putExtra(GalleryActivity.EXTRA_IMAGE_INDEX, 0);
                 startActivity(intent);
+                break;
+            case R.id.txtHandle1: //重新发布
+                start_Activity(context, AskBuyEditActivity.class, new BasicNameValuePair("id", id));
                 break;
             default:
                 break;

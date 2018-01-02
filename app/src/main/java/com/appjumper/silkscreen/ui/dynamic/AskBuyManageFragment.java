@@ -186,7 +186,7 @@ public class AskBuyManageFragment extends BaseFragment {
                                 break;
                             case Const.ASKBUY_REFUSE: //审核失败
                                 intent = new Intent(context, AskBuyEditActivity.class);
-                                intent.putExtra(Const.KEY_OBJECT, item);
+                                intent.putExtra("id", item.getId());
                                 startActivity(intent);
                                 break;
                             case Const.ASKBUY_OFFERING: //报价中和报价结束
@@ -194,15 +194,18 @@ public class AskBuyManageFragment extends BaseFragment {
                                 if (System.currentTimeMillis() < expiryTime) {
                                     start_Activity(context, AskBuyManageDetailActivity.class, new BasicNameValuePair("id", item.getId()));
                                 } else {
-                                    new SureOrCancelDialog(context, "提示", "确定要删除该求购信息吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
-                                        @Override
-                                        public void onSureButtonClick() {
-                                            deleteInfo(position);
-                                        }
-                                    }).show();
+                                    start_Activity(context, AskBuyEditActivity.class, new BasicNameValuePair("id", item.getId()));
                                 }
                                 break;
                         }
+                        break;
+                    case R.id.txtHandle1: //报价结束删除信息
+                        new SureOrCancelDialog(context, "提示", "确定要删除该求购信息吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                            @Override
+                            public void onSureButtonClick() {
+                                deleteInfo(position);
+                            }
+                        }).show();
                         break;
                 }
             }

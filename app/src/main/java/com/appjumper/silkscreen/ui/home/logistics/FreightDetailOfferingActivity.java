@@ -248,8 +248,7 @@ public class FreightDetailOfferingActivity extends BaseActivity {
             llRecord.setVisibility(View.VISIBLE);
             FreightOfferPublicAdapter recordAdapter = new FreightOfferPublicAdapter(context, offerList, getUserID());
             if (getUser() != null) {
-                String mobile = getUser().getMobile();
-                if (mobile.equals("18531881288") || mobile.equals("18531881166"))
+                if (getUser().getAdmin_car_product().equals("1"))
                     recordAdapter.setPrivateMode(false);
             }
             if (getUserID().equals(data.getUser_id())) {

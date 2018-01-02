@@ -241,8 +241,7 @@ public class FreightDetailUnderwayActivity extends BaseActivity {
             txtDriverPrice.setText("***" + selectedOffer.getMoney_unit());
 
         if (getUser() != null) {
-            String mobile = getUser().getMobile();
-            if (mobile.equals("18531881288") || mobile.equals("18531881166"))
+            if (getUser().getAdmin_car_product().equals("1"))
                 txtDriverPrice.setText(selectedOffer.getMoney() + selectedOffer.getMoney_unit());
         }
 

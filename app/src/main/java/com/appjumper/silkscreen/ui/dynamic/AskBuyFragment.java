@@ -79,7 +79,7 @@ public class AskBuyFragment extends BaseFragment {
 
     private int page = 1;
     private int pageSize = 30;
-    private int totalSize;
+    private int totalPage;
     private String productId = "";
 
     private int lastX;
@@ -303,7 +303,7 @@ public class AskBuyFragment extends BaseFragment {
      * 获取数据
      */
     private void getData() {
-        RequestParams params = MyHttpClient.getApiParam("purchase", "purchase_list");
+        RequestParams params = MyHttpClient.getApiParam("purchase", "new_purchase_list");
         params.put("product_id", productId);
         params.put("page", page);
         params.put("pagesize", pageSize);
@@ -318,17 +318,23 @@ public class AskBuyFragment extends BaseFragment {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
-                        List<AskBuy> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), AskBuy.class);
-                        totalSize = dataObj.optInt("total");
+                        List<AskBuy> list = GsonUtil.getEntityList(dataObj.getJSONObject("items").getJSONArray("purchase").toString(), AskBuy.class);
+                        totalPage = dataObj.optInt("totalpage");
 
                         if (page == 1) {
                             dataList.clear();
                             recyclerData.smoothScrollToPosition(0);
                         }
                         dataList.addAll(list);
+
+                        if (page == totalPage) {
+                            List<AskBuy> endList = GsonUtil.getEntityList(dataObj.getJSONObject("items").getJSONArray("purchase_expiry").toString(), AskBuy.class);
+                            dataList.addAll(endList);
+                        }
+
                         adapter.notifyDataSetChanged();
 
-                        if (dataList.size() < totalSize)
+                        if (page < totalPage)
                             adapter.setEnableLoadMore(true);
                     }
                 } catch (JSONException e) {
@@ -351,7 +357,7 @@ public class AskBuyFragment extends BaseFragment {
 
                 ptrLayt.refreshComplete();
                 adapter.loadMoreComplete();
-                if (totalSize == dataList.size())
+                if (totalPage == page)
                     adapter.loadMoreEnd();
 
                 adapter.setEmptyView(R.layout.layout_empty_view_common);

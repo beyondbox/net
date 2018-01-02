@@ -59,12 +59,14 @@ public class AskBuyManageAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder
         switch (status) {
             case Const.ASKBUY_AUDITING: //审核中
                 helper.setVisible(R.id.txtOfferNum, false)
+                        .setVisible(R.id.txtHandle1, false)
                         .setText(txtState, "审核中")
                         .setText(R.id.txtHandle, "取消求购")
                         .setText(R.id.txtContent, item.getExpiry_date().substring(5, 16) + "截止");
                 break;
             case Const.ASKBUY_REFUSE: //审核失败
                 helper.setVisible(R.id.txtOfferNum, false)
+                        .setVisible(R.id.txtHandle1, false)
                         .setText(txtState, "审核失败")
                         .setText(R.id.txtHandle, "编辑重发")
                         .setText(R.id.txtContent, "原因: " + item.getExamine_refusal_reason());
@@ -74,16 +76,19 @@ public class AskBuyManageAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder
                 long expiryTime = AppTool.getTimeMs(item.getExpiry_date(), "yy-MM-dd HH:mm:ss");
                 if (System.currentTimeMillis() < expiryTime) {
                     helper.setText(txtState, "报价中")
+                            .setVisible(R.id.txtHandle1, false)
                             .setText(R.id.txtHandle, "查看详情")
                             .setText(R.id.txtContent, item.getExpiry_date().substring(5, 16) + "截止");
                 } else {
                     helper.setText(txtState, "报价结束")
-                            .setText(R.id.txtHandle, "删除信息")
+                            .setVisible(R.id.txtHandle1, true)
+                            .setText(R.id.txtHandle, "重新发布")
                             .setText(R.id.txtContent, "已截止");
                 }
                 break;
             default:
                 helper.setText(txtState, "")
+                        .setVisible(R.id.txtHandle1, false)
                         .setText(R.id.txtHandle, "查看详情")
                         .setText(R.id.txtContent, item.getExpiry_date().substring(5, 16) + "截止");
                 break;

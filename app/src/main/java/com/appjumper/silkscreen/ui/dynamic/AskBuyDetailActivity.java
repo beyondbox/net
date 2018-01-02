@@ -1,9 +1,12 @@
 package com.appjumper.silkscreen.ui.dynamic;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -306,8 +309,15 @@ public class AskBuyDetailActivity extends BaseActivity {
             if (getUserID().equals(data.getUser_id()))
                 recordAdapter.setPrivateMode(false);
             if (getUser() != null) {
-                if (getUser().getIs_fast_examine().equals("1"))
+                if (getUser().getAdmin_purchase().equals("1")) {
                     recordAdapter.setPrivateMode(false);
+                    lvRecord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            showOfferInfo(offerList.get(i));
+                        }
+                    });
+                }
             }
 
             recordAdapter.setOnWhichClickListener(new MyBaseAdapter.OnWhichClickListener() {
@@ -360,6 +370,31 @@ public class AskBuyDetailActivity extends BaseActivity {
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
             }
         });
+    }
+
+
+    /**
+     * 显示报价信息
+     */
+    private void showOfferInfo(AskBuyOffer offer) {
+        Dialog dialog = new Dialog(context, R.style.CustomDialog);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_askbuy_offer_info, null);
+        dialog.setContentView(view);
+
+        WindowManager.LayoutParams params = dialog.getWindow().getAttributes();
+        params.width = (int) (getWindowManager().getDefaultDisplay().getWidth() * 0.8);
+        dialog.getWindow().setAttributes(params);
+
+        TextView txtMobile = (TextView) view.findViewById(R.id.txtMobile);
+        TextView txtRemark = (TextView) view.findViewById(R.id.txtRemark);
+
+        txtMobile.setText(offer.getOffer_user_mobile());
+        if (TextUtils.isEmpty(offer.getOffer_content()))
+            txtRemark.setText("无");
+        else
+            txtRemark.setText(offer.getOffer_content());
+
+        dialog.show();
     }
 
 

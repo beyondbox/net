@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_dark_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_round_corner_white_big"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/llContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:text="企业名称:"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                        <TextView
+                            android:id="@+id/txtCompanyName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="群傲科技"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/txtState"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:textColor="@color/orange_color"
+                            android:textSize="13sp"
+                            android:text="已认证"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:text="注册号:"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                        <TextView
+                            android:id="@+id/txtRegistrID"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="56985632"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:text="法人代表:"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                        <TextView
+                            android:id="@+id/txtPersonName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="刘东强"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:text="身份证号:"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                        <TextView
+                            android:id="@+id/txtID"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="130127198901311121"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+                    </LinearLayout>
+
+                    <View style="@style/LineStyle" android:layout_marginTop="15dp"/>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="法人身份证正面照"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_gray_color"/>
+
+                    <ImageView
+                        android:id="@+id/imgVi0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/icon_front_01" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="法人身份证反面照"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_gray_color"/>
+
+                    <ImageView
+                        android:id="@+id/imgVi1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/icon_contrary_02" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="15dp"
+                        android:text="营业执照"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_gray_color"/>
+
+                    <ImageView
+                        android:id="@+id/imgVi2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="25dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@mipmap/icon_business_license" />
+
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

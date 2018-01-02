@@ -66,6 +66,7 @@ public class AskBuyOffer implements Serializable{
     private String purchase_unit;
     private String pruchase_type;
     private String expiry_date;
+    private String offer_user_mobile;
 
 
     public String getId() {
@@ -315,5 +316,13 @@ public class AskBuyOffer implements Serializable{
 
     public void setExpiry_date(String expiry_date) {
         this.expiry_date = expiry_date;
+    }
+
+    public String getOffer_user_mobile() {
+        return offer_user_mobile;
+    }
+
+    public void setOffer_user_mobile(String offer_user_mobile) {
+        this.offer_user_mobile = offer_user_mobile;
     }
 }

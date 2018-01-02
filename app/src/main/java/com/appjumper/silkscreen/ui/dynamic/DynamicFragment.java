@@ -142,7 +142,7 @@ public class DynamicFragment extends BaseFragment {
                     if (txtRight.getText().toString().equals("发布")) {
                         if (!MyApplication.appContext.checkMobile(context)) return;
                         intent = new Intent(context, ProductSelectActivity.class);
-                        intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
+                        intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_PRODUCT_ALL);
                         intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
                         startActivity(intent);
                     } else {

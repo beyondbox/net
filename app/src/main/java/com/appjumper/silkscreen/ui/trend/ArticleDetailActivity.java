@@ -12,6 +12,8 @@ import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
 import com.appjumper.silkscreen.util.Const;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,7 +93,9 @@ public class ArticleDetailActivity extends BaseActivity {
                 pagerArticle.setCurrentItem(pagerArticle.getCurrentItem() + 1);
                 break;
 
-            case R.id.txtCatalogue:
+            case R.id.txtCatalogue: //目录
+                if (TrendArticleAllActivity.instance == null)
+                    start_Activity(context, TrendArticleAllActivity.class, new BasicNameValuePair("type", "1"));
                 finish();
                 break;
             default:

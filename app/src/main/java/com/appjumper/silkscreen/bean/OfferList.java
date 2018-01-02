@@ -14,6 +14,7 @@ public class OfferList {
     private String offer_value_tax;
     private String offer_time;
     private String company_name;
+    private String yesterday;
 
     public String getOffer_value_tax() {
         return offer_value_tax;
@@ -85,5 +86,13 @@ public class OfferList {
 
     public void setCompany_name(String company_name) {
         this.company_name = company_name;
+    }
+
+    public String getYesterday() {
+        return yesterday;
+    }
+
+    public void setYesterday(String yesterday) {
+        this.yesterday = yesterday;
     }
 }

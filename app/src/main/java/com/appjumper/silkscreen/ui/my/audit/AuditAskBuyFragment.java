@@ -122,7 +122,7 @@ public class AuditAskBuyFragment extends BaseFragment {
         if (data.getPurchase_num().equals("0"))
             txtTitle.setText(data.getProduct_name());
         else
-            txtTitle.setText(data.getProduct_name() + data.getPurchase_num() + data.getPurchase_unit());
+            txtTitle.setText(data.getProduct_name() + " " + data.getPurchase_num() + data.getPurchase_unit());
 
         txtTime.setText(data.getCreate_time().substring(5, 16));
         txtContent.setText(data.getPurchase_content());

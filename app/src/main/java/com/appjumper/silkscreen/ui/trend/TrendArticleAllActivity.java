@@ -43,11 +43,13 @@ public class TrendArticleAllActivity extends BaseActivity {
     @Bind(R.id.recyclerArticle)
     RecyclerView recyclerArticle;
 
+    public static TrendArticleAllActivity instance = null;
+
     private List<TrendArticle> articleList;
     private ArticleAllAdapter articleAdapter;
 
     private int page = 1;
-    private int pageSize = 20;
+    private int pageSize = 30;
     private int totalSize;
 
     private String type;
@@ -59,6 +61,7 @@ public class TrendArticleAllActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trend_article_all);
         ButterKnife.bind(context);
+        instance = this;
 
         type = getIntent().getStringExtra("type");
 
@@ -178,5 +181,12 @@ public class TrendArticleAllActivity extends BaseActivity {
         super.onResume();
         page = 1;
         getArticle();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        instance = null;
     }
 }

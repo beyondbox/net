@@ -751,6 +751,8 @@ public class MyFragment extends BaseFragment {
                         int numDriver = dataObj.optInt("driver_status_num");
                         int numAskBuyOrder = dataObj.optInt("purchase_order_num");
 
+                        if (!isViewCreated) return;
+
                         if (numFreight > 0 || numAskbuy > 0 || numPerson > 0 || numDriver > 0 || numAskBuyOrder > 0)
                             badgeAudit.setBadgeNumber(-1);
                         else
@@ -788,6 +790,8 @@ public class MyFragment extends BaseFragment {
                         int auditNum = dataObj.optInt("wait_examine");
                         int payNum = dataObj.optInt("wait_pay");
                         int finishingNum = dataObj.optInt("wait_confirm");
+
+                        if (!isViewCreated) return;
 
                         unReadAudit.setText(auditNum + "");
                         unReadPay.setText(payNum + "");

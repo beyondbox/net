@@ -18,6 +18,7 @@ import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.ServiceProduct;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -64,8 +65,9 @@ public class ProductListAdapter extends MyBaseAdapter<ServiceProduct> implements
 
         Picasso.with(context)
                 .load(product.getImg())
-                .resize(DisplayUtil.dip2px(context, 80), DisplayUtil.dip2px(context, 80))
+                .resize(DisplayUtil.dip2px(context, 70), DisplayUtil.dip2px(context, 70))
                 .centerCrop()
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                 .placeholder(R.mipmap.img_error)
                 .error(R.mipmap.img_error)
                 .into(vh.imgViProduct);

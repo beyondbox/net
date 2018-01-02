@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.ui.dynamic.adapter;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.AskBuyOffer;
 import com.appjumper.silkscreen.bean.Avatar;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.manager.MyUserManager;
@@ -84,6 +86,22 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
         }
 
 
+        long expiryTime = AppTool.getTimeMs(item.getExpiry_date(), "yy-MM-dd HH:mm:ss");
+        TextView txtState = helper.getView(R.id.txtState);
+        if (System.currentTimeMillis() < expiryTime) {
+            txtState.setText("报价中 " + item.getExpiry_date().substring(5, 16) + "截止");
+            txtState.setTextColor(mContext.getResources().getColor(R.color.orange_color));
+            if (loginId.equals(item.getUser_id()))
+                txtoffer.setVisibility(View.INVISIBLE);
+            else
+                txtoffer.setVisibility(View.VISIBLE);
+        } else {
+            txtState.setText("报价结束");
+            txtState.setTextColor(mContext.getResources().getColor(R.color.light_gray_color));
+            txtoffer.setVisibility(View.INVISIBLE);
+        }
+
+
         if (item.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
             helper.setText(R.id.txtName, "求购G" + item.getId());
         else
@@ -94,9 +112,7 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
                 .setText(R.id.txtContent, item.getPurchase_content())
                 .setText(R.id.txtReadNum, "浏览" + "(" + item.getConsult_num() + ")")
                 .setText(R.id.txtOfferNum, "报价" + "(" + item.getOffer_num() + ")")
-                .setText(R.id.txtState, "报价中 " + item.getExpiry_date().substring(5, 16) + "截止")
                 .setVisible(R.id.imgViMarkSelf, loginId.equals(item.getUser_id()))
-                .setVisible(R.id.txtOffer, !loginId.equals(item.getUser_id()))
                 .addOnClickListener(R.id.txtOffer);
 
         if (item.getPurchase_num().equals("0"))

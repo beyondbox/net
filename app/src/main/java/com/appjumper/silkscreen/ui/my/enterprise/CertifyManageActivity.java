@@ -17,6 +17,7 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.my.PersonalAuthenticationActivity;
 import com.appjumper.silkscreen.ui.my.driver.DriverAuthFirstActivity;
+import com.appjumper.silkscreen.ui.my.driver.DriverAuthInfoActivity;
 import com.appjumper.silkscreen.util.Const;
 
 import org.apache.http.message.BasicNameValuePair;
@@ -77,7 +78,7 @@ public class CertifyManageActivity extends BaseActivity {
                 break;
             case Const.AUTH_SUCCESS: //认证通过
                 txtStatePerson.setText("已认证");
-                txtStatePerson.setEnabled(false);
+                //txtStatePerson.setEnabled(false);
                 break;
             default:
                 break;
@@ -91,7 +92,7 @@ public class CertifyManageActivity extends BaseActivity {
                 break;
             case Const.AUTH_SUCCESS: //认证通过
                 txtStateDriver.setText("已认证");
-                txtStateDriver.setEnabled(false);
+                //txtStateDriver.setEnabled(false);
                 break;
             default:
                 break;
@@ -110,7 +111,7 @@ public class CertifyManageActivity extends BaseActivity {
                 break;
             case Const.AUTH_SUCCESS: //认证通过
                 txtStateCompany.setText("已认证");
-                txtStateCompany.setEnabled(false);
+                //txtStateCompany.setEnabled(false);
                 break;
             default:
                 break;
@@ -198,7 +199,10 @@ public class CertifyManageActivity extends BaseActivity {
                     return;
                 }
 
-                start_Activity(context, EnterpriseAuthFirstepActivity.class);
+                if (getUser().getEnterprise().getEnterprise_auth_status().equals(Const.AUTH_SUCCESS + ""))
+                    start_Activity(context, EnterpriseAuthInfoActivity.class);
+                else
+                    start_Activity(context, EnterpriseAuthFirstepActivity.class);
                 break;
             case R.id.txtStateProductivity: //生产力认证
                 if(getUser().getEnterprise() == null) {
@@ -213,7 +217,10 @@ public class CertifyManageActivity extends BaseActivity {
                     showErrorToast("完成企业认证后才可以申请生产力认证");
                 break;
             case R.id.txtStateDriver: //司机认证
-                start_Activity(context, DriverAuthFirstActivity.class);
+                if (getUser().getDriver_status().equals(Const.AUTH_SUCCESS + ""))
+                    start_Activity(context, DriverAuthInfoActivity.class);
+                else
+                    start_Activity(context, DriverAuthFirstActivity.class);
                 break;
             default:
                 break;

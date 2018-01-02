@@ -248,6 +248,8 @@
         <activity android:name=".ui.home.logistics.LineDetailsActivity" />
         <!--绑定手机号-->
         <activity android:name=".ui.my.BindMobileActivity" />
+        <!--查看企业认证信息-->
+        <activity android:name=".ui.my.enterprise.EnterpriseAuthInfoActivity" />
 
 
         <!--现货商城-->
@@ -310,6 +312,8 @@
         <activity android:name=".ui.my.driver.DriverAuthSecondActivity" android:configChanges="orientation|screenSize|keyboardHidden|keyboard|"/>
         <!--司机认证第三步-->
         <activity android:name=".ui.my.driver.DriverAuthThirdActivity" android:configChanges="orientation|screenSize|keyboardHidden|keyboard|"/>
+        <!--查看司机认证信息-->
+        <activity android:name=".ui.my.driver.DriverAuthInfoActivity"/>
         <!--司机认证提交成功-->
         <activity android:name=".ui.my.driver.DriverAuthCompleteActivity" />
         <!--发布空车配货订单-->

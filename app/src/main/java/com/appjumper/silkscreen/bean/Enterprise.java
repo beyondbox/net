@@ -18,6 +18,7 @@ public class Enterprise implements Serializable{
     private String enterprise_reg_money;
     private String status;
     private String enterprise_legal_img;
+    private String enterprise_legal_img_back;
     private String create_time;
     private Avatar enterprise_logo;
     private String enterprise_imgs;
@@ -49,8 +50,12 @@ public class Enterprise implements Serializable{
     private List<LineList> line;
     private List<NewPublic> newpublic;
     private String auth_status;
+    private String enterprise_corporate_representative;
+    private String enterprise_corporate;
+    private String enterprise_registration_mark;
 
     private String user_auth_status; //个人认证
+
 
 
     public String getUrl() {
@@ -380,5 +385,37 @@ public class Enterprise implements Serializable{
 
     public void setUser_auth_status(String user_auth_status) {
         this.user_auth_status = user_auth_status;
+    }
+
+    public String getEnterprise_legal_img_back() {
+        return enterprise_legal_img_back;
+    }
+
+    public void setEnterprise_legal_img_back(String enterprise_legal_img_back) {
+        this.enterprise_legal_img_back = enterprise_legal_img_back;
+    }
+
+    public String getEnterprise_corporate_representative() {
+        return enterprise_corporate_representative;
+    }
+
+    public void setEnterprise_corporate_representative(String enterprise_corporate_representative) {
+        this.enterprise_corporate_representative = enterprise_corporate_representative;
+    }
+
+    public String getEnterprise_corporate() {
+        return enterprise_corporate;
+    }
+
+    public void setEnterprise_corporate(String enterprise_corporate) {
+        this.enterprise_corporate = enterprise_corporate;
+    }
+
+    public String getEnterprise_registration_mark() {
+        return enterprise_registration_mark;
+    }
+
+    public void setEnterprise_registration_mark(String enterprise_registration_mark) {
+        this.enterprise_registration_mark = enterprise_registration_mark;
     }
 }

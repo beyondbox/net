@@ -163,6 +163,7 @@ public class Const {
 
 
 
+    public static final int SERVICE_TYPE_PRODUCT_ALL = 0; //所有产品
     public static final int SERVICE_TYPE_ORDER = 1; //订做
     public static final int SERVICE_TYPE_PROCESS = 2; //加工
     public static final int SERVICE_TYPE_STOCK = 3; //现货

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/view_background_gray_dark_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_header_with_text"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_round_corner_white_big"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/llContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:text="姓名:"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                        <TextView
+                            android:id="@+id/txtName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="刘东强"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/txtState"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:textColor="@color/orange_color"
+                            android:textSize="13sp"
+                            android:text="已认证"/>
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="70dp"
+                            android:layout_height="wrap_content"
+                            android:text="手机号码:"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                        <TextView
+                            android:id="@+id/txtMobile"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="13056985632"
+                            android:textSize="14sp"
+                            android:textColor="@color/text_gray_color"/>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"/>
+
+                        <ImageView
+                            android:id="@+id/imgViCall"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:visibility="gone"
+                            android:layout_marginRight="30dp"
+                            android:src="@mipmap/company_phone"/>
+                    </LinearLayout>
+
+                    <View style="@style/LineStyle" android:layout_marginTop="15dp"/>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginLeft="12dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="汽车品牌:"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtBrand"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text="双环"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginLeft="12dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="行驶年限:"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtYear"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text="1年"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginLeft="12dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="行驶公里数:"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtMileage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text="1000公里"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="20dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="车型:"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtCarModel"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text="大卡车"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="载重:"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtWeight"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text="5吨"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="车长:"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtCarLength"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text="6米"
+                                    android:textSize="14sp"
+                                    android:textColor="@color/text_gray_color"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginBottom="30dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginLeft="12dp"
+                                android:text="驾驶证正页"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_gray_color"/>
+
+                            <ImageView
+                                android:id="@+id/imgVi1"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@mipmap/front_driver" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="12dp"
+                                android:text="行驶证正页"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_gray_color"/>
+
+                            <ImageView
+                                android:id="@+id/imgVi3"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@mipmap/front_driving" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="12dp"
+                                android:text="手持证件照"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_gray_color"/>
+
+                            <ImageView
+                                android:id="@+id/imgVi5"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@mipmap/upload_group" />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginLeft="12dp"
+                                android:text="驾驶证副页"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_gray_color"/>
+
+                            <ImageView
+                                android:id="@+id/imgVi2"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@mipmap/back_driver" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="12dp"
+                                android:text="行驶证副页"
+                                android:textSize="14sp"
+                                android:textColor="@color/text_gray_color"/>
+
+                            <ImageView
+                                android:id="@+id/imgVi4"
+                                android:layout_width="match_parent"
+                                android:layout_height="80dp"
+                                android:layout_marginTop="10dp"
+                                android:src="@mipmap/back_driving" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

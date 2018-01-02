@@ -32,18 +32,20 @@ import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.HomeData;
 import com.appjumper.silkscreen.bean.HomeDataResponse;
-import com.appjumper.silkscreen.bean.Notice;
 import com.appjumper.silkscreen.bean.OfferList;
+import com.appjumper.silkscreen.bean.PriceDetails;
 import com.appjumper.silkscreen.bean.ScoreResponse;
 import com.appjumper.silkscreen.bean.StockGoods;
+import com.appjumper.silkscreen.bean.TrendArticle;
 import com.appjumper.silkscreen.bean.UnRead;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.MainActivity;
-import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.HomeMenuAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StockShopListAdapter;
@@ -62,18 +64,25 @@ import com.appjumper.silkscreen.ui.home.stockshop.StockGoodsSelectActivity;
 import com.appjumper.silkscreen.ui.home.tender.TenderActivity;
 import com.appjumper.silkscreen.ui.home.workshop.WorkshopActivity;
 import com.appjumper.silkscreen.ui.my.MyPointActivity;
-import com.appjumper.silkscreen.util.AppTool;
+import com.appjumper.silkscreen.ui.trend.ArticleDetailActivity;
+import com.appjumper.silkscreen.ui.trend.PriceMoreActivity;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.view.BaseFundChartViewSmall;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
 import com.chanven.lib.cptr.PtrFrameLayout;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -135,6 +144,15 @@ public class HomeFragment extends BaseFragment {
     @Bind(R.id.llRecommend)
     LinearLayout llRecommend;
 
+    @Bind(R.id.flipperOffer)
+    ViewFlipper flipperOffer;
+    @Bind(R.id.txtArticle0)
+    TextView txtArticle0;
+    @Bind(R.id.txtArticle1)
+    TextView txtArticle1;
+    @Bind(R.id.llChart)
+    LinearLayout llChart;
+
 
     private List<StockGoods> stockList; //现货商城列表
     private StockShopListAdapter stockAdapter;
@@ -156,7 +174,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
-        view = inflater.inflate(R.layout.fragment_hom4, null);
+        view = inflater.inflate(R.layout.fragment_hom5, null);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -231,7 +249,7 @@ public class HomeFragment extends BaseFragment {
         /**
          * 推荐企业
          */
-        RecommendFragment orderFrag = new RecommendFragment();
+        /*RecommendFragment orderFrag = new RecommendFragment();
         Bundle bundle1 =  new Bundle();
         bundle1.putInt(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_ORDER);
         orderFrag.setArguments(bundle1);
@@ -272,17 +290,19 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onPageScrollStateChanged(int state) {
             }
-        });
+        });*/
     }
 
 
 
     private void initView() {
         l_homeview.setVisibility(View.VISIBLE);
+        getChartData();
+        getArticle();
         //mScrollView.smoothScrollTo(0, 0);
 
         //公告
-        List<Notice> noticeList = data.getNotice();
+        /*List<Notice> noticeList = data.getNotice();
         if (noticeList != null && noticeList.size() > 0) {
             final Notice notice = noticeList.get(0);
             txtNotice.setText("[公告] " + notice.getTitle());
@@ -293,42 +313,9 @@ public class HomeFragment extends BaseFragment {
                     CommonApi.addLiveness(getUserID(), 6);
                 }
             });
-        }
+        }*/
 
-        //每日盘条快报
-        if (flipperReport.isFlipping())
-            flipperReport.stopFlipping();
-        flipperReport.removeAllViews();
-
-        List<OfferList> offerList = data.getDynamicOffer();
-        if (offerList != null && offerList.size() > 0) {
-            for (OfferList offer : offerList) {
-                long time = AppTool.getTimeMs(offer.getOffer_time(), "yyyy-MM-dd HH:mm:ss");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(time);
-                String timeStr = (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日 ";
-
-                String isTax = "";
-                /*if (offer.getOffer_value_tax().equals("0")) {
-                    isTax = "不含税 ";
-                } else {
-                    isTax = "含税 ";
-                }*/
-
-                String report = "[每日盘条] " + timeStr + offer.getCompany_name()
-                        + " "
-                        + isTax
-                        + offer.getOffer_value()
-                        + offer.getOffer_unit();
-
-                View contentView = LayoutInflater.from(context).inflate(R.layout.layout_home_report, null);
-                TextView textView = (TextView) contentView.findViewById(R.id.textView);
-                textView.setText(report);
-                flipperReport.addView(contentView);
-            }
-        }
-        flipperReport.startFlipping();
-
+        setFlipper();
 
         //签到
         if (getUser() == null) {
@@ -358,7 +345,7 @@ public class HomeFragment extends BaseFragment {
 
 
         //推荐企业
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 List<Enterprise> recommend0 = data.getRecommend();
@@ -371,7 +358,7 @@ public class HomeFragment extends BaseFragment {
 
                 recommendAdapter.notifyDataSetChanged();
             }
-        }, 200);
+        }, 200);*/
 
 
         //推荐企业悬停效果
@@ -392,6 +379,95 @@ public class HomeFragment extends BaseFragment {
                     llHoverRecommend.setVisibility(View.GONE);*/
             }
         });
+    }
+
+
+    /**
+     * 设置滚动控件
+     */
+    private void setFlipper() {
+        //每日盘条快报
+        /*if (flipperReport.isFlipping())
+            flipperReport.stopFlipping();
+        flipperReport.removeAllViews();
+
+        List<OfferList> offerList = data.getDynamicOffer();
+        if (offerList != null && offerList.size() > 0) {
+            for (OfferList offer : offerList) {
+                long time = AppTool.getTimeMs(offer.getOffer_time(), "yyyy-MM-dd HH:mm:ss");
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(time);
+                String timeStr = (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日 ";
+
+                String isTax = "";
+                if (offer.getOffer_value_tax().equals("0")) {
+                    isTax = "不含税 ";
+                } else {
+                    isTax = "含税 ";
+                }
+
+                String report = "[每日盘条] " + timeStr + offer.getCompany_name()
+                        + " "
+                        + isTax
+                        + offer.getOffer_value()
+                        + offer.getOffer_unit();
+
+                View contentView = LayoutInflater.from(context).inflate(R.layout.layout_home_report, null);
+                TextView textView = (TextView) contentView.findViewById(R.id.textView);
+                textView.setText(report);
+                flipperReport.addView(contentView);
+            }
+
+            flipperReport.startFlipping();
+        }*/
+
+
+        if (flipperOffer.isFlipping())
+            flipperOffer.stopFlipping();
+        flipperOffer.removeAllViews();
+
+        List<OfferList> offerList = data.getDynamicOffer();
+        if (offerList != null && offerList.size() > 0) {
+            for (int i = 0; i < offerList.size(); i = i + 2) {
+                View contentView = LayoutInflater.from(context).inflate(R.layout.layout_home_offer, null);
+
+                TextView txtTime = (TextView) contentView.findViewById(R.id.txtTime);
+                TextView txtName = (TextView) contentView.findViewById(R.id.txtName);
+                TextView txtWave = (TextView) contentView.findViewById(R.id.txtWave);
+                TextView txtPrice = (TextView) contentView.findViewById(R.id.txtPrice);
+
+                TextView txtTime1 = (TextView) contentView.findViewById(R.id.txtTime1);
+                TextView txtName1 = (TextView) contentView.findViewById(R.id.txtName1);
+                TextView txtWave1 = (TextView) contentView.findViewById(R.id.txtWave1);
+                TextView txtPrice1 = (TextView) contentView.findViewById(R.id.txtPrice1);
+
+                OfferList offer = offerList.get(i);
+                txtTime.setText(offer.getOffer_time().substring(5, 10));
+                txtName.setText(offer.getCompany_name());
+                txtPrice.setText(offer.getOffer_value() + " " + offer.getOffer_unit());
+                txtWave.setText(offer.getYesterday());
+                int wave = Integer.valueOf(offer.getYesterday());
+                if (wave >= 0)
+                    txtWave.setTextColor(getResources().getColor(R.color.orange_color));
+                else
+                    txtWave.setTextColor(getResources().getColor(R.color.green_color));
+
+                OfferList offer1 = offerList.get(i + 1);
+                txtTime1.setText(offer1.getOffer_time().substring(5, 10));
+                txtName1.setText(offer1.getCompany_name());
+                txtPrice1.setText(offer1.getOffer_value() + " " + offer1.getOffer_unit());
+                txtWave1.setText(offer1.getYesterday());
+                int wave1 = Integer.valueOf(offer1.getYesterday());
+                if (wave1 >= 0)
+                    txtWave1.setTextColor(getResources().getColor(R.color.orange_color));
+                else
+                    txtWave1.setTextColor(getResources().getColor(R.color.green_color));
+
+                flipperOffer.addView(contentView);
+            }
+
+            flipperOffer.startFlipping();
+        }
     }
 
 
@@ -567,8 +643,204 @@ public class HomeFragment extends BaseFragment {
     };
 
 
+    /**
+     * 获取走势分析文章
+     */
+    private void getArticle() {
+        RequestParams params = MyHttpClient.getApiParam("tender", "analysis_list");
+        params.put("type", 1);
+        params.put("uid", getUserID());
 
-    @OnClick({R.id.rl_search, R.id.img_back_top, R.id.rlStockShop, R.id.rlCheckin, R.id.flipperReport, R.id.txtMoreGoods, R.id.rlStockConsign, R.id.llAskBuy, R.id.llFreight})
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONObject("data");
+                        final List<TrendArticle> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), TrendArticle.class);
+                        if (list.size() > 0) {
+                            txtArticle0.setText(list.get(0).getTitle());
+                            txtArticle1.setText(list.get(1).getTitle());
+
+                            txtArticle0.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(context, ArticleDetailActivity.class);
+                                    intent.putExtra(Const.KEY_TOTAL, list.get(0).getId());
+                                    intent.putExtra("id", list.get(0).getId());
+                                    startActivity(intent);
+                                }
+                            });
+
+                            txtArticle1.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(context, ArticleDetailActivity.class);
+                                    intent.putExtra(Const.KEY_TOTAL, list.get(0).getId());
+                                    intent.putExtra("id", list.get(1).getId());
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+
+    /**
+     * 获取走势图数据
+     */
+    private void getChartData() {
+        RequestParams params = MyHttpClient.getApiParam("price", "details");
+        params.put("product_id", 1);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        PriceDetails priceDetail = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), PriceDetails.class);
+                        setChart(priceDetail);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+
+    /**
+     * 渲染走势图数据
+     */
+    private void setChart(PriceDetails data) {
+        BaseFundChartViewSmall v_avg_list = new BaseFundChartViewSmall(context);
+
+        //取横坐标日期的起始位置
+        int start = -6;
+        int end = 0;
+
+        /*
+         * 根据今日报价是否为0做出不同的判断
+         */
+        List<Float> l_y = data.getAvg_list();
+        if (l_y.get(l_y.size() - 1) == 0) {
+            start = -7;
+            end = -1;
+            l_y.remove(l_y.size() - 1);
+        } else {
+            l_y.remove(0);
+        }
+
+        List<List<Float>> dataXy = new ArrayList<>();
+        dataXy.add(l_y);
+        v_avg_list.setData(dataXy);
+
+        /*
+         * 计算横坐标日期
+         */
+        List<String> l_x = new ArrayList<>();
+        for (int i = start; i <= end; i++) {
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DAY_OF_MONTH, i);
+            java.text.SimpleDateFormat sdf = new SimpleDateFormat("MM/dd");
+            String time = sdf.format(c.getTime());
+            l_x.add(time);
+        }
+        v_avg_list.setDateX(l_x);
+
+        /*
+         * 计算纵坐标的最小值和最大值
+         */
+        float max = 0;
+        float min = 99999;
+        for (int i = 0; i < l_y.size(); i++) {
+            float val = l_y.get(i);
+            if (max < val)
+                max = val;
+
+            if (min > val)
+                min = val;
+        }
+
+        if (max == 0)
+            max = Float.valueOf(data.getAvg());
+
+        int offset = Integer.valueOf(data.getSpace_money());
+
+        if (((int)max) % offset == 0) {
+            max += offset;
+        } else {
+            String strMax = (int) max + "";
+            strMax = strMax.substring(0, strMax.length() - 1);
+            strMax = strMax + "0";
+            int maxInt = Integer.valueOf(strMax);
+            while (true) {
+                maxInt += 10;
+                if (maxInt % offset == 0)
+                    break;
+            }
+            max = maxInt;
+        }
+
+
+        if (((int)min) % offset == 0) {
+            min -= offset;
+        } else {
+            String strMin = (int) min + "";
+            strMin = strMin.substring(0, strMin.length() - 1);
+            strMin = strMin + "0";
+            int minInt = Integer.valueOf(strMin);
+            while (true) {
+                if (minInt % offset == 0)
+                    break;
+                minInt -= 10;
+            }
+            min = minInt;
+        }
+
+        if (min < 0)
+            min = 0;
+
+        /*
+         * 纵坐标分成5份，计算每份的值
+         */
+        int dif = (int) (max - min);
+        int difAvg = dif / 5;
+
+        List<Float> datas = new ArrayList<>();
+        datas.add(min);
+        datas.add(min + (difAvg * 1));
+        datas.add(min + (difAvg * 2));
+        datas.add(min + (difAvg * 3));
+        datas.add(min + (difAvg * 4));
+        datas.add(max);
+        v_avg_list.setDateY(datas);
+
+        llChart.removeAllViews();
+        llChart.addView(v_avg_list);
+    }
+
+
+    @OnClick({R.id.rl_search, R.id.img_back_top, R.id.rlStockShop, R.id.rlCheckin, R.id.flipperReport, R.id.txtMoreGoods, R.id.rlStockConsign, R.id.llAskBuy, R.id.llFreight, R.id.llOffer, R.id.llChartGroup})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_back_top://返回顶部
@@ -630,6 +902,20 @@ public class HomeFragment extends BaseFragment {
                 Intent intent = new Intent(context, LogisticsListActivity.class);
                 intent.putExtra(Const.KEY_TYPE, 2);
                 startActivity(intent);
+                break;
+            case R.id.llOffer: //报价详情
+                start_Activity(context, PriceMoreActivity.class, new BasicNameValuePair("id", "1"), new BasicNameValuePair("title", "盘条"));
+                break;
+            case R.id.llChartGroup: //报价走势图
+                ((MainActivity)getActivity()).bottom_lly.check(R.id.rd_trend);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(Const.ACTION_CHART_DETAIL);
+                        intent.putExtra("type", type);
+                        context.sendBroadcast(intent);
+                    }
+                }, 200);
                 break;
             default:
                 break;

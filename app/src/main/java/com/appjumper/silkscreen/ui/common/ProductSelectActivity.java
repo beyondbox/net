@@ -317,6 +317,10 @@ public class ProductSelectActivity extends BaseActivity {
         else
             params.put("type", 0);
 
+
+        if (motion == MOTION_RELEASE_ASKBUY)
+            params.put("purchase", 1);
+
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override
             public void onStart() {
