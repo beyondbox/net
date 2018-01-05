@@ -144,6 +144,7 @@ public class AuditPersonFragment extends BaseFragment {
     private void pass() {
         RequestParams params = MyHttpClient.getApiParam("purchase", "pass_auth_status");
         params.put("id", data.getId());
+        params.put("uid", getUserID());
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

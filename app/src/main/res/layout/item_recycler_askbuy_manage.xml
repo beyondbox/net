@@ -60,7 +60,6 @@
         android:paddingBottom="5dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:layout_marginLeft="25dp"
         android:layout_alignBottom="@id/imgViHead"
         android:text="查看详情"
         android:textColor="@color/while_color"
@@ -73,7 +72,8 @@
         android:layout_toLeftOf="@id/txtHandle"
         android:layout_below="@id/txtTime"
         android:layout_marginTop="6dp"
-        android:text="报价(10)"
+        android:layout_marginRight="25dp"
+        android:text="报价（10）"
         android:textSize="13sp"
         android:textColor="@color/text_black_color2"/>
 
@@ -103,7 +103,8 @@
         android:paddingRight="15dp"
         android:layout_toLeftOf="@id/txtHandle"
         android:layout_alignBottom="@id/txtHandle"
-        android:visibility="gone"
+        android:layout_marginRight="20dp"
+        android:visibility="visible"
         android:text="删除信息"
         android:textColor="@color/while_color"
         android:textSize="13sp" />

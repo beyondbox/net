@@ -132,7 +132,7 @@ public class AttentionFragment extends BaseFragment {
 
 
     private void initViewPager2() {
-        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
+        pagerAdapter = new ViewPagerFragAdapter(getChildFragmentManager(), fragList, titleList);
         viewPager.setOffscreenPageLimit(titleAllArr.length - 1);
         viewPager.setAdapter(pagerAdapter);
         tabLayt.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -168,7 +168,7 @@ public class AttentionFragment extends BaseFragment {
                          * 释放掉之前创建的fragment
                          */
                         if (fragList.size() > 0) {
-                            FragmentTransaction ftr = context.getSupportFragmentManager().beginTransaction();
+                            FragmentTransaction ftr = getChildFragmentManager().beginTransaction();
                             for (int i = 0; i < fragList.size(); i++) {
                                 Fragment fragment = fragList.get(i);
                                 pagerAdapter.destroyItem(viewPager, i, fragment);
@@ -188,7 +188,7 @@ public class AttentionFragment extends BaseFragment {
                          * 重新设定适配器，实现数据彻底刷新
                          */
                         pagerAdapter = null;
-                        pagerAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), fragList, titleList);
+                        pagerAdapter = new ViewPagerFragAdapter(getChildFragmentManager(), fragList, titleList);
                         viewPager.setAdapter(pagerAdapter);
 
 

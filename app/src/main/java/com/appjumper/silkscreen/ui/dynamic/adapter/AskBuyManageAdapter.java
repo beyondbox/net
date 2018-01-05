@@ -40,8 +40,9 @@ public class AskBuyManageAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder
                 .into((ImageView) helper.getView(R.id.imgViHead));
 
         helper.setText(R.id.txtTime, item.getCreate_time().substring(5, 16))
-                .setText(R.id.txtOfferNum, "报价" + "(" + item.getOffer_num() + ")")
-                .addOnClickListener(R.id.txtHandle);
+                .setText(R.id.txtOfferNum, "报价" + "（" + item.getOffer_num() + "）")
+                .addOnClickListener(R.id.txtHandle)
+                .addOnClickListener(R.id.txtHandle1);
 
         if (item.getPurchase_num().equals("0"))
             helper.setText(R.id.txtTitle, item.getProduct_name());

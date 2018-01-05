@@ -53,6 +53,8 @@ import butterknife.OnClick;
 public class SpecificationActivity extends BasePhotoGridActivity {
     @Bind(R.id.ll_specification)//规格布局
             LinearLayout llSpecification;
+    @Bind(R.id.llSpecP)
+    LinearLayout llSpecP; //产品规格父布局
 
     @Bind(R.id.et_remark)//描述
             EditText et_remark;
@@ -97,6 +99,11 @@ public class SpecificationActivity extends BasePhotoGridActivity {
      * 初始化规格
      */
     private void initViewSpecification() {
+        if (list.size() == 0) {
+            llSpecP.setVisibility(View.GONE);
+            return;
+        }
+
         for (int i = 0; i < list.size(); i++) {
             String fildType = list.get(i).getFieldinput();
 
@@ -291,6 +298,10 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                     showErrorToast("请上传产品图片");
                     return;
                 }
+                if (TextUtils.isEmpty(et_remark.getText().toString().trim())) {
+                    showErrorToast("请输入产品描述");
+                    return;
+                }
                 progress.show();
                 new Thread(new UpdateStringRun(thumbPictures)).start();
                 break;
@@ -411,10 +422,9 @@ public class SpecificationActivity extends BasePhotoGridActivity {
 
                 data.put("uid", getUserID());
                 data.put("type", type);
-                //data.put("product_type", productType);
                 data.put("product_id", service.getId());
-                data.put("spec1", json);
-                data.put("spec_num", "1");
+                //data.put("spec1", json);
+                //data.put("spec_num", "1");
                 data.put("remark", et_remark.getText().toString());
                 data.put("imgs", imags(imgResponse.getData()));
 

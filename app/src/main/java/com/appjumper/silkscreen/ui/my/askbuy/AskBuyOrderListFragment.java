@@ -190,10 +190,21 @@ public class AskBuyOrderListFragment extends BaseFragment {
                 Intent intent = null;
                 switch (view.getId()) {
                     case R.id.txtHandle0:
-                        if (item.getExamine_status().equals(Const.ASKBUY_ORDER_AUDITING + ""))
-                            cancelOrder(position);
-                        else
-                            deleteOrder(position);
+                        if (item.getExamine_status().equals(Const.ASKBUY_ORDER_AUDITING + "")) {
+                            new SureOrCancelDialog(context, "提示", "确定要取消该订单吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                                @Override
+                                public void onSureButtonClick() {
+                                    cancelOrder(position);
+                                }
+                            }).show();
+                        } else {
+                            new SureOrCancelDialog(context, "提示", "确定要删除该订单吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                                @Override
+                                public void onSureButtonClick() {
+                                    deleteOrder(position);
+                                }
+                            }).show();
+                        }
                         break;
                     case R.id.txtHandle1:
                         new SureOrCancelDialog(context, "提示", "确定要取消该订单吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {

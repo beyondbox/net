@@ -329,6 +329,10 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                     showErrorToast("请上传产品图片");
                     return;
                 }
+                if (TextUtils.isEmpty(et_remark.getText().toString().trim())) {
+                    showErrorToast("请输入产品描述");
+                    return;
+                }
                 progress.show();
                 new Thread(new UpdateStringRun(thumbPictures)).start();
 
@@ -454,12 +458,11 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
 
                 data.put("uid", getUserID());
                 data.put("type", type);
-                //data.put("product_type",productType);
                 data.put("product_id", service.getId());
                 data.put("imgs", imags(imgResponse.getData()));
                 data.put("remark", et_remark.getText().toString());
 
-                if (specJsonList.size() > 0) {
+                /*if (specJsonList.size() > 0) {
                     for (int i = 0; i < specJsonList.size(); i++) {
                         data.put("spec" + (i + 1), specJsonList.get(i));
                     }
@@ -467,7 +470,7 @@ public class SpecificationStockActivity extends BasePhotoGridActivity {
                 } else {
                     data.put("spec1", "[{}]");
                     data.put("spec_num", "1");
-                }
+                }*/
 
                 //response = JsonParser.getBaseResponse(HttpUtil.postMsg(HttpUtil.getData(data), Url.SERVICEADD));
                 response = JsonParser.getBaseResponse(HttpUtil.getMsg(Url.HOST + "?" + HttpUtil.getData(data)));

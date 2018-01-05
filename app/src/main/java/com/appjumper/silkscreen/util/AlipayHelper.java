@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.appjumper.silkscreen.R;
+import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.PayResult;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
@@ -146,6 +147,7 @@ public class AlipayHelper {
     private void updateOrder() {
         RequestParams params = MyHttpClient.getApiParam("alipaynotify", "driver_pay_result");
         params.put("car_product_id", id);
+        params.put("uid", MyApplication.appContext.getMyUserManager().getUserId());
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

@@ -276,6 +276,8 @@ public class LoginActivity extends BaseActivity{
             @Override
             public void onFinish() {
                 super.onFinish();
+                if (isFinishing()) return;
+                if (isDestroyed()) return;
                 progress.dismiss();
             }
         });

@@ -28,10 +28,6 @@ import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationStockActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryDaoPianActivity;
 import com.appjumper.silkscreen.ui.spec.InquiryHuLanActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseDaoPianStockActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseHuLanActivity;
-import com.appjumper.silkscreen.ui.spec.ReleaseHuLanStockActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.MProgressDialog;
 import com.appjumper.silkscreen.util.SPUtil;
@@ -420,20 +416,21 @@ public class ProductSelectActivity extends BaseActivity {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         Intent intent = null;
+                        product.setProduct_spec(new ArrayList<Spec>());
 
                         if (serviceType == Const.SERVICE_TYPE_STOCK) {
-                            if (product.getId().equals("104"))
+                            /*if (product.getId().equals("104"))
                                 intent = new Intent(context, ReleaseHuLanStockActivity.class);
                             else if (product.getId().equals("27"))
                                 intent = new Intent(context, ReleaseDaoPianStockActivity.class);
-                            else
+                            else*/
                                 intent = new Intent(context, SpecificationStockActivity.class);
                         } else {
-                            if (product.getId().equals("104"))
+                            /*if (product.getId().equals("104"))
                                 intent = new Intent(context, ReleaseHuLanActivity.class);
                             else if (product.getId().equals("27"))
                                 intent = new Intent(context, ReleaseDaoPianActivity.class);
-                            else
+                            else*/
                                 intent = new Intent(context, SpecificationActivity.class);
                         }
                         intent.putExtra("service", product);

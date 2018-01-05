@@ -98,6 +98,9 @@
 
 
 
+
+
+
     <com.chanven.lib.cptr.PtrClassicFrameLayout
         android:id="@+id/pull_refresh_scrollview"
         android:layout_width="match_parent"
@@ -119,7 +122,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
-
 
 
                 <LinearLayout
@@ -249,12 +251,209 @@
                     android:numColumns="5"
                     android:stretchMode="columnWidth"/>
 
-                <View style="@style/LineStyle" android:visibility="gone"/>
+                <View style="@style/LineStyle"/>
 
-                <View
-                    style="@style/LineStyle"
-                    android:layout_marginTop="10dp"
-                    android:visibility="gone"/>
+    <!--**********************************交易额*********************************-->
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/while_color"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="18dp"
+                        android:background="@mipmap/home_volume_bg">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="1.5dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="交易额:"
+                                android:textSize="12sp"
+                                android:textColor="@color/new_gray_light_color"/>
+
+                            <TextView
+                                android:id="@+id/txtTradeMoney"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="6dp"
+                                android:text=""
+                                android:textSize="15sp"
+                                android:textColor="#ff6000"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="2dp"
+                                android:text="元"
+                                android:textSize="12sp"
+                                android:textColor="@color/new_gray_light_color"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="成交量:"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/new_gray_light_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtTradeNum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text=""
+                                    android:textSize="15sp"
+                                    android:textColor="#ff6000"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:text="单"
+                                    android:textSize="12sp"
+                                    android:textColor="#ff6000"/>
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="入驻厂家:"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/new_gray_light_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtEnterpriseNum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text=""
+                                    android:textSize="15sp"
+                                    android:textColor="#ff6000"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:text="家"
+                                    android:textSize="12sp"
+                                    android:textColor="#ff6000"/>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:layout_marginTop="4dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="采    购:"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/new_gray_light_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtAskBuyNum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text=""
+                                    android:textSize="15sp"
+                                    android:textColor="#ff6000"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:text="次"
+                                    android:textSize="12sp"
+                                    android:textColor="#ff6000"/>
+                            </LinearLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="空车配货:"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/new_gray_light_color"/>
+
+                                <TextView
+                                    android:id="@+id/txtFreightNum"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:text=""
+                                    android:textSize="15sp"
+                                    android:textColor="#ff6000"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="2dp"
+                                    android:text="次"
+                                    android:textSize="12sp"
+                                    android:textColor="#ff6000"/>
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
 
 
     <!--**********************************走势分析*********************************-->
@@ -377,6 +576,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:visibility="gone"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginTop="15dp"
                                     android:layout_marginRight="12dp"
@@ -449,10 +649,48 @@
                 </LinearLayout>
 
 
+    <!--**********************************热门求购*********************************-->
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-    <!--**********************************丝网快报*********************************-->
+                    <View
+                        android:layout_width="30dp"
+                        android:layout_height="0.7dp"
+                        android:background="#5ac3ff"
+                        android:layout_marginRight="10dp"/>
+
+                    <com.appjumper.silkscreen.view.GradientTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:text="热门采购"
+                        android:textSize="15sp" />
+
+                    <View
+                        android:layout_width="30dp"
+                        android:layout_height="0.7dp"
+                        android:background="#ea3cff"
+                        android:layout_marginLeft="10dp"/>
+
+                </LinearLayout>
+
+                <com.appjumper.silkscreen.view.NoScrollRecyclerView
+                    android:id="@+id/recyclerAskBuy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:background="@color/while_color"/>
+
+
+   <!--**********************************丝网快报*********************************-->
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -512,7 +750,7 @@
 
 
 
-    <!--*************************************现货********************************-->
+    <!--*************************************现货商城********************************-->
 
                 <LinearLayout
                     android:id="@+id/llStockShop"
@@ -541,7 +779,7 @@
                             android:gravity="center_vertical"
                             android:paddingBottom="10dp"
                             android:paddingTop="10dp"
-                            android:text="商城"
+                            android:text="商城推荐"
                             android:textSize="15sp" />
 
                         <View

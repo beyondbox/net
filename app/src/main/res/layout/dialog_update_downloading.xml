@@ -38,7 +38,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/while_color"
+            android:background="@drawable/selector_update_confirm_bg"
             android:orientation="vertical">
 
             <LinearLayout
@@ -72,13 +72,14 @@
         </LinearLayout>
 
 
-        <View style="@style/LineStyle"/>
+        <View style="@style/LineStyle" android:visibility="gone"/>
 
 
         <TextView
             android:id="@+id/txtCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:background="@drawable/selector_update_confirm_bg"
             android:gravity="center"
             android:paddingTop="12dp"

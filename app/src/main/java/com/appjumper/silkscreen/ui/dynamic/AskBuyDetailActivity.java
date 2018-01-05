@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.ui.dynamic;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyImageAdapter;
 import com.appjumper.silkscreen.ui.dynamic.adapter.OfferRecordAdapter;
 import com.appjumper.silkscreen.ui.my.askbuy.AskBuyMakeOrderActivity;
@@ -31,6 +33,7 @@ import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.util.ShareUtil;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -100,6 +103,7 @@ public class AskBuyDetailActivity extends BaseActivity {
     private String id;
     private AskBuy data;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,10 +111,15 @@ public class AskBuyDetailActivity extends BaseActivity {
         ButterKnife.bind(context);
         instance = this;
         initBack();
-        initProgressDialog();
+        initProgressDialog(false, null);
 
         id = getIntent().getStringExtra("id");
-        getData();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getData();
+            }
+        }, 60);
     }
 
 
@@ -119,8 +128,13 @@ public class AskBuyDetailActivity extends BaseActivity {
         super.onNewIntent(intent);
         setIntent(intent);
         id = getIntent().getStringExtra("id");
-        initProgressDialog();
-        getData();
+        initProgressDialog(false, null);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getData();
+            }
+        }, 60);
     }
 
 
@@ -180,10 +194,12 @@ public class AskBuyDetailActivity extends BaseActivity {
     private void setData() {
         initTitle("求购" + data.getProduct_name());
         right.setImageResource(R.mipmap.icon_share);
+        boolean isOffering = false; //是否是报价中状态
 
         long expiryTime = AppTool.getTimeMs(data.getExpiry_date(), "yy-MM-dd HH:mm:ss");
         long currTime = System.currentTimeMillis();
         if (currTime < expiryTime) {
+            isOffering = true;
             txtState.setText("报价中 " + data.getExpiry_date().substring(5, 16) + "截止");
             txtOffer.setText("报价");
             if (data.getUser_id().equals(getUserID()))
@@ -305,7 +321,7 @@ public class AskBuyDetailActivity extends BaseActivity {
             llRecord.setVisibility(View.VISIBLE);
             txtRecord.setText("报价记录" + "(" + offerList.size() + ")");
 
-            OfferRecordAdapter recordAdapter = new OfferRecordAdapter(context, offerList, getUserID(), data.getUser_id());
+            OfferRecordAdapter recordAdapter = new OfferRecordAdapter(context, offerList, getUserID(), data.getUser_id(), isOffering);
             if (getUserID().equals(data.getUser_id()))
                 recordAdapter.setPrivateMode(false);
             if (getUser() != null) {
@@ -329,6 +345,9 @@ public class AskBuyDetailActivity extends BaseActivity {
                             intent.putExtra("id", id);
                             intent.putExtra(Const.KEY_OBJECT, offerList.get(position));
                             startActivity(intent);
+                            break;
+                        case R.id.txtDelete: //删除报价
+                            showDeleteDialog(offerList.get(position).getId());
                             break;
                     }
                 }
@@ -368,6 +387,62 @@ public class AskBuyDetailActivity extends BaseActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+
+    /**
+     * 删除报价对话框
+     */
+    private void showDeleteDialog(final String id) {
+        new SureOrCancelDialog(context, "提示", "确定要删除您的报价记录吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+            @Override
+            public void onSureButtonClick() {
+                deleteOffer(id);
+            }
+        }).show();
+    }
+
+
+    /**
+     * 删除我的报价记录
+     */
+    private void deleteOffer(String id) {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "drop_purchase_offer");
+        params.put("uid", getUserID());
+        params.put("id", id);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        showErrorToast("删除成功");
+                        getData();
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                        progress.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    progress.dismiss();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+                progress.dismiss();
             }
         });
     }
@@ -436,6 +511,20 @@ public class AskBuyDetailActivity extends BaseActivity {
         }
     }
 
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (MainActivity.instance != null) {
+            MainActivity.instance.bottom_lly.check(R.id.rd_dynamic);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    context.sendBroadcast(new Intent(Const.ACTION_ASKBUY_LIST));
+                }
+            }, 200);
+        }
+    }
 
     @Override
     protected void onDestroy() {

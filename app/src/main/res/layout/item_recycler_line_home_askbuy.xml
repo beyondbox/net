@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_white_background"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="10dp"
+    android:orientation="vertical">
+
+    <com.appjumper.silkscreen.view.BorderRectImageView
+        android:id="@+id/imgViHead"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/icon_home_exhibition_bg"/>
+
+    <ImageView
+        android:id="@+id/imgViArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/icon_arrows_right61"/>
+
+    <TextView
+        android:id="@+id/txtTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/imgViArrow"
+        android:layout_marginRight="8dp"
+        android:layout_centerVertical="true"
+        android:text="12-01 22:00"
+        android:textColor="@color/new_gray_light_color"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/txtOfferNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/txtTime"
+        android:layout_marginRight="8dp"
+        android:layout_centerVertical="true"
+        android:text="报价(5)"
+        android:textColor="@color/new_gray_light_color"
+        android:textSize="12sp"/>
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgViHead"
+        android:layout_toLeftOf="@id/txtOfferNum"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_centerVertical="true"
+        android:text="求购C221 建筑网片200套"
+        android:textColor="@color/new_gray_color"
+        android:textSize="13sp"/>
+
+    <View
+        style="@style/LineStyleLight"
+        android:layout_below="@id/imgViHead"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>

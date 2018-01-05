@@ -16,6 +16,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
@@ -320,10 +321,21 @@ public class AskBuyOrderDetailActivity extends BaseActivity {
                     AppTool.dial(context, data.getAdviser_mobile());
                 break;
             case R.id.btn1:
-                if (data.getExamine_status().equals(Const.ASKBUY_ORDER_AUDITING + ""))
-                    cancelOrder();
-                else
-                    deleteOrder();
+                if (data.getExamine_status().equals(Const.ASKBUY_ORDER_AUDITING + "")) {
+                    new SureOrCancelDialog(context, "提示", "确定要取消该订单吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                        @Override
+                        public void onSureButtonClick() {
+                            cancelOrder();
+                        }
+                    }).show();
+                } else {
+                    new SureOrCancelDialog(context, "提示", "确定要删除该订单吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+                        @Override
+                        public void onSureButtonClick() {
+                            deleteOrder();
+                        }
+                    }).show();
+                }
                 break;
             default:
                 break;

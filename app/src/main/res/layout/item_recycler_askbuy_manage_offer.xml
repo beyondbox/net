@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:text="报价中"
-        android:textSize="14sp"
+        android:textSize="13sp"
         android:textColor="@color/red_color"/>
 
     <TextView
@@ -53,7 +53,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/txtTitle"
-        android:layout_alignBottom="@id/imgViHead"
+        android:layout_below="@id/txtContent"
+        android:layout_marginTop="10dp"
         android:text="8-05 12:00"
         android:textSize="12sp"
         android:textColor="@color/new_gray_light_color"/>
@@ -65,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/txtTime"
-        android:layout_alignBottom="@id/imgViHead"
+        android:layout_alignBottom="@id/txtTime"
         android:layout_marginLeft="20dp"
         android:text="报价(10)"
         android:textSize="12sp"
@@ -75,25 +76,45 @@
         android:id="@+id/txtHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_alignBottom="@id/imgViHead"
         android:layout_alignParentRight="true"
         android:text="12-09 13:00截止"
         android:textSize="12sp"
         android:textColor="@color/new_gray_color"/>
 
+
     <TextView
         android:id="@+id/txtPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_below="@id/txtState"
+        android:layout_marginTop="2dp"
         android:layout_alignParentRight="true"
         android:text="我的报价: 265元"
         android:textSize="13sp"
         android:textColor="@color/text_black_color2"/>
 
+    <TextView
+        android:id="@+id/txtHandle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/selector_btn_blue"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_below="@id/txtPrice"
+        android:layout_marginTop="6dp"
+        android:text="删除报价"
+        android:textColor="@color/while_color"
+        android:textSize="12sp" />
+
     <View
         style="@style/LineStyle"
-        android:layout_below="@id/imgViHead"
-        android:layout_marginTop="12dp"/>
+        android:layout_below="@id/txtHandle"
+        android:layout_marginTop="10dp"/>
 
 </RelativeLayout>

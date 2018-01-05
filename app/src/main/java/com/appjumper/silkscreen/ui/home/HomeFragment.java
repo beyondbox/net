@@ -13,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import android.widget.ViewFlipper;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.base.MyApplication;
+import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.HomeData;
 import com.appjumper.silkscreen.bean.HomeDataResponse;
@@ -47,6 +49,8 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
+import com.appjumper.silkscreen.ui.dynamic.AskBuyDetailActivity;
+import com.appjumper.silkscreen.ui.home.adapter.HomeAskBuyListAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.HomeMenuAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StockShopListAdapter;
 import com.appjumper.silkscreen.ui.home.equipment.EquipmentActivity;
@@ -66,6 +70,7 @@ import com.appjumper.silkscreen.ui.home.workshop.WorkshopActivity;
 import com.appjumper.silkscreen.ui.my.MyPointActivity;
 import com.appjumper.silkscreen.ui.trend.ArticleDetailActivity;
 import com.appjumper.silkscreen.ui.trend.PriceMoreActivity;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.BaseFundChartViewSmall;
 import com.appjumper.silkscreen.view.ObservableScrollView;
@@ -153,6 +158,23 @@ public class HomeFragment extends BaseFragment {
     @Bind(R.id.llChart)
     LinearLayout llChart;
 
+    @Bind(R.id.txtTradeMoney)
+    TextView txtTradeMoney;
+    @Bind(R.id.txtTradeNum)
+    TextView txtTradeNum;
+    @Bind(R.id.txtEnterpriseNum)
+    TextView txtEnterpriseNum;
+    @Bind(R.id.txtAskBuyNum)
+    TextView txtAskBuyNum;
+    @Bind(R.id.txtFreightNum)
+    TextView txtFreightNum;
+
+    @Bind(R.id.recyclerAskBuy)
+    RecyclerView recyclerAskBuy;
+
+
+    private List<AskBuy> askBuyList; //热门求购列表
+    private HomeAskBuyListAdapter askBuyAdapter;
 
     private List<StockGoods> stockList; //现货商城列表
     private StockShopListAdapter stockAdapter;
@@ -192,12 +214,6 @@ public class HomeFragment extends BaseFragment {
         setRecyclerView();
         setRefreshLayout();
 
-        HomeDataResponse homedata = getMyApplication().getMyUserManager().getHome();
-        if(homedata != null){
-            data = homedata.getData();
-            initView();
-        }
-
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -207,6 +223,12 @@ public class HomeFragment extends BaseFragment {
 
 
         new Thread(new HomeDataRun()).start();
+
+        HomeDataResponse homedata = getMyApplication().getMyUserManager().getHome();
+        if(homedata != null){
+            data = homedata.getData();
+            initView();
+        }
     }
 
 
@@ -227,6 +249,21 @@ public class HomeFragment extends BaseFragment {
 
     private void setRecyclerView() {
         gridViMenu.setAdapter(new HomeMenuAdapter());
+
+        /**
+         * 热门求购
+         */
+        askBuyList = new ArrayList<>();
+        askBuyAdapter = new HomeAskBuyListAdapter(R.layout.item_recycler_line_home_askbuy, askBuyList);
+        recyclerAskBuy.setLayoutManager(new LinearLayoutManager(context));
+        askBuyAdapter.bindToRecyclerView(recyclerAskBuy);
+
+        askBuyAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                start_Activity(context, AskBuyDetailActivity.class, new BasicNameValuePair("id", askBuyList.get(position).getId()));
+            }
+        });
 
         /**
          * 商城
@@ -297,8 +334,6 @@ public class HomeFragment extends BaseFragment {
 
     private void initView() {
         l_homeview.setVisibility(View.VISIBLE);
-        getChartData();
-        getArticle();
         //mScrollView.smoothScrollTo(0, 0);
 
         //公告
@@ -331,6 +366,14 @@ public class HomeFragment extends BaseFragment {
             txtScore.setVisibility(View.VISIBLE);
         }
 
+
+        //热门求购
+        List<AskBuy> aList = data.getPurchase();
+        if (aList != null && aList.size() > 0) {
+            askBuyList.clear();
+            askBuyList.addAll(aList);
+            askBuyAdapter.notifyDataSetChanged();
+        }
 
         //现货商品
         List<StockGoods> goodsList = data.getGoods();
@@ -379,6 +422,10 @@ public class HomeFragment extends BaseFragment {
                     llHoverRecommend.setVisibility(View.GONE);*/
             }
         });
+
+        getVolume();
+        getArticle();
+        getChartData();
     }
 
 
@@ -726,6 +773,40 @@ public class HomeFragment extends BaseFragment {
             }
         });
     }
+
+
+    /**
+     * 获取交易额数量
+     */
+    private void getVolume() {
+        final RequestParams params = MyHttpClient.getApiParam("purchase", "car_success");
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        JSONObject dataObj = jsonObj.getJSONArray("data").getJSONObject(0);
+                        txtTradeMoney.setText(AppTool.addComma(dataObj.getString("purchase_order_money")));
+                        txtTradeNum.setText(AppTool.addComma(dataObj.getString("purchase_order_num")));
+                        txtEnterpriseNum.setText(AppTool.addComma(dataObj.getString("enterprise_num")));
+                        txtAskBuyNum.setText(AppTool.addComma(dataObj.getString("purchase_num")));
+                        txtFreightNum.setText(AppTool.addComma(dataObj.getString("car_num")));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
 
 
     /**

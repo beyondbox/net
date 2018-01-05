@@ -82,6 +82,8 @@ public class UpdateDialog extends Dialog {
 			});
 
 			dialog.setContentView(contentView);
+			dialog.setCancelable(false);
+			dialog.setCanceledOnTouchOutside(false);
 			
 			//设置宽度
 			Display display = ((Activity)context).getWindowManager().getDefaultDisplay();

@@ -138,6 +138,7 @@ public class AuditFreightFragment extends BaseFragment {
     private void pass() {
         RequestParams params = MyHttpClient.getApiParam("purchase", "pass_car_product");
         params.put("id", data.getId());
+        params.put("uid", getUserID());
 
         MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
             @Override

@@ -239,6 +239,7 @@ public class Const {
     public static final int PUSH_AUDIT_ASKBUY_ORDER = 20; //推送-快速审核-求购订单
     public static final int PUSH_AUDIT_ASKBUY_RECEIPT = 21; //推送-快速审核-求购收款
     public static final int PUSH_NEW_OFFER_WIRE_ROD = 22; //推送-有新的盘条报价
+    public static final int PUSH_ASKBUY_RECEIPT_PASS = 23; //推送-求购收款审核通过
 
 
     public static final int FREIGHT_AUDITING = 0; //空车配货-审核中

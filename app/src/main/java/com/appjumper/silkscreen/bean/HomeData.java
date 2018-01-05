@@ -22,6 +22,7 @@ public class HomeData {
 
     private List<HotInquiry> offerView; //热门询价
     private String share_app; //app分享链接
+    private List<AskBuy> purchase; //热门求购
 
 
 
@@ -129,5 +130,13 @@ public class HomeData {
 
     public void setDynamicOffer(List<OfferList> dynamicOffer) {
         this.dynamicOffer = dynamicOffer;
+    }
+
+    public List<AskBuy> getPurchase() {
+        return purchase;
+    }
+
+    public void setPurchase(List<AskBuy> purchase) {
+        this.purchase = purchase;
     }
 }

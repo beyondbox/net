@@ -159,7 +159,7 @@ public class AttentCompanyFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                showFailTips(getResources().getString(R.string.requst_fail));
+                showFailTips(context.getResources().getString(R.string.requst_fail));
             }
 
             @Override

@@ -39,14 +39,15 @@ public class AskBuyManageOfferAdapter extends BaseQuickAdapter<AskBuyOffer, Base
                 .into((ImageView) helper.getView(R.id.imgViHead));
 
         helper.setText(R.id.txtTime, item.getCreate_time().substring(5, 16))
-                .setText(R.id.txtOfferNum, "报价" + "(" + item.getOffer_num() + ")")
+                .setText(R.id.txtOfferNum, "报价" + "（" + item.getOffer_num() + "）")
                 .setText(R.id.txtHint, item.getExpiry_date().substring(5, 16) + "截止")
-                .setText(R.id.txtPrice, "我的报价: " + item.getMoney() + "元");
+                .setText(R.id.txtPrice, "我的报价: " + item.getMoney() + "元")
+                .addOnClickListener(R.id.txtHandle);
 
         if (item.getPruchase_type().equals(Const.INFO_TYPE_OFFICIAL + ""))
-            helper.setText(R.id.txtTitle, "求购G" + item.getId());
+            helper.setText(R.id.txtTitle, "求购G" + item.getInquiry_id());
         else
-            helper.setText(R.id.txtTitle, "求购C" + item.getId());
+            helper.setText(R.id.txtTitle, "求购C" + item.getInquiry_id());
 
         if (item.getPurchase_num().equals("0"))
             helper.setText(R.id.txtContent, "求购" + item.getProduct_name());

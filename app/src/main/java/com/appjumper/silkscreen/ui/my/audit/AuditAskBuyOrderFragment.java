@@ -199,6 +199,7 @@ public class AuditAskBuyOrderFragment extends BaseFragment {
      */
     private void pass() {
         RequestParams params = MyHttpClient.getApiParam("purchase", "pass_purchase_order");
+        params.put("uid", getUserID());
         params.put("id", data.getId());
         params.put("product_name", data.getProduct_name());
         params.put("purchase_num", data.getPurchase_num());

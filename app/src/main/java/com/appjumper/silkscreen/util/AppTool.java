@@ -147,4 +147,16 @@ public class AppTool {
         activity.getWindow().setAttributes(lp);
     }
 
+
+    /**
+     * 将每三个数字加上逗号处理（通常使用金额方面的编辑）
+     *
+     * @param str 需要处理的字符串
+     * @return 处理完之后的字符串
+     */
+    public static String addComma(String str) {
+        DecimalFormat decimalFormat = new DecimalFormat(",###");
+        return decimalFormat.format(Double.parseDouble(str));
+    }
+
 }

@@ -224,6 +224,7 @@ public class MainActivity extends FragmentActivity {
         public void run() {
             UpdateResponse versionResponse = null;
             try {
+                Thread.sleep(1000);
                 versionResponse = JsonParser.getUpdateResponse(HttpUtil
                         .getMsg(Url.UPDATE));
 
@@ -375,6 +376,7 @@ public class MainActivity extends FragmentActivity {
                 startActivity(intent);
 
                 downloadDialog.dismiss();
+                finish();
             }
 
             @Override

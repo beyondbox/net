@@ -25,11 +25,13 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
     public boolean isPrivateMode = true;
     private String uid = "";
     private String askBuyUid = "";
+    private boolean isOffering = false;
 
-    public OfferRecordAdapter(Context context, List<AskBuyOffer> list, String loginUid, String askBuyUid) {
+    public OfferRecordAdapter(Context context, List<AskBuyOffer> list, String loginUid, String askBuyUid, boolean isOffering) {
         super(context, list);
         this.uid = loginUid;
         this.askBuyUid = askBuyUid;
+        this.isOffering = isOffering;
     }
 
     public void setPrivateMode(boolean privateMode) {
@@ -51,6 +53,7 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
         AskBuyOffer offer = list.get(position);
         vh.txtTime.setText(offer.getCreate_time().substring(5));
         vh.txtName.setText("厂家报价" + (position + 1));
+        vh.txtDelete.setVisibility(View.GONE);
 
         vh.txtName.setTextColor(context.getResources().getColor(R.color.text_black_color));
         vh.txtPrice.setTextColor(context.getResources().getColor(R.color.text_black_color));
@@ -64,6 +67,17 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
                     vh.txtName.setTextColor(context.getResources().getColor(R.color.red_color));
                     vh.txtPrice.setTextColor(context.getResources().getColor(R.color.red_color));
                     vh.txtTime.setTextColor(context.getResources().getColor(R.color.red_color));
+
+                    if (isOffering) {
+                        vh.txtDelete.setVisibility(View.VISIBLE);
+                        vh.txtDelete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                onWhichClickListener.onWhichClick(view, position, 0);
+                            }
+                        });
+                    }
+
                 } else {
                     vh.txtPrice.setText("***" + offer.getPrice_unit());
                 }
@@ -99,5 +113,7 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
         TextView txtTime;
         @Bind(R.id.txtHandle)
         TextView txtHandle;
+        @Bind(R.id.txtDelete)
+        TextView txtDelete;
     }
 }

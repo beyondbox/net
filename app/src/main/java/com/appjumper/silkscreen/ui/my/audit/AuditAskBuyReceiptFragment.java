@@ -150,6 +150,7 @@ public class AuditAskBuyReceiptFragment extends BaseFragment {
      */
     private void pass() {
         RequestParams params = MyHttpClient.getApiParam("purchase", "pass_purchase_receivables");
+        params.put("uid", getUserID());
         params.put("id", data.getId());
         params.put("order_id", data.getOrder_id());
         params.put("pay_money", data.getPay_money());

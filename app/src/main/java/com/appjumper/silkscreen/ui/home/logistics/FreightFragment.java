@@ -129,7 +129,7 @@ public class FreightFragment extends BaseFragment {
             public void run() {
                 initAnim();
             }
-        }, 200);
+        }, 300);
 
         ptrLayt.postDelayed(new Runnable() {
             @Override
@@ -137,7 +137,7 @@ public class FreightFragment extends BaseFragment {
                 ptrLayt.autoRefresh();
                 getSuccessNum();
             }
-        }, 50);
+        }, 80);
     }
 
 

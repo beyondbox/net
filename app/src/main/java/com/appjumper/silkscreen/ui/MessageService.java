@@ -173,6 +173,9 @@ public class MessageService extends XGPushBaseReceiver {
                         case Const.PUSH_NEW_OFFER_WIRE_ROD: //有新的盘条报价
                             intent = new Intent(context, MainActivity.class);
                             break;
+						case Const.PUSH_ASKBUY_RECEIPT_PASS: //求购收款审核通过
+							intent = new Intent(context, AskBuyOrderListActivity.class);
+							break;
 					}
 
 					if (intent != null) {

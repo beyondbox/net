@@ -76,7 +76,7 @@ public class DynamicFragment extends BaseFragment {
         fragList.add(askBuyFragment);
         fragList.add(attentionFragment);
 
-        fragAdapter = new FragAdapter(context.getSupportFragmentManager(), fragList);
+        fragAdapter = new FragAdapter(getChildFragmentManager(), fragList);
 
         rdoGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override

@@ -15,7 +15,9 @@ import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyManageOfferAdapter;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.view.SureOrCancelDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
 import com.chanven.lib.cptr.PtrDefaultHandler;
@@ -103,6 +105,23 @@ public class AskBuyManageOfferFragment extends BaseFragment {
             }
         });
 
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                AskBuyOffer item = dataList.get(position);
+                switch (view.getId()) {
+                    case R.id.txtHandle: //删除报价
+                        long expiryTime = AppTool.getTimeMs(item.getExpiry_date(), "yy-MM-dd HH:mm:ss");
+                        if (System.currentTimeMillis() < expiryTime) {
+                            showDeleteDialog(item.getId(), position);
+                        } else {
+                            hideOffer(item.getId(), position);
+                        }
+                        break;
+                }
+            }
+        });
+
         adapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
@@ -126,6 +145,19 @@ public class AskBuyManageOfferFragment extends BaseFragment {
                 getData();
             }
         });
+    }
+
+
+    /**
+     * 删除报价对话框
+     */
+    private void showDeleteDialog(final String id, final int position) {
+        new SureOrCancelDialog(context, "提示", "确定要删除您的报价记录吗？", "确定", "取消", new SureOrCancelDialog.SureButtonClick() {
+            @Override
+            public void onSureButtonClick() {
+                deleteOffer(id, position);
+            }
+        }).show();
     }
 
 
@@ -192,7 +224,7 @@ public class AskBuyManageOfferFragment extends BaseFragment {
 
 
     /**
-     * 批量删除
+     * 批量删除报价结束信息
      */
     private void deleteBatch() {
         RequestParams params = MyHttpClient.getApiParam("purchase", "delete_purchase_offer");
@@ -213,6 +245,100 @@ public class AskBuyManageOfferFragment extends BaseFragment {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         ptrLayt.autoRefresh();
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 删除报价记录
+     */
+    private void deleteOffer(String id, final int position) {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "drop_purchase_offer");
+        params.put("uid", getUserID());
+        params.put("id", id);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        dataList.remove(position);
+                        adapter.notifyItemRemoved(position);
+                        adapter.notifyItemRangeChanged(position, dataList.size() - position);
+                    } else {
+                        showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                showFailTips(getResources().getString(R.string.requst_fail));
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                progress.dismiss();
+            }
+        });
+    }
+
+
+    /**
+     * 隐藏报价记录
+     */
+    private void hideOffer(String id, final int position) {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "hide_purchase_offer");
+        params.put("uid", getUserID());
+        params.put("id", id);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+                progress.show();
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        dataList.remove(position);
+                        adapter.notifyItemRemoved(position);
+                        adapter.notifyItemRangeChanged(position, dataList.size() - position);
                     } else {
                         showErrorToast(jsonObj.getString(Const.KEY_ERROR_DESC));
                     }

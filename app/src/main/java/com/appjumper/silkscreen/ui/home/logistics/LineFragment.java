@@ -80,7 +80,7 @@ public class LineFragment extends BaseFragment {
         });
 
         fragList = new ArrayList<>();
-        fragAdapter = new FragAdapter(context.getSupportFragmentManager());
+        fragAdapter = new FragAdapter(getChildFragmentManager());
     }
 
 
