@@ -145,9 +145,9 @@ public class SystemSettingActivity extends BaseActivity {
                  followDialog = new SureOrCancelDialog(this, "是否退出登录？", new SureOrCancelDialog.SureButtonClick() {
                     @Override
                     public void onSureButtonClick() {
-                        XGPushManager.registerPush(getApplicationContext(), "*");
+                        //XGPushManager.registerPush(getApplicationContext(), "*");
+                        XGPushManager.unregisterPush(getApplicationContext());
                         getMyApplication().getMyUserManager().clean();
-                        //finish();
 
                         Intent intent = new Intent(context, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

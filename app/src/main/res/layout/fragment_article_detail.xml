@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/layout_header_with_img"/>
+    <include layout="@layout/layout_header_with_text"/>
 
     <com.appjumper.silkscreen.view.TouchScrollView
         android:layout_width="match_parent"

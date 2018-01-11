@@ -359,7 +359,7 @@ public class RegistereActivity extends BaseActivity{
                         User user = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), User.class);
                         if (user != null) {
                             //XGPushManager.registerPush(context, "*");
-                            XGPushManager.registerPush(context, user.getMobile());
+                            XGPushManager.registerPush(getApplicationContext(), user.getMobile());
                             getMyApplication().getMyUserManager().storeUserInfo(user);
                             CommonApi.addLiveness(getUserID(), 1);
                         }

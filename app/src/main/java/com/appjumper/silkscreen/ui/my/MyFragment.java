@@ -596,13 +596,13 @@ public class MyFragment extends BaseFragment {
                             llChangeState.setVisibility(View.GONE);
                         } else {
                             if (driverList.size() == 0) {
-                                txtDriverNum.setText("暂无订单");
+                                txtDriverNum.setText("暂无运输订单");
                                 recyclerDriver.setVisibility(View.GONE);
                                 llChangeState.setVisibility(View.VISIBLE);
                             } else {
                                 int orderState = Integer.valueOf(driverList.get(0).getExamine_status());
                                 if (orderState == Const.FREIGHT_INVALID || orderState == Const.FREIGHT_ORDER_FINISH) {
-                                    txtDriverNum.setText("暂无订单");
+                                    txtDriverNum.setText("暂无运输订单");
                                     recyclerDriver.setVisibility(View.GONE);
                                     llChangeState.setVisibility(View.VISIBLE);
                                 } else {

@@ -242,6 +242,7 @@ public class EquipmentReleaseActivity extends BasePhotoGridActivity {
 
                         jsonArray.add(jsonObject);
                         json = jsonArray.toJSONString();
+
                         new Thread(submitRun).start();
                     } else {
                         progress.dismiss();

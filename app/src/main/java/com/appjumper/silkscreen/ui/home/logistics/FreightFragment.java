@@ -370,6 +370,8 @@ public class FreightFragment extends BaseFragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                if (dataList.size() < 5) return;
+
                 if (scrolledDistance > HIDE_THRESHOLD && isNumVisible) {
                     animHide.start();
                     animUp.start();

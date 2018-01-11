@@ -72,7 +72,7 @@ import com.appjumper.silkscreen.ui.trend.ArticleDetailActivity;
 import com.appjumper.silkscreen.ui.trend.PriceMoreActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.view.BaseFundChartViewSmall;
+import com.appjumper.silkscreen.view.ChartViewStraightLine;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chanven.lib.cptr.PtrClassicFrameLayout;
@@ -169,6 +169,8 @@ public class HomeFragment extends BaseFragment {
     @Bind(R.id.txtFreightNum)
     TextView txtFreightNum;
 
+    @Bind(R.id.llHotAskBuy)
+    LinearLayout llHotAskBuy;
     @Bind(R.id.recyclerAskBuy)
     RecyclerView recyclerAskBuy;
 
@@ -370,9 +372,12 @@ public class HomeFragment extends BaseFragment {
         //热门求购
         List<AskBuy> aList = data.getPurchase();
         if (aList != null && aList.size() > 0) {
+            llHotAskBuy.setVisibility(View.VISIBLE);
             askBuyList.clear();
             askBuyList.addAll(aList);
             askBuyAdapter.notifyDataSetChanged();
+        } else {
+            llHotAskBuy.setVisibility(View.GONE);
         }
 
         //现货商品
@@ -423,9 +428,16 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
-        getVolume();
-        getArticle();
-        getChartData();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getVolume();
+                getChartData();
+                getArticle();
+            }
+        }, 80);
+
     }
 
 
@@ -813,7 +825,8 @@ public class HomeFragment extends BaseFragment {
      * 渲染走势图数据
      */
     private void setChart(PriceDetails data) {
-        BaseFundChartViewSmall v_avg_list = new BaseFundChartViewSmall(context);
+        //BaseFundChartViewSmall v_avg_list = new BaseFundChartViewSmall(context);
+        ChartViewStraightLine v_avg_list = new ChartViewStraightLine(context);
 
         //取横坐标日期的起始位置
         int start = -6;
@@ -846,7 +859,7 @@ public class HomeFragment extends BaseFragment {
             String time = sdf.format(c.getTime());
             l_x.add(time);
         }
-        v_avg_list.setDateX(l_x);
+        v_avg_list.setDataX(l_x);
 
         /*
          * 计算纵坐标的最小值和最大值
@@ -914,7 +927,7 @@ public class HomeFragment extends BaseFragment {
         datas.add(min + (difAvg * 3));
         datas.add(min + (difAvg * 4));
         datas.add(max);
-        v_avg_list.setDateY(datas);
+        v_avg_list.setDataY(datas);
 
         llChart.removeAllViews();
         llChart.addView(v_avg_list);
