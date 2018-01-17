@@ -66,7 +66,7 @@
                 android:drawableTop="@drawable/selector_dynamic_checkbox"
                 android:gravity="center"
                 android:drawablePadding="5dp"
-                android:text="动态"
+                android:text="行业"
                 android:textColor="@drawable/bottom_check_tv_color"
                 android:textSize="10dp"/>
             <RadioButton

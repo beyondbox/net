@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.PermissionChecker;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -69,8 +69,8 @@ public class LogisticsListActivity extends BaseActivity {
 
     private void initData() {
         fragList = new ArrayList<>();
-        fragList.add(new LineFragment());
         fragList.add(new FreightFragment());
+        fragList.add(new LineFragment());
 
         fragAdapter = new FragAdapter(getSupportFragmentManager());
 
@@ -122,7 +122,7 @@ public class LogisticsListActivity extends BaseActivity {
     /**
      * Fragment管理适配器
      */
-    private class FragAdapter extends FragmentPagerAdapter {
+    private class FragAdapter extends FragmentStatePagerAdapter {
 
         public FragAdapter(FragmentManager fm) {
             super(fm);
@@ -149,13 +149,6 @@ public class LogisticsListActivity extends BaseActivity {
 
                 switch (type) {
                     case "1":
-                        if (getUser().getEnterprise() == null) {
-                            comCreateDialog.show();
-                            return;
-                        }
-                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
-                        break;
-                    case "2":
                         if (!MyApplication.appContext.checkMobile(context)) return;
                         if (!MyApplication.appContext.checkCertifyPer(context)) return;
                         if (PermissionChecker.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
@@ -163,6 +156,13 @@ public class LogisticsListActivity extends BaseActivity {
                             return;
                         }
                         start_Activity(context, ReleaseFreightActivity.class);
+                        break;
+                    case "2":
+                        if (getUser().getEnterprise() == null) {
+                            comCreateDialog.show();
+                            return;
+                        }
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
                         break;
                 }
                 break;

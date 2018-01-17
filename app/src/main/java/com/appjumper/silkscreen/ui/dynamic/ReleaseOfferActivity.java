@@ -19,6 +19,7 @@ import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
+import com.appjumper.silkscreen.ui.home.askbuy.AskBuyDetailActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;

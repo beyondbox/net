@@ -24,7 +24,7 @@ import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyImageAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.AskBuyImageAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;

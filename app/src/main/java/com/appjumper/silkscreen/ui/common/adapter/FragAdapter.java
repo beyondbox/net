@@ -2,7 +2,7 @@ package com.appjumper.silkscreen.ui.common.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  * Created by Botx on 2017/10/17.
  */
 
-public class FragAdapter extends FragmentPagerAdapter {
+public class FragAdapter extends FragmentStatePagerAdapter {
 
     private List<Fragment> fragList;
 

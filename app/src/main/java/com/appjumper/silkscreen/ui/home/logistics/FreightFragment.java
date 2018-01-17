@@ -361,7 +361,7 @@ public class FreightFragment extends BaseFragment {
 
         adapter.setEnableLoadMore(false);
 
-
+        //设置上滑隐藏成功配货车次数
         recyclerData.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             private int HIDE_THRESHOLD = DisplayUtil.dip2px(context, 40);
@@ -426,7 +426,7 @@ public class FreightFragment extends BaseFragment {
 
 
     /**
-     * 设置位移动画
+     * 设置车次数位移动画
      */
     private void initAnim() {
         numHeight = llFreightNum.getHeight();

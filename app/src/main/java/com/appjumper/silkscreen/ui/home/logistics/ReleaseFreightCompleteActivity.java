@@ -42,7 +42,6 @@ public class ReleaseFreightCompleteActivity extends BaseActivity {
 
                 if (LogisticsListActivity.instance == null) {
                     Intent intent = new Intent(context, LogisticsListActivity.class);
-                    intent.putExtra(Const.KEY_TYPE, 2);
                     startActivity(intent);
                 }
                 finish();

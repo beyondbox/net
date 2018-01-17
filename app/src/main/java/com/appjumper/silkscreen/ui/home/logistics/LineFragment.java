@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,7 +144,7 @@ public class LineFragment extends BaseFragment {
     /**
      * Fragment管理适配器
      */
-    private class FragAdapter extends FragmentPagerAdapter {
+    private class FragAdapter extends FragmentStatePagerAdapter {
 
         public FragAdapter(FragmentManager fm) {
             super(fm);

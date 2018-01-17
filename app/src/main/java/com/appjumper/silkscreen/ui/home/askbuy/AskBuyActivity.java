@@ -1,4 +1,4 @@
-package com.appjumper.silkscreen.ui.dynamic;
+package com.appjumper.silkscreen.ui.home.askbuy;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,27 +6,27 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.base.BaseFragment;
+import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.HotInquiry;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyFilterAdapter;
-import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyListAdapter;
+import com.appjumper.silkscreen.ui.MainActivity;
+import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
+import com.appjumper.silkscreen.ui.dynamic.ReleaseOfferActivity;
+import com.appjumper.silkscreen.ui.home.adapter.AskBuyFilterAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.AskBuyListAdapter;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
@@ -50,11 +50,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 求购
- * Created by Botx on 2017/10/17.
+ * 求购公共列表
+ * Created by Botx on 2018/1/11.
  */
 
-public class AskBuyFragment extends BaseFragment {
+public class AskBuyActivity extends BaseActivity {
 
     @Bind(R.id.ptrLayt)
     PtrClassicFrameLayout ptrLayt;
@@ -86,22 +86,23 @@ public class AskBuyFragment extends BaseFragment {
     private int lastY;
 
 
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_askbuy);
+        ButterKnife.bind(context);
+
         registerBroadcastReceiver();
-    }
+        initTitle("求购");
+        initBack();
+        initRightButton("管理", new RightButtonListener() {
+            @Override
+            public void click() {
+                if (checkLogined())
+                    start_Activity(context, AskBuyManageActivity.class);
+            }
+        });
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_askbuy, container, false);
-        ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
-    protected void initData() {
         initRecyclerView();
         initRefreshLayout();
         ptrLayt.postDelayed(new Runnable() {
@@ -161,7 +162,7 @@ public class AskBuyFragment extends BaseFragment {
 
         adapter.setEnableLoadMore(false);
 
-
+        //设置顶部筛选
         filterAdapter = new AskBuyFilterAdapter(R.layout.item_recycler_askbuy_filter, filterList);
         recyclerFilter.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         filterAdapter.bindToRecyclerView(recyclerFilter);
@@ -206,9 +207,9 @@ public class AskBuyFragment extends BaseFragment {
 
         int padding = DisplayUtil.dip2px(context, 5);
         final int boundaryL = padding;
-        final int boundaryR = context.getWindowManager().getDefaultDisplay().getWidth() - padding;
+        final int boundaryR = getWindowManager().getDefaultDisplay().getWidth() - padding;
         final int boundaryT = padding;
-        final int boundaryB = llFilter.getHeight() + ptrLayt.getHeight() - padding;
+        final int boundaryB = llFilter.getHeight() + ptrLayt.getHeight();
 
         imgViCall.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -344,7 +345,7 @@ public class AskBuyFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                if (!isViewCreated) return;
+                if (isDestroyed()) return;
                 showFailTips(getResources().getString(R.string.requst_fail));
                 if (page > 1)
                     page--;
@@ -353,7 +354,7 @@ public class AskBuyFragment extends BaseFragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                if (!isViewCreated) return;
+                if (isDestroyed()) return;
 
                 ptrLayt.refreshComplete();
                 adapter.loadMoreComplete();
@@ -370,7 +371,7 @@ public class AskBuyFragment extends BaseFragment {
         IntentFilter filter = new IntentFilter();
         filter.addAction(Const.ACTION_ADD_READ_NUM);
         filter.addAction(Const.ACTION_RELEASE_SUCCESS);
-        getActivity().registerReceiver(myReceiver, filter);
+        registerReceiver(myReceiver, filter);
     }
 
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
@@ -396,8 +397,9 @@ public class AskBuyFragment extends BaseFragment {
     };
 
 
-    @OnClick({R.id.llAll, R.id.imgViCall})
+    @OnClick({R.id.llAll, R.id.imgViCall, R.id.txtRelease})
     public void onClick(View view) {
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.llAll: //全部
                 llAll.setSelected(true);
@@ -409,23 +411,31 @@ public class AskBuyFragment extends BaseFragment {
             case R.id.imgViCall: //联系客服
                 AppTool.dial(context, Const.SERVICE_PHONE_ASKBUY);
                 break;
+            case R.id.txtRelease: //发布求购
+                if (checkLogined()) {
+                    if (!MyApplication.appContext.checkMobile(context)) return;
+                    intent = new Intent(context, ProductSelectActivity.class);
+                    intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_PRODUCT_ALL);
+                    intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
+                    startActivity(intent);
+                }
+                break;
         }
     }
 
 
     @Override
-    public void setMenuVisibility(boolean menuVisible) {
-        super.setMenuVisibility(menuVisible);
-        if (getView() != null) {
-            getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
+    public void finish() {
+        super.finish();
+        if (MainActivity.instance == null) {
+            start_Activity(context, MainActivity.class);
         }
     }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        context.unregisterReceiver(myReceiver);
+        unregisterReceiver(myReceiver);
     }
 
 }

@@ -100,9 +100,14 @@ public class StockGoodsSelectActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(context, StockShopActivity.class);
+                /*Intent intent = new Intent(context, StockShopActivity.class);
                 intent.putExtra(Const.KEY_OBJECT, filterList.get(position));
-                startActivity(intent);
+                startActivity(intent);*/
+
+                Intent data = new Intent();
+                data.putExtra(Const.KEY_OBJECT, filterList.get(position));
+                setResult(0, data);
+                finish();
             }
         });
     }

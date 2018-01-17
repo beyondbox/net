@@ -61,6 +61,7 @@ public class TenderActivity extends BaseActivity {
 
         listView = pullToRefreshView.getRefreshableView();
         listView.onFinishLoading(false);
+        listView.setDividerHeight(0);
         mEmptyLayout = LayoutInflater.from(this).inflate(R.layout.pull_listitem_empty_padding, null);
         pullToRefreshView.setEmptyView(mEmptyLayout);
 

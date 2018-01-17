@@ -8,7 +8,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 
 import com.appjumper.silkscreen.R;
-import com.appjumper.silkscreen.ui.dynamic.AskBuyManageActivity;
+import com.appjumper.silkscreen.ui.home.askbuy.AskBuyManageActivity;
+import com.appjumper.silkscreen.ui.home.askbuy.AskBuyActivity;
 import com.appjumper.silkscreen.ui.money.MessageActivity;
 import com.appjumper.silkscreen.ui.my.askbuy.AskBuyOrderListActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditAskBuyActivity;
@@ -134,7 +135,7 @@ public class MessageService extends XGPushBaseReceiver {
 							intent = new Intent(context, DeliverOrderListActivity.class);
 							break;
 						case Const.PUSH_ASKBUY_PASS_TO_OFFER: //求购信息审核通过，推送给报价用户
-							intent = new Intent(context, MainActivity.class);
+							intent = new Intent(context, AskBuyActivity.class);
 							break;
 						case Const.PUSH_AUDIT_ASKBUY: //快速审核-求购信息
 							intent = new Intent(context, AuditAskBuyActivity.class);

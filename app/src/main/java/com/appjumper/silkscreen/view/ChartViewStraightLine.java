@@ -38,6 +38,7 @@ public class ChartViewStraightLine extends View {
 
     private int paddingT; //y轴末端到顶部的间距
     private int paddingR; //x轴末端到最右边的间距
+    private int dotRadiusDp = 2; //小圆点半径，单位dp
 
     private Paint paintAxis; //画笔--xy轴
     private Paint paintTextX, paintTextY; //画笔--xy轴上的刻度
@@ -45,6 +46,8 @@ public class ChartViewStraightLine extends View {
     private Paint paintLine; //画笔--走势线
     private Paint paintShadow; //画笔--渐变
     private Paint paintXValuePath; //画笔--x轴刻度斜向路径
+    private Paint paintDot; //画笔--小圆点
+    private Paint paintDotStroke; //画笔--小圆点边框
 
 
 
@@ -123,6 +126,20 @@ public class ChartViewStraightLine extends View {
         paintXValuePath.setStrokeWidth(1);
         paintXValuePath.setColor(Color.TRANSPARENT);
         paintXValuePath.setTextSize(DisplayUtil.sp2px(getContext(), 8));
+
+        //小圆点
+        paintDot = new Paint();
+        paintDot.setStyle(Paint.Style.FILL);
+        paintDot.setStrokeWidth(1);
+        paintDot.setColor(getResources().getColor(R.color.while_color));
+        paintDot.setAntiAlias(true);
+
+        //小圆点边框
+        paintDotStroke = new Paint();
+        paintDotStroke.setStyle(Paint.Style.STROKE);
+        paintDotStroke.setStrokeWidth(1);
+        paintDotStroke.setColor(getResources().getColor(R.color.theme_color));
+        paintDotStroke.setAntiAlias(true);
     }
 
 
@@ -219,36 +236,48 @@ public class ChartViewStraightLine extends View {
 
                 canvas.drawPath(pathLine, paintLine);
 
-                Shader shader = new LinearGradient(gridX, paddingT, gridX, gridY, new int[] {0xBFA8C6F8, 0xBFC7D9F8, 0x00EFF3FA}, null, Shader.TileMode.REPEAT);
+                Shader shader = new LinearGradient(gridX, paddingT, gridX, gridY, new int[] {0xBFA8C6F8, 0xBFC7D9F8, 0x00ffffff}, null, Shader.TileMode.REPEAT);
                 paintShadow.setShader(shader);
                 canvas.drawPath(pathShadow, paintShadow);
+            }
+        }
+
+
+        //画小圆点
+        if (data != null && data.size() > 0) {
+            for (int n = 0; n < data.size(); n++) {
+                List<Float> list = data.get(n);
+
+                for (int i = 0; i < list.size(); i++) {
+                    //计算XY坐标
+                    float x = xSpace * i + gridX;
+                    float y = gridY - (ySpace * (list.get(i) - yStart) / spaceYT);
+
+                    if (i != 0) {
+                        canvas.drawCircle(x, y, DisplayUtil.dip2px(context, dotRadiusDp), paintDot);
+                        canvas.drawCircle(x, y, DisplayUtil.dip2px(context, dotRadiusDp), paintDotStroke);
+                    }
+                }
             }
         }
 
     }
 
 
-    public List<List<Float>> getData() {
-        return data;
-    }
 
     public void setData(List<List<Float>> data) {
         this.data = data;
-    }
-
-    public List<String> getDataX() {
-        return dataX;
     }
 
     public void setDataX(List<String> dataX) {
         this.dataX = dataX;
     }
 
-    public List<Float> getDataY() {
-        return dataY;
-    }
-
     public void setDataY(List<Float> dataY) {
         this.dataY = dataY;
+    }
+
+    public void setDotRadiusDp(int dotRadiusDp) {
+        this.dotRadiusDp = dotRadiusDp;
     }
 }

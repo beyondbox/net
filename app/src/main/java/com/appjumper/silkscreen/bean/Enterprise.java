@@ -53,6 +53,9 @@ public class Enterprise implements Serializable{
     private String enterprise_corporate_representative;
     private String enterprise_corporate;
     private String enterprise_registration_mark;
+    private List<Product> service;
+    private String is_top_custom;
+    private String is_top_machining;
 
     private String user_auth_status; //个人认证
 
@@ -417,5 +420,29 @@ public class Enterprise implements Serializable{
 
     public void setEnterprise_registration_mark(String enterprise_registration_mark) {
         this.enterprise_registration_mark = enterprise_registration_mark;
+    }
+
+    public List<Product> getService() {
+        return service;
+    }
+
+    public void setService(List<Product> service) {
+        this.service = service;
+    }
+
+    public String getIs_top_custom() {
+        return is_top_custom;
+    }
+
+    public void setIs_top_custom(String is_top_custom) {
+        this.is_top_custom = is_top_custom;
+    }
+
+    public String getIs_top_machining() {
+        return is_top_machining;
+    }
+
+    public void setIs_top_machining(String is_top_machining) {
+        this.is_top_machining = is_top_machining;
     }
 }

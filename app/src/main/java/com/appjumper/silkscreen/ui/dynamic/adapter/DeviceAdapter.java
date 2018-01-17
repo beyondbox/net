@@ -21,8 +21,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.umeng.socialize.utils.DeviceConfig.context;
-
 /**
  * 设备adapter
  * Created by Botx on 2017/5/17.
@@ -106,7 +104,7 @@ public class DeviceAdapter extends BaseQuickAdapter<EquipmentList, BaseViewHolde
         if (imgList != null && imgList.size() > 0) {
             helper.setVisible(R.id.recyclerImage, true);
             RecyclerView recyclerImage = helper.getView(R.id.recyclerImage);
-            recyclerImage.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+            recyclerImage.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
             ImageAdapter adapter = new ImageAdapter(R.layout.item_recycler_line_dynamic_image, imgList);
             recyclerImage.setAdapter(adapter);
 

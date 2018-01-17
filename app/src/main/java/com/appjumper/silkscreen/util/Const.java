@@ -196,6 +196,10 @@ public class Const {
     public static final int OFFER_OFFERED = 2; //求购报价-报价结束
 
 
+    public static final int SHOP_TYPE_COMPANY = 0; //商城--厂家委托
+    public static final int SHOP_TYPE_STOCK = 1; //商城--库存处理
+
+
     public static final int ASKBUY_AUDITING = 0; //求购-审核中
     public static final int ASKBUY_OFFERING = 1; //求购-报价中
     public static final int ASKBUY_REFUSE = 2; //求购-审核拒绝

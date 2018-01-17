@@ -13,7 +13,7 @@ import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.dynamic.AskBuyManageDetailActivity;
+import com.appjumper.silkscreen.ui.home.askbuy.AskBuyManageDetailActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;

@@ -1,9 +1,6 @@
 package com.appjumper.silkscreen.ui.dynamic;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -17,10 +14,7 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseFragment;
-import com.appjumper.silkscreen.base.MyApplication;
-import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.common.adapter.FragAdapter;
-import com.appjumper.silkscreen.util.Const;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,33 +41,30 @@ public class DynamicFragment extends BaseFragment {
 
     private List<Fragment> fragList;
     private FragAdapter fragAdapter;
-    private AskBuyFragment askBuyFragment;
+    private RelatedFragment relatedFragment;
+    private NewsFragment newsFragment;
     private AttentionFragment attentionFragment;
 
 
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        registerBroadcastReceiver();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dynamic, container, false);
         ButterKnife.bind(this, view);
-
-        txtRight.setText("发布");
         return view;
     }
 
 
     @Override
     protected void initData() {
-        askBuyFragment = new AskBuyFragment();
+        relatedFragment = new RelatedFragment();
+        newsFragment = new NewsFragment();
         attentionFragment = new AttentionFragment();
+
         fragList = new ArrayList<>();
-        fragList.add(askBuyFragment);
+        fragList.add(relatedFragment);
+        fragList.add(newsFragment);
         fragList.add(attentionFragment);
 
         fragAdapter = new FragAdapter(getChildFragmentManager(), fragList);
@@ -82,15 +73,17 @@ public class DynamicFragment extends BaseFragment {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
-                    case R.id.rdoBtnAskBuy:
+                    case R.id.rb0:
                         switchFragment(0);
-                        txtRight.setText("发布");
-                        txtLeft.setVisibility(View.VISIBLE);
+                        txtRight.setVisibility(View.INVISIBLE);
                         break;
-                    case R.id.rdoBtnAttention:
+                    case R.id.rb1:
                         switchFragment(1);
-                        txtRight.setText("管理");
-                        txtLeft.setVisibility(View.INVISIBLE);
+                        txtRight.setVisibility(View.INVISIBLE);
+                        break;
+                    case R.id.rb2:
+                        switchFragment(2);
+                        txtRight.setVisibility(View.VISIBLE);
                         break;
                     default:
                         break;
@@ -98,7 +91,7 @@ public class DynamicFragment extends BaseFragment {
             }
         });
 
-        rdoGroup.check(R.id.rdoBtnAskBuy);
+        rdoGroup.check(R.id.rb0);
     }
 
 
@@ -113,56 +106,16 @@ public class DynamicFragment extends BaseFragment {
     }
 
 
-    private void registerBroadcastReceiver() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Const.ACTION_ASKBUY_LIST);
-        getActivity().registerReceiver(myReceiver, filter);
-    }
-
-    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (!isDataInited)
-                return;
-
-            String action = intent.getAction();
-            if (action.equals(Const.ACTION_ASKBUY_LIST)) {
-                rdoGroup.check(R.id.rdoBtnAskBuy);
-            }
-        }
-    };
-
-
-    @OnClick({R.id.right, R.id.left})
+    @OnClick({R.id.right})
     public void onClick(View view) {
         Intent intent = null;
         switch (view.getId()) {
             case R.id.right:
-                if (checkLogined()) {
-                    if (txtRight.getText().toString().equals("发布")) {
-                        if (!MyApplication.appContext.checkMobile(context)) return;
-                        intent = new Intent(context, ProductSelectActivity.class);
-                        intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_PRODUCT_ALL);
-                        intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
-                        startActivity(intent);
-                    } else {
-                        attentionFragment.attentionManage();
-                    }
-                }
-                break;
-            case R.id.left:
-                if (checkLogined())
-                    start_Activity(context, AskBuyManageActivity.class);
+                if (checkLogined()) attentionFragment.attentionManage();
                 break;
             default:
                 break;
         }
     }
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        getActivity().unregisterReceiver(myReceiver);
-    }
 }

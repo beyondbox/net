@@ -9,9 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,8 +16,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -39,7 +34,6 @@ import com.appjumper.silkscreen.bean.PriceDetails;
 import com.appjumper.silkscreen.bean.ScoreResponse;
 import com.appjumper.silkscreen.bean.StockGoods;
 import com.appjumper.silkscreen.bean.TrendArticle;
-import com.appjumper.silkscreen.bean.UnRead;
 import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.GsonUtil;
@@ -48,25 +42,16 @@ import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.MainActivity;
-import com.appjumper.silkscreen.ui.common.adapter.ViewPagerFragAdapter;
-import com.appjumper.silkscreen.ui.dynamic.AskBuyDetailActivity;
 import com.appjumper.silkscreen.ui.home.adapter.HomeAskBuyListAdapter;
-import com.appjumper.silkscreen.ui.home.adapter.HomeMenuAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StockShopListAdapter;
-import com.appjumper.silkscreen.ui.home.equipment.EquipmentActivity;
-import com.appjumper.silkscreen.ui.home.exhibition.ExhibitionActivity;
+import com.appjumper.silkscreen.ui.home.askbuy.AskBuyActivity;
+import com.appjumper.silkscreen.ui.home.askbuy.AskBuyDetailActivity;
+import com.appjumper.silkscreen.ui.home.company.CompanyListActivity;
 import com.appjumper.silkscreen.ui.home.logistics.LogisticsListActivity;
-import com.appjumper.silkscreen.ui.home.news.NewsActivity;
-import com.appjumper.silkscreen.ui.home.order.OrderActivity;
-import com.appjumper.silkscreen.ui.home.process.ProcessingActivity;
-import com.appjumper.silkscreen.ui.home.recruit.RecruitActivity;
 import com.appjumper.silkscreen.ui.home.search.SearchingActivity;
-import com.appjumper.silkscreen.ui.home.stock.StockActivity;
 import com.appjumper.silkscreen.ui.home.stockshop.GoodsDetailActivity;
-import com.appjumper.silkscreen.ui.home.stockshop.StockConsignActivity;
+import com.appjumper.silkscreen.ui.home.stockshop.ShopActivity;
 import com.appjumper.silkscreen.ui.home.stockshop.StockGoodsSelectActivity;
-import com.appjumper.silkscreen.ui.home.tender.TenderActivity;
-import com.appjumper.silkscreen.ui.home.workshop.WorkshopActivity;
 import com.appjumper.silkscreen.ui.my.MyPointActivity;
 import com.appjumper.silkscreen.ui.trend.ArticleDetailActivity;
 import com.appjumper.silkscreen.ui.trend.PriceMoreActivity;
@@ -96,7 +81,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
 
 import static android.R.attr.type;
 
@@ -106,9 +90,6 @@ import static android.R.attr.type;
  * 首页
  */
 public class HomeFragment extends BaseFragment {
-
-    @Bind(R.id.gridViMenu)
-    GridView gridViMenu;
 
     @Bind(R.id.llStockShop)
     LinearLayout llStockShop;
@@ -125,29 +106,12 @@ public class HomeFragment extends BaseFragment {
     @Bind(R.id.l_homeview)
     LinearLayout l_homeview;
 
-    @Bind(R.id.tabLaytRecommend)
-    TabLayout tabLaytRecommend;
-    @Bind(R.id.pagerRecommend)
-    ViewPager pagerRecommend;
-
     @Bind(R.id.scrollView)
     ObservableScrollView mScrollView;
     @Bind(R.id.txtCheckin)
     TextView txtCheckin;
     @Bind(R.id.txtScore)
     TextView txtScore;
-    @Bind(R.id.txtNotice)
-    TextView txtNotice;
-    @Bind(R.id.flipperReport)
-    ViewFlipper flipperReport;
-    @Bind(R.id.llHoverRecommend)
-    LinearLayout llHoverRecommend;
-    @Bind(R.id.tabLaytHoverRecommend)
-    TabLayout tabLaytHoverRecommend;
-    @Bind(R.id.txtTitleRecommend)
-    TextView txtTitleRecommend;
-    @Bind(R.id.llRecommend)
-    LinearLayout llRecommend;
 
     @Bind(R.id.flipperOffer)
     ViewFlipper flipperOffer;
@@ -181,9 +145,6 @@ public class HomeFragment extends BaseFragment {
     private List<StockGoods> stockList; //现货商城列表
     private StockShopListAdapter stockAdapter;
 
-    private List<Fragment> recommendFragList; //推荐企业
-    private ViewPagerFragAdapter recommendAdapter;
-
     private HomeData data;
 
 
@@ -198,7 +159,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
-        view = inflater.inflate(R.layout.fragment_hom5, null);
+        view = inflater.inflate(R.layout.fragment_hom6, null);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -250,8 +211,6 @@ public class HomeFragment extends BaseFragment {
 
 
     private void setRecyclerView() {
-        gridViMenu.setAdapter(new HomeMenuAdapter());
-
         /**
          * 热门求购
          */
@@ -284,73 +243,14 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
-
-        /**
-         * 推荐企业
-         */
-        /*RecommendFragment orderFrag = new RecommendFragment();
-        Bundle bundle1 =  new Bundle();
-        bundle1.putInt(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_ORDER);
-        orderFrag.setArguments(bundle1);
-
-        RecommendFragment stockFrag = new RecommendFragment();
-        Bundle bundle2 =  new Bundle();
-        bundle2.putInt(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
-        stockFrag.setArguments(bundle2);
-
-        RecommendFragment processFrag = new RecommendFragment();
-        Bundle bundle3 =  new Bundle();
-        bundle3.putInt(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_PROCESS);
-        processFrag.setArguments(bundle3);
-
-        recommendFragList = new ArrayList<>();
-        recommendFragList.add(orderFrag);
-        recommendFragList.add(stockFrag);
-        recommendFragList.add(processFrag);
-
-        String [] titleArr = {"丝网订做", "丝网现货", "丝网加工"};
-        recommendAdapter = new ViewPagerFragAdapter(context.getSupportFragmentManager(), recommendFragList, Arrays.asList(titleArr));
-        pagerRecommend.setOffscreenPageLimit(recommendFragList.size() - 1);
-        pagerRecommend.setAdapter(recommendAdapter);
-        tabLaytRecommend.setupWithViewPager(pagerRecommend);
-
-        tabLaytHoverRecommend.setupWithViewPager(pagerRecommend);
-
-        pagerRecommend.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mScrollView.smoothScrollTo(0, llRecommend.getTop() + txtTitleRecommend.getHeight());
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });*/
     }
 
 
 
     private void initView() {
+        if (!isViewCreated) return;
         l_homeview.setVisibility(View.VISIBLE);
         //mScrollView.smoothScrollTo(0, 0);
-
-        //公告
-        /*List<Notice> noticeList = data.getNotice();
-        if (noticeList != null && noticeList.size() > 0) {
-            final Notice notice = noticeList.get(0);
-            txtNotice.setText("[公告] " + notice.getTitle());
-            txtNotice.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    start_Activity(context, WebViewActivity.class, new BasicNameValuePair("url",notice.getArticle_url()), new BasicNameValuePair("title","公告详情"));
-                    CommonApi.addLiveness(getUserID(), 6);
-                }
-            });
-        }*/
 
         setFlipper();
 
@@ -391,26 +291,6 @@ public class HomeFragment extends BaseFragment {
             llStockShop.setVisibility(View.GONE);
         }
 
-
-        //推荐企业
-        /*new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                List<Enterprise> recommend0 = data.getRecommend();
-                List<Enterprise> recommend1 = data.getRecommend_xianhuo();
-                List<Enterprise> recommend2 = data.getRecommend_jiagong();
-
-                ((RecommendFragment)recommendFragList.get(0)).refresh(recommend0);
-                ((RecommendFragment)recommendFragList.get(1)).refresh(recommend1);
-                ((RecommendFragment)recommendFragList.get(2)).refresh(recommend2);
-
-                recommendAdapter.notifyDataSetChanged();
-            }
-        }, 200);*/
-
-
-        //推荐企业悬停效果
-        //final int hoverMark = llRecommend.getTop() + txtTitleRecommend.getHeight();
         mScrollView.setScrollViewListener(new ObservableScrollView.ScrollViewListener() {
 
             @Override
@@ -420,11 +300,6 @@ public class HomeFragment extends BaseFragment {
                 } else {
                     img_back_top.setVisibility(View.GONE);
                 }
-
-                /*if (hoverMark > 0 && y >= hoverMark)
-                    llHoverRecommend.setVisibility(View.VISIBLE);
-                else
-                    llHoverRecommend.setVisibility(View.GONE);*/
             }
         });
 
@@ -436,7 +311,7 @@ public class HomeFragment extends BaseFragment {
                 getChartData();
                 getArticle();
             }
-        }, 80);
+        }, 60);
 
     }
 
@@ -445,42 +320,6 @@ public class HomeFragment extends BaseFragment {
      * 设置滚动控件
      */
     private void setFlipper() {
-        //每日盘条快报
-        /*if (flipperReport.isFlipping())
-            flipperReport.stopFlipping();
-        flipperReport.removeAllViews();
-
-        List<OfferList> offerList = data.getDynamicOffer();
-        if (offerList != null && offerList.size() > 0) {
-            for (OfferList offer : offerList) {
-                long time = AppTool.getTimeMs(offer.getOffer_time(), "yyyy-MM-dd HH:mm:ss");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(time);
-                String timeStr = (calendar.get(Calendar.MONTH) + 1) + "月" + calendar.get(Calendar.DAY_OF_MONTH) + "日 ";
-
-                String isTax = "";
-                if (offer.getOffer_value_tax().equals("0")) {
-                    isTax = "不含税 ";
-                } else {
-                    isTax = "含税 ";
-                }
-
-                String report = "[每日盘条] " + timeStr + offer.getCompany_name()
-                        + " "
-                        + isTax
-                        + offer.getOffer_value()
-                        + offer.getOffer_unit();
-
-                View contentView = LayoutInflater.from(context).inflate(R.layout.layout_home_report, null);
-                TextView textView = (TextView) contentView.findViewById(R.id.textView);
-                textView.setText(report);
-                flipperReport.addView(contentView);
-            }
-
-            flipperReport.startFlipping();
-        }*/
-
-
         if (flipperOffer.isFlipping())
             flipperOffer.stopFlipping();
         flipperOffer.removeAllViews();
@@ -615,8 +454,7 @@ public class HomeFragment extends BaseFragment {
     private class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            if (context.isDestroyed())
-                return;
+            if (!isViewCreated) return;
 
             mPullRefreshScrollView.refreshComplete();
             if (progress != null) {
@@ -677,7 +515,7 @@ public class HomeFragment extends BaseFragment {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(Const.ACTION_UNREAD_REFRESH)) {
-                if (getUser() == null) return;
+                /*if (getUser() == null) return;
                 if (!isDataInited) return;
                 if (!isViewCreated) return;
 
@@ -693,7 +531,7 @@ public class HomeFragment extends BaseFragment {
                 if (unRead.getTenderNum() < 3 || unRead.getTenderSelectNum() < 3)
                     tenderUnread.setVisibility(View.VISIBLE);
                 else
-                    tenderUnread.setVisibility(View.INVISIBLE);
+                    tenderUnread.setVisibility(View.INVISIBLE);*/
 
             } else if (action.equals(Const.ACTION_LOGIN_SUCCESS)) {
                 new Thread(new HomeDataRun()).start();
@@ -720,6 +558,8 @@ public class HomeFragment extends BaseFragment {
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONObject("data");
                         final List<TrendArticle> list = GsonUtil.getEntityList(dataObj.getJSONArray("items").toString(), TrendArticle.class);
+                        if (!isViewCreated) return;
+
                         if (list.size() > 0) {
                             txtArticle0.setText(list.get(0).getTitle());
                             txtArticle1.setText(list.get(1).getTitle());
@@ -773,6 +613,7 @@ public class HomeFragment extends BaseFragment {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         PriceDetails priceDetail = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), PriceDetails.class);
+                        if (!isViewCreated) return;
                         setChart(priceDetail);
                     }
                 } catch (JSONException e) {
@@ -802,6 +643,7 @@ public class HomeFragment extends BaseFragment {
                     int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
                     if (state == Const.HTTP_STATE_SUCCESS) {
                         JSONObject dataObj = jsonObj.getJSONArray("data").getJSONObject(0);
+                        if (!isViewCreated) return;
                         txtTradeMoney.setText(AppTool.addComma(dataObj.getString("purchase_order_money")));
                         txtTradeNum.setText(AppTool.addComma(dataObj.getString("purchase_order_num")));
                         txtEnterpriseNum.setText(AppTool.addComma(dataObj.getString("enterprise_num")));
@@ -934,7 +776,7 @@ public class HomeFragment extends BaseFragment {
     }
 
 
-    @OnClick({R.id.rl_search, R.id.img_back_top, R.id.rlStockShop, R.id.rlCheckin, R.id.flipperReport, R.id.txtMoreGoods, R.id.rlStockConsign, R.id.llAskBuy, R.id.llFreight, R.id.llOffer, R.id.llChartGroup})
+    @OnClick({R.id.rl_search, R.id.img_back_top, R.id.rlStockShop, R.id.rlCheckin, R.id.txtMoreGoods, R.id.llCompany, R.id.llAskBuy, R.id.llFreight, R.id.llOffer, R.id.llChartGroup})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_back_top://返回顶部
@@ -949,11 +791,10 @@ public class HomeFragment extends BaseFragment {
                 start_Activity(getActivity(), SearchingActivity.class);
                 break;
             case R.id.rlStockShop: //现货商城
-                start_Activity(context, StockGoodsSelectActivity.class);
+                start_Activity(context, ShopActivity.class);
                 break;
-            case R.id.rlStockConsign: //现货寄售
-                if (checkLogined())
-                    start_Activity(context, StockConsignActivity.class);
+            case R.id.llCompany: //厂家
+                start_Activity(context, CompanyListActivity.class);
                 break;
             case R.id.rlCheckin: //签到
                 if (checkLogined()) {
@@ -969,32 +810,14 @@ public class HomeFragment extends BaseFragment {
                     }
                 }
                 break;
-            case R.id.flipperReport: //每日盘条快报
-                ((MainActivity)getActivity()).bottom_lly.check(R.id.rd_trend);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(Const.ACTION_CHART_DETAIL);
-                        intent.putExtra("type", type);
-                        context.sendBroadcast(intent);
-                    }
-                }, 200);
-                break;
             case R.id.txtMoreGoods: //商城-更多
                 start_Activity(context, StockGoodsSelectActivity.class);
                 break;
             case R.id.llAskBuy: //求购
-                ((MainActivity)getActivity()).bottom_lly.check(R.id.rd_dynamic);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        context.sendBroadcast(new Intent(Const.ACTION_ASKBUY_LIST));
-                    }
-                }, 200);
+                start_Activity(context, AskBuyActivity.class);
                 break;
-            case R.id.llFreight: //空车配货
+            case R.id.llFreight: //物流
                 Intent intent = new Intent(context, LogisticsListActivity.class);
-                intent.putExtra(Const.KEY_TYPE, 2);
                 startActivity(intent);
                 break;
             case R.id.llOffer: //报价详情
@@ -1016,45 +839,6 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-
-
-    @OnItemClick(R.id.gridViMenu)
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 0: //订做
-                start_Activity(getActivity(), OrderActivity.class);
-                break;
-            case 1: //加工
-                start_Activity(getActivity(), ProcessingActivity.class);
-                break;
-            case 2: //现货
-                start_Activity(getActivity(), StockActivity.class);
-                break;
-            case 3: //新闻
-                start_Activity(getActivity(), NewsActivity.class);
-                break;
-            case 4: //招投标
-                start_Activity(getActivity(), TenderActivity.class);
-                break;
-            case 5: //物流
-                start_Activity(getActivity(), LogisticsListActivity.class);
-                break;
-            case 6: //设备
-                start_Activity(getActivity(), EquipmentActivity.class);
-                break;
-            case 7: //厂房
-                start_Activity(getActivity(), WorkshopActivity.class);
-                break;
-            case 8: //招聘
-                start_Activity(getActivity(), RecruitActivity.class);
-                break;
-            case 9: //展会
-                start_Activity(getActivity(), ExhibitionActivity.class);
-                break;
-            default:
-                break;
-        }
-    }
 
 
     @Override

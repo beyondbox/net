@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -76,7 +76,7 @@ public class ChooseStationActivity extends BaseActivity {
         });
 
         fragList = new ArrayList<>();
-        fragAdapter = new FragAdapter(context.getSupportFragmentManager());
+        fragAdapter = new FragAdapter(getSupportFragmentManager());
     }
 
 
@@ -140,7 +140,7 @@ public class ChooseStationActivity extends BaseActivity {
     /**
      * Fragment管理适配器
      */
-    private class FragAdapter extends FragmentPagerAdapter {
+    private class FragAdapter extends FragmentStatePagerAdapter {
 
         public FragAdapter(FragmentManager fm) {
             super(fm);

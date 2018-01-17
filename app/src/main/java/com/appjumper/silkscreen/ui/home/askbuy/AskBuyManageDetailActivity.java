@@ -1,4 +1,4 @@
-package com.appjumper.silkscreen.ui.dynamic;
+package com.appjumper.silkscreen.ui.home.askbuy;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,7 +20,7 @@ import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyImageAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.AskBuyImageAdapter;
 import com.appjumper.silkscreen.ui.my.adapter.ChooseOfferAdapter;
 import com.appjumper.silkscreen.ui.my.askbuy.AskBuyEditActivity;
 import com.appjumper.silkscreen.ui.my.askbuy.AskBuyMakeOrderActivity;

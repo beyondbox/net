@@ -27,7 +27,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.trend.adapter.ArticleAdapter;
 import com.appjumper.silkscreen.ui.trend.adapter.DetailsListViewAdapter;
 import com.appjumper.silkscreen.util.Const;
-import com.appjumper.silkscreen.view.BaseFundChartView;
+import com.appjumper.silkscreen.view.ChartViewStraightLine;
 import com.appjumper.silkscreen.view.MyListView;
 import com.appjumper.silkscreen.view.ObservableScrollView;
 import com.appjumper.silkscreen.view.scrollView.PullToRefreshScrollView;
@@ -126,7 +126,9 @@ public class DetailsFragment extends BaseFragment {
 
 
     private void initView(final PriceDetails data) {
-        BaseFundChartView v_avg_list = new BaseFundChartView(context);
+        //BaseFundChartView v_avg_list = new BaseFundChartView(context);
+        ChartViewStraightLine v_avg_list = new ChartViewStraightLine(context);
+        v_avg_list.setDotRadiusDp(3);
 
         //取横坐标日期的起始位置
         int start = -6;
@@ -179,7 +181,7 @@ public class DetailsFragment extends BaseFragment {
             String time = sdf.format(c.getTime());
             l_x.add(time);
         }
-        v_avg_list.setDateX(l_x);
+        v_avg_list.setDataX(l_x);
 
 
         /*
@@ -249,7 +251,7 @@ public class DetailsFragment extends BaseFragment {
         datas.add(min + (difAvg * 3));
         datas.add(min + (difAvg * 4));
         datas.add(max);
-        v_avg_list.setDateY(datas);
+        v_avg_list.setDataY(datas);
 
         /*List<Float> datas = new ArrayList<>();
         datas.add((float) 0);

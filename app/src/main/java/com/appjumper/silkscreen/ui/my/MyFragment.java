@@ -666,7 +666,6 @@ public class MyFragment extends BaseFragment {
             public void onFinish() {
                 super.onFinish();
                 if (!isViewCreated) return;
-
                 progress.dismiss();
             }
         });

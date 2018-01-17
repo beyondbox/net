@@ -250,10 +250,18 @@
         <activity android:name=".ui.my.BindMobileActivity" />
         <!--查看企业认证信息-->
         <activity android:name=".ui.my.enterprise.EnterpriseAuthInfoActivity" />
+        <!--厂家列表-->
+        <activity android:name=".ui.home.company.CompanyListActivity" />
+        <!--走势-->
+        <activity android:name=".ui.trend.TrendActivity" />
 
 
         <!--现货商城-->
         <activity android:name=".ui.home.stockshop.StockShopActivity" />
+        <!--现货商城-NEW-->
+        <activity android:name=".ui.home.stockshop.ShopActivity" />
+        <!--商城搜索-->
+        <activity android:name=".ui.home.stockshop.ShopSearchActivity" />
         <!--商品详情-->
         <activity android:name=".ui.home.stockshop.GoodsDetailActivity" />
         <!--现货寄售-->
@@ -266,6 +274,8 @@
         <activity android:name=".ui.home.stockshop.ReleaseGoodsSelectActivity" />
 
 
+        <!--求购信息公共列表-->
+        <activity android:name=".ui.home.askbuy.AskBuyActivity" />
         <!--发布求购-->
         <activity android:name=".ui.dynamic.ReleaseAskBuyActivity" />
         <!--发布报价-->
@@ -273,7 +283,7 @@
         <!--发布成功-->
         <activity android:name=".ui.dynamic.ReleaseCompleteActivity" />
         <!--求购详情-->
-        <activity android:name=".ui.dynamic.AskBuyDetailActivity" android:launchMode="singleTask"/>
+        <activity android:name=".ui.home.askbuy.AskBuyDetailActivity" android:launchMode="singleTask"/>
         <!--求购编辑-->
         <activity android:name=".ui.my.askbuy.AskBuyEditActivity" />
         <!--查看报价-->
@@ -291,9 +301,9 @@
         <!--确认付款-->
         <activity android:name=".ui.my.askbuy.PayConfirmActivity" />
         <!--求购管理-->
-        <activity android:name=".ui.dynamic.AskBuyManageActivity" />
+        <activity android:name=".ui.home.askbuy.AskBuyManageActivity" />
         <!--求购管理详情-->
-        <activity android:name=".ui.dynamic.AskBuyManageDetailActivity" />
+        <activity android:name=".ui.home.askbuy.AskBuyManageDetailActivity" />
         <!--添加地址-->
         <activity android:name=".ui.my.askbuy.AddAddressActivity" />
         <!--选择货站-->

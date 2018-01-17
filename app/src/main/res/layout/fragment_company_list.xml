@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/txtRelease"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:background="@drawable/selector_btn_blue"
+        android:text="发布"
+        android:textSize="15sp"
+        android:textColor="@color/while_color"/>
+
+
+        <com.yyydjk.library.DropDownMenu
+            android:id="@+id/dropDownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/txtRelease"
+            app:dddividerColor="@color/view_background_gray_color"
+            app:ddmaskColor="#20000000"
+            app:ddmenuBackgroundColor="@color/while_color"
+            app:ddmenuSelectedIcon="@mipmap/icon_arrows_up"
+            app:ddmenuTextSize="13sp"
+            app:ddmenuUnselectedIcon="@mipmap/icon_arrows_down"
+            app:ddtextSelectedColor="@color/theme_color"
+            app:ddtextUnselectedColor="@color/text_black_color2"
+            app:ddunderlineColor="@color/view_background_gray_color" />
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_title">
+
+            <TextView
+                android:id="@+id/txtProductSelect"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/while_color"
+                android:drawableRight="@mipmap/icon_arrows_down"
+                android:gravity="center"
+                android:paddingBottom="11dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="11dp"
+                android:text="全部产品"
+                android:textColor="@color/text_black_color2"
+                android:textSize="13sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/txtSpecSelect"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/while_color"
+                android:drawableRight="@mipmap/icon_arrows_down"
+                android:gravity="center"
+                android:paddingBottom="11dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="11dp"
+                android:text="筛选"
+                android:textColor="@color/text_black_color2"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,4 +1,4 @@
-package com.appjumper.silkscreen.ui.dynamic.adapter;
+package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

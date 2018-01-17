@@ -1,4 +1,4 @@
-package com.appjumper.silkscreen.ui.dynamic.adapter;
+package com.appjumper.silkscreen.ui.home.adapter;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;

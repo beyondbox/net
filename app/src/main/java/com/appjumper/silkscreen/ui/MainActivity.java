@@ -149,9 +149,6 @@ public class MainActivity extends FragmentActivity {
                 case Const.PUSH_NEW_OFFER_WIRE_ROD: //有新的盘条报价
                     bottom_lly.check(R.id.rd_trend);
                     break;
-                case Const.PUSH_ASKBUY_PASS_TO_OFFER: //求购信息审核通过，推送给报价用户
-                    bottom_lly.check(R.id.rd_dynamic);
-                    break;
             }
         }
 

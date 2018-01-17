@@ -1,4 +1,4 @@
-package com.appjumper.silkscreen.ui.dynamic;
+package com.appjumper.silkscreen.ui.home.askbuy;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -25,9 +25,9 @@ import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.MainActivity;
-import com.appjumper.silkscreen.ui.dynamic.adapter.AskBuyImageAdapter;
-import com.appjumper.silkscreen.ui.dynamic.adapter.OfferRecordAdapter;
+import com.appjumper.silkscreen.ui.dynamic.ReleaseOfferActivity;
+import com.appjumper.silkscreen.ui.home.adapter.AskBuyImageAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.OfferRecordAdapter;
 import com.appjumper.silkscreen.ui.my.askbuy.AskBuyMakeOrderActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
@@ -511,20 +511,6 @@ public class AskBuyDetailActivity extends BaseActivity {
         }
     }
 
-
-    @Override
-    public void finish() {
-        super.finish();
-        if (MainActivity.instance != null) {
-            MainActivity.instance.bottom_lly.check(R.id.rd_dynamic);
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    context.sendBroadcast(new Intent(Const.ACTION_ASKBUY_LIST));
-                }
-            }, 200);
-        }
-    }
 
     @Override
     protected void onDestroy() {

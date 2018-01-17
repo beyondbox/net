@@ -48,7 +48,7 @@
                     android:gravity="center"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:text="货站"
+                    android:text="空车配货"
                     android:textColor="@color/title_text_sel"
                     android:textSize="14sp" />
 
@@ -62,7 +62,7 @@
                     android:gravity="center"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:text="空车配货"
+                    android:text="货站"
                     android:textColor="@color/title_text_sel"
                     android:textSize="14sp" />
             </RadioGroup>

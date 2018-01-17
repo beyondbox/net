@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/select_white_background"
+    android:orientation="vertical">
+
+    <View style="@style/LineStyle"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="15dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <com.appjumper.silkscreen.view.RoundCornerImageView
+            android:id="@id/imgViHead"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/ic_launcher"/>
+
+        <ImageView
+            android:id="@+id/imgViTag"
+            android:layout_width="40dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/tag_new"/>
+
+        <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imgViHead"
+            android:layout_marginLeft="10dp"
+            android:maxWidth="165dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="安平县优加网络科技有限公司"
+            android:textColor="@color/new_gray_color"
+            android:textSize="14sp"/>
+
+        <LinearLayout
+            android:id="@+id/lLaytCerti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/txtTitle"
+            android:layout_marginTop="1dp">
+
+            <ImageView
+                android:id="@+id/imgViCertiGreen"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:visibility="visible"
+                android:src="@mipmap/icon_certification_green"
+                android:layout_marginLeft="5dp"/>
+
+            <ImageView
+                android:id="@+id/imgViCertiBlue"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@mipmap/icon_certification"
+                android:layout_marginLeft="5dp"/>
+
+            <ImageView
+                android:id="@+id/imgViCertiYellow"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:src="@mipmap/icon_certification_yellow"
+                android:layout_marginLeft="5dp"/>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/txtSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtTitle"
+            android:layout_alignLeft="@id/txtTitle"
+            android:layout_marginTop="3dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:lineSpacingExtra="2dp"
+            android:text="主营产品：石笼网加工、石笼网订做"
+            android:textColor="@color/new_gray_light_color"
+            android:textSize="12sp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtSubTitle"
+            android:layout_marginTop="12dp"/>
+    </RelativeLayout>
+
+
+    <View style="@style/LineStyle"
+        android:layout_marginTop="15dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/view_background_gray_color"
+        android:layout_height="10dp"/>
+
+
+</LinearLayout>
