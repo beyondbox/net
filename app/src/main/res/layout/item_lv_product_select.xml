@@ -35,7 +35,7 @@
             android:layout_marginRight="10dp"
             android:visibility="gone"/>
 
-        <com.appjumper.silkscreen.view.BorderRectImageView
+        <com.appjumper.silkscreen.view.RoundCornerImageView
             android:id="@+id/imgViProduct"
             android:layout_width="70dp"
             android:layout_height="70dp"

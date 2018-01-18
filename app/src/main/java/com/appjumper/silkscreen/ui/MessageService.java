@@ -20,6 +20,7 @@ import com.appjumper.silkscreen.ui.my.audit.AuditFreightActivity;
 import com.appjumper.silkscreen.ui.my.audit.AuditPersonActivity;
 import com.appjumper.silkscreen.ui.my.deliver.DeliverOrderListActivity;
 import com.appjumper.silkscreen.ui.my.driver.DriverOrderListActivity;
+import com.appjumper.silkscreen.ui.trend.TrendActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.LogHelper;
 import com.tencent.android.tpush.XGPushBaseReceiver;
@@ -172,7 +173,7 @@ public class MessageService extends XGPushBaseReceiver {
 							intent = new Intent(context, AuditAskBuyReceiptActivity.class);
 							break;
                         case Const.PUSH_NEW_OFFER_WIRE_ROD: //有新的盘条报价
-                            intent = new Intent(context, MainActivity.class);
+                            intent = new Intent(context, TrendActivity.class);
                             break;
 						case Const.PUSH_ASKBUY_RECEIPT_PASS: //求购收款审核通过
 							intent = new Intent(context, AskBuyOrderListActivity.class);

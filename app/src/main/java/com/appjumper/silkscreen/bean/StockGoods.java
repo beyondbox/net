@@ -51,6 +51,7 @@ public class StockGoods implements Serializable{
     private String sale_num;
     private String user_id;
     private String consult_num;
+    private String img;
 
     public String getId() {
         return id;
@@ -202,5 +203,13 @@ public class StockGoods implements Serializable{
 
     public void setConsult_num(String consult_num) {
         this.consult_num = consult_num;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

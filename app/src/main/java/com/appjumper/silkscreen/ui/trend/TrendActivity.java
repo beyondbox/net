@@ -5,22 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.MaterProduct;
 import com.appjumper.silkscreen.net.CommonApi;
+import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.trend.adapter.MyViewPagerAdapter;
-import com.appjumper.silkscreen.ui.trend.cmaterialyreclerView.ChannelAdapter;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.db.DBManager;
 
@@ -38,14 +35,8 @@ import butterknife.OnClick;
 
 public class TrendActivity extends BaseActivity {
 
-    @Bind(R.id.id_appbarlayout)
-    AppBarLayout mAppBarLayout;
-
     @Bind(R.id.id_tablayout)
     TabLayout mTabLayout;
-
-    @Bind(R.id.iv_add_service)
-    ImageView iv_add_service;
 
     @Bind(R.id.id_viewpager)
     ViewPager mViewPager;
@@ -56,15 +47,11 @@ public class TrendActivity extends BaseActivity {
     @Bind(R.id.l_dynamic)
     LinearLayout l_dynamic;
 
-    @Bind(R.id.rv_mater)
-    RecyclerView rv_mater;
 
     private ArrayList<Fragment> mFragments;
     private MyViewPagerAdapter mViewPagerAdapter;
     private DBManager dbHelper;
     private List<MaterProduct> mylist;
-    private List<MaterProduct> otherlist;
-    private ChannelAdapter adapter;
 
 
 
@@ -81,7 +68,6 @@ public class TrendActivity extends BaseActivity {
         dbHelper = new DBManager(context);
         mylist = dbHelper.query();
 
-        //new Thread(new AllproductRun()).start();
         l_add.setVisibility(View.GONE);
         l_dynamic.setVisibility(View.VISIBLE);
         initFragData();
@@ -144,31 +130,14 @@ public class TrendActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.iv_add_service,R.id.tv_add})
+    @OnClick({R.id.iv_add_service})
     public void onClick(View v) {
         Intent intent = null;
         switch (v.getId()) {
             case R.id.iv_add_service://添加材料
-                //l_add.setVisibility(View.VISIBLE);
-                //l_dynamic.setVisibility(View.GONE);
                 intent = new Intent(context, AttentionManageActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.tv_add://添加
-                l_add.setVisibility(View.GONE);
-                l_dynamic.setVisibility(View.VISIBLE);
-                List<MaterProduct> myChanne = adapter.getmMyChannelItems();
-                dbHelper.deleteProduct();
-                dbHelper.addProduct(myChanne);
-                mylist.clear();
-                mylist.addAll(dbHelper.query());
-
-                initFragData();
-                mViewPagerAdapter.setData(mylist, mFragments);
-                mViewPagerAdapter.notifyDataSetChanged();
-                mViewPager.setOffscreenPageLimit(mylist.size() - 1);
-                break;
-
         }
     }
 
@@ -197,6 +166,14 @@ public class TrendActivity extends BaseActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
+    }
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        if (MainActivity.instance == null)
+            start_Activity(context, MainActivity.class);
     }
 
 }

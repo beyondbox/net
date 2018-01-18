@@ -41,7 +41,6 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.home.adapter.HomeAskBuyListAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StockShopListAdapter;
 import com.appjumper.silkscreen.ui.home.askbuy.AskBuyActivity;
@@ -55,6 +54,7 @@ import com.appjumper.silkscreen.ui.home.stockshop.StockGoodsSelectActivity;
 import com.appjumper.silkscreen.ui.my.MyPointActivity;
 import com.appjumper.silkscreen.ui.trend.ArticleDetailActivity;
 import com.appjumper.silkscreen.ui.trend.PriceMoreActivity;
+import com.appjumper.silkscreen.ui.trend.TrendActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.ChartViewStraightLine;
@@ -81,8 +81,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static android.R.attr.type;
 
 
 /**
@@ -824,15 +822,7 @@ public class HomeFragment extends BaseFragment {
                 start_Activity(context, PriceMoreActivity.class, new BasicNameValuePair("id", "1"), new BasicNameValuePair("title", "盘条"));
                 break;
             case R.id.llChartGroup: //报价走势图
-                ((MainActivity)getActivity()).bottom_lly.check(R.id.rd_trend);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(Const.ACTION_CHART_DETAIL);
-                        intent.putExtra("type", type);
-                        context.sendBroadcast(intent);
-                    }
-                }, 200);
+                start_Activity(context, TrendActivity.class);
                 break;
             default:
                 break;

@@ -14,11 +14,13 @@
         <View
             style="@style/LineStyle"
             />
+
         <RadioGroup
             android:id="@+id/rg_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:weightSum="5"
+            android:gravity="center_vertical"
             android:padding="5dp"
             android:background="@color/while_color"
             android:orientation="horizontal">
@@ -32,7 +34,7 @@
                 android:drawableTop="@drawable/selector_home_checkbox"
                 android:gravity="center"
                 android:checked="true"
-                android:drawablePadding="5dp"
+                android:drawablePadding="4dp"
                 android:text="首页"
                 android:textColor="@drawable/bottom_check_tv_color"
                 android:textSize="10dp"/>
@@ -45,7 +47,7 @@
                 android:button="@null"
                 android:drawableTop="@drawable/selector_trend_checkbox"
                 android:gravity="center"
-                android:drawablePadding="5dp"
+                android:drawablePadding="4dp"
                 android:text="走势"
                 android:textColor="@drawable/bottom_check_tv_color"
                 android:textSize="10dp"/>
@@ -65,7 +67,7 @@
                 android:button="@null"
                 android:drawableTop="@drawable/selector_dynamic_checkbox"
                 android:gravity="center"
-                android:drawablePadding="5dp"
+                android:drawablePadding="4dp"
                 android:text="行业"
                 android:textColor="@drawable/bottom_check_tv_color"
                 android:textSize="10dp"/>
@@ -78,7 +80,7 @@
                 android:button="@null"
                 android:drawableTop="@drawable/selector_my_checkbox"
                 android:gravity="center"
-                android:drawablePadding="5dp"
+                android:drawablePadding="4dp"
                 android:text="我的"
                 android:textColor="@drawable/bottom_check_tv_color"
                 android:textSize="10dp"/>
@@ -96,10 +98,9 @@
 
     <ImageView
         android:id="@+id/img_release"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginBottom="10dp"
-        android:layout_above="@id/l_tab"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:src="@mipmap/icon_release"/>
@@ -112,7 +113,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:background="@color/transparent_color"
         android:paddingLeft="4dp"

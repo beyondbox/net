@@ -66,6 +66,7 @@ public class ShopFragment extends BaseFragment {
     private String pid = "";
     private long lastClickTime = 0;
     private int type;
+    private StockGoods incomingProduct;
 
 
     @Override
@@ -77,7 +78,13 @@ public class ShopFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        type = getArguments().getInt(Const.KEY_TYPE, Const.SHOP_TYPE_COMPANY);
+        Bundle bundle = getArguments();
+        type = bundle.getInt(Const.KEY_TYPE, Const.SHOP_TYPE_COMPANY);
+        if (bundle.containsKey(Const.KEY_OBJECT)) {
+            incomingProduct = (StockGoods) bundle.getSerializable(Const.KEY_OBJECT);
+            pid = incomingProduct.getProduct_id();
+        }
+
         initRecyclerView();
         initRefreshLayout();
 
@@ -85,8 +92,8 @@ public class ShopFragment extends BaseFragment {
             @Override
             public void run() {
                 isFastClick();
-                ptrLayt.autoRefresh();
                 getRecommendProduct();
+                ptrLayt.autoRefresh();
             }
         }, 50);
     }
@@ -271,7 +278,7 @@ public class ShopFragment extends BaseFragment {
                         productList.add(product2);
 
                         productAdapter.notifyDataSetChanged();
-                        changeProduct(pid, null);
+                        changeProduct(pid, incomingProduct == null ? null : incomingProduct.getProduct_name(), false);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -289,7 +296,7 @@ public class ShopFragment extends BaseFragment {
     /**
      * 变更所选产品
      */
-    private void changeProduct(String pid, String pname) {
+    private void changeProduct(String pid, String pname, boolean needRefresh) {
         if (TextUtils.isEmpty(pid)) {
             productAdapter.changeSelected(0);
             return;
@@ -311,7 +318,8 @@ public class ShopFragment extends BaseFragment {
             productAdapter.changeSelected(productList.size() - 2);
         }
 
-        ptrLayt.autoRefresh();
+        if (needRefresh)
+            ptrLayt.autoRefresh();
     }
 
 
@@ -324,7 +332,7 @@ public class ShopFragment extends BaseFragment {
             case Const.REQUEST_CODE_SELECT_PRODUCT:
                 Product product = (Product) data.getSerializableExtra(Const.KEY_OBJECT);
                 pid = product.getProduct_id();
-                changeProduct(pid, product.getProduct_name());
+                changeProduct(pid, product.getProduct_name(), true);
                 break;
             default:
                 break;

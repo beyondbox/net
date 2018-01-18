@@ -53,7 +53,7 @@ import com.appjumper.silkscreen.ui.dynamic.DynamicFragment;
 import com.appjumper.silkscreen.ui.home.HomeFragment;
 import com.appjumper.silkscreen.ui.my.LoginActivity;
 import com.appjumper.silkscreen.ui.my.MyFragment;
-import com.appjumper.silkscreen.ui.trend.TrendFragment;
+import com.appjumper.silkscreen.ui.shop.StockShopFragment;
 import com.appjumper.silkscreen.util.Applibrary;
 import com.appjumper.silkscreen.util.Configure;
 import com.appjumper.silkscreen.util.Const;
@@ -146,9 +146,7 @@ public class MainActivity extends FragmentActivity {
         pushType = getIntent().getIntExtra(Const.KEY_TYPE, 0);
         if (pushType != 0) {
             switch (pushType) {
-                case Const.PUSH_NEW_OFFER_WIRE_ROD: //有新的盘条报价
-                    bottom_lly.check(R.id.rd_trend);
-                    break;
+
             }
         }
 
@@ -189,7 +187,7 @@ public class MainActivity extends FragmentActivity {
         badgeDynamic = new QBadgeView(this);
 
         badgeTrend.bindTarget(markTrend).setBadgePadding(4.3f, true).setGravityOffset(12, 1, true);
-        badgeDynamic.bindTarget(markDynamic).setBadgePadding(4.3f, true).setGravityOffset(13, 1, true);
+        badgeDynamic.bindTarget(markDynamic).setBadgePadding(4.3f, true).setGravityOffset(13, 2, true);
     }
 
 
@@ -516,7 +514,7 @@ public class MainActivity extends FragmentActivity {
         });
 
         mTab.add(new HomeFragment());
-        mTab.add(new TrendFragment());
+        mTab.add(new StockShopFragment());
         mTab.add(new DynamicFragment());
         mTab.add(new MyFragment());
 
@@ -614,7 +612,7 @@ public class MainActivity extends FragmentActivity {
             intent.putExtra(Const.KEY_OBJECT, new UnRead());
             sendBroadcast(intent);
 
-            badgeTrend.setBadgeNumber(0);
+            //badgeTrend.setBadgeNumber(0);
             badgeDynamic.setBadgeNumber(0);
             return;
         }
@@ -639,10 +637,10 @@ public class MainActivity extends FragmentActivity {
                         unRead.setAnalysisNum(dataObj.getJSONArray("analysisNum").optInt(0));
                         unRead.setCollectionNum(dataObj.getJSONArray("collectionNum").optInt(0));
 
-                        if (unRead.getAnalysisNum() < 3)
+                        /*if (unRead.getAnalysisNum() < 3)
                             badgeTrend.setBadgeNumber(-1);
                         else
-                            badgeTrend.setBadgeNumber(0);
+                            badgeTrend.setBadgeNumber(0);*/
 
                         if (unRead.getCollectionNum() > 0)
                             badgeDynamic.setBadgeNumber(-1);

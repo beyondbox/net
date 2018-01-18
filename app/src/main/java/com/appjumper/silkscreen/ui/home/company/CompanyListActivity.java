@@ -38,6 +38,7 @@ public class CompanyListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_list);
         ButterKnife.bind(context);
+        initBack();
 
         CompanyListFragment orderFragment = new CompanyListFragment();
         Bundle bundle0 = new Bundle();
