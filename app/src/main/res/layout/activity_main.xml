@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.MainActivity">
 
     <LinearLayout
@@ -48,7 +49,7 @@
                 android:drawableTop="@drawable/selector_trend_checkbox"
                 android:gravity="center"
                 android:drawablePadding="4dp"
-                android:text="走势"
+                android:text="买货"
                 android:textColor="@drawable/bottom_check_tv_color"
                 android:textSize="10dp"/>
             <!--给中间凸起按钮预留位置-->
@@ -104,6 +105,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:src="@mipmap/icon_release"/>
+
 
 
 

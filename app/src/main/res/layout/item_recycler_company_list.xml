@@ -5,12 +5,12 @@
     android:background="@drawable/select_white_background"
     android:orientation="vertical">
 
-    <View style="@style/LineStyle"/>
+    <View style="@style/LineStyle" android:visibility="gone"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="15dp"
+        android:paddingTop="16dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp">
 
@@ -95,12 +95,10 @@
 
 
     <View style="@style/LineStyle"
-        android:layout_marginTop="15dp"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:background="@color/view_background_gray_color"
-        android:layout_height="10dp"/>
 
 
 </LinearLayout>

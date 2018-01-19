@@ -59,6 +59,7 @@ import com.appjumper.silkscreen.util.Configure;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.SPUtil;
 import com.appjumper.silkscreen.util.morewindow.MoreWindow;
+import com.appjumper.silkscreen.view.PopupRelease;
 import com.appjumper.silkscreen.view.UpdateDialog;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -98,6 +99,9 @@ public class MainActivity extends FragmentActivity {
     @Bind(R.id.id_view_pager)
     public ViewPager idViewPager;
 
+    @Bind(R.id.img_release)
+    ImageView imgViRelease;
+
     @Bind(R.id.markTrend)
     TextView markTrend;
     @Bind(R.id.markDynamic)
@@ -115,6 +119,8 @@ public class MainActivity extends FragmentActivity {
     private File downloadFile;
     private AsyncHttpClient downloadClient;
     private int widthAngel;
+
+    private PopupRelease popupRelease;
 
 
 
@@ -160,6 +166,15 @@ public class MainActivity extends FragmentActivity {
                 Manifest.permission.ACCESS_FINE_LOCATION}, Const.REQUEST_CODE_PERMISSION);
 
         checkNewVersion();
+
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                popupRelease = new PopupRelease(MainActivity.this);
+            }
+        }, 300);
+
     }
 
 
@@ -447,9 +462,12 @@ public class MainActivity extends FragmentActivity {
             case R.id.img_release:
                 if(checkLogined()){
                     //showMoreWindow(v);
-                    intent = new Intent(MainActivity.this, PlusActivity.class);
+                    /*intent = new Intent(MainActivity.this, PlusActivity.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.bottom_to_top, R.anim.no_change);
+                    overridePendingTransition(R.anim.bottom_to_top, R.anim.no_change);*/
+
+                    if (popupRelease != null)
+                        popupRelease.show(imgViRelease);
                 }
                 break;
             default:
@@ -663,7 +681,6 @@ public class MainActivity extends FragmentActivity {
             }
         });
     }
-
 
 
     @Override
