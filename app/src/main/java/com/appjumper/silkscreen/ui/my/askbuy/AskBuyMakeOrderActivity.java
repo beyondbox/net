@@ -61,6 +61,10 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
     TextView txtNum;
     @Bind(R.id.txtTotal)
     TextView txtTotal;
+    @Bind(R.id.txtName)
+    TextView txtName;
+    @Bind(R.id.txtWeight)
+    TextView txtWeight;
 
     @Bind(R.id.txtConsigner)
     TextView txtConsigner;
@@ -198,7 +202,9 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
 
         txtContent.setText(data.getPurchase_content());
         txtPrice.setText("¥" + offer.getMoney() + offer.getPrice_unit());
-        txtNum.setText(data.getProduct_name() + " " + data.getPurchase_num() + data.getPurchase_unit());
+        txtNum.setText(data.getPurchase_num() + data.getPurchase_unit());
+        txtName.setText(data.getProduct_name());
+        txtWeight.setText(offer.getWeight() + offer.getWeight_unit());
         calculatePayMoney();
 
         txtProtocol.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
@@ -231,6 +237,9 @@ public class AskBuyMakeOrderActivity extends BaseActivity {
         params.put("address_type", address.getAddress_type());
         params.put("purchase_content", data.getPurchase_content());
         params.put("address", address.getAddress());
+
+        params.put("weight", offer.getWeight());
+        params.put("weight_unit", offer.getWeight_unit());
 
         if (address.getAddress_type().equals("0")) {
             String [] arr = address.getAddress().split("\\s");

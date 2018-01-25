@@ -43,38 +43,65 @@
                     android:src="@mipmap/icon_home_exhibition_bg"/>
 
                 <TextView
-                    android:id="@+id/txtContent"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/imgViHead"
-                    android:layout_alignTop="@id/imgViHead"
-                    android:layout_marginLeft="10dp"
-                    android:lineSpacingExtra="3dp"
-                    android:maxLines="2"
-                    android:ellipsize="end"
-                    android:text="求购美格网30根求购美格网30根求购美格网30根"
-                    android:textSize="14sp"
-                    android:textColor="@color/new_gray_color" />
-
-                <TextView
                     android:id="@+id/txtPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/imgViHead"
-                    android:layout_alignLeft="@id/txtContent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@id/imgViHead"
                     android:text="500元/套"
                     android:textSize="14sp"
                     android:textColor="@color/orange_color"/>
 
                 <TextView
+                    android:id="@+id/txtContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/imgViHead"
+                    android:layout_toLeftOf="@id/txtPrice"
+                    android:layout_alignTop="@id/imgViHead"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="15dp"
+                    android:lineSpacingExtra="3dp"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    android:text="求购美格网30根求购美格网30根求购美格网30根"
+                    android:textSize="14sp"
+                    android:textColor="@color/new_gray_color" />
+
+
+
+                <TextView
                     android:id="@+id/txtNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/txtPrice"
+                    android:layout_below="@id/txtPrice"
                     android:layout_alignParentRight="true"
-                    android:text="美格网 200套"
-                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:text="200套"
+                    android:textSize="13sp"
                     android:textColor="@color/new_gray_light_color"/>
+
+                <TextView
+                    android:id="@+id/txtWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/txtNum"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="4dp"
+                    android:text="29kg/卷"
+                    android:textSize="13sp"
+                    android:textColor="@color/new_gray_light_color"/>
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imgViHead"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="美格网"
+                    android:textSize="13sp"
+                    android:textColor="@color/new_gray_color"/>
             </RelativeLayout>
 
 

@@ -26,7 +26,7 @@
             android:layout_height="match_parent"
             android:layout_above="@id/txtRelease"
             app:dddividerColor="@color/view_background_gray_color"
-            app:ddmaskColor="#20000000"
+            app:ddmaskColor="#40000000"
             app:ddmenuBackgroundColor="@color/while_color"
             app:ddmenuSelectedIcon="@mipmap/icon_arrows_up"
             app:ddmenuTextSize="13sp"
@@ -51,8 +51,8 @@
                 android:drawableRight="@mipmap/icon_arrows_down"
                 android:gravity="center"
                 android:paddingBottom="11dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 android:paddingTop="11dp"
                 android:text="全部产品"
                 android:textColor="@color/text_black_color2"
@@ -61,19 +61,20 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/txtSpecSelect"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="gone"
                 android:background="@color/while_color"
                 android:drawableRight="@mipmap/icon_arrows_down"
                 android:gravity="center"
                 android:paddingBottom="11dp"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
                 android:paddingTop="11dp"
                 android:text="筛选"
                 android:textColor="@color/text_black_color2"

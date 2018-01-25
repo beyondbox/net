@@ -6,11 +6,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.my.PersonalAuthenticationActivity;
@@ -44,7 +42,7 @@ public class AddServiceActivity extends BaseActivity {
         ButterKnife.bind(this);
         initTitle("添加服务");
 
-        User user = getUser();
+        /*User user = getUser();
         if (!user.getAuth_status().equals("2")) {
             rl_spot1.setVisibility(View.GONE);
             llNeedCertify.setVisibility(View.VISIBLE);
@@ -52,7 +50,7 @@ public class AddServiceActivity extends BaseActivity {
             rl_spot1.setVisibility(View.GONE);
             llNeedCertify.setVisibility(View.VISIBLE);
             txtState.setText("企业认证");
-        }
+        }*/
     }
 
 

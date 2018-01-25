@@ -41,6 +41,7 @@ public class AskBuyOrderListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHol
                 .setText(R.id.txtPrice, item.getOffer_money() + "元/" + item.getPurchase_unit())
                 .setText(R.id.txtNum, "x " + item.getPurchase_num() + item.getPurchase_unit())
                 .setText(R.id.txtTotal, "¥" + item.getPay_money())
+                .setText(R.id.txtWeight, item.getWeight() + item.getWeight_unit())
                 .addOnClickListener(R.id.txtHandle0)
                 .addOnClickListener(R.id.txtHandle1)
                 .addOnClickListener(R.id.txtHandle2)

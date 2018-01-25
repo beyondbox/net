@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/imgViHead"
                         android:layout_alignLeft="@id/txtContent"
-                        android:text="500元/套"
+                        android:text="500.00元/套"
                         android:textSize="14sp"
                         android:textColor="@color/orange_color"/>
 
@@ -91,6 +91,23 @@
                         android:layout_alignBottom="@id/txtPrice"
                         android:layout_alignParentRight="true"
                         android:text="x 200套"
+                        android:textSize="13sp"
+                        android:textColor="@color/new_gray_light_color"/>
+
+                    <View
+                        android:id="@+id/placeHolder"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_centerHorizontal="true"/>
+
+                    <TextView
+                        android:id="@+id/txtWeight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/txtPrice"
+                        android:layout_toRightOf="@id/placeHolder"
+                        android:layout_marginLeft="30dp"
+                        android:text="22kg/卷"
                         android:textSize="13sp"
                         android:textColor="@color/new_gray_light_color"/>
 

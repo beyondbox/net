@@ -52,6 +52,7 @@
             android:layout_centerVertical="true"
             android:lineSpacingExtra="3dp"
             android:textColor="@color/text_black_color"
+            android:textSize="14sp"
             android:text="产品名称1 (别名1，别名2)"/>
 
     </RelativeLayout>

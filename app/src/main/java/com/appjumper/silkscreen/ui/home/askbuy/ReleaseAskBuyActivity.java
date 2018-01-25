@@ -1,4 +1,4 @@
-package com.appjumper.silkscreen.ui.dynamic;
+package com.appjumper.silkscreen.ui.home.askbuy;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -23,7 +23,7 @@ import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.home.CompanyDetailsActivity;
 import com.appjumper.silkscreen.ui.home.adapter.CompanyListAdapter;
-import com.appjumper.silkscreen.ui.home.adapter.GirdDropDownAdapter;
+import com.appjumper.silkscreen.ui.home.adapter.GirdDropDownCenterAdapter;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
@@ -89,13 +89,13 @@ public class CompanyListFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        serviceType = getArguments().getInt(Const.KEY_SERVICE_TYPE);
+
         initDropDownMenu();
         initRecyclerView();
         initRefreshLayout();
         initProgressDialog(false, null);
         initDialog();
-
-        serviceType = getArguments().getInt(Const.KEY_SERVICE_TYPE);
 
         ptrLayt.postDelayed(new Runnable() {
             @Override
@@ -127,11 +127,10 @@ public class CompanyListFragment extends BaseFragment {
         List<String> tabTexts = new ArrayList<>();
         tabTexts.add("全部产品");
         tabTexts.add("全部公司");
-        tabTexts.add("筛选");
 
         //公司筛选
         final ListView companyView = new ListView(context);
-        final GirdDropDownAdapter companyAdapter = new GirdDropDownAdapter(context, Arrays.asList(company));
+        final GirdDropDownCenterAdapter companyAdapter = new GirdDropDownCenterAdapter(context, Arrays.asList(company));
         companyView.setDividerHeight(0);
         companyView.setAdapter(companyAdapter);
         companyView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -148,7 +147,6 @@ public class CompanyListFragment extends BaseFragment {
         List<View> popupViews = new ArrayList<>();
         popupViews.add(new View(context));
         popupViews.add(companyView);
-        popupViews.add(new View(context));
 
         View contentView = LayoutInflater.from(context).inflate(R.layout.layout_content_search_result, null);
         ptrLayt = (PtrClassicFrameLayout) contentView.findViewById(ptrResult);

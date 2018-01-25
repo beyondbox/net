@@ -64,6 +64,8 @@ public class AuditAskBuyOrderFragment extends BaseFragment {
     TextView txtOrderId;
     @Bind(R.id.txtTotal)
     TextView txtTotal;
+    @Bind(R.id.txtWeight)
+    TextView txtWeight;
 
     @Bind(R.id.txtConsigner)
     TextView txtConsigner;
@@ -126,6 +128,7 @@ public class AuditAskBuyOrderFragment extends BaseFragment {
         txtPrice.setText(data.getOffer_money() + "元/" + data.getPurchase_unit());
         txtNum.setText("x " + data.getPurchase_num() + data.getPurchase_unit());
         txtTotal.setText("¥" + data.getPay_money());
+        txtWeight.setText(data.getWeight() + data.getWeight_unit());
 
         if (TextUtils.isEmpty(data.getOrder_id()))
             txtOrderId.setText("无");

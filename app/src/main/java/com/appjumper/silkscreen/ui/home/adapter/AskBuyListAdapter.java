@@ -76,7 +76,10 @@ public class AskBuyListAdapter extends BaseQuickAdapter<AskBuy, BaseViewHolder> 
             for (AskBuyOffer offer : offerList) {
                 if (loginId.equals(offer.getUser_id())) {
                     txtoffer.setText("已报价");
-                    txtoffer.setEnabled(false);
+                    if (userManager.getInstance().getAdmin_purchase_add().equals("1"))
+                        txtoffer.setEnabled(true);
+                    else
+                        txtoffer.setEnabled(false);
                     break;
                 }
             }

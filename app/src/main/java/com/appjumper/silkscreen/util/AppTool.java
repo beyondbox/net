@@ -119,6 +119,7 @@ public class AppTool {
      */
     public static void dial(Context context, String phone) {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
@@ -157,6 +158,28 @@ public class AppTool {
     public static String addComma(String str) {
         DecimalFormat decimalFormat = new DecimalFormat(",###");
         return decimalFormat.format(Double.parseDouble(str));
+    }
+
+
+    /**
+     * 设置全屏
+     *
+     * @param activity
+     */
+    public static void setFullScreen(Activity activity) {
+        activity.getWindow().setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    /**
+     * 取消全屏
+     *
+     * @param activity
+     */
+    public static void cancelFullScreen(Activity activity) {
+        activity.getWindow().clearFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
 }

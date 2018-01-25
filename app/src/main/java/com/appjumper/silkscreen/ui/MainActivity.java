@@ -120,6 +120,7 @@ public class MainActivity extends FragmentActivity {
     private AsyncHttpClient downloadClient;
     private int widthAngel;
 
+    private Dialog downloadDialog;
     private PopupRelease popupRelease;
 
 
@@ -157,7 +158,7 @@ public class MainActivity extends FragmentActivity {
         }
 
 
-        //安卓6.0以后需要手动请求写入权限，才能在存储设备上创建文件夹
+        //安卓6.0以后需要手动请求写入权限，才能在存储设备上创建文件夹, 还有定位权限的请求
         //if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
         ActivityCompat.requestPermissions(this, new String[] {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -318,7 +319,7 @@ public class MainActivity extends FragmentActivity {
         /**
          * 弹出对话框
          */
-        final Dialog downloadDialog = new Dialog(this, R.style.CustomDialog);
+        downloadDialog = new Dialog(this, R.style.CustomDialog);
         View contentView = LayoutInflater.from(this).inflate(R.layout.dialog_update_downloading, null);
         downloadDialog.setContentView(contentView);
         downloadDialog.setCancelable(false);
@@ -370,23 +371,18 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, File file) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addCategory(Intent.CATEGORY_DEFAULT);
-
-                Uri uri;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    uri = FileProvider.getUriForFile(instance, Const.FILE_PROVIDER, downloadFile);
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    boolean b = getPackageManager().canRequestPackageInstalls();
+                    LogHelper.e("install", String.valueOf(b));
+                    if (b) {
+                        installNewApk();
+                    } else {
+                        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.REQUEST_INSTALL_PACKAGES}, Const.REQUEST_CODE_INSTALL_APK);
+                    }
                 } else {
-                    uri = Uri.fromFile(downloadFile);
-                }
-
-                intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                startActivity(intent);
-
-                downloadDialog.dismiss();
-                finish();
+                    installNewApk();
+                }*/
+                installNewApk();
             }
 
             @Override
@@ -402,6 +398,30 @@ public class MainActivity extends FragmentActivity {
                 imgViAngel.setVisibility(View.VISIBLE);
             }
         });
+    }
+
+
+    /**
+     * 安装新版本
+     */
+    private void installNewApk() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            uri = FileProvider.getUriForFile(instance, Const.FILE_PROVIDER, downloadFile);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            uri = Uri.fromFile(downloadFile);
+        }
+
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        startActivity(intent);
+
+        downloadDialog.dismiss();
+        finish();
     }
 
 
@@ -695,6 +715,16 @@ public class MainActivity extends FragmentActivity {
                     }
                     else {
                         Toast.makeText(this, "请开启存储权限，否则将无法使用上传图片功能！", Toast.LENGTH_LONG).show();
+                    }
+                }
+                break;
+            case Const.REQUEST_CODE_INSTALL_APK:
+                if (grantResults != null && grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        installNewApk();
+                    } else {
+                        downloadDialog.dismiss();
+                        finish();
                     }
                 }
                 break;

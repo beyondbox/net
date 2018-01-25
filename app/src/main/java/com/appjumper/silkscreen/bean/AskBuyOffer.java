@@ -67,6 +67,8 @@ public class AskBuyOffer implements Serializable{
     private String pruchase_type;
     private String expiry_date;
     private String offer_user_mobile;
+    private String weight;
+    private String weight_unit;
 
 
     public String getId() {
@@ -324,5 +326,21 @@ public class AskBuyOffer implements Serializable{
 
     public void setOffer_user_mobile(String offer_user_mobile) {
         this.offer_user_mobile = offer_user_mobile;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getWeight_unit() {
+        return weight_unit;
+    }
+
+    public void setWeight_unit(String weight_unit) {
+        this.weight_unit = weight_unit;
     }
 }

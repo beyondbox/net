@@ -24,7 +24,6 @@ import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.MainActivity;
 import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
-import com.appjumper.silkscreen.ui.dynamic.ReleaseOfferActivity;
 import com.appjumper.silkscreen.ui.home.adapter.AskBuyFilterAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.AskBuyListAdapter;
 import com.appjumper.silkscreen.util.AppTool;
@@ -186,7 +185,6 @@ public class AskBuyActivity extends BaseActivity {
      */
     private void initRefreshLayout() {
         ptrLayt.disableWhenHorizontalMove(true);
-        ptrLayt.setLastUpdateTimeRelateObject(this);
         ptrLayt.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {

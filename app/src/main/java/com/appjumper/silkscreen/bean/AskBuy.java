@@ -95,6 +95,8 @@ public class AskBuy implements Serializable{
     private String siwangjia_short; //是否由丝网+进行短途运输（0-是，默认；1-否）
     private String offer_name;
     private String offer_mobile;
+    private String weight;
+    private String weight_unit;
 
 
 
@@ -496,5 +498,21 @@ public class AskBuy implements Serializable{
 
     public void setOffer_mobile(String offer_mobile) {
         this.offer_mobile = offer_mobile;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
+    }
+
+    public String getWeight_unit() {
+        return weight_unit;
+    }
+
+    public void setWeight_unit(String weight_unit) {
+        this.weight_unit = weight_unit;
     }
 }

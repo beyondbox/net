@@ -172,10 +172,10 @@ public class SearchResultsActivity extends BaseActivity {
                             fragList.add(new SearchOrderFragment());
                         }
 
-                        if (dataObj.getBoolean("xianhuo")) {
+                        /*if (dataObj.getBoolean("xianhuo")) {
                             titleList.add("现货");
                             fragList.add(new SearchStockFragment());
-                        }
+                        }*/
 
                         if (dataObj.getBoolean("jiagong")) {
                             titleList.add("加工");

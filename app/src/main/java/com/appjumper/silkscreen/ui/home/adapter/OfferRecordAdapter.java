@@ -52,40 +52,33 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
 
         AskBuyOffer offer = list.get(position);
         vh.txtTime.setText(offer.getCreate_time().substring(5));
-        vh.txtName.setText("厂家报价" + (position + 1));
+        vh.txtWeight.setText(offer.getWeight() + offer.getWeight_unit());
         vh.txtDelete.setVisibility(View.GONE);
 
-        vh.txtName.setTextColor(context.getResources().getColor(R.color.text_black_color));
-        vh.txtPrice.setTextColor(context.getResources().getColor(R.color.text_black_color));
-        vh.txtTime.setTextColor(context.getResources().getColor(R.color.text_black_color));
+        if (isPrivateMode)
+            vh.txtPrice.setText("***" + offer.getPrice_unit());
+        else
+            vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
 
-        if (isPrivateMode) {
-            if (position == 0) {
-                if (uid.equals(offer.getUser_id())) {
-                    vh.txtName.setText("我的报价");
-                    vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
-                    vh.txtName.setTextColor(context.getResources().getColor(R.color.red_color));
-                    vh.txtPrice.setTextColor(context.getResources().getColor(R.color.red_color));
-                    vh.txtTime.setTextColor(context.getResources().getColor(R.color.red_color));
 
-                    if (isOffering) {
-                        vh.txtDelete.setVisibility(View.VISIBLE);
-                        vh.txtDelete.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                onWhichClickListener.onWhichClick(view, position, 0);
-                            }
-                        });
+        if (uid.equals(offer.getUser_id())) {
+            vh.txtName.setText("我的报价");
+            vh.txtName.setTextColor(context.getResources().getColor(R.color.red_color));
+            vh.txtPrice.setTextColor(context.getResources().getColor(R.color.red_color));
+
+            if (isOffering) {
+                vh.txtDelete.setVisibility(View.VISIBLE);
+                vh.txtDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onWhichClickListener.onWhichClick(view, position, 0);
                     }
-
-                } else {
-                    vh.txtPrice.setText("***" + offer.getPrice_unit());
-                }
-            } else {
-                vh.txtPrice.setText("***" + offer.getPrice_unit());
+                });
             }
         } else {
-            vh.txtPrice.setText(offer.getMoney() + offer.getPrice_unit());
+            vh.txtName.setText("厂家报价" + (position + 1));
+            vh.txtName.setTextColor(context.getResources().getColor(R.color.text_black_color));
+            vh.txtPrice.setTextColor(context.getResources().getColor(R.color.text_black_color));
         }
 
 
@@ -109,6 +102,8 @@ public class OfferRecordAdapter extends MyBaseAdapter<AskBuyOffer> {
         TextView txtName;
         @Bind(R.id.txtPrice)
         TextView txtPrice;
+        @Bind(R.id.txtWeight)
+        TextView txtWeight;
         @Bind(R.id.txtTime)
         TextView txtTime;
         @Bind(R.id.txtHandle)

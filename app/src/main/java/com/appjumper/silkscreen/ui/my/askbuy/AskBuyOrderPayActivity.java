@@ -67,6 +67,8 @@ public class AskBuyOrderPayActivity extends BaseActivity {
     TextView txtOrderId;
     @Bind(R.id.txtTotal)
     TextView txtTotal;
+    @Bind(R.id.txtWeight)
+    TextView txtWeight;
 
     @Bind(R.id.imgViAvatar)
     ImageView imgViAvatar;
@@ -246,6 +248,7 @@ public class AskBuyOrderPayActivity extends BaseActivity {
         txtNum.setText("x " + data.getPurchase_num() + data.getPurchase_unit());
         txtTotal.setText("¥" + data.getPay_money());
         txtOrderId.setText(data.getOrder_id());
+        txtWeight.setText(data.getWeight() + data.getWeight_unit());
 
 
         Picasso.with(context)

@@ -11,6 +11,7 @@ import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.MyBaseAdapter;
 import com.appjumper.silkscreen.bean.StockGoods;
 import com.appjumper.silkscreen.util.DisplayUtil;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -48,9 +49,10 @@ public class ShopProductGridAdapter extends MyBaseAdapter<StockGoods> {
         vh.txtName.setText(item.getProduct_name());
 
         Picasso.with(context)
-                .load(item.getCover_img())
+                .load(item.getImg())
                 .resize(DisplayUtil.dip2px(context, 70), DisplayUtil.dip2px(context, 70))
                 .centerCrop()
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(vh.imageView);

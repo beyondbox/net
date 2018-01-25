@@ -1,11 +1,13 @@
 package com.appjumper.silkscreen.view;
 
+import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Handler;
+import android.support.v4.content.PermissionChecker;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.MyApplication;
@@ -22,16 +25,14 @@ import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.home.logistics.ReleaseFreightActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.EnterpriseCreateActivity;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.DisplayUtil;
-import com.appjumper.silkscreen.util.LogHelper;
 
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.R.attr.width;
 
 /**
  * 首页加号弹出菜单
@@ -119,6 +120,7 @@ public class PopupRelease extends PopupWindow implements View.OnClickListener{
      * 弹出
      */
     public void show(View view) {
+        AppTool.setFullScreen(context);
         showAnimation();
         showAtLocation(view, Gravity.BOTTOM, 0, 0);
     }
@@ -128,14 +130,8 @@ public class PopupRelease extends PopupWindow implements View.OnClickListener{
      * 弹出动画
      */
     private void showAnimation() {
-        LogHelper.e("centerX", centerX + "");
-        LogHelper.e("centerY", centerY + "");
-
         menuList.get(0).measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.UNSPECIFIED);
         int height = menuList.get(0).getMeasuredHeight();
-
-        LogHelper.e("itemWidth", width + "");
-        LogHelper.e("itemHeight", height + "");
 
         for (int i = 0; i < menuList.size(); i++) {
             PointF point = new PointF();
@@ -152,15 +148,14 @@ public class PopupRelease extends PopupWindow implements View.OnClickListener{
 
             point.y = (float) (centerY - Math.sin(angle * (Math.PI / 180)) * radius - height);
 
-            LogHelper.e(i + "X", point.x + "");
-            LogHelper.e(i + "Y", point.y + "");
-
             ObjectAnimator animatorX = ObjectAnimator.ofFloat(menuList.get(i), "translationX", centerX, point.x);
             ObjectAnimator animatorY = ObjectAnimator.ofFloat(menuList.get(i), "translationY", centerY, point.y);
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(menuList.get(i), "scaleX", 0.5f, 1f);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(menuList.get(i), "scaleY", 0.5f, 1f);
 
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.setDuration(250);
-            animatorSet.play(animatorX).with(animatorY);
+            animatorSet.play(animatorX).with(animatorY).with(scaleX).with(scaleY);
             animatorSet.start();
         }
     }
@@ -170,14 +165,8 @@ public class PopupRelease extends PopupWindow implements View.OnClickListener{
      * 关闭动画
      */
     private void closeAnimation() {
-        LogHelper.e("centerX", centerX + "");
-        LogHelper.e("centerY", centerY + "");
-
         menuList.get(0).measure(View.MeasureSpec.EXACTLY, View.MeasureSpec.UNSPECIFIED);
         int height = menuList.get(0).getMeasuredHeight();
-
-        LogHelper.e("itemWidth", width + "");
-        LogHelper.e("itemHeight", height + "");
 
         for (int i = 0; i < menuList.size(); i++) {
             PointF point = new PointF();
@@ -194,15 +183,14 @@ public class PopupRelease extends PopupWindow implements View.OnClickListener{
 
             point.y = (float) (centerY - Math.sin(angle * (Math.PI / 180)) * radius - height);
 
-            LogHelper.e(i + "X", point.x + "");
-            LogHelper.e(i + "Y", point.y + "");
-
             ObjectAnimator animatorX = ObjectAnimator.ofFloat(menuList.get(i), "translationX", point.x, centerX);
             ObjectAnimator animatorY = ObjectAnimator.ofFloat(menuList.get(i), "translationY", point.y, centerY);
+            ObjectAnimator scaleX = ObjectAnimator.ofFloat(menuList.get(i), "scaleX", 1f, 0.5f);
+            ObjectAnimator scaleY = ObjectAnimator.ofFloat(menuList.get(i), "scaleY", 1f, 0.5f);
 
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.setDuration(250);
-            animatorSet.play(animatorX).with(animatorY);
+            animatorSet.play(animatorX).with(animatorY).with(scaleX).with(scaleY);
             animatorSet.start();
         }
 
@@ -210,59 +198,70 @@ public class PopupRelease extends PopupWindow implements View.OnClickListener{
             @Override
             public void run() {
                 dismiss();
+                AppTool.cancelFullScreen(context);
             }
         }, 250);
     }
 
 
     @Override
-    public void onClick(View view) {
+    public void onClick(final View view) {
         closeAnimation();
-        if (!MyApplication.appContext.checkMobile(context)) return;
-        int i = (int) view.getTag();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!MyApplication.appContext.checkMobile(context)) return;
+                int i = (int) view.getTag();
 
-        switch (i) {
-            case 0:
-                if (getUser().getEnterprise() == null) {
-                    comCreateDialog.show();
-                    return;
+                switch (i) {
+                    case 0:
+                        if (getUser().getEnterprise() == null) {
+                            comCreateDialog.show();
+                            return;
+                        }
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_ORDER);
+                        break;
+                    case 1:
+                        if (getUser().getEnterprise() == null) {
+                            comCreateDialog.show();
+                            return;
+                        }
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_PROCESS);
+                        break;
+                    case 2:
+                        if (getUser().getEnterprise() == null) {
+                            comCreateDialog.show();
+                            return;
+                        }
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
+                        break;
+                    case 3:
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_WORKSHOP);
+                        break;
+                    case 4:
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_JOB);
+                        break;
+                    case 5:
+                        CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_DEVICE);
+                        break;
+                    case 6:
+                        Intent intent = new Intent(context, ProductSelectActivity.class);
+                        intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_PRODUCT_ALL);
+                        intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
+                        context.startActivity(intent);
+                        break;
+                    case 7:
+                        if (!MyApplication.appContext.checkCertifyPer(context)) return;
+                        if (PermissionChecker.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
+                            Toast.makeText(context, "您尚未开启本应用的定位权限", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        start_Activity(context, ReleaseFreightActivity.class);
+                        break;
                 }
-                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_ORDER);
-                break;
-            case 1:
-                if (getUser().getEnterprise() == null) {
-                    comCreateDialog.show();
-                    return;
-                }
-                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_PROCESS);
-                break;
-            case 2:
-                if (getUser().getEnterprise() == null) {
-                    comCreateDialog.show();
-                    return;
-                }
-                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
-                break;
-            case 3:
-                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_WORKSHOP);
-                break;
-            case 4:
-                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_JOB);
-                break;
-            case 5:
-                CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_DEVICE);
-                break;
-            case 6:
-                Intent intent = new Intent(context, ProductSelectActivity.class);
-                intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
-                intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
-                context.startActivity(intent);
-                break;
-            case 7:
-                if (!MyApplication.appContext.checkCertifyPer(context)) return;
-                start_Activity(context, ReleaseFreightActivity.class);
-                break;
-        }
+            }
+        }, 250);
+
     }
 
 

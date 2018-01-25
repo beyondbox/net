@@ -20,6 +20,7 @@ import com.appjumper.silkscreen.ui.home.adapter.HistoryListViewAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.HotGridViewAdapter;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.view.MyGridView;
 import com.appjumper.silkscreen.view.MyListView;
 
@@ -87,6 +88,8 @@ public class SearchingActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                etSearch.requestFocus();
+                AppTool.showSoftInput(context, etSearch);
                 new Thread(new KeyworksRun()).start();
             }
         }, 80);

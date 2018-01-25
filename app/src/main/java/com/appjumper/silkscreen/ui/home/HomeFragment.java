@@ -315,7 +315,7 @@ public class HomeFragment extends BaseFragment {
 
 
     /**
-     * 设置滚动控件
+     * 设置滚动控件，报价详情
      */
     private void setFlipper() {
         if (flipperOffer.isFlipping())
@@ -342,17 +342,32 @@ public class HomeFragment extends BaseFragment {
                 txtName.setText(offer.getCompany_name());
                 txtPrice.setText(offer.getOffer_value() + " " + offer.getOffer_unit());
                 txtWave.setText(offer.getYesterday());
+
+                //去除“+”号，否则解析整数可能会报错
+                String str = offer.getYesterday();
+                if (!TextUtils.isEmpty(str) && str.contains("+")) {
+                    offer.setYesterday(str.replaceAll("\\+", ""));
+                }
+
                 int wave = Integer.valueOf(offer.getYesterday());
                 if (wave >= 0)
                     txtWave.setTextColor(getResources().getColor(R.color.orange_color));
                 else
                     txtWave.setTextColor(getResources().getColor(R.color.green_color));
 
+
                 OfferList offer1 = offerList.get(i + 1);
                 txtTime1.setText(offer1.getOffer_time().substring(5, 10));
                 txtName1.setText(offer1.getCompany_name());
                 txtPrice1.setText(offer1.getOffer_value() + " " + offer1.getOffer_unit());
                 txtWave1.setText(offer1.getYesterday());
+
+                //去除“+”号，否则解析整数可能会报错
+                String str1 = offer1.getYesterday();
+                if (!TextUtils.isEmpty(str1) && str1.contains("+")) {
+                    offer1.setYesterday(str1.replaceAll("\\+", ""));
+                }
+
                 int wave1 = Integer.valueOf(offer1.getYesterday());
                 if (wave1 >= 0)
                     txtWave1.setTextColor(getResources().getColor(R.color.orange_color));
@@ -769,8 +784,10 @@ public class HomeFragment extends BaseFragment {
         datas.add(max);
         v_avg_list.setDataY(datas);
 
-        llChart.removeAllViews();
-        llChart.addView(v_avg_list);
+        if (llChart != null) {
+            llChart.removeAllViews();
+            llChart.addView(v_avg_list);
+        }
     }
 
 

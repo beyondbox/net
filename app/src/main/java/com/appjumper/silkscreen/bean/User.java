@@ -44,6 +44,7 @@ public class User implements Serializable{
     private String is_purchase_order; //求购-是否显示我的采购订单：0-不显示；1-显示
     private String admin_purchase; //求购管理员帐号0-否；1-是
     private String admin_car_product; //空车配货管理员帐号0-否；1-是
+    private String admin_purchase_add; //求购官方手机号0-否；1-是
 
 
     private String driver_img;
@@ -396,5 +397,13 @@ public class User implements Serializable{
 
     public void setAdmin_car_product(String admin_car_product) {
         this.admin_car_product = admin_car_product;
+    }
+
+    public String getAdmin_purchase_add() {
+        return admin_purchase_add;
+    }
+
+    public void setAdmin_purchase_add(String admin_purchase_add) {
+        this.admin_purchase_add = admin_purchase_add;
     }
 }

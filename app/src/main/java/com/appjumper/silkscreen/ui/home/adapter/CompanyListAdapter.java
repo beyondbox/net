@@ -14,13 +14,16 @@ import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.bean.Enterprise;
 import com.appjumper.silkscreen.bean.Product;
 import com.appjumper.silkscreen.ui.dynamic.adapter.ImageAdapter;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.appjumper.silkscreen.util.DisplayUtil;
 import com.appjumper.silkscreen.view.phonegridview.GalleryActivity;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -48,9 +51,20 @@ public class CompanyListAdapter extends BaseQuickAdapter<Enterprise, BaseViewHol
                 .into((ImageView) helper.getView(R.id.imgViHead));
 
         helper.setText(R.id.txtTitle, item.getEnterprise_name())
+                .setVisible(R.id.imgViTag, false)
                 .setVisible(R.id.imgViCertiGreen, item.getUser_auth_status().equals("2"))
                 .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
                 .setVisible(R.id.imgViCertiYellow, item.getEnterprise_productivity_auth_status().equals("2"));
+
+
+        TextView txtTitle = helper.getView(R.id.txtTitle);
+        if (item.getEnterprise_auth_status().equals("2"))
+            txtTitle.setMaxWidth(DisplayUtil.dip2px(mContext, 170));
+        else if (item.getUser_auth_status().equals("2"))
+            txtTitle.setMaxWidth(DisplayUtil.dip2px(mContext, 210));
+        else
+            txtTitle.setMaxWidth(DisplayUtil.dip2px(mContext, 250));
+
 
         TextView txtSubTitle = helper.getView(R.id.txtSubTitle);
         List<Product> serviceList = item.getService();
@@ -88,10 +102,19 @@ public class CompanyListAdapter extends BaseQuickAdapter<Enterprise, BaseViewHol
         else
             isTop = item.getIs_top_machining().equals("1");
 
-        if (isTop)
+        if (isTop) { //置顶标签
             imgViTag.setImageResource(R.mipmap.tag_top);
-        else
-            imgViTag.setImageResource(R.mipmap.tag_new);
+            imgViTag.setVisibility(View.VISIBLE);
+        } else { //新入驻标签
+            Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(calendar.HOUR_OF_DAY);
+            long mill = 1000 * 60 * 60 * (hour + 24);
+            long target = calendar.getTimeInMillis() - mill;
+            if (AppTool.getTimeMs(item.getCreate_time(), "yyyy-MM-dd HH:mm:ss") > target) {
+                imgViTag.setImageResource(R.mipmap.tag_new);
+                imgViTag.setVisibility(View.VISIBLE);
+            }
+        }
 
 
 

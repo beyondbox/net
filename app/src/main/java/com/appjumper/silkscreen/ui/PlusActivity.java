@@ -1,9 +1,12 @@
 package com.appjumper.silkscreen.ui;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.PermissionChecker;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
@@ -112,13 +115,17 @@ public class PlusActivity extends BaseActivity {
 
             case R.id.rlAskBuy: //发布求购
                 Intent intent = new Intent(context, ProductSelectActivity.class);
-                intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_STOCK);
+                intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_PRODUCT_ALL);
                 intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
                 startActivity(intent);
                 break;
 
             case R.id.rlFreight: //发布空车配货
                 if (!MyApplication.appContext.checkCertifyPer(context)) return;
+                if (PermissionChecker.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
+                    Toast.makeText(context, "您尚未开启本应用的定位权限", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 start_Activity(context, ReleaseFreightActivity.class);
                 break;
 

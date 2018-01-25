@@ -79,7 +79,7 @@ public  class ShareUtil {
 
         final SelectPicPopupWindow menuWindow = new SelectPicPopupWindow(context, mMenuView);
         menuWindow.setAnimationStyle(R.style.BottomPopupAnimation);
-        backgroundAlpha(50f);
+        AppTool.setBackgroundAlpha(contexts, 0.7f);
         ColorDrawable dw = new ColorDrawable(0x00000000);
         //设置SelectPicPopupWindow弹出窗体的背景
         menuWindow.setBackgroundDrawable(dw);
@@ -121,7 +121,7 @@ public  class ShareUtil {
         @Override
         public void onDismiss() {
             // TODO Auto-generated method stub
-            backgroundAlpha(1f);
+            AppTool.setBackgroundAlpha(contexts, 1f);
         }
     }
     public static void backgroundAlpha(float bgAlpha) {

@@ -7,12 +7,23 @@
     android:padding="12dp">
 
     <TextView
-        android:id="@+id/txtProduct"
+        android:id="@+id/textView0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="美格网"
-        android:textSize="15sp"
+        android:text="订单编号: "
+        android:textSize="13sp"
         android:textColor="@color/new_gray_color"/>
+
+    <TextView
+        android:id="@+id/txtOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/textView0"
+        android:text="20171252415263"
+        android:textSize="13sp"
+        android:textColor="@color/new_gray_color"/>
+
+
 
     <TextView
         android:id="@+id/txtState"
@@ -27,7 +38,7 @@
         android:id="@+id/imgViHead"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_below="@id/txtProduct"
+        android:layout_below="@id/textView0"
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/icon_home_exhibition_bg"/>
@@ -52,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/imgViHead"
         android:layout_alignLeft="@id/txtContent"
-        android:text="500元/套"
+        android:text="500.00元/套"
         android:textSize="14sp"
         android:textColor="@color/orange_color"/>
 
@@ -67,31 +78,42 @@
         android:textColor="@color/new_gray_light_color"/>
 
     <View
+        android:id="@+id/placeHolder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:id="@+id/txtWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txtPrice"
+        android:layout_toRightOf="@id/placeHolder"
+        android:layout_marginLeft="30dp"
+        android:text="22kg/卷"
+        android:textSize="13sp"
+        android:textColor="@color/new_gray_light_color"/>
+
+    <View
         android:id="@+id/divider"
         style="@style/LineStyleLight"
         android:layout_below="@id/imgViHead"
         android:layout_marginTop="6dp"/>
 
-    <TextView
-        android:id="@+id/textView0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/divider"
-        android:layout_marginTop="7dp"
-        android:text="订单编号: "
-        android:textSize="13sp"
-        android:textColor="@color/new_gray_color"/>
 
     <TextView
-        android:id="@+id/txtOrderId"
+        android:id="@+id/txtProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/divider"
-        android:layout_toRightOf="@id/textView0"
         android:layout_marginTop="7dp"
-        android:text="20171252415263"
-        android:textSize="13sp"
+        android:layout_marginLeft="10dp"
+        android:text="美格网"
+        android:textSize="14sp"
         android:textColor="@color/new_gray_color"/>
+
+
+
 
     <TextView
         android:id="@+id/textView1"

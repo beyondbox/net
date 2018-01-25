@@ -277,11 +277,11 @@
         <!--求购信息公共列表-->
         <activity android:name=".ui.home.askbuy.AskBuyActivity" />
         <!--发布求购-->
-        <activity android:name=".ui.dynamic.ReleaseAskBuyActivity" />
+        <activity android:name=".ui.home.askbuy.ReleaseAskBuyActivity" />
         <!--发布报价-->
-        <activity android:name=".ui.dynamic.ReleaseOfferActivity" />
+        <activity android:name=".ui.home.askbuy.ReleaseOfferActivity" />
         <!--发布成功-->
-        <activity android:name=".ui.dynamic.ReleaseCompleteActivity" />
+        <activity android:name=".ui.home.askbuy.ReleaseCompleteActivity" />
         <!--求购详情-->
         <activity android:name=".ui.home.askbuy.AskBuyDetailActivity" android:launchMode="singleTask"/>
         <!--求购编辑-->
@@ -606,4 +606,5 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 </manifest>

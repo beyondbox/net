@@ -125,7 +125,7 @@ public class PersonalAuthenticationActivity extends MultiSelectPhotoActivity{
                 break;
             case R.id.iv_id_card_one://身份证
                 mark=0;
-                if(enterprise_auth_status.equals("0")&&!enterprise_auth_status.equals("3")){
+                if(enterprise_auth_status.equals("0") || enterprise_auth_status.equals("3")){
                     setCropSingleImage(false);
                     setSingleImage(true);
                     setCropTaskPhoto(false);
@@ -134,7 +134,7 @@ public class PersonalAuthenticationActivity extends MultiSelectPhotoActivity{
                 break;
             case R.id.iv_id_card_two://身份证反面
                 mark=1;
-                if(enterprise_auth_status.equals("0")&&!enterprise_auth_status.equals("3")){
+                if(enterprise_auth_status.equals("0") || enterprise_auth_status.equals("3")){
                     setCropSingleImage(false);
                     setSingleImage(true);
                     setCropTaskPhoto(false);

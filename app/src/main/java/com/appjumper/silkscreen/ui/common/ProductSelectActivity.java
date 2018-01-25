@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -20,8 +22,9 @@ import com.appjumper.silkscreen.bean.Spec;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.adapter.HotProductAdapter;
 import com.appjumper.silkscreen.ui.common.adapter.ProductListAdapter;
-import com.appjumper.silkscreen.ui.dynamic.ReleaseAskBuyActivity;
+import com.appjumper.silkscreen.ui.home.askbuy.ReleaseAskBuyActivity;
 import com.appjumper.silkscreen.ui.inquiry.InquirySpecificationActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.AddServiceCompleteActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.SpecificationActivity;
@@ -92,9 +95,19 @@ public class ProductSelectActivity extends BaseActivity {
     private boolean isFilterMode = false; //筛选模式
     private boolean isStockShop = false; //选择现货商城的商品
     private int serviceType; //产品类型
-    private String action = "";
+    private String action = ""; //“我的关注”的管理板块标记：管理关注的产品 or 添加找车的货物
 
-    private int motion = 0; //标记是添加服务还是发布询价
+    private int motion = 0; //标记是添加服务 还是发布询价 还是发布求购
+
+    private GridView gridHot; //热门产品
+    private GridView gridHistory; //发布历史
+    private LinearLayout llHot; //热门产品父布局
+    private LinearLayout llHistory; //发布历史父布局
+
+    private List<ServiceProduct> hotList;
+    private List<ServiceProduct> historyList;
+    private HotProductAdapter hotAdapter;
+    private HotProductAdapter historyAdapter;
 
 
     private Handler hintHandler = new Handler() {
@@ -122,6 +135,9 @@ public class ProductSelectActivity extends BaseActivity {
     private String[] b = {"A", "B", "C", "D", "E", "F", "G", "H", "I",
             "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
             "W", "X", "Y", "Z"};
+
+
+
 
 
     @Override
@@ -165,8 +181,6 @@ public class ProductSelectActivity extends BaseActivity {
                 break;
         }
 
-        initListView();
-        getData();
 
         sideBar.setHintHandler(hintHandler);
         sideBar.setOnTouchingLetterChangedListener(new IndexSideBar.OnTouchingLetterChangedListener() {
@@ -179,6 +193,9 @@ public class ProductSelectActivity extends BaseActivity {
 
         if (AddServiceCompleteActivity.instance != null)
             AddServiceCompleteActivity.instance.finish();
+
+        initListView();
+        getData();
     }
 
 
@@ -192,6 +209,45 @@ public class ProductSelectActivity extends BaseActivity {
             lLaytConfirm.setVisibility(View.VISIBLE);
         }
 
+        //加入headerView，热门产品和历史发布
+        if (motion != 0) {
+            View headerView = LayoutInflater.from(context).inflate(R.layout.layout_header_view_hot_product, null);
+            gridHot = (GridView) headerView.findViewById(R.id.gridHot);
+            gridHistory = (GridView) headerView.findViewById(R.id.gridHistory);
+            llHot = (LinearLayout) headerView.findViewById(R.id.llHot);
+            llHistory = (LinearLayout) headerView.findViewById(R.id.llHistory);
+
+            hotList = new ArrayList<>();
+            hotAdapter = new HotProductAdapter(context, hotList);
+            gridHot.setAdapter(hotAdapter);
+            gridHot.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    handleSpecialNeeds(hotList.get(i));
+                }
+            });
+
+            historyList = new ArrayList<>();
+            historyAdapter = new HotProductAdapter(context, historyList);
+            gridHistory.setAdapter(historyAdapter);
+            gridHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    handleSpecialNeeds(historyList.get(i));
+                }
+            });
+
+            lvData.addHeaderView(headerView);
+
+            getHot();
+            if (motion == MOTION_RELEASE_ASKBUY)
+                getHistory();
+        }
+
+
+        lvData.setDividerHeight(0);
+        lvData.setAdapter(productAdapter);
+
         lvData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -202,6 +258,7 @@ public class ProductSelectActivity extends BaseActivity {
                         setResult(0, data);
                         finish();
                     } else {
+                        position = position - 1;
                         handleSpecialNeeds(productList.get(position));
                     }
                 }
@@ -233,7 +290,6 @@ public class ProductSelectActivity extends BaseActivity {
             }
         });
 
-        lvData.setAdapter(productAdapter);
 
         if (isMultiMode) {
             progress.show();
@@ -387,6 +443,87 @@ public class ProductSelectActivity extends BaseActivity {
         productAdapter.notifyDataSetChanged();
     }
 
+
+    /**
+     * 获取热门产品
+     */
+    private void getHot() {
+        RequestParams params = MyHttpClient.getApiParam("collection", "pc_hot_product");
+        params.put("service_type", serviceType);
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        List<ServiceProduct> list = GsonUtil.getEntityList(jsonObj.getJSONArray("data").toString(), ServiceProduct.class);
+                        hotList.clear();
+                        if (list.size() > 8)
+                            hotList.addAll(list.subList(0, 8));
+                        else
+                            hotList.addAll(list);
+
+                        hotAdapter.notifyDataSetChanged();
+
+                        if (hotList.size() > 0)
+                            llHot.setVisibility(View.VISIBLE);
+                        else
+                            llHot.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+
+    /**
+     * 获取发布历史
+     */
+    private void getHistory() {
+        RequestParams params = MyHttpClient.getApiParam("collection", "purchase_history_product");
+        params.put("uid", getUserID());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        List<ServiceProduct> list = GsonUtil.getEntityList(jsonObj.getJSONArray("data").toString(), ServiceProduct.class);
+                        historyList.clear();
+                        if (list.size() > 8)
+                            historyList.addAll(list.subList(0, 8));
+                        else
+                            historyList.addAll(list);
+
+                        historyAdapter.notifyDataSetChanged();
+
+                        if (historyList.size() > 0)
+                            llHistory.setVisibility(View.VISIBLE);
+                        else
+                            llHistory.setVisibility(View.GONE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
 
 
     /**

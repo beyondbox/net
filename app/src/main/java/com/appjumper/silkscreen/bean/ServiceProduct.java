@@ -32,6 +32,7 @@ public class ServiceProduct implements Serializable{
      * product_type_name : null
      */
 
+    @SerializedName(value = "id", alternate = {"product_id"})
     private String id;
     private String name;
     private String status;

@@ -3,12 +3,14 @@ package com.appjumper.silkscreen.ui.home.company;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.ui.common.adapter.FragAdapter;
+import com.appjumper.silkscreen.ui.home.search.SearchingActivity;
 import com.appjumper.silkscreen.util.Const;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 厂家列表
@@ -84,6 +87,16 @@ public class CompanyListActivity extends BaseActivity {
         Fragment fragment = (Fragment) fragAdapter.instantiateItem(frameContent, position);
         fragAdapter.setPrimaryItem(frameContent, position, fragment);
         fragAdapter.finishUpdate(frameContent);
+    }
+
+
+    @OnClick(R.id.imgViSearch)
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.imgViSearch: //搜索
+                start_Activity(context, SearchingActivity.class);
+                break;
+        }
     }
 
 }

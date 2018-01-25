@@ -25,7 +25,6 @@ import com.appjumper.silkscreen.bean.Avatar;
 import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
-import com.appjumper.silkscreen.ui.dynamic.ReleaseOfferActivity;
 import com.appjumper.silkscreen.ui.home.adapter.AskBuyImageAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.OfferRecordAdapter;
 import com.appjumper.silkscreen.ui.my.askbuy.AskBuyMakeOrderActivity;
@@ -110,8 +109,16 @@ public class AskBuyDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_askbuy_detail);
         ButterKnife.bind(context);
         instance = this;
+
         initBack();
         initProgressDialog(false, null);
+        initRightButton(R.mipmap.icon_share, new RightButtonListener() {
+            @Override
+            public void click() {
+                if (checkLogined() && data != null)
+                    ShareUtil.intShare(context, right, data.getPurchase_content(), "求购" + data.getProduct_name(), Const.SHARE_ASKBUY_URL + "?id=" + id);
+            }
+        });
 
         id = getIntent().getStringExtra("id");
         new Handler().postDelayed(new Runnable() {
@@ -193,7 +200,6 @@ public class AskBuyDetailActivity extends BaseActivity {
      */
     private void setData() {
         initTitle("求购" + data.getProduct_name());
-        right.setImageResource(R.mipmap.icon_share);
         boolean isOffering = false; //是否是报价中状态
 
         long expiryTime = AppTool.getTimeMs(data.getExpiry_date(), "yy-MM-dd HH:mm:ss");
@@ -311,7 +317,10 @@ public class AskBuyDetailActivity extends BaseActivity {
                 AskBuyOffer offer = offerList.get(i);
                 if (getUserID().equals(offer.getUser_id())) {
                     txtOffer.setText("您已报价");
-                    txtOffer.setEnabled(false);
+                    if (getUser().getAdmin_purchase_add().equals("1"))
+                        txtOffer.setEnabled(true);
+                    else
+                        txtOffer.setEnabled(false);
                     offerList.remove(i);
                     offerList.add(0, offer);
                     break;
@@ -473,7 +482,7 @@ public class AskBuyDetailActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.txtOffer, R.id.txtCall, R.id.right, R.id.imgViHead})
+    @OnClick({R.id.txtOffer, R.id.txtCall, R.id.imgViHead})
     public void onClick(View view) {
         if (data == null)
             return;
@@ -483,7 +492,7 @@ public class AskBuyDetailActivity extends BaseActivity {
 
         switch (view.getId()) {
             case R.id.txtOffer: //报价
-                if (txtOffer.getText().toString().equals("报价")) {
+                if (txtOffer.isEnabled()) {
                     if (!MyApplication.appContext.checkMobile(context)) return;
                     Intent intent = new Intent(context, ReleaseOfferActivity.class);
                     intent.putExtra(Const.KEY_OBJECT, data);
@@ -494,9 +503,6 @@ public class AskBuyDetailActivity extends BaseActivity {
                 if (!TextUtils.isEmpty(data.getAdviser_mobile())) {
                     AppTool.dial(context, data.getAdviser_mobile());
                 }
-                break;
-            case R.id.right: //分享
-                ShareUtil.intShare(context, view, data.getPurchase_content(), "求购" + data.getProduct_name(), Const.SHARE_ASKBUY_URL + "?id=" + id);
                 break;
             case R.id.imgViHead:
                 Intent intent = new Intent(context, GalleryActivity.class);

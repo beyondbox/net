@@ -81,6 +81,10 @@ public class Const {
      * 选择货站
      */
     public static final int REQUEST_CODE_SELECT_STATION = 2014;
+    /**
+     * Android8.0请求安装第三方程序
+     */
+    public static final int REQUEST_CODE_INSTALL_APK = 2015;
 
 
 

@@ -1,4 +1,4 @@
-package com.appjumper.silkscreen.ui.dynamic;
+package com.appjumper.silkscreen.ui.home.askbuy;
 
 import android.content.Intent;
 import android.graphics.Paint;
@@ -15,13 +15,15 @@ import android.widget.TextView;
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
 import com.appjumper.silkscreen.bean.AskBuy;
+import com.appjumper.silkscreen.bean.Unit;
 import com.appjumper.silkscreen.bean.User;
+import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
 import com.appjumper.silkscreen.ui.common.WebViewActivity;
-import com.appjumper.silkscreen.ui.home.askbuy.AskBuyDetailActivity;
 import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
+import com.bigkoo.pickerview.OptionsPickerView;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -31,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,9 +62,15 @@ public class ReleaseOfferActivity extends BaseActivity {
     @Bind(R.id.txtProtocol)
     TextView txtProtocol;
 
+    @Bind(R.id.edtTxtWeight)
+    EditText edtTxtWeight;
+    @Bind(R.id.txtWeightUnit)
+    TextView txtWeightUnit;
+
 
     private DecimalFormat df = new DecimalFormat("0.00");
     private AskBuy data;
+    private OptionsPickerView pvUnits;
 
 
     @Override
@@ -73,7 +82,8 @@ public class ReleaseOfferActivity extends BaseActivity {
         initBack();
         initTitle("我要报价");
         initProgressDialog(false, "正在发布....");
-        edtTxtPrice.addTextChangedListener(textWatcher);
+        edtTxtPrice.addTextChangedListener(new MyTextWatcher(edtTxtPrice));
+        edtTxtWeight.addTextChangedListener(new MyTextWatcher(edtTxtWeight));
 
         data = (AskBuy) getIntent().getSerializableExtra(Const.KEY_OBJECT);
         setData();
@@ -83,8 +93,9 @@ public class ReleaseOfferActivity extends BaseActivity {
             public void run() {
                 edtTxtPrice.requestFocus();
                 AppTool.showSoftInput(context, edtTxtPrice);
+                getWeightUnits();
             }
-        }, 50);
+        }, 80);
     }
 
 
@@ -104,7 +115,16 @@ public class ReleaseOfferActivity extends BaseActivity {
     }
 
 
-    private TextWatcher textWatcher = new TextWatcher() {
+    /**
+     * 将输入框小数点控制在两位以内
+     */
+    private class MyTextWatcher implements TextWatcher {
+        private EditText editText;
+
+        public MyTextWatcher(EditText editText) {
+            this.editText = editText;
+        }
+
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -112,15 +132,15 @@ public class ReleaseOfferActivity extends BaseActivity {
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            String content = edtTxtPrice.getText().toString().trim();
+            String content = editText.getText().toString().trim();
             String [] arr = content.split("\\.");
             if (arr.length > 1) {
                 String decimal = arr[1];
                 if (decimal.length() > 2) {
                     String newDecimal = decimal.substring(0, 2);
                     String newContent = arr[0] + "." + newDecimal;
-                    edtTxtPrice.setText(newContent);
-                    edtTxtPrice.setSelection(newContent.length());
+                    editText.setText(newContent);
+                    editText.setSelection(newContent.length());
                 }
             }
         }
@@ -133,6 +153,79 @@ public class ReleaseOfferActivity extends BaseActivity {
 
 
     /**
+     * 获取重量单位
+     */
+    private void getWeightUnits() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "purchase_unit_list");
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        final List<Unit> list = GsonUtil.getEntityList(jsonObj.getJSONArray("data").toString(), Unit.class);
+
+                        pvUnits = new OptionsPickerView.Builder(context, new OptionsPickerView.OnOptionsSelectListener() {
+                            @Override
+                            public void onOptionsSelect(int options1, int options2, int options3, View v) {
+                                txtWeightUnit.setText(list.get(options1).getName());
+                            }
+                        }).build();
+                        pvUnits.setPicker(list);
+
+                        if (list.size() > 0)
+                            txtWeightUnit.setText(list.get(0).getName());
+
+                        getLastUnit();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+
+    /**
+     * 获取上次选择的单位
+     */
+    private void getLastUnit() {
+        RequestParams params = MyHttpClient.getApiParam("purchase", "purchase_offer_unit");
+        params.put("uid", getUserID());
+        params.put("product_id", data.getProduct_id());
+
+        MyHttpClient.getInstance().get(Url.HOST, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String jsonStr = new String(responseBody);
+                try {
+                    JSONObject jsonObj = new JSONObject(jsonStr);
+                    int state = jsonObj.getInt(Const.KEY_ERROR_CODE);
+                    if (state == Const.HTTP_STATE_SUCCESS) {
+                        Unit unit = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), Unit.class);
+                        if (!TextUtils.isEmpty(unit.getWeight_unit()))
+                            txtWeightUnit.setText(unit.getWeight_unit());
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            }
+        });
+    }
+
+
+    /**
      * 发布报价
      */
     private void submit() {
@@ -142,6 +235,8 @@ public class ReleaseOfferActivity extends BaseActivity {
         params.put("money", df.format(Double.valueOf(edtTxtPrice.getText().toString().trim())));
         params.put("offer_content", edtTxtContent.getText().toString().trim());
         params.put("offer_type", 1);
+        params.put("weight", edtTxtWeight.getText().toString().trim());
+        params.put("weight_unit", txtWeightUnit.getText().toString().trim());
         if (!TextUtils.isEmpty(data.getPurchase_unit()))
             params.put("price_unit", "元/" + data.getPurchase_unit());
 
@@ -201,12 +296,21 @@ public class ReleaseOfferActivity extends BaseActivity {
             txtConfirm.setEnabled(false);
     }
 
-    @OnClick({R.id.txtConfirm, R.id.txtProtocol})
+
+    @OnClick({R.id.txtConfirm, R.id.txtProtocol, R.id.txtWeightUnit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.txtConfirm: //发布
                 if (TextUtils.isEmpty(edtTxtPrice.getText().toString().trim())) {
                     showErrorToast("请输入产品单价");
+                    return;
+                }
+                if (TextUtils.isEmpty(edtTxtWeight.getText().toString().trim())) {
+                    showErrorToast("请输入产品重量");
+                    return;
+                }
+                if (TextUtils.isEmpty(txtWeightUnit.getText().toString().trim())) {
+                    showErrorToast("请选择重量单位");
                     return;
                 }
                 submit();
@@ -223,6 +327,10 @@ public class ReleaseOfferActivity extends BaseActivity {
 
                 String url = Url.PROTOCOL_ASKBUY_OFFER + "?name=" + name + "&phone=" + user.getMobile() + "&goods=" + product + "&time=24&price=0.5";
                 start_Activity(context, WebViewActivity.class, new BasicNameValuePair("title", "协议内容"), new BasicNameValuePair("url", url));
+                break;
+            case R.id.txtWeightUnit: //选择单位
+                AppTool.hideSoftInput(context);
+                pvUnits.show();
                 break;
             default:
                 break;

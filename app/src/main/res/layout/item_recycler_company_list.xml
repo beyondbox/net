@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/imgViHead"
             android:layout_marginLeft="10dp"
-            android:maxWidth="165dp"
+            android:maxWidth="170dp"
             android:maxLines="1"
             android:ellipsize="end"
             android:text="安平县优加网络科技有限公司"

@@ -29,6 +29,7 @@ import com.appjumper.silkscreen.net.CommonApi;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.ProductSelectActivity;
 import com.appjumper.silkscreen.ui.my.adapter.SpecChoiceAdapter;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.view.phonegridview.BasePhotoGridActivity;
@@ -381,6 +382,8 @@ public class SpecificationActivity extends BasePhotoGridActivity {
                     BaseResponse listResponse = (BaseResponse) msg.obj;
                     if(listResponse.isSuccess()){
                         //showErrorToast("添加服务成功");
+                        if (ProductSelectActivity.instance != null)
+                            ProductSelectActivity.instance.finish();
                         start_Activity(context, AddServiceCompleteActivity.class, new BasicNameValuePair(Const.KEY_SERVICE_TYPE, type));
                         CommonApi.addLiveness(getUserID(), 19);
                         finish();
