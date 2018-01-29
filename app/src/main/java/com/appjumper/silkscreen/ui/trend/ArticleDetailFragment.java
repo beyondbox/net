@@ -142,6 +142,7 @@ public class ArticleDetailFragment extends BaseFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (!isViewCreated) return;
                 showFailTips(getResources().getString(R.string.requst_fail));
             }
 

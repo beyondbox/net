@@ -166,8 +166,6 @@ public class MainActivity extends FragmentActivity {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION}, Const.REQUEST_CODE_PERMISSION);
 
-        checkNewVersion();
-
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -712,9 +710,10 @@ public class MainActivity extends FragmentActivity {
                     boolean isSuccess = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     if (isSuccess) {
                         Configure.init(this);
+                        checkNewVersion();
                     }
                     else {
-                        Toast.makeText(this, "请开启存储权限，否则将无法使用上传图片功能！", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "请开启存储权限，否则应用将无法正常使用！", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;

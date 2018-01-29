@@ -167,7 +167,8 @@ public class CompanyListFragment extends BaseFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                start_Activity(context, CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", dataList.get(position).getEnterprise_id()));
+                if (checkLogined())
+                    start_Activity(context, CompanyDetailsActivity.class, new BasicNameValuePair("from", "2"), new BasicNameValuePair("id", dataList.get(position).getEnterprise_id()));
             }
         });
 
