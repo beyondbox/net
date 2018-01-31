@@ -1,5 +1,6 @@
 package com.appjumper.silkscreen.view;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,8 +13,6 @@ import android.widget.ImageView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.util.DisplayUtil;
-
-import static android.R.attr.width;
 
 public class BorderRectImageView extends ImageView {
 
@@ -42,7 +41,7 @@ public class BorderRectImageView extends ImageView {
 		paint.setStrokeWidth(DisplayUtil.dip2px(getContext(), 1));
 		paint.setColor(getResources().getColor(R.color.border_gray_light));
 		canvas.drawPath(path, paint);
-		
+        
 	}
 
 }

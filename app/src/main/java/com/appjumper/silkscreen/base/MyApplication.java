@@ -11,6 +11,7 @@ import com.appjumper.silkscreen.ui.my.BindMobileActivity;
 import com.appjumper.silkscreen.ui.my.enterprise.CertifyManageActivity;
 import com.appjumper.silkscreen.util.manager.MyUserManager;
 import com.appjumper.silkscreen.view.SureOrCancelDialog;
+import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
@@ -47,6 +48,7 @@ public class MyApplication extends Application{
         super.onCreate();
         appContext = this;
         UMShareAPI.get(this);
+        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, null);
         // 初始化配置信息
         //Configure.init(this);
         checkInit();

@@ -94,8 +94,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.chanven.lib:cptr:1.1.0'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.26'
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
     compile 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar'
     compile 'q.rorbin:badgeview:1.1.1'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
@@ -103,5 +101,7 @@ dependencies {
     compile 'com.amap.api:navi-3dmap:latest.integration'
     compile 'com.amap.api:search:latest.integration'
     compile 'org.robolectric:shadows-multidex:3.3.2'
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support:design:26.0.0-alpha1'
     compile project(':picasso')
 }
