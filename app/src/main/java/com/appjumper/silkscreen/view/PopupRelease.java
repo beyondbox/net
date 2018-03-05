@@ -121,8 +121,8 @@ public class PopupRelease extends PopupWindow implements View.OnClickListener{
      */
     public void show(View view) {
         AppTool.setFullScreen(context);
-        showAnimation();
         showAtLocation(view, Gravity.BOTTOM, 0, 0);
+        showAnimation();
     }
 
 
@@ -214,43 +214,43 @@ public class PopupRelease extends PopupWindow implements View.OnClickListener{
                 int i = (int) view.getTag();
 
                 switch (i) {
-                    case 0:
+                    case 0: //订做
                         if (getUser().getEnterprise() == null) {
                             comCreateDialog.show();
                             return;
                         }
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_ORDER);
                         break;
-                    case 1:
+                    case 1: //加工
                         if (getUser().getEnterprise() == null) {
                             comCreateDialog.show();
                             return;
                         }
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_PROCESS);
                         break;
-                    case 2:
+                    case 2: //物流
                         if (getUser().getEnterprise() == null) {
                             comCreateDialog.show();
                             return;
                         }
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_LOGISTICS);
                         break;
-                    case 3:
+                    case 3: //厂房
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_WORKSHOP);
                         break;
-                    case 4:
+                    case 4: //招聘
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_JOB);
                         break;
-                    case 5:
+                    case 5: //机器出售
                         CommonApi.releaseCheck(context, getUserID(), Const.SERVICE_TYPE_DEVICE);
                         break;
-                    case 6:
+                    case 6: //求购
                         Intent intent = new Intent(context, ProductSelectActivity.class);
                         intent.putExtra(Const.KEY_SERVICE_TYPE, Const.SERVICE_TYPE_PRODUCT_ALL);
                         intent.putExtra(Const.KEY_MOTION, ProductSelectActivity.MOTION_RELEASE_ASKBUY);
                         context.startActivity(intent);
                         break;
-                    case 7:
+                    case 7: //空车配货
                         if (!MyApplication.appContext.checkCertifyPer(context)) return;
                         if (PermissionChecker.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PermissionChecker.PERMISSION_GRANTED) {
                             Toast.makeText(context, "您尚未开启本应用的定位权限", Toast.LENGTH_SHORT).show();

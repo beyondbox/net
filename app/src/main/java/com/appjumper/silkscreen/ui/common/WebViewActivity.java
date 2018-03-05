@@ -11,12 +11,15 @@ import android.widget.TextView;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
+import com.appjumper.silkscreen.util.Const;
 
 
 public class WebViewActivity extends BaseActivity {
     private WebView mWebView;
     private String url = "";
     private String title;
+
+    private boolean isLocalMode = false;
 
 
     @Override
@@ -27,6 +30,7 @@ public class WebViewActivity extends BaseActivity {
 		Intent intent = getIntent();
 		url = intent.getStringExtra("url");
 		title = intent.getStringExtra("title");
+        isLocalMode = intent.getBooleanExtra(Const.KEY_IS_LOCAL_MODE, false);
 		TextView title_text = (TextView)findViewById(R.id.title);
         if(title == null){
             title_text.setText("丝网");
@@ -46,7 +50,6 @@ public class WebViewActivity extends BaseActivity {
         mWebSettings.setLightTouchEnabled(true);
         mWebSettings.setSupportZoom(true);
         mWebSettings.setDisplayZoomControls(false);
-        mWebView.loadUrl(url);
 
         mWebView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -54,6 +57,17 @@ public class WebViewActivity extends BaseActivity {
                 return true;
             }
         });
+
+        if (isLocalMode) {
+            String sHead= "<html><head><meta name=\"viewport\" content=\"width=device-width, " +
+                    "initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes\" />"+
+                    "<style>img{max-width:100% !important;height:auto !important;}</style>"
+                    +"<style>body{max-width:100% !important;}</style>"+"</head><body>";
+
+            mWebView.loadDataWithBaseURL(null, sHead + url + "</body></html>", "text/html", "utf-8", null);
+        } else {
+            mWebView.loadUrl(url);
+        }
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {

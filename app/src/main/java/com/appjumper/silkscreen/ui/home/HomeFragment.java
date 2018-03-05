@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -27,6 +29,7 @@ import com.appjumper.silkscreen.base.BaseFragment;
 import com.appjumper.silkscreen.base.MyApplication;
 import com.appjumper.silkscreen.bean.AskBuy;
 import com.appjumper.silkscreen.bean.Enterprise;
+import com.appjumper.silkscreen.bean.HomeBanner;
 import com.appjumper.silkscreen.bean.HomeData;
 import com.appjumper.silkscreen.bean.HomeDataResponse;
 import com.appjumper.silkscreen.bean.OfferList;
@@ -41,6 +44,8 @@ import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.ui.common.WebViewActivity;
+import com.appjumper.silkscreen.ui.home.adapter.BannerAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.HomeAskBuyListAdapter;
 import com.appjumper.silkscreen.ui.home.adapter.StockShopListAdapter;
 import com.appjumper.silkscreen.ui.home.askbuy.AskBuyActivity;
@@ -77,6 +82,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -120,6 +129,8 @@ public class HomeFragment extends BaseFragment {
     @Bind(R.id.llChart)
     LinearLayout llChart;
 
+    @Bind(R.id.llVolume)
+    LinearLayout llVolume;
     @Bind(R.id.txtTradeMoney)
     TextView txtTradeMoney;
     @Bind(R.id.txtTradeNum)
@@ -136,6 +147,13 @@ public class HomeFragment extends BaseFragment {
     @Bind(R.id.recyclerAskBuy)
     RecyclerView recyclerAskBuy;
 
+    @Bind(R.id.rlBanner)
+    RelativeLayout rlBanner;
+    @Bind(R.id.pagerBanner)
+    ViewPager pagerBanner;
+    @Bind(R.id.llDots)
+    LinearLayout llDots;
+
 
     private List<AskBuy> askBuyList; //热门求购列表
     private HomeAskBuyListAdapter askBuyAdapter;
@@ -144,6 +162,13 @@ public class HomeFragment extends BaseFragment {
     private StockShopListAdapter stockAdapter;
 
     private HomeData data;
+
+    private ScheduledExecutorService scheduledExecutorService;
+    private ScheduledFuture future;
+    private List<HomeBanner> bannerData; //轮播图数据
+    private List<View> bannerViews; //轮播图view集合
+    private BannerAdapter bannerAdapter; //轮播图适配器
+    private int currentItem = 0; //轮播图当前位置
 
 
 
@@ -241,6 +266,46 @@ public class HomeFragment extends BaseFragment {
             }
         });
 
+        /**
+         * 轮播图
+         */
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        bannerData = new ArrayList<>();
+        bannerViews = new ArrayList<>();
+        bannerAdapter = new BannerAdapter(context, bannerViews, bannerData);
+        pagerBanner.setAdapter(bannerAdapter);
+        pagerBanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            private int oldPosition = 0;
+
+            @Override
+            public void onPageSelected(int position) {
+                currentItem = position;
+                llDots.getChildAt(oldPosition).setSelected(false);
+                llDots.getChildAt(position).setSelected(true);
+                oldPosition = position;
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+                switch (arg0) {
+                    case ViewPager.SCROLL_STATE_DRAGGING:
+                        future.cancel(true);
+                        break;
+                    case ViewPager.SCROLL_STATE_IDLE:
+                        if (future.isCancelled()) {
+                            startBanner();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 
 
@@ -250,6 +315,7 @@ public class HomeFragment extends BaseFragment {
         l_homeview.setVisibility(View.VISIBLE);
         //mScrollView.smoothScrollTo(0, 0);
 
+        setBanner();
         setFlipper();
 
         //签到
@@ -312,6 +378,90 @@ public class HomeFragment extends BaseFragment {
         }, 60);
 
     }
+
+
+    /**
+     * 设置banner
+     */
+    private void setBanner() {
+        bannerViews.clear();
+        bannerData.clear();
+        llDots.removeAllViews();
+        bannerData.addAll(data.getBanner());
+
+        if (bannerData.size() > 0) {
+            rlBanner.setVisibility(View.VISIBLE);
+            rlBanner.requestFocus();
+            rlBanner.requestFocusFromTouch();
+        } else {
+            llVolume.requestFocus();
+            llVolume.requestFocusFromTouch();
+            rlBanner.setVisibility(View.GONE);
+            return;
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        for (int i = 0; i < bannerData.size(); i++) {
+            ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            final int finalI = i;
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    HomeBanner item = bannerData.get(finalI);
+                    Intent intent = new Intent(context, WebViewActivity.class);
+                    intent.putExtra("title", item.getSlide_name());
+                    if (TextUtils.isEmpty(item.getSlide_url())) {
+                        intent.putExtra("url", item.getSlide_content());
+                        intent.putExtra(Const.KEY_IS_LOCAL_MODE, true);
+                    } else {
+                        intent.putExtra("url", item.getSlide_url());
+                    }
+
+                    startActivity(intent);
+                }
+            });
+            bannerViews.add(imageView);
+
+            View dotView = inflater.inflate(R.layout.layout_banner_dot, llDots);
+        }
+
+        bannerAdapter.notifyDataSetChanged();
+        pagerBanner.setOffscreenPageLimit(bannerData.size() - 1);
+
+        currentItem = 0;
+        pagerBanner.setCurrentItem(currentItem);
+        llDots.getChildAt(0).setSelected(true);
+        startBanner();
+    }
+
+
+    /**
+     * banner开始轮播
+     */
+    private void startBanner() {
+        if (future != null) {
+            future.cancel(true);
+            future = null;
+        }
+
+        future = scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
+
+            @Override
+            public void run() {
+                currentItem = (currentItem + 1) % bannerData.size();
+                bannerHandler.obtainMessage().sendToTarget();
+            }
+        }, 3000, 3000, TimeUnit.MILLISECONDS);
+    }
+
+    //banner图切换handler
+    private Handler bannerHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            if (pagerBanner != null)
+                pagerBanner.setCurrentItem(currentItem, true);
+        };
+    };
 
 
     /**
@@ -852,6 +1002,10 @@ public class HomeFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         context.unregisterReceiver(myReceiver);
+        if (future != null) {
+            future.cancel(true);
+            future = null;
+        }
     }
 
 }

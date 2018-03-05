@@ -105,6 +105,7 @@
         android:id="@+id/pull_refresh_scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:descendantFocusability="afterDescendants"
         android:layout_below="@id/title_layout">
 
         <com.appjumper.silkscreen.view.ObservableScrollView
@@ -120,14 +121,41 @@
                 android:visibility="gone">
 
 
+        <!--****************************** 轮播图 **********************************-->
+
+                <RelativeLayout
+                    android:id="@+id/rlBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/pagerBanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" >
+                    </android.support.v4.view.ViewPager>
+
+                    <LinearLayout
+                        android:id="@+id/llDots"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="6dp"
+                        android:orientation="horizontal" >
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+
     <!--**********************************交易额*********************************-->
 
 
                 <LinearLayout
+                    android:id="@+id/llVolume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:background="@mipmap/home_volume_bg1"
                     android:orientation="vertical">
 

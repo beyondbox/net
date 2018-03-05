@@ -373,6 +373,10 @@ public class CompanyDetailsActivity extends BaseActivity implements ObservableSc
                         initView(detailsResponse.getData());
                         initAdapter();
                         initReleaseHistory();
+
+                        Intent intent = new Intent(Const.ACTION_ADD_READ_NUM);
+                        intent.putExtra("id", id);
+                        sendBroadcast(intent);
                     } else {
                         showErrorToast(detailsResponse.getError_desc());
                     }

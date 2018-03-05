@@ -56,6 +56,7 @@ public class Enterprise implements Serializable{
     private List<Product> service;
     private String is_top_custom;
     private String is_top_machining;
+    private String consult_num;
 
     private String user_auth_status; //个人认证
 
@@ -444,5 +445,13 @@ public class Enterprise implements Serializable{
 
     public void setIs_top_machining(String is_top_machining) {
         this.is_top_machining = is_top_machining;
+    }
+
+    public String getConsult_num() {
+        return consult_num;
+    }
+
+    public void setConsult_num(String consult_num) {
+        this.consult_num = consult_num;
     }
 }

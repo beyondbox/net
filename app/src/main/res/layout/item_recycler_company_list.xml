@@ -71,25 +71,49 @@
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/txtSubTitle"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/rlSub"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtTitle"
             android:layout_alignLeft="@id/txtTitle"
-            android:layout_marginTop="3dp"
-            android:maxLines="2"
-            android:ellipsize="end"
-            android:lineSpacingExtra="2dp"
-            android:text="主营产品：石笼网加工、石笼网订做"
-            android:textColor="@color/new_gray_light_color"
-            android:textSize="12sp"/>
+            android:layout_marginTop="3dp">
+
+            <TextView
+                android:id="@+id/txtReadNum"
+                android:layout_width="55dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="right"
+                android:text="浏览555"
+                android:textColor="@color/light_gray_color"
+                android:textSize="11sp"/>
+
+            <TextView
+                android:id="@+id/txtSubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/txtReadNum"
+                android:layout_marginRight="20dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
+                android:text="主营产品：石笼网加工、石笼网订做、石笼网加工、石笼网订做、石笼网加工、石笼网订做"
+                android:textColor="@color/new_gray_light_color"
+                android:textSize="12sp"/>
+
+        </RelativeLayout>
+
+
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/txtSubTitle"
+            android:layout_below="@id/rlSub"
             android:layout_marginTop="12dp"/>
     </RelativeLayout>
 

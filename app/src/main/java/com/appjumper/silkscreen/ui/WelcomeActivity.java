@@ -13,6 +13,7 @@ import com.appjumper.silkscreen.bean.HomeDataResponse;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.Url;
+import com.appjumper.silkscreen.util.AppTool;
 import com.appjumper.silkscreen.util.Const;
 import com.appjumper.silkscreen.util.SPUtil;
 
@@ -40,6 +41,7 @@ public class WelcomeActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		AppTool.setFullScreen(this);
 		setContentView(R.layout.activity_welcome);
 		ButterKnife.bind(context);
 		//Context context = getApplicationContext();

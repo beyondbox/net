@@ -109,7 +109,7 @@ public class AskBuyActivity extends BaseActivity {
             public void run() {
                 ptrLayt.autoRefresh();
             }
-        }, 60);
+        }, 80);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -322,11 +322,11 @@ public class AskBuyActivity extends BaseActivity {
 
                         if (page == 1) {
                             dataList.clear();
-                            recyclerData.smoothScrollToPosition(0);
+                            if (recyclerData != null) recyclerData.smoothScrollToPosition(0);
                         }
                         dataList.addAll(list);
 
-                        if (page == totalPage) {
+                        if (page == totalPage || totalPage == 0) {
                             List<AskBuy> endList = GsonUtil.getEntityList(dataObj.getJSONObject("items").getJSONArray("purchase_expiry").toString(), AskBuy.class);
                             dataList.addAll(endList);
                         }

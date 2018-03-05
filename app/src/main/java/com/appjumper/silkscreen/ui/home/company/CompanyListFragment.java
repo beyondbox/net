@@ -1,6 +1,9 @@
 package com.appjumper.silkscreen.ui.home.company;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -79,6 +82,13 @@ public class CompanyListFragment extends BaseFragment {
     private SureOrCancelDialog comCreateDialog;
 
 
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        registerBroadcastReceiver();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -261,6 +271,32 @@ public class CompanyListFragment extends BaseFragment {
     }
 
 
+    private void registerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Const.ACTION_ADD_READ_NUM);
+        getActivity().registerReceiver(myReceiver, filter);
+    }
+
+    private BroadcastReceiver myReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!isDataInited) return;
+            String action = intent.getAction();
+            if (action.equals(Const.ACTION_ADD_READ_NUM)) {
+                String askId = intent.getStringExtra("id");
+                for (int i = 0; i < dataList.size(); i++) {
+                    Enterprise item = dataList.get(i);
+                    if (askId.equals(item.getEnterprise_id())) {
+                        dataList.get(i).setConsult_num((Integer.valueOf(item.getConsult_num()) + 1) + "");
+                        adapter.notifyDataSetChanged();
+                        break;
+                    }
+                }
+            }
+        }
+    };
+
+
     @OnClick({R.id.txtRelease, R.id.txtProductSelect, R.id.txtSpecSelect})
     public void onClick(View v) {
         switch (v.getId()) {
@@ -313,6 +349,13 @@ public class CompanyListFragment extends BaseFragment {
         if (getView() != null) {
             getView().setVisibility(menuVisible ? View.VISIBLE : View.GONE);
         }
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        context.unregisterReceiver(myReceiver);
     }
 
 }

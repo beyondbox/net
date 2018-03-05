@@ -294,6 +294,7 @@ public class Const {
     public static final String KEY_UNIT = "unit";
     public static final String KEY_VERSION_CODE = "version_code";
     public static final String KEY_PUSH_TYPE = "pushType";
+    public static final String KEY_IS_LOCAL_MODE = "isLocalMode";
 
 
 

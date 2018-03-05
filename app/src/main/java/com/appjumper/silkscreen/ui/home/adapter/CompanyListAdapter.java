@@ -51,6 +51,8 @@ public class CompanyListAdapter extends BaseQuickAdapter<Enterprise, BaseViewHol
                 .into((ImageView) helper.getView(R.id.imgViHead));
 
         helper.setText(R.id.txtTitle, item.getEnterprise_name())
+                .setText(R.id.txtReadNum, "浏览" + item.getConsult_num())
+                .setVisible(R.id.txtReadNum, !item.getConsult_num().equals("0"))
                 .setVisible(R.id.imgViTag, false)
                 .setVisible(R.id.imgViCertiGreen, item.getUser_auth_status().equals("2"))
                 .setVisible(R.id.imgViCertiBlue, item.getEnterprise_auth_status().equals("2"))
