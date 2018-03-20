@@ -119,6 +119,8 @@ public class HomeFragment extends BaseFragment {
     TextView txtCheckin;
     @Bind(R.id.txtScore)
     TextView txtScore;
+    @Bind(R.id.llMenu)
+    LinearLayout llMenu;
 
     @Bind(R.id.flipperOffer)
     ViewFlipper flipperOffer;
@@ -129,8 +131,6 @@ public class HomeFragment extends BaseFragment {
     @Bind(R.id.llChart)
     LinearLayout llChart;
 
-    @Bind(R.id.llVolume)
-    LinearLayout llVolume;
     @Bind(R.id.txtTradeMoney)
     TextView txtTradeMoney;
     @Bind(R.id.txtTradeNum)
@@ -182,7 +182,7 @@ public class HomeFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view;
-        view = inflater.inflate(R.layout.fragment_hom6, null);
+        view = inflater.inflate(R.layout.fragment_hom7, null);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -280,6 +280,15 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onPageSelected(int position) {
                 currentItem = position;
+
+                int count = bannerData.size();
+                if (position == 0)
+                    position = count - 1;
+                else if (position == count + 1)
+                    position = 0;
+                else
+                    position = position - 1;
+
                 llDots.getChildAt(oldPosition).setSelected(false);
                 llDots.getChildAt(position).setSelected(true);
                 oldPosition = position;
@@ -297,6 +306,15 @@ public class HomeFragment extends BaseFragment {
                         future.cancel(true);
                         break;
                     case ViewPager.SCROLL_STATE_IDLE:
+                        int position = pagerBanner.getCurrentItem();
+                        if (position == 0) {
+                            currentItem = bannerData.size();
+                            pagerBanner.setCurrentItem(currentItem, false);
+                        } else if (position == bannerViews.size() - 1) {
+                            currentItem = 1;
+                            pagerBanner.setCurrentItem(currentItem, false);
+                        }
+
                         if (future.isCancelled()) {
                             startBanner();
                         }
@@ -394,21 +412,27 @@ public class HomeFragment extends BaseFragment {
             rlBanner.requestFocus();
             rlBanner.requestFocusFromTouch();
         } else {
-            llVolume.requestFocus();
-            llVolume.requestFocusFromTouch();
+            if (future != null) future.cancel(true);
+            llMenu.requestFocus();
+            llMenu.requestFocusFromTouch();
             rlBanner.setVisibility(View.GONE);
             return;
         }
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        for (int i = 0; i < bannerData.size(); i++) {
+        final int count = bannerData.size();
+
+        for (int i = 0; i < count + 2; i++) {
             ImageView imageView = new ImageView(context);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             final int finalI = i;
+
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    HomeBanner item = bannerData.get(finalI);
+                    if (finalI == 0 || finalI == count + 1) return;
+
+                    HomeBanner item = bannerData.get(finalI - 1);
                     Intent intent = new Intent(context, WebViewActivity.class);
                     intent.putExtra("title", item.getSlide_name());
                     if (TextUtils.isEmpty(item.getSlide_url())) {
@@ -423,13 +447,15 @@ public class HomeFragment extends BaseFragment {
             });
             bannerViews.add(imageView);
 
-            View dotView = inflater.inflate(R.layout.layout_banner_dot, llDots);
+            if (i < count)
+                inflater.inflate(R.layout.layout_banner_dot, llDots);
         }
 
-        bannerAdapter.notifyDataSetChanged();
-        pagerBanner.setOffscreenPageLimit(bannerData.size() - 1);
 
-        currentItem = 0;
+        bannerAdapter.notifyDataSetChanged();
+        pagerBanner.setOffscreenPageLimit(bannerViews.size() - 1);
+
+        currentItem = 1;
         pagerBanner.setCurrentItem(currentItem);
         llDots.getChildAt(0).setSelected(true);
         startBanner();
@@ -449,7 +475,7 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void run() {
-                currentItem = (currentItem + 1) % bannerData.size();
+                currentItem = currentItem % bannerData.size() + 1;
                 bannerHandler.obtainMessage().sendToTarget();
             }
         }, 3000, 3000, TimeUnit.MILLISECONDS);

@@ -51,6 +51,14 @@ public class BannerAdapter extends PagerAdapter {
 		ImageView imgView = (ImageView) views.get(position);
 		((ViewPager)container).addView(imgView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
+		int count = dataList.size();
+		if (position == 0)
+			position = count - 1;
+		else if (position == count + 1)
+			position = 0;
+		else
+			position = position - 1;
+
 		String imgPath = dataList.get(position).getSlide_pic().getOrigin();
 		String url = imgPath.startsWith("http") ? imgPath : Url.IP + "/data/upload/" + imgPath;
 

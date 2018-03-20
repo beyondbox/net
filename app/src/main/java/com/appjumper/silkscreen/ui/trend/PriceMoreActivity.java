@@ -66,7 +66,7 @@ public class PriceMoreActivity extends BaseActivity {
             public void run() {
                 ptrLayt.autoRefresh();
             }
-        }, 50);
+        }, 80);
     }
 
 

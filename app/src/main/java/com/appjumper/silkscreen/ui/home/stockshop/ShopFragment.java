@@ -95,7 +95,7 @@ public class ShopFragment extends BaseFragment {
                 getRecommendProduct();
                 ptrLayt.autoRefresh();
             }
-        }, 50);
+        }, 80);
     }
 
 

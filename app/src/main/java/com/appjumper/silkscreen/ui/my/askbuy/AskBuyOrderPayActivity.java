@@ -398,15 +398,11 @@ public class AskBuyOrderPayActivity extends BaseActivity {
                 if (wechatFile.exists()) wechatFile.delete();
                 if (ImageUtil.saveBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.qrcode_wechat), 100, wechatFile))
                     showErrorToast("图片已保存到/sdcard/picture目录下");
-                else
-                    showErrorToast("图片保存失败");
                 break;
             case R.id.imgViAlipay:
                 if (alipayFile.exists()) alipayFile.delete();
                 if (ImageUtil.saveBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.qrcode_alipay), 100, alipayFile))
                     showErrorToast("图片已保存到/sdcard/picture目录下");
-                else
-                    showErrorToast("图片保存失败");
                 break;
         }
         return true;

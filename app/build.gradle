@@ -44,9 +44,6 @@ android {
             storePassword '123456'
         }
     }
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
 
     buildTypes {
         /*debug {
@@ -80,9 +77,8 @@ android {
     allprojects {
         repositories {
             jcenter()
-            maven {
-                url "http://maven.bughd.com/public"
-            }
+            //mavenCentral()
+            maven { url "https://jitpack.io" }
         }
     }
 }
@@ -98,8 +94,8 @@ dependencies {
     compile 'q.rorbin:badgeview:1.1.1'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     compile 'com.contrarywind:Android-PickerView:3.2.6'
-    compile 'com.amap.api:navi-3dmap:latest.integration'
-    compile 'com.amap.api:search:latest.integration'
+    compile 'com.amap.api:navi-3dmap:5.5.0_3dmap5.6.0'
+    compile 'com.amap.api:search:5.5.0'
     compile 'org.robolectric:shadows-multidex:3.3.2'
     compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
     compile 'com.android.support:design:26.0.0-alpha1'

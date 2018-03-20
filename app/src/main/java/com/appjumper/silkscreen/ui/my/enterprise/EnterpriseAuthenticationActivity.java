@@ -114,6 +114,7 @@ public class EnterpriseAuthenticationActivity extends MultiSelectPhotoActivity {
 
     @OnClick({R.id.iv_id_card_one,R.id.iv_id_card_two,R.id.iv_business_license,R.id.tv_submit,R.id.iv_business,R.id.iv_idcard1,R.id.iv_idcard2})
     public void onClick(View v) {
+        if (authinfo == null) return;
         Intent intent;
         ArrayList<String> urls;
         switch (v.getId()) {

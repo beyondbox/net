@@ -3,6 +3,7 @@ package com.appjumper.silkscreen.ui.home.search;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -98,7 +99,13 @@ public class SearchResultsActivity extends BaseActivity {
 
 
         initViewPager();
-        getModules();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                getModules();
+            }
+        }, 80);
     }
 
 

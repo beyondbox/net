@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <View xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="7dp"
-    android:layout_height="7dp"
+    android:layout_width="5dp"
+    android:layout_height="5dp"
     android:background="@drawable/selector_banner_dot"
-    android:layout_marginLeft="5dp"
-    android:layout_marginRight="5dp">
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp">
 </View>

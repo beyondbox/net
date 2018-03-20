@@ -126,7 +126,7 @@ public class AskBuyDetailActivity extends BaseActivity {
             public void run() {
                 getData();
             }
-        }, 60);
+        }, 80);
     }
 
 
@@ -141,7 +141,7 @@ public class AskBuyDetailActivity extends BaseActivity {
             public void run() {
                 getData();
             }
-        }, 60);
+        }, 80);
     }
 
 

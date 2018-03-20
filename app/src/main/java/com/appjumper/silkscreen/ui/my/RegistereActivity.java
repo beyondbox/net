@@ -11,15 +11,11 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.appjumper.silkscreen.R;
 import com.appjumper.silkscreen.base.BaseActivity;
-import com.appjumper.silkscreen.bean.User;
 import com.appjumper.silkscreen.bean.UserResponse;
 import com.appjumper.silkscreen.bean.VerifycodeResponse;
-import com.appjumper.silkscreen.net.CommonApi;
-import com.appjumper.silkscreen.net.GsonUtil;
 import com.appjumper.silkscreen.net.HttpUtil;
 import com.appjumper.silkscreen.net.JsonParser;
 import com.appjumper.silkscreen.net.MyHttpClient;
@@ -28,7 +24,6 @@ import com.appjumper.silkscreen.ui.common.WebViewActivity;
 import com.appjumper.silkscreen.util.Const;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.tencent.android.tpush.XGPushManager;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicNameValuePair;
@@ -323,67 +318,4 @@ public class RegistereActivity extends BaseActivity{
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-    /**
-     * 登录(没用着)
-     */
-    private void login() {
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("mobile", et_name.getText().toString().trim());
-        map.put("password", et_pwd.getText().toString().trim());
-
-        MyHttpClient.post(Url.LOGIN, map, new AsyncHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                super.onStart();
-                progress.setMessage("正在登录...");
-                progress.show();
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String jsonStr = new String(responseBody);
-                try {
-                    JSONObject jsonObj = new JSONObject(jsonStr);
-                    int errorCode = jsonObj.getInt("error_code");
-                    if (errorCode == 0) {
-                        User user = GsonUtil.getEntity(jsonObj.getJSONObject("data").toString(), User.class);
-                        if (user != null) {
-                            //XGPushManager.registerPush(context, "*");
-                            XGPushManager.registerPush(getApplicationContext(), user.getMobile());
-                            getMyApplication().getMyUserManager().storeUserInfo(user);
-                            CommonApi.addLiveness(getUserID(), 1);
-                        }
-                    } else {
-                        Toast.makeText(context, "登录失败，请重试", Toast.LENGTH_SHORT).show();
-                    }
-
-                    context.finish();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(context, "登录失败，请重试", Toast.LENGTH_SHORT).show();
-                RegistereActivity.this.finish();
-            }
-
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                progress.dismiss();
-            }
-        });
-    }
 }

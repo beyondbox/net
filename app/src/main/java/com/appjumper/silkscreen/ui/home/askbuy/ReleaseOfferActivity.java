@@ -330,7 +330,7 @@ public class ReleaseOfferActivity extends BaseActivity {
                 break;
             case R.id.txtWeightUnit: //选择单位
                 AppTool.hideSoftInput(context);
-                pvUnits.show();
+                if(pvUnits != null) pvUnits.show();
                 break;
             default:
                 break;

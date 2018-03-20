@@ -181,20 +181,25 @@ public class ImageUtil {
                     targetFile.getParentFile().mkdirs();
                 }
                 os = new FileOutputStream(targetFile);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, os);
+                boolean result = bitmap.compress(Bitmap.CompressFormat.JPEG, quality, os);
 
-                //通知图片更新
-                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                Uri uri;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    uri = FileProvider.getUriForFile(MyApplication.appContext, Const.FILE_PROVIDER, targetFile);
+                if (result) {
+                    //通知图片更新
+                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    Uri uri;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        uri = FileProvider.getUriForFile(MyApplication.appContext, Const.FILE_PROVIDER, targetFile);
+                    } else {
+                        uri = Uri.fromFile(targetFile);
+                    }
+                    intent.setData(uri);
+                    MyApplication.appContext.sendBroadcast(intent);
+                    return true;
                 } else {
-                    uri = Uri.fromFile(targetFile);
+                    Toast.makeText(MyApplication.appContext, "保存图片失败", Toast.LENGTH_SHORT).show();
+                    return false;
                 }
-                intent.setData(uri);
-                MyApplication.appContext.sendBroadcast(intent);
 
-                return true;
             } catch (Exception e) {
                 e.printStackTrace();
                 Toast.makeText(MyApplication.appContext, "保存图片出错", Toast.LENGTH_SHORT).show();
