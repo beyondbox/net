@@ -136,6 +136,7 @@ public class StockShopFragment extends BaseFragment {
      * 设置下拉刷新
      */
     private void initRefreshLayout() {
+        ptrLayt.setLastUpdateTimeRelateObject(this);
         ptrLayt.setPtrHandler(new PtrDefaultHandler() {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {

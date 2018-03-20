@@ -315,7 +315,7 @@ public class HomeFragment extends BaseFragment {
         l_homeview.setVisibility(View.VISIBLE);
         //mScrollView.smoothScrollTo(0, 0);
 
-        setBanner();
+        //setBanner();
         setFlipper();
 
         //签到
@@ -387,13 +387,14 @@ public class HomeFragment extends BaseFragment {
         bannerViews.clear();
         bannerData.clear();
         llDots.removeAllViews();
-        bannerData.addAll(data.getBanner());
+        //bannerData.addAll(data.getBanner());
 
         if (bannerData.size() > 0) {
             rlBanner.setVisibility(View.VISIBLE);
             rlBanner.requestFocus();
             rlBanner.requestFocusFromTouch();
         } else {
+            if (future != null) future.cancel(true);
             llVolume.requestFocus();
             llVolume.requestFocusFromTouch();
             rlBanner.setVisibility(View.GONE);

@@ -127,8 +127,7 @@
                     android:id="@+id/rlBanner"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true">
+                    android:visibility="gone">
 
                     <android.support.v4.view.ViewPager
                         android:id="@+id/pagerBanner"
@@ -156,6 +155,8 @@
                     android:id="@+id/llVolume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:background="@mipmap/home_volume_bg1"
                     android:orientation="vertical">
 
