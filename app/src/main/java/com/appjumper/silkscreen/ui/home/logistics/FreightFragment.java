@@ -89,7 +89,7 @@ public class FreightFragment extends BaseFragment {
     private int pageSize = 20;
     private int totalSize;
 
-    private String startId = "1";
+    private String startId = "";
     private String endId = "";
     private List<StartPlace> startList = new ArrayList<>(); //始发地
     private StartPlaceListAdapter startAdapter;
@@ -146,7 +146,7 @@ public class FreightFragment extends BaseFragment {
      */
     private void initDropDownMenu() {
         List<String> tabTexts = new ArrayList<>();
-        tabTexts.add("衡水安平");
+        tabTexts.add("始发地");
         tabTexts.add("目的地");
         tabTexts.add("车长车型");
 
@@ -574,7 +574,7 @@ public class FreightFragment extends BaseFragment {
                         startList.addAll(list);
                         startAdapter.notifyDataSetChanged();
 
-                        startAdapter.setCheckItem(1);
+                        startAdapter.setCheckItem(0);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
